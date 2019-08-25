@@ -152,12 +152,6 @@ String BaseUzel::GetStateTxt()
 }
 
 // ------------------------------------
-String BaseUzel::GetStateTxtLog()
-{
-	return _GetStateTxt(1);
-}
-
-// ------------------------------------
 String BaseUzel::_GetStateTxt(uint8_t doLog)
 {
 	//if (doLog) Serial.println("_GetStateTxt");

@@ -12,7 +12,6 @@
 	    BaseUzel(String title, uint8_t pinAutomat, uint8_t pinContactor, bool UnitType, bool LogicType);
 		uint8_t GetState();
 		String GetStateTxt();
-		String GetStateTxtLog();
 		String GetTitle();
 		String GetLog();
 		bool GetUzelType();
