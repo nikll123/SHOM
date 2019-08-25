@@ -4,14 +4,12 @@
 	#include "Arduino.h"
 	#include "Core.h"
 
-
 	class Button
 	{
 	public:
 	    //Button(String title, uint8_t pinButton);
 	    Button();
 		uint8_t GetState();
-		uint8_t GetStateLog();
 		String GetStateTxt();
 		String GetStateTxtLog();
 		String GetTitle();

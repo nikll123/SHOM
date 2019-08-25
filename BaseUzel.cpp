@@ -20,7 +20,7 @@ BaseUzel::BaseUzel(String title, uint8_t pinAutomat, uint8_t pinContactor, bool 
 	_pinContactor = pinContactor;
 	_unitType = UnitType;
 	_logicType = LogicType;
-	_initialized = 1;
+	_initialized = true;
 	if (_logicType == LOGIC_NORMAL)  
 		pinMode(_pinAutomat, INPUT);
 	else             // LOGIC_INVERSE
@@ -33,13 +33,6 @@ BaseUzel::BaseUzel(String title, uint8_t pinAutomat, uint8_t pinContactor, bool 
 uint8_t BaseUzel::GetState()
 {
 	uint8_t s = _GetState(0);
-	return s;	
-}
-
-// ------------------------------------
-uint8_t BaseUzel::GetStateLog()
-{
-	uint8_t s = _GetState(1);
 	return s;	
 }
 
