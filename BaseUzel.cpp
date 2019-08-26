@@ -44,14 +44,6 @@ BaseUzel::BaseUzel(String title, uint8_t pinAutomat, uint8_t pinContactor, bool 
 // ------------------------------------
 uint8_t BaseUzel::GetState()
 {
-	uint8_t s = _GetState();
-	return s;	
-}
-
-
-// ------------------------------------
-uint8_t BaseUzel::_GetState()
-{
 	uint8_t stateA;
 	
 	if (_initialized)
@@ -59,7 +51,7 @@ uint8_t BaseUzel::_GetState()
 #ifdef PortMonitorLog
 	Serial.print("  ");
 	Serial.print(_title);
-	Serial.print("._GetState ");
+	Serial.print(".GetState ");
 #endif
 		bool valueAutomat = digitalRead(_pinAutomat);
 		
@@ -158,7 +150,7 @@ String BaseUzel::GetTitle()
 String BaseUzel::GetStateTxt()
 {
 	String txt = GetTitle();
-	uint8_t state = _GetState();
+	uint8_t state = GetState();
     txt = txt + " is " + Core::GetStateText(state);
 	return txt;
 }

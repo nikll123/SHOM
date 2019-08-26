@@ -29,7 +29,6 @@
 	private:
 		String	_title;
 		uint8_t	_state;
-		uint8_t	_GetState();
 		unsigned int _timeOutOn;
 		unsigned int _timeOutOff;
 	};
