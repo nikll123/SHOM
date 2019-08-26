@@ -30,7 +30,6 @@
 		String	_title;
 		uint8_t	_state;
 		uint8_t	_GetState();
-		String	_GetStateTxt();
 		unsigned int _timeOutOn;
 		unsigned int _timeOutOff;
 	};

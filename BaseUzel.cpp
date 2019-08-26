@@ -154,16 +154,8 @@ String BaseUzel::GetTitle()
 	return _title;
 }
 
-
 // ------------------------------------
 String BaseUzel::GetStateTxt()
-{
-	_GetStateTxt();
-}
-
-
-// ------------------------------------
-String BaseUzel::_GetStateTxt()
 {
 	String txt = GetTitle();
 	uint8_t state = _GetState();
