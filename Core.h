@@ -9,15 +9,7 @@
 	#define LOGIC_NORMAL     0
 	#define LOGIC_INVERSE    1
 	
-	//#define STATE_UNKNOWN    0
-	#define STATE_NOTINIT    99
-	#define STATE_OFF   	 0
-	#define STATE_ON    	 1
-	#define STATE_FAULT 	 2
-	#define STATE_STARTING 	 3
-	#define STATE_STOPPING 	 4
-	#define STATE_UNKNOWN 	 5
-	#define STATE_ERROR 	 100
+    enum ConveyorState {NOTINIT, ON, OFF, FAULT, STARTING, STOPPING, UNKNOWN, ERROR};	
     
 	#define PortMonitorLog 1
 

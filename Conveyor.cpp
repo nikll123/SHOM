@@ -8,7 +8,7 @@
 // ------------------------------------
 Conveyor::Conveyor(String title, uint8_t pin_button_on, uint8_t pin_button_off, uint8_t pin_button_reset)
 {
-	_state = STATE_NOTINIT; 
+	_state = NOTINIT; 
 	_title = title;
 	
 	_buttonOn.InitPin(pin_button_on, "Button ON");
@@ -69,7 +69,7 @@ void Conveyor::GetUzelStates(uint8_t * result)
 uint8_t Conveyor::GetState()
 {
 
-	if(_state == STATE_ERROR)
+	if(_state == ERROR)
 		return _state;
 		
 	uint8_t countAuto = 0;
@@ -89,7 +89,7 @@ uint8_t Conveyor::GetState()
 	for (uint8_t i = 0; i < KOLICHESTVO_UZLOV; i++)
 	{
 	uint8_t currUnitState = Uzelki[i].CheckState();
-	if(currUnitState != STATE_NOTINIT)
+	if(currUnitState != NOTINIT)
 		{
 		uint8_t uzelType = Uzelki[i].GetUzelType();  
 		if (uzelType == UNIT_CONTACTOR)
@@ -102,23 +102,23 @@ uint8_t Conveyor::GetState()
 				}
 			else
 				{
-				if (currUnitState == STATE_ON)
+				if (currUnitState == ON)
 					countContOn++;
-				else if (currUnitState == STATE_OFF)
+				else if (currUnitState == OFF)
 					countContOff++;
-				else if (currUnitState == STATE_ERROR)
+				else if (currUnitState == ERROR)
 					{
 					countContError++;
 					faultTurnOff = true;
 					}
-				else if (currUnitState == STATE_STARTING)
+				else if (currUnitState == STARTING)
 					countContStarting++;
 				}
 			}
 		else //  if (uzelType == UNIT_AUTOMAT)
 			{
 			countAuto++;
-			if (currUnitState == STATE_ON)
+			if (currUnitState == ON)
 				countAutoOn++;
 			else
 				{
@@ -147,31 +147,31 @@ uint8_t Conveyor::GetState()
 	Serial.println("");
 #endif
 	
-//	_state = STATE_UNKNOWN;
+//	_state = UNKNOWN;
 
 //Core::LogState("_state0", _state);
 	
 	if (countContError > 0 || countAutoOff > 0 || faultTurnOff)
-		_state = STATE_ERROR;
+		_state = ERROR;
 	else 
 		{
 		if (countContOn == countCont)
 			{
-			_state = STATE_ON;
+			_state = ON;
 //Core::LogState("_state1", _state);
 			}
 		else if(countContOff == countCont)
-			_state = STATE_OFF;
-		else if((_state == STATE_STARTING || _state == STATE_OFF) &&
+			_state = OFF;
+		else if((_state == STARTING || _state == OFF) &&
 				 countContOff + countContOn + countContStarting == countCont)
 			{
-				_state = STATE_STARTING;
+				_state = STARTING;
 Core::LogState("_state2", _state);
 			}
-		else if((_state == STATE_STOPPING || _state == STATE_ON) && 
+		else if((_state == STOPPING || _state == ON) && 
 			countContOff + countContOn + countContStarting == countCont)
 			{
-				_state = STATE_STOPPING;
+				_state = STOPPING;
 Core::LogState("_state3", _state);
 			}
 		else
@@ -207,17 +207,17 @@ uint8_t Conveyor::TurnOn()
 	bool firstContactor = true;
 #endif
 
-	uint8_t prevUnitState = STATE_ON;
+	uint8_t prevUnitState = ON;
 	uint8_t prev_i = 0;
 	uint8_t currConveyorState = _state;
 
-	if (_state == STATE_OFF || _state == STATE_STARTING)
+	if (_state == OFF || _state == STARTING)
 		{
 		for (uint8_t i = 0; i < KOLICHESTVO_UZLOV; i++)
 			{
 			uint8_t currUnitState;
             currUnitState = Uzelki[i].CheckState();
-		    if (currUnitState != STATE_NOTINIT)
+		    if (currUnitState != NOTINIT)
 				{
 				uint8_t uzelType = Uzelki[i].GetUzelType();  
 
@@ -237,19 +237,19 @@ uint8_t Conveyor::TurnOn()
 	Serial.print(Core::GetStateText(currUnitState));
 	Serial.println("; ");
 #endif
-					currConveyorState = STATE_STARTING;
+					currConveyorState = STARTING;
 					uint8_t chk_state = TurnOn_CheckUnitStates(prevUnitState, currUnitState);
 				
 					if (chk_state == TURN_STATE_ON)
 						{
 					    Uzelki[i].TurnOn();
 					    }
-					else if (chk_state == STATE_STARTING || chk_state == TURN_STATE_NEXT)
+					else if (chk_state == STARTING || chk_state == TURN_STATE_NEXT)
 						{
 					    }
 					else // if (chk_state == TURN_STATE_ERROR)
 						{
-						currConveyorState = STATE_ERROR;
+						currConveyorState = ERROR;
 						break;
 						}
 	
@@ -258,9 +258,9 @@ uint8_t Conveyor::TurnOn()
 					}
 				else //  if (uzelType == UNIT_AUTOMAT)
 					{
-					if (currUnitState == STATE_OFF)
+					if (currUnitState == OFF)
 						{
-						currConveyorState = STATE_ERROR;
+						currConveyorState = ERROR;
 						break;
 						}
 					}
@@ -316,7 +316,7 @@ uint8_t Conveyor::TurnOn_CheckUnitStates(uint8_t prevUnitState, uint8_t currUnit
           	}
 		else if (prevUnitState == TURN_STATE_ON && currUnitState == TURN_STATE_STARTING)
 			{
-			res = STATE_STARTING;
+			res = STARTING;
 			}
 		else if ((prevUnitState == TURN_STATE_STARTING && currUnitState == TURN_STATE_OFF) ||
 				 (prevUnitState == TURN_STATE_ON       && currUnitState == TURN_STATE_ON)  ||
@@ -340,17 +340,17 @@ uint8_t Conveyor::TurnOff()
 	bool firstContactor = true;
 #endif
 	uint8_t currConveyorState = _state;
-	uint8_t prevUnitState = STATE_OFF;
+	uint8_t prevUnitState = OFF;
 	uint8_t prev_i = KOLICHESTVO_UZLOV;
 
-	if (_state == STATE_STOPPING || _state == STATE_ON)
+	if (_state == STOPPING || _state == ON)
 		{
 		for (int i = KOLICHESTVO_UZLOV - 1; i > -1; i--)
 			{
 
 			uint8_t currUnitState;
             currUnitState = Uzelki[i].CheckState();
-            if (currUnitState != STATE_NOTINIT)
+            if (currUnitState != NOTINIT)
 				{
 				uint8_t uzelType = Uzelki[i].GetUzelType();  
 
@@ -375,11 +375,11 @@ uint8_t Conveyor::TurnOff()
 				
 					if (chk_state == TURN_STATE_OFF)
 						Uzelki[i].TurnOff();
-					else if (chk_state == TURN_STATE_NEXT || chk_state == STATE_STOPPING)
+					else if (chk_state == TURN_STATE_NEXT || chk_state == STOPPING)
 						{}	  
 					else // if (chk_state == TURN_STATE_ERROR)
 						{
-						currConveyorState = STATE_ERROR;
+						currConveyorState = ERROR;
 						break;
 						}
 	
@@ -479,7 +479,7 @@ void Conveyor::Reset()
 		{
 		uint8_t currUnitState;
           currUnitState = Uzelki[i].GetState();
-          if (currUnitState != STATE_NOTINIT)
+          if (currUnitState != NOTINIT)
 			{
 			uint8_t uzelType = Uzelki[i].GetUzelType();  
 
@@ -493,6 +493,6 @@ void Conveyor::Reset()
 				}
 			}
 		}
-	_state = STATE_OFF;
+	_state = OFF;
 
 	} 

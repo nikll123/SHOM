@@ -15,21 +15,21 @@ static void Core::LogState(String string, uint8_t state)
 	static String Core::GetStateText(uint8_t state)
 	{
 	String stateText = "";
-	if ( state == STATE_NOTINIT)
+	if ( state == NOTINIT)
 		stateText = "Not Init";
-	else if ( state == STATE_OFF)
+	else if ( state == OFF)
 		stateText = "Off";
-	else if ( state == STATE_ON)
+	else if ( state == ON)
 		stateText = "On";
-	else if ( state == STATE_FAULT)
+	else if ( state == FAULT)
 		stateText = "Fault";
-	else if ( state == STATE_STARTING)
+	else if ( state == STARTING)
 		stateText = "Starting";
-	else if ( state == STATE_STOPPING)
+	else if ( state == STOPPING)
 		stateText = "Stopping";
-	else if ( state == STATE_ERROR)
+	else if ( state == ERROR)
 		stateText = "Error";
-	else if ( state == STATE_UNKNOWN)
+	else if ( state == UNKNOWN)
 		stateText = "Unknown";
 	else 
 		stateText = "Unknown state:" + String(state);
