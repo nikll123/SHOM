@@ -37,10 +37,22 @@ void Conveyor::SetupUzelContactor(uint8_t index, String title, uint8_t pinAutoma
     Uzelki[index]= contactor1;  
 }
 
+void Conveyor::SetupUzelContactor(uint8_t index, String title, uint8_t pinAutomat, uint8_t pinContactor, unsigned int timeOutOn, unsigned int timeOutOff)
+{
+	Contactor contactor1 (title, pinAutomat, pinContactor, timeOutOn, timeOutOff);	
+    Uzelki[index]= contactor1;  
+}
+
 // ------------------------------------
 void Conveyor::SetupUzelContactorInverse(uint8_t index, String title, uint8_t pinAutomat, uint8_t pinContactor)
 {
 	ContactorInverse contactor1 (title, pinAutomat, pinContactor);	
+    Uzelki[index]= contactor1;  
+}
+
+void Conveyor::SetupUzelContactorInverse(uint8_t index, String title, uint8_t pinAutomat, uint8_t pinContactor, unsigned int timeOutOn, unsigned int timeOutOff)
+{
+	ContactorInverse contactor1 (title, pinAutomat, pinContactor, timeOutOn, timeOutOff);	
     Uzelki[index]= contactor1;  
 }
 
@@ -300,9 +312,9 @@ uint8_t Conveyor::TurnOff()
 					uint8_t chk_state = Core::TurnOff_CheckUnitStates(prevUnitState, currUnitState);
 				
 					if (chk_state == TURN_ON_OFF)
-					    Uzelki[i].TurnOff();
-					else if (chk_state == TURN_ON_WAIT || chk_state == TURN_ON_NEXT)
-						{}
+						Uzelki[i].TurnOff();
+					else if (chk_state == TURN_ON_NEXT || chk_state == TURN_ON_WAIT)
+						{}	  
 					else // if (chk_state == TURN_ON_ERROR)
 						{
 						currConveyorState = STATE_ERROR;

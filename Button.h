@@ -12,7 +12,6 @@
 		uint8_t GetState();
 		String GetStateTxt();
 		String GetTitle();
-		String GetLog();
 		void InitPin(uint8_t pinButton, String title);
 
 	protected:

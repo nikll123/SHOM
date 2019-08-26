@@ -9,6 +9,7 @@
 	{
 	public:
          Contactor(String title, uint8_t pinAutomat, uint8_t pinContactor);
+         Contactor(String title, uint8_t pinAutomat, uint8_t pinContactor, unsigned int timeOutOn, unsigned int timeOutOff);
          
 	protected:
 

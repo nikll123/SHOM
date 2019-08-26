@@ -10,10 +10,13 @@ BaseUzel::BaseUzel()
 	_pinContactor = 0;
 	_unitType = 0;
 	_logicType = 0;
+	_timeOutOn = TURN_ON_TIMEOUT;
+	_timeOutOff = TURN_OFF_TIMEOUT;
 }
 
 // ------------------------------------
-BaseUzel::BaseUzel(String title, uint8_t pinAutomat, uint8_t pinContactor, bool UnitType, bool LogicType) //: Core()
+BaseUzel::BaseUzel(String title, uint8_t pinAutomat, uint8_t pinContactor, bool UnitType, bool LogicType) 
+		: BaseUzel()
 {
 	_title = title;
 	_pinAutomat = pinAutomat;
@@ -30,15 +33,24 @@ BaseUzel::BaseUzel(String title, uint8_t pinAutomat, uint8_t pinContactor, bool 
 }
 
 // ------------------------------------
+BaseUzel::BaseUzel(String title, uint8_t pinAutomat, uint8_t pinContactor, bool UnitType, bool LogicType, unsigned int timeOutOn, unsigned int timeOutOff) 
+		: BaseUzel(title, pinAutomat, pinContactor, UnitType, LogicType)
+{
+	
+	_timeOutOn = timeOutOn;   
+	_timeOutOff = timeOutOff;   
+}
+
+// ------------------------------------
 uint8_t BaseUzel::GetState()
 {
-	uint8_t s = _GetState(0);
+	uint8_t s = _GetState();
 	return s;	
 }
 
 
 // ------------------------------------
-uint8_t BaseUzel::_GetState(uint8_t doLog)
+uint8_t BaseUzel::_GetState()
 {
 	uint8_t stateA;
 	
@@ -49,7 +61,6 @@ uint8_t BaseUzel::_GetState(uint8_t doLog)
 	Serial.print(_title);
 	Serial.print("._GetState ");
 #endif
-		
 		bool valueAutomat = digitalRead(_pinAutomat);
 		
 		if (_logicType == LOGIC_NORMAL)
@@ -57,7 +68,6 @@ uint8_t BaseUzel::_GetState(uint8_t doLog)
 #ifdef PortMonitorLog
 	Serial.print("LOGIC_NORMAL; ");
 #endif
-			
 			if (valueAutomat == HIGH)
 				stateA = STATE_ON;
 			else 
@@ -92,7 +102,7 @@ uint8_t BaseUzel::_GetState(uint8_t doLog)
 #ifdef PortMonitorLog
 	Serial.print("HIGH STATE_ON; ");
 #endif
-				if (millis() - _millsCheck < TURN_ON_TIMEOUT)
+				if (_millsCheck != 0 && millis() - _millsCheck < _timeOutOn)
 					_state = STATE_STARTING;
 				else
 					{
@@ -105,7 +115,7 @@ uint8_t BaseUzel::_GetState(uint8_t doLog)
 #ifdef PortMonitorLog
 	Serial.print("LOW STATE_OFF; ");
 #endif
-				if (millis() - _millsCheck < TURN_OFF_TIMEOUT)
+				if (_millsCheck != 0 && millis() - _millsCheck < _timeOutOff)
 					_state = STATE_STOPPING;
 				else
 					{
@@ -148,19 +158,18 @@ String BaseUzel::GetTitle()
 // ------------------------------------
 String BaseUzel::GetStateTxt()
 {
-	_GetStateTxt(0);
+	_GetStateTxt();
 }
 
+
 // ------------------------------------
-String BaseUzel::_GetStateTxt(uint8_t doLog)
+String BaseUzel::_GetStateTxt()
 {
-	//if (doLog) Serial.println("_GetStateTxt");
 	String txt = GetTitle();
-	uint8_t state = _GetState(doLog);
+	uint8_t state = _GetState();
     txt = txt + " is " + Core::GetStateText(state);
 	return txt;
 }
-
 
 // ------------------------------------
 void BaseUzel::TurnOn()
@@ -183,6 +192,7 @@ void BaseUzel::TurnOff()
 	{
 		_millsCheck = millis();
 		digitalWrite(_pinContactor, 0);
+
 #ifdef PortMonitorLog
 	Serial.print(_title);
 	Serial.println(".TurnOff");

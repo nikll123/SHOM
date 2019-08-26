@@ -9,6 +9,7 @@
 	{
 	public:
          ContactorInverse(String title, uint8_t pinAutomat, uint8_t pinContactor);
+         ContactorInverse(String title, uint8_t pinAutomat, uint8_t pinContactor, unsigned int timeOutOn, unsigned int timeOutOff);
          
 	protected:
 
