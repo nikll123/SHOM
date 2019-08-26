@@ -53,8 +53,6 @@ uint8_t BaseUzel::CheckState()
 {
 	uint8_t stateA;
 	
-	if (_initialized)
-	{
 #ifdef PortMonitorLog
 	Serial.print("  ");
 	Serial.print(_title);
@@ -76,7 +74,6 @@ uint8_t BaseUzel::CheckState()
 			else
 				stateA = STATE_ON;
 			}
-			
 #ifdef PortMonitorLog
 	if (_logicType == LOGIC_NORMAL)
 		Serial.print("LOGIC_NORMAL; ");
@@ -90,35 +87,36 @@ uint8_t BaseUzel::CheckState()
 			
 		if (_unitType == UNIT_CONTACTOR)
 			{
-#ifdef PortMonitorLog
-	Serial.print("CONTACTOR; ");
-#endif
 			uint8_t valueContactor = digitalRead(_pinContactor);
-			if(_state = STATE_OFF)
+			if(_state == STATE_OFF)
+				{
 				if (!(valueContactor == STATE_OFF && stateA == STATE_OFF))
 					_state = STATE_ERROR;
-					
-			else if(_state = STATE_STARTING)
+				}	
+			else if(_state == STATE_STARTING)
 				{
 				if(_millsCheck == 0)
 					{
 					digitalWrite(_pinContactor, 1);
+					valueContactor = digitalRead(_pinContactor);
+					stateA = digitalRead(_pinAutomat);
 					_millsCheck = millis();
 					}
 				else if (millis() - _millsCheck > _timeOutOn)
 					_state = STATE_ON;
 						
-				if (!(valueContactor == STATE_ON && stateA == STATE_ON))
+				if ((_state == STATE_ON || _state == STATE_STARTING)  &&
+					!(valueContactor == STATE_ON && stateA == STATE_ON))
 					_state = STATE_ERROR;
 				}
 					
-			else if(_state = STATE_STOPPING)
+			else if(_state == STATE_STOPPING)
 				{
 				if(_millsCheck == 0)
 					_millsCheck = millis();
 				else if (millis() - _millsCheck > _timeOutOff)
 					{
-					digitalWrite(_pinContactor, 0);
+					//digitalWrite(_pinContactor, 0);
 					_state = STATE_OFF;
 					}
 						
@@ -142,7 +140,6 @@ uint8_t BaseUzel::CheckState()
 	Serial.println("");
 #endif
 	//	_prevState = _state; 		
-	}
 	
 	return _state;
 }
@@ -168,7 +165,7 @@ void BaseUzel::TurnOn()
 	if (_unitType == UNIT_CONTACTOR && _initialized)
 	{
 		_millsCheck = 0;
-		digitalWrite(_pinContactor, 1);
+		//digitalWrite(_pinContactor, 1);
 		_state = STATE_STARTING; 
 #ifdef PortMonitorLog
 	Serial.print(_title);

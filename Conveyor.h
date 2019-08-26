@@ -52,13 +52,16 @@
 		uint8_t TurnOn();
 		uint8_t TurnOff();
 	private:
-		uint8_t 		_currentState;
-		uint8_t 		_keyUnitCount;
-		uint8_t 		_state;
-		String          _title;
-		Button 			_buttonOn; 
-		Button 			_buttonOff;
-		Button 			_buttonReset; 
+		uint8_t 	_currentState;
+		uint8_t 	_keyUnitCount;
+		uint8_t 	_state;
+		String      _title;
+		Button 		_buttonOn; 
+		Button 		_buttonOff;
+		Button 		_buttonReset;
+		uint8_t 	TurnOn_CheckUnitStates(uint8_t prevUnitState, uint8_t currUnitState);
+		uint8_t 	TurnOff_CheckUnitStates(uint8_t prevUnitState, uint8_t currUnitState);
+				 
 	};
 #endif
 

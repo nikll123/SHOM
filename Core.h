@@ -38,8 +38,6 @@
 		Core();
 		static void LogState(String string, uint8_t state);
 		static String GetStateText(uint8_t state);
-		static uint8_t TurnOn_CheckUnitStates(uint8_t prevUnitState, uint8_t currUnitState);
-		static uint8_t TurnOff_CheckUnitStates(uint8_t prevUnitState, uint8_t currUnitState);
 	};
 
     
