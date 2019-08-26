@@ -149,7 +149,7 @@ uint8_t Conveyor::GetState()
 	
 //	_state = STATE_UNKNOWN;
 
-Core::LogState("_state0", _state);
+//Core::LogState("_state0", _state);
 	
 	if (countContError > 0 || countAutoOff > 0 || faultTurnOff)
 		_state = STATE_ERROR;
@@ -158,7 +158,7 @@ Core::LogState("_state0", _state);
 		if (countContOn == countCont)
 			{
 			_state = STATE_ON;
-Core::LogState("_state1", _state);
+//Core::LogState("_state1", _state);
 			}
 		else if(countContOff == countCont)
 			_state = STATE_OFF;
@@ -318,8 +318,8 @@ uint8_t Conveyor::TurnOn_CheckUnitStates(uint8_t prevUnitState, uint8_t currUnit
 			{
 			res = STATE_STARTING;
 			}
-		else if ((prevUnitState == STATE_ON       && currUnitState == STATE_ON)  ||
-				 (prevUnitState == STATE_STARTING && currUnitState == STATE_OFF) ||
+		else if ((prevUnitState == STATE_STARTING && currUnitState == STATE_OFF) ||
+				 (prevUnitState == STATE_ON       && currUnitState == STATE_ON)  ||
 				 (prevUnitState == STATE_OFF      && currUnitState == STATE_OFF))
 			{
 			res = TURN_ON_NEXT;
@@ -333,7 +333,7 @@ uint8_t Conveyor::TurnOn_CheckUnitStates(uint8_t prevUnitState, uint8_t currUnit
 
 // ------------------------------------
 uint8_t Conveyor::TurnOff()
-{
+	{
 #ifdef PortMonitorLog
 	Serial.print("TurnOff Enter state: ");
 	Serial.println(GetStateTxt());
@@ -345,10 +345,11 @@ uint8_t Conveyor::TurnOff()
 
 	if (_state == STATE_STOPPING || _state == STATE_ON)
 		{
-		for (char i = KOLICHESTVO_UZLOV - 1; i > -1; i--)
+		for (int i = KOLICHESTVO_UZLOV - 1; i > -1; i--)
 			{
+
 			uint8_t currUnitState;
-            currUnitState = Uzelki[i].GetState();
+            currUnitState = Uzelki[i].CheckState();
             if (currUnitState != STATE_NOTINIT)
 				{
 				uint8_t uzelType = Uzelki[i].GetUzelType();  
@@ -369,11 +370,12 @@ uint8_t Conveyor::TurnOff()
 	Serial.print(Core::GetStateText(currUnitState));
 	Serial.println("; ");
 #endif
+
 					uint8_t chk_state = TurnOff_CheckUnitStates(prevUnitState, currUnitState);
 				
 					if (chk_state == TURN_ON_OFF)
 						Uzelki[i].TurnOff();
-					else if (chk_state == TURN_ON_NEXT || chk_state == TURN_ON_WAIT)
+					else if (chk_state == TURN_ON_NEXT || chk_state == STATE_STOPPING)
 						{}	  
 					else // if (chk_state == TURN_ON_ERROR)
 						{
@@ -388,32 +390,42 @@ uint8_t Conveyor::TurnOff()
 			}
 		}
 	//_state = currConveyorState; 	
-	return currConveyorState; 
-	
 #ifdef PortMonitorLog
+
+	Serial.print("currConveyorState  ");
+	Serial.print(currConveyorState);
 	Serial.println("");
 #endif
-}
+
+	return currConveyorState; 
+	}
 
 //------------------------------
 uint8_t Conveyor::TurnOff_CheckUnitStates(uint8_t prevUnitState, uint8_t currUnitState)
 	{
 	uint8_t res = TURN_ON_UNKNOWN; 
-	if (prevUnitState == STATE_ON)
+	if (prevUnitState == TURN_ON_ON && currUnitState == TURN_ON_OFF)
 		{
 		res = TURN_ON_ERROR;
 #ifdef PortMonitorLog
-	Serial.print("prev ON; ");
+	Serial.print("prev ON && curr OFF; ");
 #endif
 		}
-	else if (prevUnitState == STATE_ERROR)
+	else if (prevUnitState == TURN_ON_ON && currUnitState == TURN_ON_STOPPING)
+		{
+		res = TURN_ON_ERROR;
+#ifdef PortMonitorLog
+	Serial.print("prev ON && curr STOPPING; ");
+#endif
+		}
+	else if (prevUnitState == TURN_ON_ERROR)
 		{
 		res = TURN_ON_ERROR;
 #ifdef PortMonitorLog
 	Serial.print("prev ERROR; ");
 #endif
 		}
-	else if (currUnitState == STATE_ERROR)
+	else if (currUnitState == TURN_ON_ERROR)
 		{
 		res = TURN_ON_ERROR;
 #ifdef PortMonitorLog
@@ -423,23 +435,17 @@ uint8_t Conveyor::TurnOff_CheckUnitStates(uint8_t prevUnitState, uint8_t currUni
 	
 	if (res != TURN_ON_ERROR)
 		{
-		if (prevUnitState == STATE_OFF && currUnitState == STATE_ON)
+		if (prevUnitState == TURN_ON_OFF && currUnitState == TURN_ON_ON)
           	{
 			res = TURN_ON_OFF;
           	}
-		else if (prevUnitState == STATE_OFF && currUnitState == STATE_STARTING)
+		else if (prevUnitState == TURN_ON_OFF && currUnitState == TURN_ON_STOPPING)
 			{
-			res = TURN_ON_WAIT;
+			res = TURN_ON_STOPPING;
 			}
-		else if (prevUnitState == STATE_OFF && currUnitState == STATE_OFF)
-			{
-			res = TURN_ON_NEXT;
-			}
-		else if (prevUnitState == STATE_STARTING && currUnitState == STATE_ON)
-			{
-			res = TURN_ON_NEXT;
-			}
-		else if (prevUnitState == STATE_ON && currUnitState == STATE_ON)
+		else if ((prevUnitState == TURN_ON_STOPPING && currUnitState == TURN_ON_ON) || 
+				 (prevUnitState == TURN_ON_ON && currUnitState == TURN_ON_ON)       ||
+				 (prevUnitState == TURN_ON_OFF && currUnitState == TURN_ON_OFF))
 			{
 			res = TURN_ON_NEXT;
 			}
@@ -468,7 +474,7 @@ bool Conveyor::ButtonResetIsPressed()
 
 // ------------------------------------
 void Conveyor::Reset()
-{        
+	{        
 	for (uint8_t i = 0; i < KOLICHESTVO_UZLOV; i++)
 		{
 		uint8_t currUnitState;
@@ -489,4 +495,4 @@ void Conveyor::Reset()
 		}
 	_state = STATE_OFF;
 
-} 
+	} 

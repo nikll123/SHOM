@@ -33,6 +33,7 @@
 		//uint8_t	_prevState;
 		unsigned int _timeOutOn;
 		unsigned int _timeOutOff;
+		uint8_t CheckAutomatState();
 	};
 #endif
 

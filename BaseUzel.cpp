@@ -50,46 +50,25 @@ uint8_t BaseUzel::GetState()
 
 // ------------------------------------
 uint8_t BaseUzel::CheckState()
-{
-	uint8_t stateA;
-	
+	{
+	if (_state != STATE_NOTINIT)
+		{
 #ifdef PortMonitorLog
 	Serial.print("  ");
 	Serial.print(_title);
 	Serial.print(".CheckState ");
+	Serial.print(".Enter state is ");
+	Serial.print(Core::GetStateText(_state));
+	Serial.print(" ");
 #endif
-		bool valueAutomat = digitalRead(_pinAutomat);
-		
-		if (_logicType == LOGIC_NORMAL)
-			{
-			if (valueAutomat == HIGH)
-				stateA = STATE_ON;
-			else 
-				stateA = STATE_OFF;
-			}
-		else
-			{
-			if (valueAutomat == HIGH)
-				stateA = STATE_OFF;
-			else
-				stateA = STATE_ON;
-			}
-#ifdef PortMonitorLog
-	if (_logicType == LOGIC_NORMAL)
-		Serial.print("LOGIC_NORMAL; ");
-	else
-		Serial.print("LOGIC_INVERSE; ");
-	
-	Serial.print("automat is ");
-	Serial.print(Core::GetStateText(stateA));
-	Serial.print("; ");
-#endif
-			
+
 		if (_unitType == UNIT_CONTACTOR)
 			{
+			uint8_t stateA;
 			uint8_t valueContactor = digitalRead(_pinContactor);
 			if(_state == STATE_OFF)
 				{
+				stateA = CheckAutomatState();
 				if (!(valueContactor == STATE_OFF && stateA == STATE_OFF))
 					_state = STATE_ERROR;
 				}	
@@ -99,50 +78,58 @@ uint8_t BaseUzel::CheckState()
 					{
 					digitalWrite(_pinContactor, 1);
 					valueContactor = digitalRead(_pinContactor);
-					stateA = digitalRead(_pinAutomat);
 					_millsCheck = millis();
 					}
 				else if (millis() - _millsCheck > _timeOutOn)
 					_state = STATE_ON;
+					
+				stateA = CheckAutomatState();
 						
-				if ((_state == STATE_ON || _state == STATE_STARTING)  &&
-					!(valueContactor == STATE_ON && stateA == STATE_ON))
+				if (!(valueContactor == STATE_ON && stateA == STATE_ON))
 					_state = STATE_ERROR;
 				}
 					
 			else if(_state == STATE_STOPPING)
 				{
 				if(_millsCheck == 0)
+					{
 					_millsCheck = millis();
+					}
 				else if (millis() - _millsCheck > _timeOutOff)
 					{
-					//digitalWrite(_pinContactor, 0);
+					digitalWrite(_pinContactor, 0);
+					valueContactor = digitalRead(_pinContactor);
 					_state = STATE_OFF;
 					}
+				stateA = CheckAutomatState();
 						
-				if (!(_state == STATE_STOPPING && valueContactor == STATE_ON && stateA == STATE_ON))
-					_state = STATE_ERROR;
-				else if (!(_state == STATE_OFF && valueContactor == STATE_OFF && stateA == STATE_OFF))
-					_state = STATE_ERROR;
-				}
+				if (_state == STATE_OFF)
+					{
+					if (!(valueContactor == STATE_OFF && stateA == STATE_OFF))
+						_state = STATE_ERROR;
+					}
+				 }
 #ifdef PortMonitorLog
 	Serial.print(_title);
-	Serial.print(".State is ");
+	Serial.print(" Result state is ");
 	Serial.print(Core::GetStateText(_state));
 #endif
 				
 			}
 		else
 			{
-				_state = stateA;
+			_state = CheckAutomatState();
 			}
+
 #ifdef PortMonitorLog
 	Serial.println("");
 #endif
+
+		}
 	//	_prevState = _state; 		
 	
 	return _state;
-}
+	}
 
 // ------------------------------------
 String BaseUzel::GetTitle()
@@ -165,7 +152,6 @@ void BaseUzel::TurnOn()
 	if (_unitType == UNIT_CONTACTOR && _initialized)
 	{
 		_millsCheck = 0;
-		//digitalWrite(_pinContactor, 1);
 		_state = STATE_STARTING; 
 #ifdef PortMonitorLog
 	Serial.print(_title);
@@ -180,7 +166,6 @@ void BaseUzel::TurnOff()
 	if (_unitType == UNIT_CONTACTOR && _initialized)
 	{
 		_millsCheck = 0;
-		//digitalWrite(_pinContactor, 0);
 		_state = STATE_STOPPING; 
 
 #ifdef PortMonitorLog
@@ -195,3 +180,38 @@ bool BaseUzel::GetUzelType()
 {
 	return _unitType; 
 }
+
+
+// ------------------------------------
+uint8_t BaseUzel::CheckAutomatState()
+	{
+	uint8_t stateA;
+
+	bool valueAutomat = digitalRead(_pinAutomat);
+	
+	if (_logicType == LOGIC_NORMAL)
+		{
+		if (valueAutomat == HIGH)
+			stateA = STATE_ON;
+		else 
+			stateA = STATE_OFF;
+		}
+	else
+		{
+		if (valueAutomat == HIGH)
+			stateA = STATE_OFF;
+		else
+			stateA = STATE_ON;
+		}
+#ifdef PortMonitorLog
+/*	if (_logicType == LOGIC_NORMAL)
+		Serial.print("LOGIC_NORMAL; ");
+	else
+		Serial.print("LOGIC_INVERSE; ");*/
+	
+	Serial.print("automat is ");
+	Serial.print(Core::GetStateText(stateA));
+	Serial.print(" ");
+#endif
+	return stateA;
+	}

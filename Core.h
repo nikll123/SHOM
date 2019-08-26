@@ -10,7 +10,7 @@
 	#define LOGIC_INVERSE    1
 	
 	//#define STATE_UNKNOWN    0
-	#define STATE_NOTINIT    255
+	#define STATE_NOTINIT    99
 	#define STATE_OFF   	 0
 	#define STATE_ON    	 1
 	#define STATE_FAULT 	 2
@@ -21,12 +21,14 @@
     
 	#define PortMonitorLog 1
 
-	#define TURN_ON_UNKNOWN	0
-	#define TURN_ON_WAIT	1
-	#define TURN_ON_ON		2
+	#define TURN_ON_UNKNOWN	99
+	#define TURN_ON_OFF		0
+	#define TURN_ON_ON		1
+	#define TURN_ON_WAIT	2
 	#define TURN_ON_ERROR	3
 	#define TURN_ON_NEXT	4
-	#define TURN_ON_OFF		5
+	#define TURN_ON_STARTING	5
+	#define TURN_ON_STOPPING	6
 
    	#define TURN_ON_TIMEOUT 2000
    	#define TURN_OFF_TIMEOUT 1000
