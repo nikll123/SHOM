@@ -15,20 +15,19 @@
 	#define STATE_ON    	 1
 	#define STATE_FAULT 	 2
 	#define STATE_STARTING 	 3
-	#define STATE_ERROR 	 4
-	#define STATE_STOPPING 	 5
-	#define STATE_UNKNOWN 	 6
+	#define STATE_STOPPING 	 4
+	#define STATE_UNKNOWN 	 5
+	#define STATE_ERROR 	 100
     
 	#define PortMonitorLog 1
 
-	#define TURN_ON_UNKNOWN	99
-	#define TURN_ON_OFF		0
-	#define TURN_ON_ON		1
-	#define TURN_ON_WAIT	2
-	#define TURN_ON_ERROR	3
-	#define TURN_ON_NEXT	4
-	#define TURN_ON_STARTING	5
-	#define TURN_ON_STOPPING	6
+	#define TURN_STATE_UNKNOWN	99
+	#define TURN_STATE_OFF		0
+	#define TURN_STATE_ON		1
+	#define TURN_STATE_NEXT		2
+	#define TURN_STATE_STARTING	3
+	#define TURN_STATE_STOPPING	4
+	#define TURN_STATE_ERROR	100
 
    	#define TURN_ON_TIMEOUT 2000
    	#define TURN_OFF_TIMEOUT 1000

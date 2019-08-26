@@ -240,14 +240,14 @@ uint8_t Conveyor::TurnOn()
 					currConveyorState = STATE_STARTING;
 					uint8_t chk_state = TurnOn_CheckUnitStates(prevUnitState, currUnitState);
 				
-					if (chk_state == TURN_ON_ON)
+					if (chk_state == TURN_STATE_ON)
 						{
 					    Uzelki[i].TurnOn();
 					    }
-					else if (chk_state == STATE_STARTING || chk_state == TURN_ON_NEXT)
+					else if (chk_state == STATE_STARTING || chk_state == TURN_STATE_NEXT)
 						{
 					    }
-					else // if (chk_state == TURN_ON_ERROR)
+					else // if (chk_state == TURN_STATE_ERROR)
 						{
 						currConveyorState = STATE_ERROR;
 						break;
@@ -278,51 +278,51 @@ uint8_t Conveyor::TurnOn()
 //------------------------------
 uint8_t Conveyor::TurnOn_CheckUnitStates(uint8_t prevUnitState, uint8_t currUnitState)
 	{
-	uint8_t res = TURN_ON_UNKNOWN; 
-	if (prevUnitState == STATE_OFF && currUnitState == STATE_ON)
+	uint8_t res = TURN_STATE_UNKNOWN; 
+	if (prevUnitState == TURN_STATE_OFF && currUnitState == TURN_STATE_ON)
 		{
-		res = TURN_ON_ERROR;
+		res = TURN_STATE_ERROR;
 #ifdef PortMonitorLog
 	Serial.print("prev OFF && curr ON; ");
 #endif
 		}
-	else if (prevUnitState == STATE_OFF && currUnitState == STATE_STARTING)
+	else if (prevUnitState == TURN_STATE_OFF && currUnitState == TURN_STATE_STARTING)
 		{
-		res = TURN_ON_ERROR;
+		res = TURN_STATE_ERROR;
 #ifdef PortMonitorLog
 	Serial.print("prev OFF && curr STARTING; ");
 #endif
 		}
-	else if (prevUnitState == STATE_ERROR)
+	else if (prevUnitState == TURN_STATE_ERROR)
 		{
-		res = TURN_ON_ERROR;
+		res = TURN_STATE_ERROR;
 #ifdef PortMonitorLog
 	Serial.print("prev ERROR; ");
 #endif
 		}
-	else if (currUnitState == STATE_ERROR)
+	else if (currUnitState == TURN_STATE_ERROR)
 		{
-		res = TURN_ON_ERROR;
+		res = TURN_STATE_ERROR;
 #ifdef PortMonitorLog
 	Serial.print("curr ERROR; ");
 #endif
 		}
 	
-	if (res != TURN_ON_ERROR)
+	if (res != TURN_STATE_ERROR)
 		{
-		if (prevUnitState == STATE_ON && currUnitState == STATE_OFF)
+		if (prevUnitState == TURN_STATE_ON && currUnitState == TURN_STATE_OFF)
           	{
-			res = TURN_ON_ON;
+			res = TURN_STATE_ON;
           	}
-		else if (prevUnitState == STATE_ON && currUnitState == STATE_STARTING)
+		else if (prevUnitState == TURN_STATE_ON && currUnitState == TURN_STATE_STARTING)
 			{
 			res = STATE_STARTING;
 			}
-		else if ((prevUnitState == STATE_STARTING && currUnitState == STATE_OFF) ||
-				 (prevUnitState == STATE_ON       && currUnitState == STATE_ON)  ||
-				 (prevUnitState == STATE_OFF      && currUnitState == STATE_OFF))
+		else if ((prevUnitState == TURN_STATE_STARTING && currUnitState == TURN_STATE_OFF) ||
+				 (prevUnitState == TURN_STATE_ON       && currUnitState == TURN_STATE_ON)  ||
+				 (prevUnitState == TURN_STATE_OFF      && currUnitState == TURN_STATE_OFF))
 			{
-			res = TURN_ON_NEXT;
+			res = TURN_STATE_NEXT;
 			}
 		}
 	
@@ -373,11 +373,11 @@ uint8_t Conveyor::TurnOff()
 
 					uint8_t chk_state = TurnOff_CheckUnitStates(prevUnitState, currUnitState);
 				
-					if (chk_state == TURN_ON_OFF)
+					if (chk_state == TURN_STATE_OFF)
 						Uzelki[i].TurnOff();
-					else if (chk_state == TURN_ON_NEXT || chk_state == STATE_STOPPING)
+					else if (chk_state == TURN_STATE_NEXT || chk_state == STATE_STOPPING)
 						{}	  
-					else // if (chk_state == TURN_ON_ERROR)
+					else // if (chk_state == TURN_STATE_ERROR)
 						{
 						currConveyorState = STATE_ERROR;
 						break;
@@ -403,51 +403,51 @@ uint8_t Conveyor::TurnOff()
 //------------------------------
 uint8_t Conveyor::TurnOff_CheckUnitStates(uint8_t prevUnitState, uint8_t currUnitState)
 	{
-	uint8_t res = TURN_ON_UNKNOWN; 
-	if (prevUnitState == TURN_ON_ON && currUnitState == TURN_ON_OFF)
+	uint8_t res = TURN_STATE_UNKNOWN; 
+	if (prevUnitState == TURN_STATE_ON && currUnitState == TURN_STATE_OFF)
 		{
-		res = TURN_ON_ERROR;
+		res = TURN_STATE_ERROR;
 #ifdef PortMonitorLog
 	Serial.print("prev ON && curr OFF; ");
 #endif
 		}
-	else if (prevUnitState == TURN_ON_ON && currUnitState == TURN_ON_STOPPING)
+	else if (prevUnitState == TURN_STATE_ON && currUnitState == TURN_STATE_STOPPING)
 		{
-		res = TURN_ON_ERROR;
+		res = TURN_STATE_ERROR;
 #ifdef PortMonitorLog
 	Serial.print("prev ON && curr STOPPING; ");
 #endif
 		}
-	else if (prevUnitState == TURN_ON_ERROR)
+	else if (prevUnitState == TURN_STATE_ERROR)
 		{
-		res = TURN_ON_ERROR;
+		res = TURN_STATE_ERROR;
 #ifdef PortMonitorLog
 	Serial.print("prev ERROR; ");
 #endif
 		}
-	else if (currUnitState == TURN_ON_ERROR)
+	else if (currUnitState == TURN_STATE_ERROR)
 		{
-		res = TURN_ON_ERROR;
+		res = TURN_STATE_ERROR;
 #ifdef PortMonitorLog
 	Serial.print("curr ERROR; ");
 #endif
 		}
 	
-	if (res != TURN_ON_ERROR)
+	if (res != TURN_STATE_ERROR)
 		{
-		if (prevUnitState == TURN_ON_OFF && currUnitState == TURN_ON_ON)
+		if (prevUnitState == TURN_STATE_OFF && currUnitState == TURN_STATE_ON)
           	{
-			res = TURN_ON_OFF;
+			res = TURN_STATE_OFF;
           	}
-		else if (prevUnitState == TURN_ON_OFF && currUnitState == TURN_ON_STOPPING)
+		else if (prevUnitState == TURN_STATE_OFF && currUnitState == TURN_STATE_STOPPING)
 			{
-			res = TURN_ON_STOPPING;
+			res = TURN_STATE_STOPPING;
 			}
-		else if ((prevUnitState == TURN_ON_STOPPING && currUnitState == TURN_ON_ON) || 
-				 (prevUnitState == TURN_ON_ON && currUnitState == TURN_ON_ON)       ||
-				 (prevUnitState == TURN_ON_OFF && currUnitState == TURN_ON_OFF))
+		else if ((prevUnitState == TURN_STATE_STOPPING && currUnitState == TURN_STATE_ON) || 
+				 (prevUnitState == TURN_STATE_ON && currUnitState == TURN_STATE_ON)       ||
+				 (prevUnitState == TURN_STATE_OFF && currUnitState == TURN_STATE_OFF))
 			{
-			res = TURN_ON_NEXT;
+			res = TURN_STATE_NEXT;
 			}
 		}
 	
