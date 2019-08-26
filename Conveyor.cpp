@@ -88,7 +88,7 @@ uint8_t Conveyor::GetState()
 	bool faultTurnOff = false;
 	for (uint8_t i = 0; i < KOLICHESTVO_UZLOV; i++)
 	{
-	uint8_t currUnitState = Uzelki[i].GetState();
+	uint8_t currUnitState = Uzelki[i].CheckState();
 	if(currUnitState != STATE_NOTINIT)
 		{
 		uint8_t uzelType = Uzelki[i].GetUzelType();  

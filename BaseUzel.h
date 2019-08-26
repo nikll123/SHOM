@@ -12,6 +12,7 @@
 	    BaseUzel(String title, uint8_t pinAutomat, uint8_t pinContactor, bool UnitType, bool LogicType);
 	    BaseUzel(String title, uint8_t pinAutomat, uint8_t pinContactor, bool UnitType, bool LogicType, unsigned int timeOutOn, unsigned int timeOutOff);
 		uint8_t GetState();
+		uint8_t CheckState();
 		String GetStateTxt();
 		String GetTitle();
 		bool GetUzelType();
@@ -29,6 +30,7 @@
 	private:
 		String	_title;
 		uint8_t	_state;
+		//uint8_t	_prevState;
 		unsigned int _timeOutOn;
 		unsigned int _timeOutOff;
 	};

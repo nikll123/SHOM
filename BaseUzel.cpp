@@ -18,6 +18,7 @@ BaseUzel::BaseUzel()
 BaseUzel::BaseUzel(String title, uint8_t pinAutomat, uint8_t pinContactor, bool UnitType, bool LogicType) 
 		: BaseUzel()
 {
+	_state = STATE_OFF;
 	_title = title;
 	_pinAutomat = pinAutomat;
 	_pinContactor = pinContactor;
@@ -44,6 +45,12 @@ BaseUzel::BaseUzel(String title, uint8_t pinAutomat, uint8_t pinContactor, bool 
 // ------------------------------------
 uint8_t BaseUzel::GetState()
 {
+	return _state;
+}
+
+// ------------------------------------
+uint8_t BaseUzel::CheckState()
+{
 	uint8_t stateA;
 	
 	if (_initialized)
@@ -51,15 +58,12 @@ uint8_t BaseUzel::GetState()
 #ifdef PortMonitorLog
 	Serial.print("  ");
 	Serial.print(_title);
-	Serial.print(".GetState ");
+	Serial.print(".CheckState ");
 #endif
 		bool valueAutomat = digitalRead(_pinAutomat);
 		
 		if (_logicType == LOGIC_NORMAL)
 			{
-#ifdef PortMonitorLog
-	Serial.print("LOGIC_NORMAL; ");
-#endif
 			if (valueAutomat == HIGH)
 				stateA = STATE_ON;
 			else 
@@ -67,9 +71,6 @@ uint8_t BaseUzel::GetState()
 			}
 		else
 			{
-#ifdef PortMonitorLog
-	Serial.print("LOGIC_INVERSE; ");
-#endif
 			if (valueAutomat == HIGH)
 				stateA = STATE_OFF;
 			else
@@ -77,6 +78,11 @@ uint8_t BaseUzel::GetState()
 			}
 			
 #ifdef PortMonitorLog
+	if (_logicType == LOGIC_NORMAL)
+		Serial.print("LOGIC_NORMAL; ");
+	else
+		Serial.print("LOGIC_INVERSE; ");
+	
 	Serial.print("automat is ");
 	Serial.print(Core::GetStateText(stateA));
 	Serial.print("; ");
@@ -87,46 +93,46 @@ uint8_t BaseUzel::GetState()
 #ifdef PortMonitorLog
 	Serial.print("CONTACTOR; ");
 #endif
-			
-			bool valueContactor = digitalRead(_pinContactor);
-			if (valueContactor == HIGH && stateA == STATE_ON)
+			uint8_t valueContactor = digitalRead(_pinContactor);
+			if(_state = STATE_OFF)
+				if (!(valueContactor == STATE_OFF && stateA == STATE_OFF))
+					_state = STATE_ERROR;
+					
+			else if(_state = STATE_STARTING)
 				{
-#ifdef PortMonitorLog
-	Serial.print("HIGH STATE_ON; ");
-#endif
-				if (_millsCheck != 0 && millis() - _millsCheck < _timeOutOn)
-					_state = STATE_STARTING;
-				else
+				if(_millsCheck == 0)
 					{
+					digitalWrite(_pinContactor, 1);
+					_millsCheck = millis();
+					}
+				else if (millis() - _millsCheck > _timeOutOn)
 					_state = STATE_ON;
-					_millsCheck = 0;
-					}
+						
+				if (!(valueContactor == STATE_ON && stateA == STATE_ON))
+					_state = STATE_ERROR;
 				}
-			else if (valueContactor == LOW && stateA == STATE_OFF)
+					
+			else if(_state = STATE_STOPPING)
 				{
-#ifdef PortMonitorLog
-	Serial.print("LOW STATE_OFF; ");
-#endif
-				if (_millsCheck != 0 && millis() - _millsCheck < _timeOutOff)
-					_state = STATE_STOPPING;
-				else
+				if(_millsCheck == 0)
+					_millsCheck = millis();
+				else if (millis() - _millsCheck > _timeOutOff)
 					{
+					digitalWrite(_pinContactor, 0);
 					_state = STATE_OFF;
-					_millsCheck = 0;
 					}
-				}
-			else
-				{
-#ifdef PortMonitorLog
-	Serial.print("else; ");
-#endif
-				_state = STATE_ERROR;
+						
+				if (!(_state == STATE_STOPPING && valueContactor == STATE_ON && stateA == STATE_ON))
+					_state = STATE_ERROR;
+				else if (!(_state == STATE_OFF && valueContactor == STATE_OFF && stateA == STATE_OFF))
+					_state = STATE_ERROR;
 				}
 #ifdef PortMonitorLog
 	Serial.print(_title);
 	Serial.print(".State is ");
 	Serial.print(Core::GetStateText(_state));
 #endif
+				
 			}
 		else
 			{
@@ -135,8 +141,9 @@ uint8_t BaseUzel::GetState()
 #ifdef PortMonitorLog
 	Serial.println("");
 #endif
-			
+	//	_prevState = _state; 		
 	}
+	
 	return _state;
 }
 
@@ -160,8 +167,9 @@ void BaseUzel::TurnOn()
 {
 	if (_unitType == UNIT_CONTACTOR && _initialized)
 	{
-		_millsCheck = millis();
+		_millsCheck = 0;
 		digitalWrite(_pinContactor, 1);
+		_state = STATE_STARTING; 
 #ifdef PortMonitorLog
 	Serial.print(_title);
 	Serial.println(".TurnOn");
@@ -174,8 +182,9 @@ void BaseUzel::TurnOff()
 {
 	if (_unitType == UNIT_CONTACTOR && _initialized)
 	{
-		_millsCheck = millis();
-		digitalWrite(_pinContactor, 0);
+		_millsCheck = 0;
+		//digitalWrite(_pinContactor, 0);
+		_state = STATE_STOPPING; 
 
 #ifdef PortMonitorLog
 	Serial.print(_title);
