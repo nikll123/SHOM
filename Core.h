@@ -94,6 +94,7 @@
 		static String GetLogicTypeText(LogicType lt);
 		static String GetKeyStateText(KeyState as);
 		static String GetConveyorStateText(ConveyorState cs);
+		static void   LogIntVal(String txt, int val);
 		
 	};
     

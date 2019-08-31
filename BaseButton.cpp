@@ -42,10 +42,8 @@ KeyState BaseButton::CheckState()
 				_state = KS_OFF;				
 		}
 		
-#ifdef PortMonitorLog
-   Serial.println("CheckState: ");
-   Serial.println(GetStateText());
-#endif
+
+	LogState ("Result state");
 
 	return _state;
 }
@@ -64,6 +62,14 @@ String BaseButton::GetStateText()
 	return txt;
 }
 
-
+ // ------------------------------------
+void BaseButton::LogState(String txt)
+{
+#ifdef PortMonitorLog
+	Serial.print(GetStateText());
+	Serial.print("; ");
+	Serial.println(txt);
+#endif
+}
 
 

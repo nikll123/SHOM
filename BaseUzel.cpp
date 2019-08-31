@@ -128,20 +128,18 @@ UzelState BaseUzel::CheckState()
 	{
 	if (_state != US_NOTINIT)
 		{
-#ifdef PortMonitorLog
-	Serial.print("  Enter state: ");
-	Serial.println(GetStateText());
-#endif
-
+		LogState("Enter state");
 		KeyState stateA;
 		if (_uzelType == UT_CONTACTOR)
 			{
 			uint8_t valueContactor = digitalRead(_pinContactor);
+			//Core::LogIntVal("valueContactor", valueContactor);
 			if(_state == US_OFF)
 				{
 				stateA = CheckAutomatState();          
-				if (!(valueContactor == HIGH && stateA == US_OFF))
+				if (!(valueContactor == 0 && stateA == KS_OFF))
 					_state = US_ERROR;
+			//Core::LogIntVal("_state", _state);
 				}	
 			else if(_state == US_STARTING)
 				{
@@ -156,7 +154,7 @@ UzelState BaseUzel::CheckState()
 					
 				stateA = CheckAutomatState();
 						
-				if (!(valueContactor == HIGH && stateA == US_ON))
+				if (!(valueContactor == HIGH && stateA == KS_ON))
 					_state = US_ERROR;
 				}
 					
@@ -176,14 +174,10 @@ UzelState BaseUzel::CheckState()
 						
 				if (_state == US_OFF)
 					{
-					if (!(valueContactor == US_OFF && stateA == US_OFF))
+					if (!(valueContactor == US_OFF && stateA == KS_OFF))
 						_state = US_ERROR;
 					}
 				 }
-#ifdef PortMonitorLog
-	Serial.print("  Result state: ");
-	Serial.println(GetStateText());
-#endif
 			}
 		else
 			{
@@ -196,9 +190,7 @@ UzelState BaseUzel::CheckState()
 				_state = US_ERROR_01;  
 			} 
 
-#ifdef PortMonitorLog
-	Serial.println("");
-#endif
+			LogState("Result state");
 
 		}
 	
@@ -206,12 +198,12 @@ UzelState BaseUzel::CheckState()
 	}
 	
 
-/*
+
 
 // ------------------------------------
 void BaseUzel::TurnOn()
 {
-	if (_uzelType == UNIT_CONTACTOR && _initialized)
+	if (_uzelType == UT_CONTACTOR && _initialized)
 	{
 		_millsCheck = 0;
 		_state = US_STARTING; 
@@ -225,7 +217,7 @@ void BaseUzel::TurnOn()
 // ------------------------------------
 void BaseUzel::TurnOff()
 {
-	if (_uzelType == UNIT_CONTACTOR && _initialized)
+	if (_uzelType == UT_CONTACTOR && _initialized)
 	{
 		_millsCheck = 0;
 		_state = US_STOPPING; 
@@ -238,5 +230,19 @@ void BaseUzel::TurnOff()
 }
 
 
+// ------------------------------------
+void BaseUzel::LogState(String txt)
+{
+#ifdef PortMonitorLog
+	Serial.print(GetStateText());
+	Serial.print("; ");
+	Serial.print(GetUzelTypeText());
+	Serial.print("; ");
+	Serial.println(txt);
+#endif
+}
 
-*/
+
+
+
+

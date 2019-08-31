@@ -5,15 +5,20 @@
 #include "ContactorInverse.h"
 #include "Conveyor.h"
 
+BaseButton		_buttonOn; 
+BaseButton		_buttonOff;
+BaseButton		_buttonReset;
+
+
 // ------------------------------------
 Conveyor::Conveyor(String title, uint8_t pin_button_on, uint8_t pin_button_off, uint8_t pin_button_reset)
 {
-	_state = CS_NOTINIT; 
+	_state = CS_UNKNOWN; 
 	_title = title;
 	
-	ButtonInverse _buttonOn ("Button ON", pin_button_on);
-	ButtonInverse _buttonOff ("Button OFF", pin_button_off);
-	ButtonInverse _buttonReset ("Button RESET", pin_button_reset);
+	_buttonOn = ButtonInverse ("Button ON", pin_button_on);
+	_buttonOff = ButtonInverse ("Button OFF", pin_button_off);
+	_buttonReset = ButtonInverse ("Button RESET", pin_button_reset);
 }
 	
 	
@@ -60,18 +65,28 @@ void Conveyor::SetupUzelContactorInverse(uint8_t index, String title, uint8_t pi
 }
 
 // ------------------------------------
-void Conveyor::GetUzelStates(uint8_t * result)
-{
-	for (uint8_t i = 0; i < KOLICHESTVO_UZLOV; i++)
-	{
-		result[i] = Uzelki[i].GetState();
-	}
-}
+//void Conveyor::GetUzelStates(uint8_t * result)
+//{
+//	for (uint8_t i = 0; i < KOLICHESTVO_UZLOV; i++)
+//	{
+//		result[i] = Uzelki[i].GetState();
+//	}
+//}
 
 ConveyorState Conveyor::GetState()
 {
 	return _state;
 }
+
+void Conveyor::LogState(String txt)
+{
+#ifdef PortMonitorLog
+	Serial.print(GetStateTxt());
+	Serial.print("; ");
+	Serial.println(txt);
+#endif
+}
+
 
 // ------------------------------------
 ConveyorState Conveyor::CheckState()
@@ -89,10 +104,8 @@ ConveyorState Conveyor::CheckState()
 	uint8_t countContError = 0;
 	uint8_t countContStarting = 0;
 
-#ifdef PortMonitorLog
-	Serial.print("GetState Enter state: ");
-	Serial.println(GetStateTxt());
-#endif
+	LogState("Enter state");
+
 	bool faultTurnOff = false;     //  flag to turn off in fault situation
 	for (uint8_t i = 0; i < KOLICHESTVO_UZLOV; i++)
 	{
@@ -185,10 +198,10 @@ ConveyorState Conveyor::CheckState()
 			}
 		}
 	
+	LogState("Result state");
+	
 	return _state;	
 }
-
-
 
 // ------------------------------------
 String Conveyor::GetStateTxt()
@@ -197,8 +210,6 @@ String Conveyor::GetStateTxt()
     txt = txt + " state is " + Core::GetConveyorStateText(_state);
 	return txt;
 }
-
-
 
 // ------------------------------------
 String Conveyor::GetTitle()
@@ -210,18 +221,16 @@ String Conveyor::GetTitle()
 // ------------------------------------
 ConveyorState Conveyor::TurnOn()
 {
-#ifdef PortMonitorLog
-	Serial.print("TurnOn Enter state: ");
-	Serial.println(GetStateTxt());
-	bool firstContactor = true;
-#endif
 
+	LogState("TurnOn Enter state"); 
+	
 	ConveyorState currConveyorState = _state;
 	UzelState prevUzelState = US_ON;
 	uint8_t prev_i = 0;
 
 	if (currConveyorState == US_OFF || currConveyorState == US_STARTING)
 		{
+		bool firstContactor = true;
 		for (uint8_t i = 0; i < KOLICHESTVO_UZLOV; i++)
 			{
 			UzelState currUzelState;
@@ -275,14 +284,10 @@ ConveyorState Conveyor::TurnOn()
 			}
 		}
 	_state = currConveyorState; 	
-	return currConveyorState; 
 	
-#ifdef PortMonitorLog
-	Serial.println("");
-#endif
+	LogState("TurnOn Exit state"); 
+	return currConveyorState; 
 }
-
-
 
 //------------------------------
 TurnOnUzelAction Conveyor::TurnOn_TurnOn_NextAction(UzelState prevUzelState, UzelState currUzelState)
@@ -339,17 +344,16 @@ TurnOnUzelAction Conveyor::TurnOn_TurnOn_NextAction(UzelState prevUzelState, Uze
 // ------------------------------------
 ConveyorState Conveyor::TurnOff()
 	{
-#ifdef PortMonitorLog
-	Serial.print("TurnOff Enter state: ");
-	Serial.println(GetStateTxt());
-	bool firstContactor = true;
-#endif
+
+	LogState("TurnOff Enter state");
+	 
 	ConveyorState currConveyorState = _state;
 	UzelState prevUzelState = US_OFF;  // assume that the state of the pre-first imaginary uzel is OFF  
 	uint8_t prev_i = KOLICHESTVO_UZLOV;
 
 	if (_state == CS_STOPPING || _state == CS_ON)
 		{
+		bool firstContactor = true;
 		for (int i = KOLICHESTVO_UZLOV - 1; i > -1; i--)
 			{
 
@@ -379,7 +383,10 @@ ConveyorState Conveyor::TurnOff()
 					TurnOffUzelAction nextAction = TurnOff_NextAction(prevUzelState, currUzelState);
 				
 					if (nextAction == TOFF_UA_OFF)
+						{
 						Uzelki[i].TurnOff();
+						_state = CS_STOPPING;
+						}
 					else if (nextAction == TOFF_UA_NONE)
 						{}	  
 					else 
@@ -395,13 +402,9 @@ ConveyorState Conveyor::TurnOff()
 			}
 		}
 	//_state = currConveyorState; 	
-#ifdef PortMonitorLog
 
-	Serial.print("currConveyorState  ");
-	Serial.print(currConveyorState);
-	Serial.println("");
-#endif
-
+	LogState("TurnOff Exit state");
+	
 	return currConveyorState; 
 	}
 
@@ -491,10 +494,7 @@ void Conveyor::Reset()
 			if (uzelType == UT_CONTACTOR)
 				{
 				Uzelki[i].TurnOff();
-#ifdef PortMonitorLog
-	Serial.print(Uzelki[i].GetTitle());
-	Serial.print(" Reset Turn off");
-#endif
+				Uzelki[i].LogState(" Reset Turn off");			
 				}
 			}
 		}

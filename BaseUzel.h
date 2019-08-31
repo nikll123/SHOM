@@ -22,6 +22,7 @@
 		String 		GetKeyStateText();
 		KeyState 	CheckAutomatState();
 		UzelState 	CheckState();
+		void 		LogState(String txt);
 		
 		void TurnOn();
 		void TurnOff();

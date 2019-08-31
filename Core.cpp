@@ -81,3 +81,13 @@ switch (lt)
 	default			    : return "GetLogicTypeText: unknown-" + String(lt);
 	}
 }
+
+//------------------------------
+static void Core::LogIntVal(String txt, int val)
+{
+#ifdef PortMonitorLog
+	Serial.print(txt);
+	Serial.print(" = ");
+	Serial.println(val);
+#endif
+}

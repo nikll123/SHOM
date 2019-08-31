@@ -18,7 +18,7 @@
 		ConveyorState GetState();
 		String GetStateTxt();
 		String GetTitle();
-		void GetUzelStates(uint8_t * result);
+		//void GetUzelStates(uint8_t * result);
 		void ReadUzelStates();
 		void SetupUzelAutomat(uint8_t index, String title, uint8_t pinAutomat);
 		void SetupUzelAutomatInverse(uint8_t index, String title, uint8_t pinAutomat);
@@ -26,6 +26,8 @@
 		void SetupUzelContactor(uint8_t index, String title, uint8_t pinAutomat, uint8_t pinContactor, unsigned int timeOutOn, unsigned int timeOutOff);
 		void SetupUzelContactorInverse(uint8_t index, String title, uint8_t pinAutomat, uint8_t pinContactor);
 		void SetupUzelContactorInverse(uint8_t index, String title, uint8_t pinAutomat, uint8_t pinContactor, unsigned int timeOutOn, unsigned int timeOutOff);
+		
+		void LogState(String txt);
 		bool ButtonOnIsPressed();
 		bool ButtonOffIsPressed();
 		bool ButtonResetIsPressed();
@@ -53,9 +55,6 @@
 		ConveyorState TurnOn();
 		ConveyorState TurnOff();
 	private:
-		BaseButton		_buttonOn ; 
-		BaseButton		_buttonOff;
-		BaseButton		_buttonReset;
 		uint8_t 		_currentState;
 		uint8_t 		_keyUnitCount;
 		ConveyorState	_state;

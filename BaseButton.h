@@ -9,7 +9,8 @@
 	public:
 	    BaseButton();
 	    BaseButton(String title, uint8_t pinButton, LogicType logicType);
-		
+		void LogState(String txt);
+				
 		KeyState 			CheckState();
 		KeyState 			GetState();
 		String 				GetStateText();
