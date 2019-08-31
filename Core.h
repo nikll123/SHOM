@@ -3,36 +3,99 @@
 	
 	#include "Arduino.h"
 
-	#define UNIT_AUTOMAT   	 0
-	#define UNIT_CONTACTOR	 1
-	
 	#define LOGIC_NORMAL     0
 	#define LOGIC_INVERSE    1
-	
-    enum ConveyorState {NOTINIT, ON, OFF, FAULT, STARTING, STOPPING, UNKNOWN, ERROR};	
-    
+
 	#define PortMonitorLog 1
 
-	#define TURN_STATE_UNKNOWN	99
-	#define TURN_STATE_OFF		0
-	#define TURN_STATE_ON		1
-	#define TURN_STATE_NEXT		2
-	#define TURN_STATE_STARTING	3
-	#define TURN_STATE_STOPPING	4
-	#define TURN_STATE_ERROR	100
+	#define TURN_ON_TIMEOUT 2000
+	#define TURN_OFF_TIMEOUT 1000
 
-   	#define TURN_ON_TIMEOUT 2000
-   	#define TURN_OFF_TIMEOUT 1000
+	//-------------------------------
+	enum UzelType  {UT_NONE,
+					UT_AUTOMAT, 
+					UT_CONTACTOR
+					};	
+		
+	//-------------------------------
+	enum LogicType {LT_NONE,
+					LT_NORMAL, 
+					LT_INVERSE
+					};	
 
-	
-    class Core
+	//-------------------------------
+	enum UzelState {US_NOTINIT, 
+					US_ON, 
+					US_OFF, 
+					US_FAULT, 
+					US_STARTING, 
+					US_STOPPING, 
+					US_UNKNOWN, 
+					US_ERROR,
+					US_ERROR_01,
+					US_ERROR_02,
+					US_ERROR_03,
+					US_ERROR_04,
+					US_ERROR_05
+					};	
+
+	//-------------------------------
+	enum TurnOnUzelAction {
+					TON_UA_UNKNOWN, 
+					TON_UA_NONE, 
+					TON_UA_ON, 
+					TON_UA_ERROR_01, 
+					TON_UA_ERROR_02, 
+					TON_UA_ERROR_03, 
+					TON_UA_ERROR_04, 
+					TON_UA_ERROR 
+					};	
+
+	//-------------------------------
+	enum TurnOffUzelAction {
+					TOFF_UA_UNKNOWN, 
+					TOFF_UA_NONE, 
+					TOFF_UA_OFF, 
+					TOFF_UA_ERROR_01, 
+					TOFF_UA_ERROR_02, 
+					TOFF_UA_ERROR_03, 
+					TOFF_UA_ERROR_04 
+					};	
+
+   	//-------------------------------
+	enum ConveyorState {CS_NOTINIT, 
+						CS_ON, 
+						CS_OFF, 
+						CS_FAULT, 
+						CS_STARTING, 
+						CS_STOPPING, 
+						CS_UNKNOWN, 
+						CS_ERROR_01,
+						CS_ERROR_02,
+						CS_ERROR
+						};	
+
+	//-------------------------------
+	enum KeyState {KS_NONE, 
+					KS_ON, 
+					KS_OFF,
+					KS_FRONT,
+					KS_BACK
+					};	
+		
+	//-------------------------------
+	class Core
 	{
 	public:
 		Core();
-		static void LogState(String string, uint8_t state);
-		static String GetStateText(uint8_t state);
+		
+		static String GetUzelStateText(UzelState state);
+		static String GetUzelTypeText(UzelType ut);
+		static String GetLogicTypeText(LogicType lt);
+		static String GetKeyStateText(KeyState as);
+		static String GetConveyorStateText(ConveyorState cs);
+		
 	};
-
     
 #endif
 

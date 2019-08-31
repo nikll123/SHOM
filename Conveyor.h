@@ -1,10 +1,10 @@
 #ifndef Conveyor_h
 	#define Conveyor_h
 
-	//#include "Arduino.h"
+	#include "Arduino.h"
 	//#include "Define.h"
 	#include "BaseUzel.h"
-	#include "Button.h"
+	#include "BaseButton.h"
 	//#include "Automat.h"
 	//#include "Contactor.h"
 
@@ -14,7 +14,8 @@
 	{
 	public:
 	    Conveyor(String title, uint8_t pin_button_on, uint8_t _pin_button_off, uint8_t pin_button_reset);
-		uint8_t GetState();
+		ConveyorState CheckState();
+		ConveyorState GetState();
 		String GetStateTxt();
 		String GetTitle();
 		void GetUzelStates(uint8_t * result);
@@ -49,18 +50,18 @@
 
 		//uint8_t UzelState[KOLICHESTVO_UZLOV]={0,0,0,0,0,0,0,0,0,0};
 		
-		uint8_t TurnOn();
-		uint8_t TurnOff();
+		ConveyorState TurnOn();
+		ConveyorState TurnOff();
 	private:
+		BaseButton		_buttonOn ; 
+		BaseButton		_buttonOff;
+		BaseButton		_buttonReset;
 		uint8_t 		_currentState;
 		uint8_t 		_keyUnitCount;
 		ConveyorState	_state;
 		String      	_title;
-		Button 			_buttonOn; 
-		Button 			_buttonOff;
-		Button 			_buttonReset;
-		uint8_t 		TurnOn_CheckUnitStates(uint8_t prevUnitState, uint8_t currUnitState);
-		uint8_t 		TurnOff_CheckUnitStates(uint8_t prevUnitState, uint8_t currUnitState);
+		TurnOnUzelAction 		TurnOn_TurnOn_NextAction(UzelState prevUnitState, UzelState currUnitState);
+		TurnOffUzelAction 		TurnOff_NextAction(UzelState prevUnitState, UzelState currUnitState);
 				 
 	};
 #endif

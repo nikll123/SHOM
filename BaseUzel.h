@@ -9,31 +9,37 @@
 	{
 	public:
 	    BaseUzel();
-	    BaseUzel(String title, uint8_t pinAutomat, uint8_t pinContactor, bool UnitType, bool LogicType);
-	    BaseUzel(String title, uint8_t pinAutomat, uint8_t pinContactor, bool UnitType, bool LogicType, unsigned int timeOutOn, unsigned int timeOutOff);
-		uint8_t GetState();
-		uint8_t CheckState();
-		String GetStateTxt();
-		String GetTitle();
-		bool GetUzelType();
+	    BaseUzel(String title, uint8_t pinAutomat, uint8_t pinContactor, UzelType uzelType, LogicType logicType);
+	    BaseUzel(String title, uint8_t pinAutomat, uint8_t pinContactor, UzelType uzelType, LogicType logicType, unsigned int timeOutOn, unsigned int timeOutOff);
+
+		String 		GetTitle();
+		UzelType 	GetUzelType();
+		LogicType 	GetLogicType();
+        String 		GetUzelTypeText();
+		String 		GetLogicTypeText();
+		UzelState 	GetState();
+		String 		GetStateText();
+		String 		GetKeyStateText();
+		KeyState 	CheckAutomatState();
+		UzelState 	CheckState();
+		
 		void TurnOn();
 		void TurnOff();
 
 	protected:
-		uint8_t _pinAutomat;
-		uint8_t _pinContactor;
-		bool _unitType;
-		bool _logicType;
-		bool _initialized;
-		unsigned long _millsCheck;
 
 	private:
-		String	_title;
-		uint8_t	_state;
-		//uint8_t	_prevState;
-		unsigned int _timeOutOn;
-		unsigned int _timeOutOff;
-		uint8_t CheckAutomatState();
+		String			_title;
+		UzelState		_state;
+		uint8_t 		_pinAutomat;
+		uint8_t 		_pinContactor;
+		UzelType 		_uzelType;
+		LogicType		_logicType;
+		KeyState	_automatState;
+		bool 			_initialized;
+		unsigned int 	_timeOutOn;
+		unsigned int 	_timeOutOff;
+		unsigned long 	_millsCheck;
 	};
 #endif
 

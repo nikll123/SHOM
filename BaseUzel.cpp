@@ -2,77 +2,148 @@
 #include "Core.h"
 #include "BaseUzel.h"
 
+// =========   CONSTRUCTORS   =========
 BaseUzel::BaseUzel()
 {
-	_state = NOTINIT;
+	_state = US_NOTINIT;
 	_title = "";
 	_pinAutomat = 0;
 	_pinContactor = 0;
-	_unitType = 0;
-	_logicType = 0;
+	_uzelType = UT_NONE;
+	_logicType = LT_NONE;;
 	_timeOutOn = TURN_ON_TIMEOUT;
 	_timeOutOff = TURN_OFF_TIMEOUT;
 }
 
-// ------------------------------------
-BaseUzel::BaseUzel(String title, uint8_t pinAutomat, uint8_t pinContactor, bool UnitType, bool LogicType) 
+BaseUzel::BaseUzel(String title, uint8_t pinAutomat, uint8_t pinContactor, UzelType uzelType, LogicType logicType) 
 		: BaseUzel()
 {
-	_state = OFF;
+	_state = US_OFF;
 	_title = title;
 	_pinAutomat = pinAutomat;
 	_pinContactor = pinContactor;
-	_unitType = UnitType;
-	_logicType = LogicType;
+	_uzelType = uzelType;
+	_logicType = logicType;
 	_initialized = true;
-	if (_logicType == LOGIC_NORMAL)  
+	if (_logicType == LT_NORMAL)  
 		pinMode(_pinAutomat, INPUT);
-	else             // LOGIC_INVERSE
+	else             // LT_INVERSE
 		pinMode(_pinAutomat, INPUT_PULLUP);
 		
 	pinMode(_pinContactor, OUTPUT);
 }
 
-// ------------------------------------
-BaseUzel::BaseUzel(String title, uint8_t pinAutomat, uint8_t pinContactor, bool UnitType, bool LogicType, unsigned int timeOutOn, unsigned int timeOutOff) 
-		: BaseUzel(title, pinAutomat, pinContactor, UnitType, LogicType)
+BaseUzel::BaseUzel(String title, uint8_t pinAutomat, uint8_t pinContactor, UzelType uzelType, LogicType logicType, unsigned int timeOutOn, unsigned int timeOutOff) 
+		: BaseUzel(title, pinAutomat, pinContactor, uzelType, logicType)
 {
 	
 	_timeOutOn = timeOutOn;   
 	_timeOutOff = timeOutOff;   
 }
 
+
 // ------------------------------------
-uint8_t BaseUzel::GetState()
+String BaseUzel::GetTitle()
+{
+	return _title;
+}
+
+// ------------------------------------
+UzelType BaseUzel::GetUzelType()
+{
+	return _uzelType; 
+}
+
+LogicType BaseUzel::GetLogicType()
+{
+	return _logicType; 
+}
+
+//------------------------------
+String BaseUzel::GetUzelTypeText()
+{
+	return Core::GetUzelTypeText(_uzelType);
+}
+
+//------------------------------
+String BaseUzel::GetLogicTypeText()
+{
+	return Core::GetLogicTypeText(_logicType);
+}
+
+// ------------------------------------
+UzelState BaseUzel::GetState()
 {
 	return _state;
 }
 
 // ------------------------------------
-uint8_t BaseUzel::CheckState()
+String BaseUzel::GetStateText()
+{
+	String txt = GetTitle();
+    txt = txt + " state is " + Core::GetUzelStateText(_state);
+	return txt;
+}
+
+// ------------------------------------
+String BaseUzel::GetKeyStateText()
+{
+	String txt = GetTitle();
+    txt = txt + " Automat state is " + Core::GetKeyStateText(_automatState);
+	return txt;
+}
+
+
+// ------------------------------------
+KeyState BaseUzel::CheckAutomatState()
 	{
-	if (_state != NOTINIT)
+
+	bool valueAutomat = digitalRead(_pinAutomat);
+	
+	if (_logicType == LT_NORMAL)
+		{
+		if (valueAutomat == HIGH)
+			_automatState = KS_ON;
+		else 
+			_automatState = KS_OFF;
+		}
+	else
+		{
+		if (valueAutomat == HIGH)
+			_automatState = KS_OFF;
+		else
+			_automatState = KS_ON;
+		}
+#ifdef PortMonitorLog
+	Serial.println(GetKeyStateText());
+#endif
+	return _automatState;
+	}
+
+
+
+
+// ------------------------------------
+UzelState BaseUzel::CheckState()
+	{
+	if (_state != US_NOTINIT)
 		{
 #ifdef PortMonitorLog
-	Serial.print("  ");
-	Serial.print(_title);
-	Serial.print(".CheckState ");
-	Serial.print(".Enter state is ");
-	Serial.print(Core::GetStateText(_state));
-	Serial.print(" ");
+	Serial.print("  Enter state: ");
+	Serial.println(GetStateText());
 #endif
 
-		if (_unitType == UNIT_CONTACTOR)
+		KeyState stateA;
+		if (_uzelType == UT_CONTACTOR)
 			{
-			uint8_t stateA;
 			uint8_t valueContactor = digitalRead(_pinContactor);
-			if(_state == OFF)
+			if(_state == US_OFF)
 				{
-				stateA = CheckAutomatState();
-				if (!(valueContactor == OFF && stateA == OFF))
-					_state = ERROR;
+				stateA = CheckAutomatState();          
+				if (!(valueContactor == HIGH && stateA == US_OFF))
+					_state = US_ERROR;
 				}	
-			else if(_state == STARTING)
+			else if(_state == US_STARTING)
 				{
 				if(_millsCheck == 0)
 					{
@@ -81,15 +152,15 @@ uint8_t BaseUzel::CheckState()
 					_millsCheck = millis();
 					}
 				else if (millis() - _millsCheck > _timeOutOn)
-					_state = ON;
+					_state = US_ON;
 					
 				stateA = CheckAutomatState();
 						
-				if (!(valueContactor == ON && stateA == ON))
-					_state = ERROR;
+				if (!(valueContactor == HIGH && stateA == US_ON))
+					_state = US_ERROR;
 				}
 					
-			else if(_state == STOPPING)
+			else if(_state == US_STOPPING)
 				{
 				if(_millsCheck == 0)
 					{
@@ -99,60 +170,51 @@ uint8_t BaseUzel::CheckState()
 					{
 					digitalWrite(_pinContactor, 0);
 					valueContactor = digitalRead(_pinContactor);
-					_state = OFF;
+					_state = US_OFF;
 					}
 				stateA = CheckAutomatState();
 						
-				if (_state == OFF)
+				if (_state == US_OFF)
 					{
-					if (!(valueContactor == OFF && stateA == OFF))
-						_state = ERROR;
+					if (!(valueContactor == US_OFF && stateA == US_OFF))
+						_state = US_ERROR;
 					}
 				 }
 #ifdef PortMonitorLog
-	Serial.print(_title);
-	Serial.print(" Result state is ");
-	Serial.print(Core::GetStateText(_state));
+	Serial.print("  Result state: ");
+	Serial.println(GetStateText());
 #endif
-				
 			}
 		else
 			{
-			_state = CheckAutomatState();
-			}
+			stateA = CheckAutomatState();          
+			if (stateA == KS_ON)
+				_state = US_ON;
+			else if (stateA == KS_OFF)
+				_state = US_OFF;
+			else
+				_state = US_ERROR_01;  
+			} 
 
 #ifdef PortMonitorLog
 	Serial.println("");
 #endif
 
 		}
-	//	_prevState = _state; 		
 	
 	return _state;
 	}
+	
 
-// ------------------------------------
-String BaseUzel::GetTitle()
-{
-	return _title;
-}
-
-// ------------------------------------
-String BaseUzel::GetStateTxt()
-{
-	String txt = GetTitle();
-	uint8_t state = GetState();
-    txt = txt + " is " + Core::GetStateText(state);
-	return txt;
-}
+/*
 
 // ------------------------------------
 void BaseUzel::TurnOn()
 {
-	if (_unitType == UNIT_CONTACTOR && _initialized)
+	if (_uzelType == UNIT_CONTACTOR && _initialized)
 	{
 		_millsCheck = 0;
-		_state = STARTING; 
+		_state = US_STARTING; 
 #ifdef PortMonitorLog
 	Serial.print(_title);
 	Serial.println(".TurnOn");
@@ -163,10 +225,10 @@ void BaseUzel::TurnOn()
 // ------------------------------------
 void BaseUzel::TurnOff()
 {
-	if (_unitType == UNIT_CONTACTOR && _initialized)
+	if (_uzelType == UNIT_CONTACTOR && _initialized)
 	{
 		_millsCheck = 0;
-		_state = STOPPING; 
+		_state = US_STOPPING; 
 
 #ifdef PortMonitorLog
 	Serial.print(_title);
@@ -175,43 +237,6 @@ void BaseUzel::TurnOff()
 	}
 }
 
-// ------------------------------------
-bool BaseUzel::GetUzelType()
-{
-	return _unitType; 
-}
 
 
-// ------------------------------------
-uint8_t BaseUzel::CheckAutomatState()
-	{
-	uint8_t stateA;
-
-	bool valueAutomat = digitalRead(_pinAutomat);
-	
-	if (_logicType == LOGIC_NORMAL)
-		{
-		if (valueAutomat == HIGH)
-			stateA = ON;
-		else 
-			stateA = OFF;
-		}
-	else
-		{
-		if (valueAutomat == HIGH)
-			stateA = OFF;
-		else
-			stateA = ON;
-		}
-#ifdef PortMonitorLog
-/*	if (_logicType == LOGIC_NORMAL)
-		Serial.print("LOGIC_NORMAL; ");
-	else
-		Serial.print("LOGIC_INVERSE; ");*/
-	
-	Serial.print("automat is ");
-	Serial.print(Core::GetStateText(stateA));
-	Serial.print(" ");
-#endif
-	return stateA;
-	}
+*/
