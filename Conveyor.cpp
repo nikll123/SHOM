@@ -118,7 +118,7 @@ ConveyorState Conveyor::CheckState()
 			countCont++;
 			if(faultTurnOff)
 				{
-				Uzelki[i].TurnOff();
+				Uzelki[i].TurnOffAlarm();
 				countContOff++;
 				}
 			else
@@ -228,7 +228,7 @@ ConveyorState Conveyor::TurnOn()
 	UzelState prevUzelState = US_ON;
 	uint8_t prev_i = 0;
 
-	if (currConveyorState == US_OFF || currConveyorState == US_STARTING)
+	if (currConveyorState == US_OFF || currConveyorState == US_STARTING || _state == CS_STOPPING)
 		{
 		bool firstContactor = true;
 		for (uint8_t i = 0; i < KOLICHESTVO_UZLOV; i++)
@@ -351,7 +351,7 @@ ConveyorState Conveyor::TurnOff()
 	UzelState prevUzelState = US_OFF;  // assume that the state of the pre-first imaginary uzel is OFF  
 	uint8_t prev_i = KOLICHESTVO_UZLOV;
 
-	if (_state == CS_STOPPING || _state == CS_ON)
+	if (_state == CS_STOPPING || _state == CS_ON || _state == CS_STARTING)
 		{
 		bool firstContactor = true;
 		for (int i = KOLICHESTVO_UZLOV - 1; i > -1; i--)
@@ -493,7 +493,7 @@ void Conveyor::Reset()
 
 			if (uzelType == UT_CONTACTOR)
 				{
-				Uzelki[i].TurnOff();
+				Uzelki[i].TurnOffAlarm();
 				Uzelki[i].LogState(" Reset Turn off");			
 				}
 			}
