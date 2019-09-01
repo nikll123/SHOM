@@ -229,6 +229,19 @@ void BaseUzel::TurnOff()
 	}
 }
 
+// ------------------------------------
+void BaseUzel::TurnOffAlarm()
+{
+	if (_uzelType == UT_CONTACTOR && _initialized)
+	{
+		//_millsCheck = 0;
+		digitalWrite(_pinContactor, 0);
+		_state = US_OFF; 
+
+	LogState("TurnOffAlarm");
+	}
+}
+
 
 // ------------------------------------
 void BaseUzel::LogState(String txt)

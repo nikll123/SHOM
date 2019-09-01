@@ -26,6 +26,7 @@
 		
 		void TurnOn();
 		void TurnOff();
+		void TurnOffAlarm();
 
 	protected:
 
