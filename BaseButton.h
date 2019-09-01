@@ -17,6 +17,7 @@
 		String 				GetTitle();
 
 	protected:
+		KeyState 			_checkState();
 
 	private:
 		uint8_t 	_pinButton;

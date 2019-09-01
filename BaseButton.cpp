@@ -17,11 +17,23 @@ BaseButton::BaseButton(String title, uint8_t pinButton, LogicType logicType)
 	if (_logicType == LT_NORMAL)
 		pinMode(_pinButton, INPUT);
 	else
-		pinMode(_pinButton, INPUT_PULLUP);		
+		pinMode(_pinButton, INPUT_PULLUP);
+	
+	_checkState();		
 }
 
 // ------------------------------------
 KeyState BaseButton::CheckState()
+{
+    _checkState();
+	LogState ("Result state");
+
+	return _state;
+}
+
+
+// ------------------------------------
+KeyState BaseButton::_checkState()
 {
 	bool newState = digitalRead(_pinButton);
 	if (_logicType == LT_INVERSE)
@@ -42,9 +54,6 @@ KeyState BaseButton::CheckState()
 				_state = KS_OFF;				
 		}
 		
-
-	LogState ("Result state");
-
 	return _state;
 }
 
