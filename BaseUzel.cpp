@@ -174,7 +174,7 @@ UzelState BaseUzel::CheckState()
 						
 				if (_state == US_OFF)
 					{
-					if (!(valueContactor == US_OFF && stateA == KS_OFF))
+					if (!(valueContactor == 0 && stateA == KS_OFF))
 						_state = US_ERROR;
 					}
 				 }
