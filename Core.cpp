@@ -86,8 +86,19 @@ switch (lt)
 static void Core::LogIntVal(String txt, int val)
 {
 #ifdef PortMonitorLog
+	Serial.print(RTC.getTimeStr());
 	Serial.print(txt);
 	Serial.print(" = ");
 	Serial.println(val);
+#endif
+}
+
+//------------------------------
+static void Core::LogText(String txt)
+{
+#ifdef PortMonitorLog
+	Serial.print(RTC.getTimeStr());
+	Serial.print(" - ");
+	Serial.println (txt);
 #endif
 }
