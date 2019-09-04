@@ -72,12 +72,12 @@ String BaseButton::GetStateText()
 }
 
  // ------------------------------------
-void BaseButton::LogState(String txt)
+void BaseButton::LogState(String txt1)
 {
 #ifdef PortMonitorLog
-	Serial.print(GetStateText());
-	Serial.print("; ");
-	Serial.println(txt);
+	String txt = GetStateText();
+	txt = txt + "; " + txt1; 
+	Core::LogText(txt);
 #endif
 }
 

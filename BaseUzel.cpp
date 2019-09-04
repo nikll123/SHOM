@@ -244,18 +244,12 @@ void BaseUzel::TurnOffAlarm()
 
 
 // ------------------------------------
-void BaseUzel::LogState(String txt)
+void BaseUzel::LogState(String txt1)
 {
 #ifdef PortMonitorLog
-	Serial.print(GetStateText());
-	Serial.print("; ");
-	Serial.print(GetUzelTypeText());
-	Serial.print("; ");
-	Serial.println(txt);
+	String txt = GetStateText();
+	txt = txt + "; " + GetUzelTypeText() + "; " + txt1;
+	Core::LogText(txt);
 #endif
 }
-
-
-
-
 
