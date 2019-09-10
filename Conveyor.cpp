@@ -78,12 +78,12 @@ ConveyorState Conveyor::GetState()
 	return _state;
 }
 
-void Conveyor::LogState(String txt)
+void Conveyor::LogState(String txt1)
 {
 #ifdef PortMonitorLog
-	Serial.print(GetStateTxt());
-	Serial.print("; ");
-	Serial.println(txt);
+	String txt = GetStateTxt();
+	txt += "; " + txt1;
+	Core::LogText(txt); 	
 #endif
 }
 
@@ -96,10 +96,10 @@ ConveyorState Conveyor::CheckState()
 		return _state;
 		
 	uint8_t countAuto = 0;
-	uint8_t countCont = 0;
 	uint8_t countAutoOn = 0;
-	uint8_t countContOn = 0;
 	uint8_t countAutoOff = 0;
+	uint8_t countCont = 0;
+	uint8_t countContOn = 0;
 	uint8_t countContOff = 0;
 	uint8_t countContError = 0;
 	uint8_t countContStarting = 0;
@@ -150,22 +150,23 @@ ConveyorState Conveyor::CheckState()
 		}
 	}
 #ifdef PortMonitorLog
-	Serial.print(" count: Auto");
-	Serial.print(" On=");
-	Serial.print(countAutoOn);
-	Serial.print(" Off=");
-	Serial.print(countAutoOff);
+	String txt = "";
+	txt += " count: Auto On=";
+	txt += String(countAutoOn); 
+	txt += " Off="; 
+	txt += String(countAutoOff); 
 
-	Serial.print(" count: Cont");
-	Serial.print(" Off=");
-	Serial.print(countContOff);
-	Serial.print(" Starting=");
-	Serial.print(countContStarting);
-	Serial.print(" On=");
-	Serial.print(countContOn);
-	Serial.print(" Error=");
-	Serial.print(countContError);
-	Serial.println("");
+	txt += " count: Cont Off="; 
+	txt += String(countContOff); 
+	txt += " Starting="; 
+	txt += String(countContStarting); 
+	txt += " On="; 
+	txt += String(countContOn); 
+
+	txt += " Error="; 
+	txt += String(countContError); 
+
+	Core::LogText(txt);
 #endif
 	
 //	_state = UNKNOWN;
@@ -242,18 +243,20 @@ ConveyorState Conveyor::TurnOn()
 				if (uzelType == UT_CONTACTOR)
 					{
 #ifdef PortMonitorLog
+	String txt = "";
 	if(!firstContactor)
 	{
-		Serial.print(Uzelki[prev_i].GetTitle());
-		Serial.print(": prevUzelState=");
-		Serial.print(Core::GetUzelStateText(prevUzelState));
-		Serial.print("; ");
+		txt += Uzelki[prev_i].GetTitle(); 
+		txt += ": prevUzelState="; 
+		txt += Core::GetUzelStateText(prevUzelState);
+		txt += "; ";  
 	}
+	txt += Uzelki[i].GetTitle();
+	txt += " currUzelState=";
+	txt += Core::GetUzelStateText(currUzelState);
+	txt += "; ";
+	Core::LogText(txt);
 	firstContactor = false;
-	Serial.print(Uzelki[i].GetTitle());
-	Serial.print(" currUzelState=");
-	Serial.print(Core::GetUzelStateText(currUzelState));
-	Serial.println("; ");
 #endif
 					currConveyorState = CS_STARTING;
 					TurnOnUzelAction nextAction = TurnOn_TurnOn_NextAction(prevUzelState, currUzelState);
@@ -296,30 +299,22 @@ TurnOnUzelAction Conveyor::TurnOn_TurnOn_NextAction(UzelState prevUzelState, Uze
 	if (prevUzelState == US_OFF && currUzelState == US_ON)
 		{
 		res = TON_UA_ERROR_01;
-#ifdef PortMonitorLog
-	Serial.print("prev OFF && curr ON; ");
-#endif
+		Core::LogText("prev OFF && curr ON; ");
 		}
 	else if (prevUzelState == US_OFF && currUzelState == US_STARTING)
 		{
 		res = TON_UA_ERROR_02;
-#ifdef PortMonitorLog
-	Serial.print("prev OFF && curr STARTING; ");
-#endif
+		Core::LogText("prev OFF && curr STARTING; ");
 		}
 	else if (prevUzelState == US_ERROR)
 		{
 		res = TON_UA_ERROR_03;
-#ifdef PortMonitorLog
-	Serial.print("prev ERROR; ");
-#endif
+		Core::LogText("prev ERROR; ");
 		}
 	else if (currUzelState == US_ERROR)
 		{
 		res = TON_UA_ERROR_03;
-#ifdef PortMonitorLog
-	Serial.print("curr ERROR; ");
-#endif
+		Core::LogText("curr ERROR; ");
 		}
 	
 	if (res != TON_UA_ERROR)
@@ -366,18 +361,20 @@ ConveyorState Conveyor::TurnOff()
 				if (uzelType == UT_CONTACTOR)
 					{
 #ifdef PortMonitorLog
+	String txt = "";
 	if(!firstContactor)
 	{
-		Serial.print(Uzelki[prev_i].GetTitle());
-		Serial.print(": prevUzelState=");
-		Serial.print(Core::GetUzelStateText(prevUzelState));
-		Serial.print("; ");
+		txt += Uzelki[prev_i].GetTitle();
+		txt += ": prevUzelState=";
+		txt += Core::GetUzelStateText(prevUzelState);
+		txt += "; ";
 	}
+	txt += Uzelki[i].GetTitle();
+	txt += " currUzelState=";
+	txt += Core::GetUzelStateText(currUzelState);
+	txt += "; ";
+	Core::LogText(txt);
 	firstContactor = false;
-	Serial.print(Uzelki[i].GetTitle());
-	Serial.print(" currUzelState=");
-	Serial.print(Core::GetUzelStateText(currUzelState));
-	Serial.println("; ");
 #endif
 
 					TurnOffUzelAction nextAction = TurnOff_NextAction(prevUzelState, currUzelState);
@@ -416,30 +413,22 @@ TurnOffUzelAction Conveyor::TurnOff_NextAction(UzelState prevUzelState, UzelStat
 	if (prevUzelState == US_ON && currUzelState == US_OFF)
 		{
 		nextAction = TOFF_UA_ERROR_01;
-#ifdef PortMonitorLog
-	Serial.print("TOFF_UA_ERROR_01 ");
-#endif
+		Core::LogText("TOFF_UA_ERROR_01 ");
 		}
 	else if (prevUzelState == US_ON && currUzelState == US_STOPPING)
 		{
 		nextAction = TOFF_UA_ERROR_02;
-#ifdef PortMonitorLog
-	Serial.print("TOFF_UA_ERROR_02 ");
-#endif
+		Core::LogText("TOFF_UA_ERROR_02 ");
 		}
 	else if (prevUzelState == US_ERROR)
 		{
 		nextAction = TOFF_UA_ERROR_03;
-#ifdef PortMonitorLog
-	Serial.print("TOFF_UA_ERROR_03 ");
-#endif
+		Core::LogText("TOFF_UA_ERROR_03 ");
 		}
 	else if (currUzelState == US_ERROR)
 		{
 		nextAction = TOFF_UA_ERROR_04;
-#ifdef PortMonitorLog
-	Serial.print("TOFF_UA_ERROR_04 ");
-#endif
+		Core::LogText("TOFF_UA_ERROR_04 ");
 		}
 	
 	if (nextAction == TOFF_UA_NONE)
