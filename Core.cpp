@@ -18,6 +18,7 @@ switch (us)
 	case US_UNKNOWN		: return "US_UNKNOWN";
 	case US_ERROR		: return "US_ERROR";
 	case US_ERROR_01	: return "US_ERROR_01";
+	case US_ERROR_02	: return "US_ERROR_02";
 	default			    : return "GetUzelStateText: unknown-" + String(us);
 	}
 }

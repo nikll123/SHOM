@@ -37,7 +37,7 @@
 		uint8_t 		_pinContactor;
 		UzelType 		_uzelType;
 		LogicType		_logicType;
-		KeyState	_automatState;
+		KeyState		_automatState;
 		bool 			_initialized;
 		unsigned int 	_timeOutOn;
 		unsigned int 	_timeOutOff;

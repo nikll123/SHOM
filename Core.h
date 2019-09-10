@@ -26,19 +26,19 @@
 					};	
 
 	//-------------------------------
-	enum UzelState {US_NOTINIT, 
-					US_ON, 
-					US_OFF, 
-					US_FAULT, 
-					US_STARTING, 
-					US_STOPPING, 
-					US_UNKNOWN, 
-					US_ERROR,
-					US_ERROR_01,
-					US_ERROR_02,
-					US_ERROR_03,
-					US_ERROR_04,
-					US_ERROR_05
+	enum UzelState {US_NOTINIT = 0, 
+					US_ON = 1, 
+					US_OFF = 2, 
+					US_FAULT = 3, 
+					US_STARTING = 4, 
+					US_STOPPING = 5, 
+					US_UNKNOWN = 6, 
+					US_ERROR = -1,
+					US_ERROR_01 = -2,
+					US_ERROR_02 = -3,
+					US_ERROR_03 = -4,
+					US_ERROR_04 = -5,
+					US_ERROR_05 = -6
 					};	
 
 	//-------------------------------

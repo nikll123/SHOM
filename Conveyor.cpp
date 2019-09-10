@@ -306,12 +306,12 @@ TurnOnUzelAction Conveyor::TurnOn_TurnOn_NextAction(UzelState prevUzelState, Uze
 		res = TON_UA_ERROR_02;
 		Core::LogText("prev OFF && curr STARTING; ");
 		}
-	else if (prevUzelState == US_ERROR)
+	else if (prevUzelState <= US_ERROR)
 		{
 		res = TON_UA_ERROR_03;
 		Core::LogText("prev ERROR; ");
 		}
-	else if (currUzelState == US_ERROR)
+	else if (currUzelState <= US_ERROR)
 		{
 		res = TON_UA_ERROR_03;
 		Core::LogText("curr ERROR; ");

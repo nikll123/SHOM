@@ -136,7 +136,7 @@ UzelState BaseUzel::CheckState()
 				{
 				stateA = CheckAutomatState();          
 				if (!(valueContactor == 0 && stateA == KS_OFF))
-					_state = US_ERROR;
+					_state = US_ERROR_01;
 			//Core::LogIntVal("_state", _state);
 				}	
 			else if(_state == US_STARTING)
@@ -153,7 +153,7 @@ UzelState BaseUzel::CheckState()
 				stateA = CheckAutomatState();
 						
 				if (!(valueContactor == HIGH && stateA == KS_ON))
-					_state = US_ERROR;
+					_state = US_ERROR_02;
 				}
 					
 			else if(_state == US_STOPPING)
@@ -173,7 +173,7 @@ UzelState BaseUzel::CheckState()
 				if (_state == US_OFF)
 					{
 					if (!(valueContactor == 0 && stateA == KS_OFF))
-						_state = US_ERROR;
+						_state = US_ERROR_03;
 					}
 				 }
 			}
