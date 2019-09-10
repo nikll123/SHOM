@@ -11,8 +11,8 @@ BaseUzel::BaseUzel()
 	_pinContactor = 0;
 	_uzelType = UT_NONE;
 	_logicType = LT_NONE;;
-	_timeOutOn = TURN_ON_TIMEOUT;
-	_timeOutOff = TURN_OFF_TIMEOUT;
+	_timeOutOn = UZEL_TURN_ON_TIMEOUT;
+	_timeOutOff = UZEL_TURN_OFF_TIMEOUT;
 }
 
 BaseUzel::BaseUzel(String title, uint8_t pinAutomat, uint8_t pinContactor, UzelType uzelType, LogicType logicType) 

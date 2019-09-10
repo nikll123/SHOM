@@ -8,10 +8,10 @@
 	#define LOGIC_NORMAL     0
 	#define LOGIC_INVERSE    1
 
-	#define PortMonitorLog 1
+	//#define PortMonitorLog 0
 	
-	#define TURN_ON_TIMEOUT 2000
-	#define TURN_OFF_TIMEOUT 1000
+	#define UZEL_TURN_ON_TIMEOUT 2000
+	#define UZEL_TURN_OFF_TIMEOUT 1000
 
 	//-------------------------------
 	enum UzelType  {UT_NONE,
@@ -98,7 +98,6 @@
 		static String GetConveyorStateText(ConveyorState cs);
 		static void   LogIntVal(String txt, int val);
 		static void   LogText(String txt);
-
 	};
 
     
