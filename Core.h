@@ -8,7 +8,7 @@
 	#define LOGIC_NORMAL     0
 	#define LOGIC_INVERSE    1
 
-	//#define PortMonitorLog 0
+	#define PortMonitorLog 0
 	
 	#define UZEL_TURN_ON_TIMEOUT 2000
 	#define UZEL_TURN_OFF_TIMEOUT 1000

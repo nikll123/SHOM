@@ -114,9 +114,7 @@ KeyState BaseUzel::CheckAutomatState()
 		else
 			_automatState = KS_ON;
 		}
-#ifdef PortMonitorLog
-	Serial.println(GetKeyStateText());
-#endif
+	Core::LogText(GetKeyStateText());
 	return _automatState;
 	}
 
@@ -207,10 +205,7 @@ void BaseUzel::TurnOn()
 	{
 		_millsCheck = 0;
 		_state = US_STARTING; 
-#ifdef PortMonitorLog
-	Serial.print(_title);
-	Serial.println(".TurnOn");
-#endif
+		Core::LogText(_title + ".TurnOn");
 	}
 }
 		
@@ -221,11 +216,7 @@ void BaseUzel::TurnOff()
 	{
 		_millsCheck = 0;
 		_state = US_STOPPING; 
-
-#ifdef PortMonitorLog
-	Serial.print(_title);
-	Serial.println(".TurnOff");
-#endif
+		Core::LogText(_title + ".TurnOff");
 	}
 }
 
@@ -238,7 +229,7 @@ void BaseUzel::TurnOffAlarm()
 		digitalWrite(_pinContactor, 0);
 		_state = US_OFF; 
 
-	LogState("TurnOffAlarm");
+		Core::LogText("TurnOffAlarm");
 	}
 }
 
