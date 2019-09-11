@@ -185,7 +185,7 @@ UzelState BaseUzel::CheckState()
 			else if (stateA == KS_OFF)
 				_state = US_OFF;
 			else
-				_state = US_ERROR_01;  
+				_state = US_ERROR_04;  
 			} 
 
 			LogState("Result state");

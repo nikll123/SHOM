@@ -313,7 +313,7 @@ TurnOnUzelAction Conveyor::TurnOn_TurnOn_NextAction(UzelState prevUzelState, Uze
 		}
 	else if (currUzelState <= US_ERROR)
 		{
-		res = TON_UA_ERROR_03;
+		res = TON_UA_ERROR_04;
 		Core::LogText("curr ERROR; ");
 		}
 	

@@ -19,6 +19,8 @@ switch (us)
 	case US_ERROR		: return "US_ERROR";
 	case US_ERROR_01	: return "US_ERROR_01";
 	case US_ERROR_02	: return "US_ERROR_02";
+	case US_ERROR_03	: return "US_ERROR_03";
+	case US_ERROR_04	: return "US_ERROR_04";
 	default			    : return "GetUzelStateText: unknown-" + String(us);
 	}
 }
@@ -38,6 +40,7 @@ switch (cs)
 	case CS_UNKNOWN		: return "CS_UNKNOWN";
 	case CS_ERROR		: return "CS_ERROR";
 	case CS_ERROR_01	: return "CS_ERROR_01";
+	case CS_ERROR_02	: return "CS_ERROR_02";
 	default			    : return "GetConveyorStateText: unknown-" + String(cs);
 	}
 }
