@@ -108,55 +108,58 @@ ConveyorState Conveyor::CheckState()
 
 	bool faultTurnOff = false;     //  flag to turn off in fault situation
 	for (uint8_t i = 0; i < KOLICHESTVO_UZLOV; i++)
-	{
-	UzelState currUzelState = Uzelki[i].CheckState();
-	if(currUzelState != US_NOTINIT)
 		{
-		UzelType uzelType = Uzelki[i].GetUzelType();  
-		if (uzelType == UT_CONTACTOR)
+		UzelState currUzelState = Uzelki[i].CheckState();
+		if(currUzelState != US_NOTINIT)
 			{
-			countCont++;
-			if(faultTurnOff)
+			UzelType uzelType = Uzelki[i].GetUzelType();  
+			if (uzelType == UT_CONTACTOR)
 				{
-				Uzelki[i].TurnOffAlarm();
-				countContOff++;
-				}
-			else
-				{
-				if (currUzelState == US_ON)
-					countContOn++;
-				else if (currUzelState == US_OFF)
-					countContOff++;
-				else if (currUzelState == US_ERROR)
+				countCont++;
+				if(faultTurnOff)
 					{
-					countContError++;
+					Uzelki[i].TurnOffAlarm();
+					countContOff++;
+					}
+				else
+					{
+					if (currUzelState == US_ON)
+						countContOn++;
+					else if (currUzelState == US_OFF)
+						countContOff++;
+					else if (currUzelState == US_ERROR)
+						{
+						countContError++;
+						faultTurnOff = true;
+						}
+					else if (currUzelState == US_STARTING)
+						countContStarting++;
+					}
+				}
+			else //  if (uzelType == UNIT_AUTOMAT)
+				{
+				countAuto++;
+				if (currUzelState == US_ON)
+					countAutoOn++;
+				else
+					{
+					countAutoOff++;
 					faultTurnOff = true;
 					}
-				else if (currUzelState == US_STARTING)
-					countContStarting++;
-				}
-			}
-		else //  if (uzelType == UNIT_AUTOMAT)
-			{
-			countAuto++;
-			if (currUzelState == US_ON)
-				countAutoOn++;
-			else
-				{
-				countAutoOff++;
-				faultTurnOff = true;
 				}
 			}
 		}
-	}
 #ifdef PortMonitorLog
 	String txt = "";
-	txt += " count: Auto On=";
-	txt += String(countAutoOn); 
+	
+	txt += " count: Auto";
 	txt += " Off="; 
 	txt += String(countAutoOff); 
+	txt += " On="; 
+	txt += String(countAutoOn); 
 
-	txt += " count: Cont Off="; 
+	txt += " ; Cont"; 
+	txt += " Off="; 
 	txt += String(countContOff); 
 	txt += " Starting="; 
 	txt += String(countContStarting); 
@@ -173,7 +176,9 @@ ConveyorState Conveyor::CheckState()
 
 //Core::LogState("_state0", _state);
 	
-	if (countContError > 0 || countAutoOff > 0 || faultTurnOff)
+	if (countCont + countAuto == 0) 
+	    _state = CS_NOTINIT;
+	else if (countContError > 0 || countAutoOff > 0 || faultTurnOff)
 		_state = CS_ERROR;
 	else 
 		{
@@ -490,3 +495,9 @@ void Conveyor::Reset()
 	_state = CS_OFF;
 
 	} 
+
+//------------------------------
+String Conveyor::GetTime()
+{
+	return Core::GetTime();
+}

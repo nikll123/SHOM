@@ -101,8 +101,29 @@ static void Core::LogIntVal(String txt, int val)
 static void Core::LogText(String txt)
 {
 #ifdef PortMonitorLog
-	Serial.print(RTC.getTimeStr());
+	Serial.print(GetTime());
 	Serial.print(" - ");
 	Serial.println (txt);
 #endif
+}
+
+//------------------------------
+static String Core::GetDateTime()
+{
+	String txtTime = RTC.getTimeStr();
+	return txtTime;
+}
+
+//------------------------------
+static String Core::GetTime()
+{
+	String txtTime = RTC.getTimeStr();
+	return txtTime;
+}
+
+//------------------------------
+static String Core::GetDate()
+{
+	String txtTime = RTC.getDateStr();
+	return txtTime;
 }

@@ -7,6 +7,7 @@ BaseButton::BaseButton() : BaseButton("btn", 0, LT_NONE)
 {
 
 }
+
 // ------------------------------------
 BaseButton::BaseButton(String title, uint8_t pinButton, LogicType logicType)
 {
