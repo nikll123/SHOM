@@ -46,7 +46,7 @@ switch (cs)
 }
 
 //------------------------------
-static String Core::GetKeyStateText(KeyState as)
+static String Core::GetKeyStateText(KeyState1 as)
 {
 String stateText = "";
 switch (as)
@@ -88,29 +88,45 @@ switch (lt)
 
 //------------------------------
 static void Core::LogIntVal(String txt, int val)
-{
-#ifdef PortMonitorLog
+	{
 	Serial.print(RTC.getTimeStr());
 	Serial.print(txt);
 	Serial.print(" = ");
 	Serial.println(val);
-#endif
-}
+	}
+
+//------------------------------
+static void Core::LogTextLn(String txt)
+	{
+	LogText(txt , 1);
+	}
 
 //------------------------------
 static void Core::LogText(String txt)
-{
-#ifdef PortMonitorLog
+	{
+	LogText(txt , 0);
+	}
+
+//------------------------------
+/*static void Core::LogText(String txt, bool ln)
+	{
 	Serial.print(GetTime());
 	Serial.print(" - ");
-	Serial.println (txt);
-#endif
-}
+	Serial.print(txt);
+	if (ln) Serial.println("");
+	}      */
+
+//------------------------------
+static void Core::LogText(String txt, bool ln)
+	{
+	Serial.print(txt);
+	if (ln) Serial.println("");
+	}
 
 //------------------------------
 static String Core::GetDateTime()
 {
-	String txtTime = RTC.getTimeStr();
+	String txtTime = RTC.getDateTimeStr();
 	return txtTime;
 }
 

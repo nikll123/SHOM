@@ -20,15 +20,17 @@
 		String GetTitle();
 		//void GetUzelStates(uint8_t * result);
 		void ReadUzelStates();
-		void SetupUzelAutomat(uint8_t index, String title, uint8_t pinAutomat);
-		void SetupUzelAutomatInverse(uint8_t index, String title, uint8_t pinAutomat);
-		void SetupUzelContactor(uint8_t index, String title, uint8_t pinAutomat, uint8_t pinContactor);
-		void SetupUzelContactor(uint8_t index, String title, uint8_t pinAutomat, uint8_t pinContactor, unsigned int timeOutOn, unsigned int timeOutOff);
-		void SetupUzelContactorInverse(uint8_t index, String title, uint8_t pinAutomat, uint8_t pinContactor);
-		void SetupUzelContactorInverse(uint8_t index, String title, uint8_t pinAutomat, uint8_t pinContactor, unsigned int timeOutOn, unsigned int timeOutOff);
+		void SetupUzelAutomat(uint8_t, String, uint8_t);
+		void SetupUzelAutomatInverse(uint8_t, String, uint8_t);
+		void SetupUzelContactor(uint8_t, String, uint8_t, uint8_t);
+		void SetupUzelContactor(uint8_t, String, uint8_t, uint8_t, unsigned int, unsigned int);
+		void SetupUzelContactorInverse(uint8_t, String, uint8_t, uint8_t);
+		void SetupUzelContactorInverse(uint8_t, String, uint8_t, uint8_t, unsigned int, unsigned int);
 		String GetTime();
 		
-		void LogState(String txt);
+		//void LogState(String);
+		void LogText(String);
+		void LogTextln(String);
 		bool ButtonOnIsPressed();
 		bool ButtonOffIsPressed();
 		bool ButtonResetIsPressed();

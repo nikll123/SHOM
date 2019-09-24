@@ -78,29 +78,49 @@
 						};	
 
 	//-------------------------------
-	enum KeyState {KS_NONE, 
+	enum KeyState1 {KS_NONE, 
 					KS_ON, 
 					KS_OFF,
 					KS_FRONT,
 					KS_BACK
 					};	
+
+	//-------------------------------
+	struct KeyState2 {
+					KeyState1 ValueOld;
+					KeyState1 ValueNew;
+					};	
 		
+	//-------------------------------
+	struct KeyInfo {
+					KeyState1 Value;
+					String Title;
+					String StateText;
+					int Pin;
+					LogicType Logic;
+					};	
+
 	//-------------------------------
 	class Core
 	{
 	public:
 		Core();
 		
-		static String GetUzelStateText(UzelState state);
-		static String GetUzelTypeText(UzelType ut);
-		static String GetLogicTypeText(LogicType lt);
-		static String GetKeyStateText(KeyState as);
-		static String GetConveyorStateText(ConveyorState cs);
+		static String GetUzelStateText(UzelState);
+		static String GetUzelTypeText(UzelType);
+		static String GetLogicTypeText(LogicType);
+		static String GetKeyStateText(KeyState1);
+		static String GetConveyorStateText(ConveyorState);
 		static String GetDateTime();
 		static String GetDate();
 		static String GetTime();
-		static void   LogIntVal(String txt, int val);
-		static void   LogText(String txt);
+		static void   LogIntVal(String, int);
+		static void   LogText(String);
+		static void   LogTextLn(String);
+		static void   LogText(String, bool);
+
+	private: 
+			
 	};
 
     

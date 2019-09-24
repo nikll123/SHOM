@@ -24,17 +24,17 @@ BaseButton::BaseButton(String title, uint8_t pinButton, LogicType logicType)
 }
 
 // ------------------------------------
-KeyState BaseButton::CheckState()
+KeyState2 BaseButton::CheckState()
 {
-    _checkState();
-	LogState ("Result state");
-
-	return _state;
+    KeyState1 _stateOld = _state;
+	_checkState();
+	struct KeyState2 res = {_stateOld, _state};
+	return res;
 }
 
 
 // ------------------------------------
-KeyState BaseButton::_checkState()
+void BaseButton::_checkState()
 {
 	bool newState = digitalRead(_pinButton);
 	if (_logicType == LT_INVERSE)
@@ -42,20 +42,12 @@ KeyState BaseButton::_checkState()
 
 	if (newState == 1)
 		{
-			if (_state == KS_OFF)
-				_state = KS_FRONT;
-			else
-				_state = KS_ON;				
+		_state = KS_ON;				
 		}
 	else  //  if (newState == 0)
 		{
-			if (_state == KS_ON)
-				_state = KS_BACK;
-			else
-				_state = KS_OFF;				
+		_state = KS_OFF;				
 		}
-		
-	return _state;
 }
 
 // ------------------------------------
@@ -65,21 +57,15 @@ String BaseButton::GetTitle()
 }
 
 // ------------------------------------
-String BaseButton::GetStateText()
+String BaseButton::GetKeyStateText()
 {
-	String txt = GetTitle();
-    txt = txt + " state is " + Core::GetKeyStateText(_state);
-	return txt;
+	return Core::GetKeyStateText(_state);
 }
 
- // ------------------------------------
-void BaseButton::LogState(String txt1)
+// ------------------------------------
+KeyInfo BaseButton::GetInfo()
 {
-#ifdef PortMonitorLog
-	String txt = GetStateText();
-	txt = txt + "; " + txt1; 
-	Core::LogText(txt);
-#endif
+    KeyInfo i ={_state, _title, GetKeyStateText(), _pinButton, _logicType}; 
+    return  i;
 }
-
 

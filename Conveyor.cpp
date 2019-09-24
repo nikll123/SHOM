@@ -78,14 +78,29 @@ ConveyorState Conveyor::GetState()
 	return _state;
 }
 
-void Conveyor::LogState(String txt1)
+void Conveyor::LogText(String txt1)
+{
+#ifdef PortMonitorLog
+	Core::LogText(txt1); 	
+#endif
+} 
+
+void Conveyor::LogTextln(String txt1)
+{
+#ifdef PortMonitorLog
+	Core::LogTextLn(txt1); 	
+#endif
+} 
+
+
+/*void Conveyor::LogState(String txt1)
 {
 #ifdef PortMonitorLog
 	String txt = GetStateTxt();
 	txt += "; " + txt1;
-	Core::LogText(txt); 	
+	Core::LogTextLn(txt); 	
 #endif
-}
+} */
 
 
 // ------------------------------------
@@ -104,7 +119,7 @@ ConveyorState Conveyor::CheckState()
 	uint8_t countContError = 0;
 	uint8_t countContStarting = 0;
 
-	LogState("Enter state");
+	//LogState("Enter state");
 
 	bool faultTurnOff = false;     //  flag to turn off in fault situation
 	for (uint8_t i = 0; i < KOLICHESTVO_UZLOV; i++)
@@ -169,7 +184,7 @@ ConveyorState Conveyor::CheckState()
 	txt += " Error="; 
 	txt += String(countContError); 
 
-	Core::LogText(txt);
+	Core::LogTextLn(txt);
 #endif
 	
 //	_state = UNKNOWN;
@@ -204,7 +219,7 @@ ConveyorState Conveyor::CheckState()
 			}
 		}
 	
-	LogState("Result state");
+	//LogState("Result state");
 	
 	return _state;	
 }
@@ -228,7 +243,7 @@ String Conveyor::GetTitle()
 ConveyorState Conveyor::TurnOn()
 {
 
-	LogState("TurnOn Enter state"); 
+	//LogState("TurnOn Enter state"); 
 	
 	ConveyorState currConveyorState = _state;
 	UzelState prevUzelState = US_ON;
@@ -260,7 +275,7 @@ ConveyorState Conveyor::TurnOn()
 	txt += " currUzelState=";
 	txt += Core::GetUzelStateText(currUzelState);
 	txt += "; ";
-	Core::LogText(txt);
+	Core::LogTextLn(txt);
 	firstContactor = false;
 #endif
 					currConveyorState = CS_STARTING;
@@ -293,7 +308,7 @@ ConveyorState Conveyor::TurnOn()
 		}
 	_state = currConveyorState; 	
 	
-	LogState("TurnOn Exit state"); 
+	//LogState("TurnOn Exit state"); 
 	return currConveyorState; 
 }
 
@@ -304,22 +319,22 @@ TurnOnUzelAction Conveyor::TurnOn_TurnOn_NextAction(UzelState prevUzelState, Uze
 	if (prevUzelState == US_OFF && currUzelState == US_ON)
 		{
 		res = TON_UA_ERROR_01;
-		Core::LogText("prev OFF && curr ON; ");
+		Core::LogTextLn("prev OFF && curr ON; ");
 		}
 	else if (prevUzelState == US_OFF && currUzelState == US_STARTING)
 		{
 		res = TON_UA_ERROR_02;
-		Core::LogText("prev OFF && curr STARTING; ");
+		Core::LogTextLn("prev OFF && curr STARTING; ");
 		}
 	else if (prevUzelState <= US_ERROR)
 		{
 		res = TON_UA_ERROR_03;
-		Core::LogText("prev ERROR; ");
+		Core::LogTextLn("prev ERROR; ");
 		}
 	else if (currUzelState <= US_ERROR)
 		{
 		res = TON_UA_ERROR_04;
-		Core::LogText("curr ERROR; ");
+		Core::LogTextLn("curr ERROR; ");
 		}
 	
 	if (res != TON_UA_ERROR)
@@ -345,7 +360,7 @@ TurnOnUzelAction Conveyor::TurnOn_TurnOn_NextAction(UzelState prevUzelState, Uze
 ConveyorState Conveyor::TurnOff()
 	{
 
-	LogState("TurnOff Enter state");
+	//LogState("TurnOff Enter state");
 	 
 	ConveyorState currConveyorState = _state;
 	UzelState prevUzelState = US_OFF;  // assume that the state of the pre-first imaginary uzel is OFF  
@@ -378,7 +393,7 @@ ConveyorState Conveyor::TurnOff()
 	txt += " currUzelState=";
 	txt += Core::GetUzelStateText(currUzelState);
 	txt += "; ";
-	Core::LogText(txt);
+	Core::LogTextLn(txt);
 	firstContactor = false;
 #endif
 
@@ -405,7 +420,7 @@ ConveyorState Conveyor::TurnOff()
 		}
 	//_state = currConveyorState; 	
 
-	LogState("TurnOff Exit state");
+	//LogState("TurnOff Exit state");
 	
 	return currConveyorState; 
 	}
@@ -418,22 +433,22 @@ TurnOffUzelAction Conveyor::TurnOff_NextAction(UzelState prevUzelState, UzelStat
 	if (prevUzelState == US_ON && currUzelState == US_OFF)
 		{
 		nextAction = TOFF_UA_ERROR_01;
-		Core::LogText("TOFF_UA_ERROR_01 ");
+		Core::LogTextLn("TOFF_UA_ERROR_01 ");
 		}
 	else if (prevUzelState == US_ON && currUzelState == US_STOPPING)
 		{
 		nextAction = TOFF_UA_ERROR_02;
-		Core::LogText("TOFF_UA_ERROR_02 ");
+		Core::LogTextLn("TOFF_UA_ERROR_02 ");
 		}
 	else if (prevUzelState == US_ERROR)
 		{
 		nextAction = TOFF_UA_ERROR_03;
-		Core::LogText("TOFF_UA_ERROR_03 ");
+		Core::LogTextLn("TOFF_UA_ERROR_03 ");
 		}
 	else if (currUzelState == US_ERROR)
 		{
 		nextAction = TOFF_UA_ERROR_04;
-		Core::LogText("TOFF_UA_ERROR_04 ");
+		Core::LogTextLn("TOFF_UA_ERROR_04 ");
 		}
 	
 	if (nextAction == TOFF_UA_NONE)
@@ -457,21 +472,24 @@ TurnOffUzelAction Conveyor::TurnOff_NextAction(UzelState prevUzelState, UzelStat
 
 // ------------------------------------
 bool Conveyor::ButtonOnIsPressed()
-{    
-	return (KS_FRONT == _buttonOn.CheckState());
+{
+	KeyState2 s = _buttonOn.CheckState();    
+	return (s.ValueOld == KS_OFF && s.ValueNew == KS_ON);
 }
 
 
 // ------------------------------------
 bool Conveyor::ButtonOffIsPressed()
 {    
-	return (KS_FRONT == _buttonOff.CheckState());
+	KeyState2 s = _buttonOff.CheckState();    
+	return (s.ValueOld == KS_OFF && s.ValueNew == KS_ON);
 }
 
 // ------------------------------------
 bool Conveyor::ButtonResetIsPressed()
 {        
-	return (KS_FRONT == _buttonReset.CheckState());
+	KeyState2 s = _buttonReset.CheckState();    
+	return (s.ValueOld == KS_OFF && s.ValueNew == KS_ON);
 }
 
 // ------------------------------------
@@ -488,12 +506,11 @@ void Conveyor::Reset()
 			if (uzelType == UT_CONTACTOR)
 				{
 				Uzelki[i].TurnOffAlarm();
-				Uzelki[i].LogState(" Reset Turn off");			
+				//Uzelki[i].LogState("");			
 				}
 			}
 		}
 	_state = CS_OFF;
-
 	} 
 
 //------------------------------

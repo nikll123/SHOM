@@ -3,26 +3,26 @@
 	
 	#include "Arduino.h"
 	#include "Core.h"
-
+	
 	class BaseButton
 	{
 	public:
 	    BaseButton();
 	    BaseButton(String title, uint8_t pinButton, LogicType logicType);
-		void LogState(String txt);
-				
-		KeyState 			CheckState();
-		KeyState 			GetState();
-		String 				GetStateText();
-		String 				GetTitle();
+	    
+		KeyState2 	CheckState();
+		KeyInfo 	GetInfo();
+		String 		GetStateText();
+		String 		GetTitle();
+		String 		GetKeyStateText();
 
 	protected:
-		KeyState 			_checkState();
+		void 		_checkState();
 
 	private:
 		uint8_t 	_pinButton;
 		String		_title;
-		KeyState	_state;
+		KeyState1	_state;
 		LogicType	_logicType;
 	};
 #endif

@@ -20,9 +20,14 @@
 		UzelState 	GetState();
 		String 		GetStateText();
 		String 		GetKeyStateText();
-		KeyState 	CheckAutomatState();
+		KeyState1 	CheckAutomatState();
 		UzelState 	CheckState();
-		void 		LogState(String txt);
+		void 		LogState(String);
+		void 		LogType(String);
+		void 		LogTitle(String);
+		void 		LogDateTime(String);
+		void 		LogText(String);
+		void 		LogTextLn(String);
 		
 		void TurnOn();
 		void TurnOff();
@@ -37,11 +42,12 @@
 		uint8_t 		_pinContactor;
 		UzelType 		_uzelType;
 		LogicType		_logicType;
-		KeyState		_automatState;
+		KeyState1		_automatState;
 		bool 			_initialized;
 		unsigned int 	_timeOutOn;
 		unsigned int 	_timeOutOff;
 		unsigned long 	_millsCheck;
+		void 			logState(String, bool);
 	};
 #endif
 
