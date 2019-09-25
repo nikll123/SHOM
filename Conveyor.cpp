@@ -9,7 +9,6 @@ BaseButton		_buttonOn;
 BaseButton		_buttonOff;
 BaseButton		_buttonReset;
 
-
 // ------------------------------------
 Conveyor::Conveyor(String title, uint8_t pin_button_on, uint8_t pin_button_off, uint8_t pin_button_reset)
 {
@@ -64,15 +63,6 @@ void Conveyor::SetupUzelContactorInverse(uint8_t index, String title, uint8_t pi
     Uzelki[index]= contactor1;  
 }
 
-// ------------------------------------
-//void Conveyor::GetUzelStates(uint8_t * result)
-//{
-//	for (uint8_t i = 0; i < KOLICHESTVO_UZLOV; i++)
-//	{
-//		result[i] = Uzelki[i].GetState();
-//	}
-//}
-
 ConveyorState Conveyor::GetState()
 {
 	return _state;
@@ -92,17 +82,6 @@ void Conveyor::LogTextln(String txt1)
 #endif
 } 
 
-
-/*void Conveyor::LogState(String txt1)
-{
-#ifdef PortMonitorLog
-	String txt = GetStateTxt();
-	txt += "; " + txt1;
-	Core::LogTextLn(txt); 	
-#endif
-} */
-
-
 // ------------------------------------
 ConveyorState Conveyor::CheckState()
 {
@@ -119,16 +98,15 @@ ConveyorState Conveyor::CheckState()
 	uint8_t countContError = 0;
 	uint8_t countContStarting = 0;
 
-	//LogState("Enter state");
-
 	bool faultTurnOff = false;     //  flag to turn off in fault situation
 	for (uint8_t i = 0; i < KOLICHESTVO_UZLOV; i++)
 		{
 		UzelState currUzelState = Uzelki[i].CheckState();
+		UzelInfo uzelInfo = Uzelki[i].GetInfo();
 		if(currUzelState != US_NOTINIT)
 			{
-			UzelType uzelType = Uzelki[i].GetUzelType();  
-			if (uzelType == UT_CONTACTOR)
+			//UzelType uzelType = Uzelki[i].GetUzelType();  
+			if (uzelInfo.Type == UT_CONTACTOR)
 				{
 				countCont++;
 				if(faultTurnOff)
@@ -151,7 +129,7 @@ ConveyorState Conveyor::CheckState()
 						countContStarting++;
 					}
 				}
-			else //  if (uzelType == UNIT_AUTOMAT)
+			else //  if (uzelInfo.UzelType == UNIT_AUTOMAT)
 				{
 				countAuto++;
 				if (currUzelState == US_ON)
@@ -187,10 +165,7 @@ ConveyorState Conveyor::CheckState()
 	Core::LogTextLn(txt);
 #endif
 	
-//	_state = UNKNOWN;
 
-//Core::LogState("_state0", _state);
-	
 	if (countCont + countAuto == 0) 
 	    _state = CS_NOTINIT;
 	else if (countContError > 0 || countAutoOff > 0 || faultTurnOff)
@@ -200,7 +175,6 @@ ConveyorState Conveyor::CheckState()
 		if (countContOn == countCont)
 			{
 			_state = CS_ON;
-//Core::LogState("_state1", _state);
 			}
 		else if(countContOff == countCont)
 			_state = CS_OFF;
@@ -218,8 +192,6 @@ ConveyorState Conveyor::CheckState()
 			{
 			}
 		}
-	
-	//LogState("Result state");
 	
 	return _state;	
 }
@@ -242,8 +214,6 @@ String Conveyor::GetTitle()
 // ------------------------------------
 ConveyorState Conveyor::TurnOn()
 {
-
-	//LogState("TurnOn Enter state"); 
 	
 	ConveyorState currConveyorState = _state;
 	UzelState prevUzelState = US_ON;
@@ -258,20 +228,21 @@ ConveyorState Conveyor::TurnOn()
             currUzelState = Uzelki[i].CheckState();
 		    if (currUzelState != US_NOTINIT)
 				{
-				uint8_t uzelType = Uzelki[i].GetUzelType();  
+				UzelInfo uzelInfo = Uzelki[i].GetInfo();  
 
-				if (uzelType == UT_CONTACTOR)
+				if (uzelInfo.Type == UT_CONTACTOR)
 					{
 #ifdef PortMonitorLog
 	String txt = "";
 	if(!firstContactor)
 	{
-		txt += Uzelki[prev_i].GetTitle(); 
+		UzelInfo uzelInfoPrev = Uzelki[prev_i].GetInfo();  
+		txt += uzelInfoPrev.Title; 
 		txt += ": prevUzelState="; 
 		txt += Core::GetUzelStateText(prevUzelState);
 		txt += "; ";  
 	}
-	txt += Uzelki[i].GetTitle();
+	txt += uzelInfo.Title;
 	txt += " currUzelState=";
 	txt += Core::GetUzelStateText(currUzelState);
 	txt += "; ";
@@ -308,7 +279,6 @@ ConveyorState Conveyor::TurnOn()
 		}
 	_state = currConveyorState; 	
 	
-	//LogState("TurnOn Exit state"); 
 	return currConveyorState; 
 }
 
@@ -360,8 +330,6 @@ TurnOnUzelAction Conveyor::TurnOn_TurnOn_NextAction(UzelState prevUzelState, Uze
 ConveyorState Conveyor::TurnOff()
 	{
 
-	//LogState("TurnOff Enter state");
-	 
 	ConveyorState currConveyorState = _state;
 	UzelState prevUzelState = US_OFF;  // assume that the state of the pre-first imaginary uzel is OFF  
 	uint8_t prev_i = KOLICHESTVO_UZLOV;
@@ -376,20 +344,21 @@ ConveyorState Conveyor::TurnOff()
             currUzelState = Uzelki[i].CheckState();
             if (currUzelState != US_NOTINIT)
 				{
-				uint8_t uzelType = Uzelki[i].GetUzelType();  
+				UzelInfo uzelInfo = Uzelki[i].GetInfo();  
 
-				if (uzelType == UT_CONTACTOR)
+				if (uzelInfo.Type == UT_CONTACTOR)
 					{
 #ifdef PortMonitorLog
 	String txt = "";
 	if(!firstContactor)
 	{
-		txt += Uzelki[prev_i].GetTitle();
+		UzelInfo uzelInfoPrev = Uzelki[prev_i].GetInfo();  
+		txt += uzelInfoPrev.Title;
 		txt += ": prevUzelState=";
 		txt += Core::GetUzelStateText(prevUzelState);
 		txt += "; ";
 	}
-	txt += Uzelki[i].GetTitle();
+	txt += uzelInfo.Title;
 	txt += " currUzelState=";
 	txt += Core::GetUzelStateText(currUzelState);
 	txt += "; ";
@@ -419,8 +388,6 @@ ConveyorState Conveyor::TurnOff()
 			}
 		}
 	//_state = currConveyorState; 	
-
-	//LogState("TurnOff Exit state");
 	
 	return currConveyorState; 
 	}
@@ -468,29 +435,34 @@ TurnOffUzelAction Conveyor::TurnOff_NextAction(UzelState prevUzelState, UzelStat
 	
 	return nextAction;
 	}	
-
-
-// ------------------------------------
+	
+// ---------------------------------------------
+// BBB   U   U  TTTTT  TTTTT   OOO   N   N   SSS
+// B  B  U   U    T      T    O   O  NN  N  S   
+// BBB   U   U    T      T    O   O  N N N   SS
+// B  B  U   U    T      T    O   O  N  NN     S
+// BBB    UUU     T      T     OOO   N   N  SSS
+// ---------------------------------------------
 bool Conveyor::ButtonOnIsPressed()
 {
 	KeyState2 s = _buttonOn.CheckState();    
 	return (s.ValueOld == KS_OFF && s.ValueNew == KS_ON);
 }
 
-
-// ------------------------------------
 bool Conveyor::ButtonOffIsPressed()
 {    
 	KeyState2 s = _buttonOff.CheckState();    
 	return (s.ValueOld == KS_OFF && s.ValueNew == KS_ON);
 }
 
-// ------------------------------------
 bool Conveyor::ButtonResetIsPressed()
 {        
 	KeyState2 s = _buttonReset.CheckState();    
 	return (s.ValueOld == KS_OFF && s.ValueNew == KS_ON);
 }
+
+// ---------------------------------------------
+
 
 // ------------------------------------
 void Conveyor::Reset()
@@ -498,15 +470,12 @@ void Conveyor::Reset()
 	for (uint8_t i = 0; i < KOLICHESTVO_UZLOV; i++)
 		{
 		uint8_t currUzelState;
-          currUzelState = Uzelki[i].GetState();
-          if (currUzelState != US_NOTINIT)
+		UzelInfo uzelInfo = Uzelki[i].GetInfo();  
+		if (uzelInfo.State != US_NOTINIT)
 			{
-			uint8_t uzelType = Uzelki[i].GetUzelType();  
-
-			if (uzelType == UT_CONTACTOR)
+			if (uzelInfo.Type == UT_CONTACTOR)
 				{
 				Uzelki[i].TurnOffAlarm();
-				//Uzelki[i].LogState("");			
 				}
 			}
 		}

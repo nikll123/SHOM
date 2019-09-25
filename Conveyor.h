@@ -2,11 +2,8 @@
 	#define Conveyor_h
 
 	#include "Arduino.h"
-	//#include "Define.h"
 	#include "BaseUzel.h"
 	#include "BaseButton.h"
-	//#include "Automat.h"
-	//#include "Contactor.h"
 
 	#define KOLICHESTVO_UZLOV 10
 	
@@ -18,7 +15,7 @@
 		ConveyorState GetState();
 		String GetStateTxt();
 		String GetTitle();
-		//void GetUzelStates(uint8_t * result);
+
 		void ReadUzelStates();
 		void SetupUzelAutomat(uint8_t, String, uint8_t);
 		void SetupUzelAutomatInverse(uint8_t, String, uint8_t);
@@ -28,16 +25,12 @@
 		void SetupUzelContactorInverse(uint8_t, String, uint8_t, uint8_t, unsigned int, unsigned int);
 		String GetTime();
 		
-		//void LogState(String);
 		void LogText(String);
 		void LogTextln(String);
 		bool ButtonOnIsPressed();
 		bool ButtonOffIsPressed();
 		bool ButtonResetIsPressed();
 		void Reset();
-		
-		//Button ButtonOff("  ", 0);
-		//Automat automat1;
 		
 		BaseUzel Uzelki[KOLICHESTVO_UZLOV]= 
 			{
@@ -53,8 +46,6 @@
 				BaseUzel() 
 			};
 
-		//uint8_t UzelState[KOLICHESTVO_UZLOV]={0,0,0,0,0,0,0,0,0,0};
-		
 		ConveyorState TurnOn();
 		ConveyorState TurnOff();
 	private:

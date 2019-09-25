@@ -11,10 +11,8 @@
 	    BaseButton(String title, uint8_t pinButton, LogicType logicType);
 	    
 		KeyState2 	CheckState();
+		KeyState1	GetState();
 		KeyInfo 	GetInfo();
-		String 		GetStateText();
-		String 		GetTitle();
-		String 		GetKeyStateText();
 
 	protected:
 		void 		_checkState();

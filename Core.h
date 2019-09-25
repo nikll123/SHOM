@@ -77,7 +77,7 @@
 						CS_ERROR_02 = -3
 						};	
 
-	//-------------------------------
+   	//-------------------------------
 	enum KeyState1 {KS_NONE, 
 					KS_ON, 
 					KS_OFF,
@@ -90,14 +90,13 @@
 					KeyState1 ValueOld;
 					KeyState1 ValueNew;
 					};	
-		
 	//-------------------------------
 	struct KeyInfo {
 					KeyState1 Value;
 					String Title;
 					String StateText;
 					int Pin;
-					LogicType Logic;
+					String Logic;
 					};	
 
 	//-------------------------------

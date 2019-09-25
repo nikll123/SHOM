@@ -24,7 +24,7 @@ BaseUzel::BaseUzel(String title, uint8_t pinAutomat, uint8_t pinContactor, UzelT
 	_pinContactor = pinContactor;
 	_uzelType = uzelType;
 	_logicType = logicType;
-	_initialized = true;
+	_active = true;
 	if (_logicType == LT_NORMAL)  
 		pinMode(_pinAutomat, INPUT);
 	else             // LT_INVERSE
@@ -41,56 +41,22 @@ BaseUzel::BaseUzel(String title, uint8_t pinAutomat, uint8_t pinContactor, UzelT
 	_timeOutOff = timeOutOff;   
 }
 
-
 // ------------------------------------
-String BaseUzel::GetTitle()
+UzelInfo BaseUzel::GetInfo()
 {
-	return _title;
-}
-
-// ------------------------------------
-UzelType BaseUzel::GetUzelType()
-{
-	return _uzelType; 
-}
-
-LogicType BaseUzel::GetLogicType()
-{
-	return _logicType; 
-}
-
-//------------------------------
-String BaseUzel::GetUzelTypeText()
-{
-	return Core::GetUzelTypeText(_uzelType);
-}
-
-//------------------------------
-String BaseUzel::GetLogicTypeText()
-{
-	return Core::GetLogicTypeText(_logicType);
-}
-
-// ------------------------------------
-UzelState BaseUzel::GetState()
-{
-	return _state;
-}
-
-// ------------------------------------
-String BaseUzel::GetStateText()
-{
-	return Core::GetUzelStateText(_state); 
-}
-
-// ------------------------------------
-String BaseUzel::GetKeyStateText()
-{
-	String txt = GetTitle();
-    txt = txt + " A->" + Core::GetKeyStateText(_automatState);
-	return txt;
-}
-
+	UzelInfo ui = { _uzelType, 
+					Core::GetUzelTypeText(_uzelType), 
+					_title, 
+					_state, 
+					_pinAutomat, 
+					_pinContactor,  
+					Core::GetLogicTypeText(_logicType),
+					_automatState,
+					_active,
+					_timeOutOn,
+					_timeOutOff 
+					}; 
+} 
 
 // ------------------------------------
 KeyState1 BaseUzel::CheckAutomatState()
@@ -112,22 +78,15 @@ KeyState1 BaseUzel::CheckAutomatState()
 		else
 			_automatState = KS_ON;
 		}
-	Core::LogTextLn(GetKeyStateText());
+	//Core::LogTextLn(GetKeyStateText());
 	return _automatState;
 	}
-
-
-
 
 // ------------------------------------
 UzelState BaseUzel::CheckState()
 	{
 	if (_state != US_NOTINIT)
 		{
-		LogDateTime(" ");
-		LogType(" ");
-		LogTitle("->");
-		LogState("; ");
 		KeyState1 stateA;
 		if (_uzelType == UT_CONTACTOR)
 			{
@@ -188,96 +147,42 @@ UzelState BaseUzel::CheckState()
 			else
 				_state = US_ERROR_04;  
 			} 
-			LogText(" ->");
-			LogState("");
-			LogTextLn("");
 		}
 	
 	return _state;
 	}
-	
-
-
 
 // ------------------------------------
 void BaseUzel::TurnOn()
 {
-	if (_uzelType == UT_CONTACTOR && _initialized)
+	if (_uzelType == UT_CONTACTOR && _active)
 	{
 		_millsCheck = 0;
 		_state = US_STARTING; 
-		Core::LogTextLn(_title + ".TurnOn");
+		//Core::LogTextLn(_title + ".TurnOn");
 	}
 }
 		
 // ------------------------------------
 void BaseUzel::TurnOff()
 {
-	if (_uzelType == UT_CONTACTOR && _initialized)
+	if (_uzelType == UT_CONTACTOR && _active)
 	{
 		_millsCheck = 0;
 		_state = US_STOPPING; 
-		Core::LogTextLn(_title + ".TurnOff");
+		//Core::LogTextLn(_title + ".TurnOff");
 	}
 }
 
 // ------------------------------------
 void BaseUzel::TurnOffAlarm()
 {
-	if (_uzelType == UT_CONTACTOR && _initialized)
+	if (_uzelType == UT_CONTACTOR && _active)
 	{
 		//_millsCheck = 0;
 		digitalWrite(_pinContactor, 0);
 		_state = US_OFF; 
 
-		Core::LogTextLn("TurnOffAlarm");
+		//Core::LogTextLn("TurnOffAlarm");
 	}
-}
-
-// ------------------------------------
-void BaseUzel::LogState(String endings)
-{
-#ifdef PortMonitorLog
-	Core::LogText(GetStateText() + endings);
-#endif
-}
-
-// ------------------------------------
-void BaseUzel::LogType(String endings)
-{
-#ifdef PortMonitorLog
-	Core::LogText(GetUzelTypeText() + endings);
-#endif
-}
-
-// ------------------------------------
-void BaseUzel::LogTitle(String endings)
-{
-#ifdef PortMonitorLog
-	Core::LogText(GetTitle() + endings);
-#endif
-}
-
-// ------------------------------------
-void BaseUzel::LogDateTime(String endings)
-{
-#ifdef PortMonitorLog
-	Core::LogText(Core::GetDateTime() + endings);
-#endif
-}
-
-// ------------------------------------
-void BaseUzel::LogText(String txt1)
-{
-#ifdef PortMonitorLog
-	Core::LogText(txt1, 0);
-#endif
-}
-
-// ------------------------------------
-void BaseUzel::LogTextLn(String txt1)
-{
-#ifdef PortMonitorLog
-	Core::LogText(txt1, 1);
-#endif
 }

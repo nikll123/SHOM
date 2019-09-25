@@ -51,21 +51,15 @@ void BaseButton::_checkState()
 }
 
 // ------------------------------------
-String BaseButton::GetTitle()
+KeyState1  BaseButton::GetState()
 {
-	return _title;
-}
-
-// ------------------------------------
-String BaseButton::GetKeyStateText()
-{
-	return Core::GetKeyStateText(_state);
+	return _state;
 }
 
 // ------------------------------------
 KeyInfo BaseButton::GetInfo()
 {
-    KeyInfo i ={_state, _title, GetKeyStateText(), _pinButton, _logicType}; 
+    KeyInfo i ={_state, _title, Core::GetKeyStateText(_state), _pinButton, Core::GetLogicTypeText(_logicType)}; 
     return  i;
 }
 
