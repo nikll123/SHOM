@@ -83,11 +83,16 @@ void Conveyor::LogTextln(String txt1)
 } 
 
 // ------------------------------------
-ConveyorState Conveyor::CheckState()
-{
-
+ConveyorState2 Conveyor::CheckState()
+	{
+	ConveyorState2 s;
+	s.ValueOld = _state; 
+	
 	if(_state == CS_ERROR)
-		return _state;
+		{
+		s.ValueNew = _state; 
+		return s;
+		}
 		
 	uint8_t countAuto = 0;
 	uint8_t countAutoOn = 0;
@@ -101,7 +106,7 @@ ConveyorState Conveyor::CheckState()
 	bool faultTurnOff = false;     //  flag to turn off in fault situation
 	for (uint8_t i = 0; i < KOLICHESTVO_UZLOV; i++)
 		{
-		UzelState currUzelState = Uzelki[i].CheckState();
+		UzelState currUzelState = Uzelki[i].GetState();
 		UzelInfo uzelInfo = Uzelki[i].GetInfo();
 		if(currUzelState != US_NOTINIT)
 			{
@@ -193,22 +198,24 @@ ConveyorState Conveyor::CheckState()
 			}
 		}
 	
-	return _state;	
-}
+	s.ValueNew = _state; 
+	return s;
+	
+	}
 
 // ------------------------------------
-String Conveyor::GetStateTxt()
+/*String Conveyor::GetStateTxt()
 {
 	String txt = GetTitle();
     txt = txt + " state is " + Core::GetConveyorStateText(_state);
 	return txt;
-}
+} */
 
 // ------------------------------------
-String Conveyor::GetTitle()
+/*String Conveyor::GetTitle()
 {
 	return _title;
-}
+} */
 
 
 // ------------------------------------
@@ -225,7 +232,7 @@ ConveyorState Conveyor::TurnOn()
 		for (uint8_t i = 0; i < KOLICHESTVO_UZLOV; i++)
 			{
 			UzelState currUzelState;
-            currUzelState = Uzelki[i].CheckState();
+            currUzelState = Uzelki[i].GetState();
 		    if (currUzelState != US_NOTINIT)
 				{
 				UzelInfo uzelInfo = Uzelki[i].GetInfo();  
@@ -341,7 +348,7 @@ ConveyorState Conveyor::TurnOff()
 			{
 
 			uint8_t currUzelState;
-            currUzelState = Uzelki[i].CheckState();
+            currUzelState = Uzelki[i].GetState();
             if (currUzelState != US_NOTINIT)
 				{
 				UzelInfo uzelInfo = Uzelki[i].GetInfo();  

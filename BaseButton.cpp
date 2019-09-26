@@ -26,7 +26,7 @@ BaseButton::BaseButton(String title, uint8_t pinButton, LogicType logicType)
 // ------------------------------------
 KeyState2 BaseButton::CheckState()
 {
-    KeyState1 _stateOld = _state;
+    KeyState _stateOld = _state;
 	_checkState();
 	struct KeyState2 res = {_stateOld, _state};
 	return res;
@@ -51,7 +51,7 @@ void BaseButton::_checkState()
 }
 
 // ------------------------------------
-KeyState1  BaseButton::GetState()
+KeyState  BaseButton::GetState()
 {
 	return _state;
 }

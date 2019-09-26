@@ -41,6 +41,12 @@
 					};	
 
 	//-------------------------------
+	struct UzelState2 {
+					UzelState ValueOld;
+					UzelState ValueNew;
+					};	
+
+	//-------------------------------
 	enum TurnOnUzelAction {
 					TON_UA_UNKNOWN = 1, 
 					TON_UA_NONE = 2, 
@@ -75,10 +81,17 @@
 						CS_ERROR = -1,
 						CS_ERROR_01 = -2, 
 						CS_ERROR_02 = -3
-						};	
+						};
 
    	//-------------------------------
-	enum KeyState1 {KS_NONE, 
+	struct ConveyorState2 
+					{
+					 ConveyorState ValueOld; 
+					 ConveyorState ValueNew; 
+					};	
+
+   	//-------------------------------
+	enum KeyState {KS_NONE, 
 					KS_ON, 
 					KS_OFF,
 					KS_FRONT,
@@ -87,12 +100,12 @@
 
 	//-------------------------------
 	struct KeyState2 {
-					KeyState1 ValueOld;
-					KeyState1 ValueNew;
+					KeyState ValueOld;
+					KeyState ValueNew;
 					};	
 	//-------------------------------
 	struct KeyInfo {
-					KeyState1 Value;
+					KeyState Value;
 					String Title;
 					String StateText;
 					int Pin;
@@ -108,7 +121,7 @@
 		static String GetUzelStateText(UzelState);
 		static String GetUzelTypeText(UzelType);
 		static String GetLogicTypeText(LogicType);
-		static String GetKeyStateText(KeyState1);
+		static String GetKeyStateText(KeyState);
 		static String GetConveyorStateText(ConveyorState);
 		static String GetDateTime();
 		static String GetDate();

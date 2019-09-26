@@ -12,7 +12,7 @@
 					uint8_t		PinAutomat;
 					uint8_t     PinContactor;
 					String		Logic;
-					KeyState1	StateAutomat;
+					KeyState	StateAutomat;
 					bool		Active;
 					unsigned int TimeOutOn;
 					unsigned int TimeOutOff;
@@ -27,8 +27,10 @@
 	    BaseUzel(String title, uint8_t pinAutomat, uint8_t pinContactor, UzelType uzelType, LogicType logicType, unsigned int timeOutOn, unsigned int timeOutOff);
 
 		UzelInfo	GetInfo();
-		KeyState1 	CheckAutomatState();
-		UzelState 	CheckState();
+		KeyState 	GetAutomatState();
+		KeyState2 	CheckAutomatState();
+		UzelState 	GetState();
+		UzelState2 	CheckState();
 		
 		void TurnOn();
 		void TurnOff();
@@ -43,7 +45,7 @@
 		uint8_t 		_pinContactor;
 		UzelType 		_uzelType;
 		LogicType		_logicType;
-		KeyState1		_automatState;
+		KeyState		_automatState;
 		bool 			_active;
 		unsigned int 	_timeOutOn;
 		unsigned int 	_timeOutOff;

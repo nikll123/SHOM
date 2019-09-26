@@ -46,7 +46,7 @@ switch (cs)
 }
 
 //------------------------------
-static String Core::GetKeyStateText(KeyState1 as)
+static String Core::GetKeyStateText(KeyState as)
 {
 String stateText = "";
 switch (as)
@@ -54,8 +54,6 @@ switch (as)
 	case KS_NONE		: return "KS_NONE";
 	case KS_ON			: return "KS_ON";
 	case KS_OFF			: return "KS_OFF";
-	case KS_FRONT		: return "KS_FRONT";		// ?????
-	case KS_BACK		: return "KS_BACK";			// ????
 	default			    : return "GetKeyStateText: unknown-" + String(as);
 	}
 }

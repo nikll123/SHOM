@@ -15,7 +15,7 @@ BaseUzel::BaseUzel()
 	_timeOutOff = UZEL_TURN_OFF_TIMEOUT;
 }
 
-BaseUzel::BaseUzel(String title, uint8_t pinAutomat, uint8_t pinContactor, UzelType uzelType, LogicType logicType) 
+BaseUzel::BaseUzel(String title, uint8_t pinAutomat, uint8_t pinContactor, UzelType uzelType, LogicType logicType)
 		: BaseUzel()
 {
 	_state = US_OFF;
@@ -25,80 +25,91 @@ BaseUzel::BaseUzel(String title, uint8_t pinAutomat, uint8_t pinContactor, UzelT
 	_uzelType = uzelType;
 	_logicType = logicType;
 	_active = true;
-	if (_logicType == LT_NORMAL)  
+	if (_logicType == LT_NORMAL)
 		pinMode(_pinAutomat, INPUT);
 	else             // LT_INVERSE
 		pinMode(_pinAutomat, INPUT_PULLUP);
-		
+
 	pinMode(_pinContactor, OUTPUT);
 }
 
-BaseUzel::BaseUzel(String title, uint8_t pinAutomat, uint8_t pinContactor, UzelType uzelType, LogicType logicType, unsigned int timeOutOn, unsigned int timeOutOff) 
+BaseUzel::BaseUzel(String title, uint8_t pinAutomat, uint8_t pinContactor, UzelType uzelType, LogicType logicType, unsigned int timeOutOn, unsigned int timeOutOff)
 		: BaseUzel(title, pinAutomat, pinContactor, uzelType, logicType)
 {
-	
-	_timeOutOn = timeOutOn;   
-	_timeOutOff = timeOutOff;   
+
+	_timeOutOn = timeOutOn;
+	_timeOutOff = timeOutOff;
 }
 
 // ------------------------------------
 UzelInfo BaseUzel::GetInfo()
 {
-	UzelInfo ui = { _uzelType, 
-					Core::GetUzelTypeText(_uzelType), 
-					_title, 
-					_state, 
-					_pinAutomat, 
-					_pinContactor,  
+	UzelInfo ui = { _uzelType,
+					Core::GetUzelTypeText(_uzelType),
+					_title,
+					_state,
+					_pinAutomat,
+					_pinContactor,
 					Core::GetLogicTypeText(_logicType),
 					_automatState,
 					_active,
 					_timeOutOn,
-					_timeOutOff 
-					}; 
-} 
+					_timeOutOff
+					};
+}
 
 // ------------------------------------
-KeyState1 BaseUzel::CheckAutomatState()
+KeyState BaseUzel::GetAutomatState()
 	{
-
-	bool valueAutomat = digitalRead(_pinAutomat);
-	
-	if (_logicType == LT_NORMAL)
-		{
-		if (valueAutomat == HIGH)
-			_automatState = KS_ON;
-		else 
-			_automatState = KS_OFF;
-		}
-	else
-		{
-		if (valueAutomat == HIGH)
-			_automatState = KS_OFF;
-		else
-			_automatState = KS_ON;
-		}
-	//Core::LogTextLn(GetKeyStateText());
 	return _automatState;
 	}
 
 // ------------------------------------
-UzelState BaseUzel::CheckState()
+KeyState2 BaseUzel::CheckAutomatState()
 	{
+
+	KeyState2 s;
+	s.ValueOld = _automatState;
+
+	bool valueAutomat = digitalRead(_pinAutomat);
+    if (_logicType == LT_INVERSE) 
+		valueAutomat = !valueAutomat;   
+	
+	if (valueAutomat == HIGH)
+		_automatState = KS_ON;
+	else
+		_automatState = KS_OFF;
+
+	//Core::LogTextLn(GetKeyStateText());
+	s.ValueNew = _automatState;
+	return s;
+	}
+
+// ------------------------------------
+UzelState BaseUzel::GetState()
+	{
+	return _state;
+	}
+
+// ------------------------------------
+UzelState2 BaseUzel::CheckState()
+	{
+	UzelState2 s;
 	if (_state != US_NOTINIT)
 		{
-		KeyState1 stateA;
+		s.ValueOld = _state;
+		KeyState stateA;
 		if (_uzelType == UT_CONTACTOR)
 			{
 			uint8_t valueContactor = digitalRead(_pinContactor);
 			//Core::LogIntVal("valueContactor", valueContactor);
 			if(_state == US_OFF)
 				{
-				stateA = CheckAutomatState();          
+				stateA = _automatState;
 				if (!(valueContactor == 0 && stateA == KS_OFF))
 					_state = US_ERROR_01;
 			//Core::LogIntVal("_state", _state);
-				}	
+				}
 			else if(_state == US_STARTING)
 				{
 				if(_millsCheck == 0)
@@ -109,13 +120,13 @@ UzelState BaseUzel::CheckState()
 					}
 				else if (millis() - _millsCheck > _timeOutOn)
 					_state = US_ON;
-					
-				stateA = CheckAutomatState();
-						
+
+				stateA = _automatState;
+
 				if (!(valueContactor == HIGH && stateA == KS_ON))
 					_state = US_ERROR_02;
 				}
-					
+
 			else if(_state == US_STOPPING)
 				{
 				if(_millsCheck == 0)
@@ -128,8 +139,8 @@ UzelState BaseUzel::CheckState()
 					valueContactor = digitalRead(_pinContactor);
 					_state = US_OFF;
 					}
-				stateA = CheckAutomatState();
-						
+				stateA = _automatState;
+
 				if (_state == US_OFF)
 					{
 					if (!(valueContactor == 0 && stateA == KS_OFF))
@@ -139,17 +150,23 @@ UzelState BaseUzel::CheckState()
 			}
 		else
 			{
-			stateA = CheckAutomatState();          
+			stateA = _automatState;
 			if (stateA == KS_ON)
 				_state = US_ON;
 			else if (stateA == KS_OFF)
 				_state = US_OFF;
 			else
-				_state = US_ERROR_04;  
-			} 
+				_state = US_ERROR_04;
+			}
+		s.ValueOld = _state;
 		}
-	
-	return _state;
+	else
+		{
+		s.ValueOld = _state;
+		s.ValueNew = _state;
+		}
+
+	return s;
 	}
 
 // ------------------------------------
@@ -158,18 +175,18 @@ void BaseUzel::TurnOn()
 	if (_uzelType == UT_CONTACTOR && _active)
 	{
 		_millsCheck = 0;
-		_state = US_STARTING; 
+		_state = US_STARTING;
 		//Core::LogTextLn(_title + ".TurnOn");
 	}
 }
-		
+
 // ------------------------------------
 void BaseUzel::TurnOff()
 {
 	if (_uzelType == UT_CONTACTOR && _active)
 	{
 		_millsCheck = 0;
-		_state = US_STOPPING; 
+		_state = US_STOPPING;
 		//Core::LogTextLn(_title + ".TurnOff");
 	}
 }
@@ -181,7 +198,7 @@ void BaseUzel::TurnOffAlarm()
 	{
 		//_millsCheck = 0;
 		digitalWrite(_pinContactor, 0);
-		_state = US_OFF; 
+		_state = US_OFF;
 
 		//Core::LogTextLn("TurnOffAlarm");
 	}
