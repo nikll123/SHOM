@@ -24,7 +24,7 @@
 
         ConveyorInfo GetInfo();
         
-		//String GetStateTxt();
+		String GetStateTxt();
 		//String GetTitle();
 		String GetTime();
 

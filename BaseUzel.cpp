@@ -44,18 +44,19 @@ BaseUzel::BaseUzel(String title, uint8_t pinAutomat, uint8_t pinContactor, UzelT
 // ------------------------------------
 UzelInfo BaseUzel::GetInfo()
 {
-	UzelInfo ui = { _uzelType,
-					Core::GetUzelTypeText(_uzelType),
-					_title,
-					_state,
-					_pinAutomat,
-					_pinContactor,
-					Core::GetLogicTypeText(_logicType),
-					_automatState,
-					_active,
-					_timeOutOn,
-					_timeOutOff
-					};
+	return  { _uzelType,
+			Core::GetUzelTypeText(_uzelType),
+			_title,
+			_state,
+			_pinAutomat,
+			_pinContactor,
+			Core::GetLogicTypeText(_logicType),
+			_automatState,
+			_active,
+			_timeOutOn,
+			_timeOutOff
+			};
+	
 }
 
 // ------------------------------------
@@ -69,7 +70,7 @@ KeyState2 BaseUzel::CheckAutomatState()
 	{
 
 	KeyState2 s;
-	s.ValueOld = _automatState;
+	s.Old = _automatState;
 
 	bool valueAutomat = digitalRead(_pinAutomat);
     if (_logicType == LT_INVERSE) 
@@ -81,7 +82,7 @@ KeyState2 BaseUzel::CheckAutomatState()
 		_automatState = KS_OFF;
 
 	//Core::LogTextLn(GetKeyStateText());
-	s.ValueNew = _automatState;
+	s.New = _automatState;
 	return s;
 	}
 
@@ -90,6 +91,14 @@ UzelState BaseUzel::GetState()
 	{
 	return _state;
 	}
+
+// ------------------------------------
+String BaseUzel::GetStateText()
+	{
+	return Core::GetUzelStateText(_state);
+	}
+
+
 
 // ------------------------------------
 UzelState2 BaseUzel::CheckState()

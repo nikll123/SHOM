@@ -86,11 +86,11 @@ void Conveyor::LogTextln(String txt1)
 ConveyorState2 Conveyor::CheckState()
 	{
 	ConveyorState2 s;
-	s.ValueOld = _state; 
+	s.Old = _state;
 	
 	if(_state == CS_ERROR)
 		{
-		s.ValueNew = _state; 
+		s.New = _state; 
 		return s;
 		}
 		
@@ -108,6 +108,7 @@ ConveyorState2 Conveyor::CheckState()
 		{
 		UzelState currUzelState = Uzelki[i].GetState();
 		UzelInfo uzelInfo = Uzelki[i].GetInfo();
+		
 		if(currUzelState != US_NOTINIT)
 			{
 			//UzelType uzelType = Uzelki[i].GetUzelType();  
@@ -198,18 +199,16 @@ ConveyorState2 Conveyor::CheckState()
 			}
 		}
 	
-	s.ValueNew = _state; 
+	s.New = _state; 
 	return s;
 	
 	}
 
 // ------------------------------------
-/*String Conveyor::GetStateTxt()
+String Conveyor::GetStateTxt()
 {
-	String txt = GetTitle();
-    txt = txt + " state is " + Core::GetConveyorStateText(_state);
-	return txt;
-} */
+	return Core::GetConveyorStateText(_state);
+}
 
 // ------------------------------------
 /*String Conveyor::GetTitle()
@@ -336,7 +335,6 @@ TurnOnUzelAction Conveyor::TurnOn_TurnOn_NextAction(UzelState prevUzelState, Uze
 // ------------------------------------
 ConveyorState Conveyor::TurnOff()
 	{
-
 	ConveyorState currConveyorState = _state;
 	UzelState prevUzelState = US_OFF;  // assume that the state of the pre-first imaginary uzel is OFF  
 	uint8_t prev_i = KOLICHESTVO_UZLOV;
@@ -372,7 +370,6 @@ ConveyorState Conveyor::TurnOff()
 	Core::LogTextLn(txt);
 	firstContactor = false;
 #endif
-
 					TurnOffUzelAction nextAction = TurnOff_NextAction(prevUzelState, currUzelState);
 				
 					if (nextAction == TOFF_UA_OFF)
@@ -453,22 +450,20 @@ TurnOffUzelAction Conveyor::TurnOff_NextAction(UzelState prevUzelState, UzelStat
 bool Conveyor::ButtonOnIsPressed()
 {
 	KeyState2 s = _buttonOn.CheckState();    
-	return (s.ValueOld == KS_OFF && s.ValueNew == KS_ON);
+	return (s.Old == KS_OFF && s.New == KS_ON);
 }
 
 bool Conveyor::ButtonOffIsPressed()
 {    
 	KeyState2 s = _buttonOff.CheckState();    
-	return (s.ValueOld == KS_OFF && s.ValueNew == KS_ON);
+	return (s.Old == KS_OFF && s.New == KS_ON);
 }
 
 bool Conveyor::ButtonResetIsPressed()
 {        
 	KeyState2 s = _buttonReset.CheckState();    
-	return (s.ValueOld == KS_OFF && s.ValueNew == KS_ON);
+	return (s.Old == KS_OFF && s.New == KS_ON);
 }
-
-// ---------------------------------------------
 
 
 // ------------------------------------
@@ -493,4 +488,14 @@ void Conveyor::Reset()
 String Conveyor::GetTime()
 {
 	return Core::GetTime();
+}
+
+//------------------------------
+ConveyorInfo Conveyor::GetInfo()
+{
+	return 	{
+			_state,
+			_title
+	 		};
+	 
 }

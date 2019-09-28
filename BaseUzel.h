@@ -18,7 +18,6 @@
 					unsigned int TimeOutOff;
 					}; 
 
-
 	class BaseUzel
 	{
 	public:
@@ -30,6 +29,7 @@
 		KeyState 	GetAutomatState();
 		KeyState2 	CheckAutomatState();
 		UzelState 	GetState();
+		String 		GetStateText();		
 		UzelState2 	CheckState();
 		
 		void TurnOn();

@@ -8,7 +8,7 @@
 	#define LOGIC_NORMAL     0
 	#define LOGIC_INVERSE    1
 
-	#define PortMonitorLog 0
+	#define PortMonitorLog 1
 	
 	#define UZEL_TURN_ON_TIMEOUT 2000
 	#define UZEL_TURN_OFF_TIMEOUT 1000
@@ -86,30 +86,30 @@
    	//-------------------------------
 	struct ConveyorState2 
 					{
-					 ConveyorState ValueOld; 
-					 ConveyorState ValueNew; 
+					 ConveyorState Old; 
+					 ConveyorState New; 
 					};	
 
    	//-------------------------------
 	enum KeyState {KS_NONE, 
 					KS_ON, 
 					KS_OFF,
-					KS_FRONT,
-					KS_BACK
+				//	KS_FRONT,
+				//	KS_BACK
 					};	
 
 	//-------------------------------
 	struct KeyState2 {
-					KeyState ValueOld;
-					KeyState ValueNew;
+					KeyState 	Old;
+					KeyState 	New;
 					};	
 	//-------------------------------
 	struct KeyInfo {
-					KeyState Value;
-					String Title;
-					String StateText;
-					int Pin;
-					String Logic;
+					KeyState 	Value;
+					String 		Title;
+					String 		StateText;
+					int 		Pin;
+					String 		Logic;
 					};	
 
 	//-------------------------------

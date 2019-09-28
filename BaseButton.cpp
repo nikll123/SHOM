@@ -59,7 +59,12 @@ KeyState  BaseButton::GetState()
 // ------------------------------------
 KeyInfo BaseButton::GetInfo()
 {
-    KeyInfo i ={_state, _title, Core::GetKeyStateText(_state), _pinButton, Core::GetLogicTypeText(_logicType)}; 
-    return  i;
+    return {_state, 
+			_title, 
+			Core::GetKeyStateText(_state), 
+			_pinButton, 
+			Core::GetLogicTypeText(_logicType)
+			}; 
+      
 }
 
