@@ -1,19 +1,18 @@
 #ifndef AutomatInverse_h
 	#define AutomatInverse_h
 	
-//	#include "Arduino.h"
 	#include "Core.h"
-	#include "BaseUzel.h"
+	#include "BaseAutomat.h"
 
-	class AutomatInverse : public BaseUzel
+	class AutomatInverse : public BaseAutomat
 	{
 	public:
-         AutomatInverse(String title, uint8_t pinAutomat);
+		AutomatInverse(String title, uint8_t pinAutomat);
          
 	protected:
-
 	private:
 
 	};
+	
 #endif
 

@@ -94,8 +94,6 @@
 	enum KeyState {KS_NONE, 
 					KS_ON, 
 					KS_OFF,
-				//	KS_FRONT,
-				//	KS_BACK
 					};	
 
 	//-------------------------------

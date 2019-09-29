@@ -27,28 +27,30 @@
 
 		UzelInfo	GetInfo();
 		KeyState 	GetAutomatState();
+		String 		GetAutomatStateText();
 		KeyState2 	CheckAutomatState();
 		UzelState 	GetState();
 		String 		GetStateText();		
 		UzelState2 	CheckState();
+		bool		IsActive();
 		
 		void TurnOn();
 		void TurnOff();
 		void TurnOffAlarm();
 
 	protected:
-
-	private:
 		String			_title;
-		UzelState		_state;
 		uint8_t 		_pinAutomat;
-		uint8_t 		_pinContactor;
-		UzelType 		_uzelType;
 		LogicType		_logicType;
 		KeyState		_automatState;
 		bool 			_active;
 		unsigned int 	_timeOutOn;
 		unsigned int 	_timeOutOff;
+
+	private:
+		UzelState		_state;
+		uint8_t 		_pinContactor;
+		UzelType 		_uzelType;
 		unsigned long 	_millsCheck;
 	};
 #endif

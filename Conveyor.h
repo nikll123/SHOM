@@ -23,12 +23,11 @@
 		ConveyorState2 CheckState();
 
         ConveyorInfo GetInfo();
-        
 		String GetStateTxt();
 		//String GetTitle();
 		String GetTime();
+		String GetUzelStates();
 
-		void ReadUzelStates();
 		void SetupUzelAutomat(uint8_t, String, uint8_t);
 		void SetupUzelAutomatInverse(uint8_t, String, uint8_t);
 		void SetupUzelContactor(uint8_t, String, uint8_t, uint8_t);

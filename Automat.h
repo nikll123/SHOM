@@ -1,19 +1,18 @@
 #ifndef Automat_h
 	#define Automat_h
 	
-//	#include "Arduino.h"
 	#include "Core.h"
-	#include "BaseUzel.h"
+	#include "BaseAutomat.h"
 
-	class Automat : public BaseUzel
+	class Automat : public BaseAutomat
 	{
 	public:
-         Automat(String title, uint8_t pinAutomat);
+		Automat(String title, uint8_t pinAutomat);
          
 	protected:
-
 	private:
 
 	};
+	
 #endif
 

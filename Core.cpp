@@ -9,18 +9,18 @@ static String Core::GetUzelStateText(UzelState us)
 String stateText = "";
 switch (us)
 	{
-	case US_NOTINIT		: return "US_NOTINIT";
-	case US_ON 			: return "US_ON";
-	case US_OFF			: return "US_OFF";
-	case US_FAULT		: return "US_FAULT"; 
-	case US_STARTING	: return "US_STARTING"; 
-	case US_STOPPING	: return "US_STOPPING"; 
-	case US_UNKNOWN		: return "US_UNKNOWN";
-	case US_ERROR		: return "US_ERROR";
-	case US_ERROR_01	: return "US_ERROR_01";
-	case US_ERROR_02	: return "US_ERROR_02";
-	case US_ERROR_03	: return "US_ERROR_03";
-	case US_ERROR_04	: return "US_ERROR_04";
+	case US_NOTINIT		: return "NOTINIT";
+	case US_ON 			: return "ON";
+	case US_OFF			: return "OFF";
+	case US_FAULT		: return "FAULT"; 
+	case US_STARTING	: return "STARTING"; 
+	case US_STOPPING	: return "STOPPING"; 
+	case US_UNKNOWN		: return "UNKNOWN";
+	case US_ERROR		: return "ERROR";
+	case US_ERROR_01	: return "ERROR_01";
+	case US_ERROR_02	: return "ERROR_02";
+	case US_ERROR_03	: return "ERROR_03";
+	case US_ERROR_04	: return "ERROR_04";
 	default			    : return "GetUzelStateText: unknown-" + String(us);
 	}
 }
@@ -31,16 +31,16 @@ static String Core::GetConveyorStateText(ConveyorState cs)
 String stateText = "";
 switch (cs)
 	{
-	case CS_NOTINIT		: return "CS_NOTINIT";
-	case CS_ON 			: return "CS_ON";
-	case CS_OFF			: return "CS_OFF";
-	case CS_FAULT		: return "CS_FAULT"; 
-	case CS_STARTING	: return "CS_STARTING"; 
-	case CS_STOPPING	: return "CS_STOPPING"; 
-	case CS_UNKNOWN		: return "CS_UNKNOWN";
-	case CS_ERROR		: return "CS_ERROR";
-	case CS_ERROR_01	: return "CS_ERROR_01";
-	case CS_ERROR_02	: return "CS_ERROR_02";
+	case CS_NOTINIT		: return "NOTINIT";
+	case CS_ON 			: return "ON";
+	case CS_OFF			: return "OFF";
+	case CS_FAULT		: return "FAULT"; 
+	case CS_STARTING	: return "STARTING"; 
+	case CS_STOPPING	: return "STOPPING"; 
+	case CS_UNKNOWN		: return "UNKNOWN";
+	case CS_ERROR		: return "ERROR";
+	case CS_ERROR_01	: return "ERROR_01";
+	case CS_ERROR_02	: return "ERROR_02";
 	default			    : return "GetConveyorStateText: unknown-" + String(cs);
 	}
 }
@@ -51,9 +51,9 @@ static String Core::GetKeyStateText(KeyState as)
 String stateText = "";
 switch (as)
 	{
-	case KS_NONE		: return "KS_NONE";
-	case KS_ON			: return "KS_ON";
-	case KS_OFF			: return "KS_OFF";
+	case KS_NONE		: return "NONE";
+	case KS_ON			: return "ON";
+	case KS_OFF			: return "OFF";
 	default			    : return "GetKeyStateText: unknown-" + String(as);
 	}
 }
@@ -64,9 +64,9 @@ static String Core::GetUzelTypeText(UzelType ut)
 String stateText = "";
 switch (ut)
 	{
-	case UT_NONE 		: return "UT_NONE";
-	case UT_AUTOMAT 	: return "UT_AUTOMAT";
-	case UT_CONTACTOR 	: return "UT_CONTACTOR";
+	case UT_NONE 		: return "NONE";
+	case UT_AUTOMAT 	: return "AUTOMAT";
+	case UT_CONTACTOR 	: return "CONTACTOR";
 	default			    : return "GetUzelTypeText: unknown-" + String(ut);
 	}
 }
@@ -77,9 +77,9 @@ static String Core::GetLogicTypeText(LogicType lt)
 String stateText = "";
 switch (lt)
 	{
-	case LT_NONE 		: return "LT_NONE";
-	case LT_NORMAL	 	: return "LT_NORMAL";
-	case LT_INVERSE 	: return "LT_INVERSE";
+	case LT_NONE 		: return "NONE";
+	case LT_NORMAL	 	: return "NORMAL";
+	case LT_INVERSE 	: return "INVERSE";
 	default			    : return "GetLogicTypeText: unknown-" + String(lt);
 	}
 }

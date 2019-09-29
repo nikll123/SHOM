@@ -24,17 +24,13 @@ Conveyor::Conveyor(String title, uint8_t pin_button_on, uint8_t pin_button_off, 
 // ------------------------------------
 void Conveyor::SetupUzelAutomat(uint8_t index, String title, uint8_t pinAutomat)
 {
-	Automat automat1 (title, pinAutomat);	
-    Uzelki[index]= automat1;  
+    Uzelki[index] = Automat(title, pinAutomat);  
 }
-
-
 
 // ------------------------------------
 void Conveyor::SetupUzelAutomatInverse(uint8_t index, String title, uint8_t pinAutomat)
 {
-	AutomatInverse automat1 (title, pinAutomat);	
-    Uzelki[index]= automat1;  
+    Uzelki[index]= AutomatInverse(title, pinAutomat);  
 }
 
 // ------------------------------------
@@ -88,11 +84,11 @@ ConveyorState2 Conveyor::CheckState()
 	ConveyorState2 s;
 	s.Old = _state;
 	
-	if(_state == CS_ERROR)
+/*	if(_state == CS_ERROR)
 		{
 		s.New = _state; 
 		return s;
-		}
+		}*/
 		
 	uint8_t countAuto = 0;
 	uint8_t countAutoOn = 0;
@@ -106,6 +102,7 @@ ConveyorState2 Conveyor::CheckState()
 	bool faultTurnOff = false;     //  flag to turn off in fault situation
 	for (uint8_t i = 0; i < KOLICHESTVO_UZLOV; i++)
 		{
+		UzelState2 us2 = Uzelki[i].CheckState();
 		UzelState currUzelState = Uzelki[i].GetState();
 		UzelInfo uzelInfo = Uzelki[i].GetInfo();
 		
@@ -498,4 +495,20 @@ ConveyorInfo Conveyor::GetInfo()
 			_title
 	 		};
 	 
+}
+
+
+//------------------------------
+String Conveyor::GetUzelStates()
+{
+	String s = "";
+	for (uint8_t i = 0; i < KOLICHESTVO_UZLOV; i++)
+		{
+		uint8_t currUzelState;
+		if (Uzelki[i].IsActive())
+			{
+			s = s + (Uzelki[i].GetInfo()).Title + "-" + Uzelki[i].GetStateText() + "; ";  
+			}
+		}
+	return s;
 }
