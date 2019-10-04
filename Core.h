@@ -100,19 +100,19 @@
 					};	
 
    	//-------------------------------
-	enum InputState {KS_NONE, 
+	enum InState {KS_NONE, 
 					KS_ON, 
 					KS_OFF,
 					};	
 
 	//-------------------------------
-	struct InputState2 {
-					InputState 	Old;
-					InputState 	New;
+	struct InState2 {
+					InState 	Old;
+					InState 	New;
 					};	
 	//-------------------------------
-	struct KeyInfo {
-					InputState 	Value;
+	struct ButtonInfo {
+					InState 	Value;
 					String 		Title;
 					String 		StateText;
 					int 		Pin;
@@ -128,7 +128,7 @@
 		static String GetUzelStateText(UzelState);
 		static String GetUzelTypeText(UzelType);
 		static String GetLogicTypeText(LogicType);
-		static String GetInputStateText(InputState);
+		static String GetInStateText(InState);
 		static String GetConveyorStateText(ConveyorState);
 		static String GetDateTime();
 		static String GetDate();

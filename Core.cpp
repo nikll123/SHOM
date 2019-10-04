@@ -47,7 +47,7 @@ switch (cs)
 }
 
 //------------------------------
-static String Core::GetInputStateText(InputState as)
+static String Core::GetInStateText(InState as)
 {
 String stateText = "";
 switch (as)
@@ -55,7 +55,7 @@ switch (as)
 	case KS_NONE		: return "NONE";
 	case KS_ON			: return "ON";
 	case KS_OFF			: return "OFF";
-	default			    : return "GetInputStateText: unknown-" + String(as);
+	default			    : return "GetInStateText: unknown-" + String(as);
 	}
 }
 

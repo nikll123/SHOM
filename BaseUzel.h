@@ -12,7 +12,7 @@
 					uint8_t		PinInput;
 					uint8_t     PinOutput;
 					String		Logic;
-					InputState	StateAutomat;
+					InState	StateAutomat;
 					bool		Active;
 					unsigned int TimeOutOn;
 					unsigned int TimeOutOff;
@@ -26,12 +26,12 @@
 	    BaseUzel(String title, uint8_t pinInput, uint8_t pinOutput, UzelType uzelType, LogicType logicType, unsigned int timeOutOn, unsigned int timeOutOff);
 
 		UzelInfo	GetInfo();
-		InputState 	GetInputState();
-		String 		GetInputStateText();
+		InState 	GetInputState();
+		String 		GetInStateText();
 		UzelState 	GetState();
 		String 		GetStateText();		
-		//InputState2 	CheckInState();
-		InputState2 	CheckInState(uint8_t loglevel);
+		//InState2 	CheckInState();
+		InState2 	CheckInState(uint8_t loglevel);
 		
 		UzelState2 	CheckState();
 		bool		IsActive();
@@ -44,7 +44,7 @@
 		String			_title;
 		uint8_t 		_pinIn;
 		LogicType		_logicType;
-		InputState		_inputState;
+		InState		_inputState;
 		bool 			_active;
 		unsigned int 	_timeOutOn;
 		unsigned int 	_timeOutOff;

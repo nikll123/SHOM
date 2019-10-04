@@ -7,7 +7,7 @@
 
 	struct AutomatInfo	{
 					String   	Title;
-					InputState	State;
+					InState	State;
 					uint8_t		Pin;
 					String		Logic;
 					bool		Active;
@@ -20,7 +20,7 @@
 	{
 	public:
 		BaseAutomat(String title, uint8_t pinInput, LogicType lt);
-		InputState	GetState();
+		InState	GetState();
 		String		GetStateText();
 		AutomatInfo GetInfo();
          

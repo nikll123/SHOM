@@ -20,21 +20,28 @@ BaseButton::BaseButton(String title, uint8_t pinButton, LogicType logicType)
 	else
 		pinMode(_pinButton, INPUT_PULLUP);
 	
-	_checkState();		
+	_refreshState();		
 }
 
 // ------------------------------------
-InputState2 BaseButton::CheckState()
+InState2 BaseButton::CheckState()
 {
-    InputState _stateOld = _state;
-	_checkState();
-	struct InputState2 res = {_stateOld, _state};
-	return res;
+	InState2 is2;
+    is2.Old = _state;
+	_refreshState();
+	is2.New = _state;
+	if (LOGLEVEL > LL_NONE) 
+		{
+		Core::LogTextLn("ButtonState " + GetInfo().Title);
+		Core::LogTextLn("  old=" + Core::GetInStateText(is2.Old));
+		Core::LogTextLn("  new=" + Core::GetInStateText(is2.New));
+		}
+	return is2;
 }
 
 
 // ------------------------------------
-void BaseButton::_checkState()
+void BaseButton::_refreshState()
 {
 	bool newState = digitalRead(_pinButton);
 	if (_logicType == LT_INVERSE)
@@ -51,17 +58,17 @@ void BaseButton::_checkState()
 }
 
 // ------------------------------------
-InputState  BaseButton::GetState()
+InState  BaseButton::GetState()
 {
 	return _state;
 }
 
 // ------------------------------------
-KeyInfo BaseButton::GetInfo()
+ButtonInfo BaseButton::GetInfo()
 {
     return {_state, 
 			_title, 
-			Core::GetInputStateText(_state), 
+			Core::GetInStateText(_state), 
 			_pinButton, 
 			Core::GetLogicTypeText(_logicType)
 			}; 

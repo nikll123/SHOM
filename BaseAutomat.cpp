@@ -7,14 +7,14 @@ BaseAutomat::BaseAutomat(String title, uint8_t pinInput, LogicType lt) : BaseUze
 
 }
 
-InputState BaseAutomat::GetState()
+InState BaseAutomat::GetState()
 {
 	return BaseUzel::GetInputState();
 }
 
 String BaseAutomat::GetStateText()
 {
-	return BaseUzel::GetInputStateText();
+	return BaseUzel::GetInStateText();
 }
 
 // ------------------------------------

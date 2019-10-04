@@ -62,27 +62,27 @@ UzelInfo BaseUzel::GetInfo()
 }
 
 // ------------------------------------
-InputState BaseUzel::GetInputState()
+InState BaseUzel::GetInputState()
 	{
 	return _inputState;
 	}
 
 // ------------------------------------
-String BaseUzel::GetInputStateText()
+String BaseUzel::GetInStateText()
 	{
-	return Core::GetInputStateText(_inputState);
+	return Core::GetInStateText(_inputState);
 	}
 
 // ------------------------------------
-/*InputState2 BaseUzel::CheckInState()
+/*InState2 BaseUzel::CheckInState()
 	{
 	  return CheckInState(false);
 	}*/
 
-InputState2 BaseUzel::CheckInState(uint8_t loglevel = LL_NONE)
+InState2 BaseUzel::CheckInState(uint8_t loglevel = LL_NONE)
 	{
 
-	InputState2 is2;
+	InState2 is2;
 	is2.Old = _inputState;
 
 	bool value = digitalRead(_pinIn);
@@ -99,8 +99,8 @@ InputState2 BaseUzel::CheckInState(uint8_t loglevel = LL_NONE)
 	if (LOGLEVEL > LL_NONE) 
 		{
 		Core::LogTextLn("InState " + GetInfo().Title);
-		Core::LogTextLn("  old=" + Core::GetInputStateText(is2.Old));
-		Core::LogTextLn("  new=" + Core::GetInputStateText(is2.New));
+		Core::LogTextLn("  old=" + Core::GetInStateText(is2.Old));
+		Core::LogTextLn("  new=" + Core::GetInStateText(is2.New));
 		}
 	
 	return is2;
@@ -132,7 +132,7 @@ UzelState2 BaseUzel::CheckState()
 	if (_state != US_NOTINIT)
 		{
 		us2.Old = _state;
-		InputState stateA = (CheckInState()).New;
+		InState stateA = (CheckInState()).New;
 		if (_uzelType == UT_CONTACTOR)
 			{
 			uint8_t valueContactor = digitalRead(_pinOut);

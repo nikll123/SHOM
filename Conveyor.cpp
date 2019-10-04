@@ -446,19 +446,19 @@ TurnOffUzelAction Conveyor::TurnOff_NextAction(UzelState prevUzelState, UzelStat
 // ---------------------------------------------
 bool Conveyor::ButtonOnIsPressed()
 {
-	InputState2 s = _buttonOn.CheckState();    
+	InState2 s = _buttonOn.CheckState();    
 	return (s.Old == KS_OFF && s.New == KS_ON);
 }
 
 bool Conveyor::ButtonOffIsPressed()
 {    
-	InputState2 s = _buttonOff.CheckState();    
+	InState2 s = _buttonOff.CheckState();    
 	return (s.Old == KS_OFF && s.New == KS_ON);
 }
 
 bool Conveyor::ButtonResetIsPressed()
 {        
-	InputState2 s = _buttonReset.CheckState();    
+	InState2 s = _buttonReset.CheckState();    
 	return (s.Old == KS_OFF && s.New == KS_ON);
 }
 
