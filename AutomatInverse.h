@@ -7,7 +7,7 @@
 	class AutomatInverse : public BaseAutomat
 	{
 	public:
-		AutomatInverse(String title, uint8_t pinAutomat);
+		AutomatInverse(String title, uint8_t pinInput);
          
 	protected:
 	private:

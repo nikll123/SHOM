@@ -7,7 +7,7 @@
 	class Automat : public BaseAutomat
 	{
 	public:
-		Automat(String title, uint8_t pinAutomat);
+		Automat(String title, uint8_t pinInput);
          
 	protected:
 	private:

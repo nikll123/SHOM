@@ -8,8 +8,8 @@
 	class ContactorInverse : public BaseUzel
 	{
 	public:
-         ContactorInverse(String title, uint8_t pinAutomat, uint8_t pinContactor);
-         ContactorInverse(String title, uint8_t pinAutomat, uint8_t pinContactor, unsigned int timeOutOn, unsigned int timeOutOff);
+         ContactorInverse(String title, uint8_t pinInput, uint8_t pinOutput);
+         ContactorInverse(String title, uint8_t pinInput, uint8_t pinOutput, unsigned int timeOutOn, unsigned int timeOutOff);
          
 	protected:
 

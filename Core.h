@@ -1,6 +1,14 @@
 #ifndef Core_h
 	#define Core_h
 	
+	#ifndef LOGLEVEL
+		#define LOGLEVEL 2
+	#endif
+	#define LL_NONE		0
+	#define LL_MIN		1
+	#define LL_NORMAL	2
+	#define LL_MAX		3
+
 	#include "Arduino.h"
 	#include <Wire.h>
 	#include <DS1307.h>
@@ -37,13 +45,14 @@
 					US_ERROR_01 = -2,
 					US_ERROR_02 = -3,
 					US_ERROR_03 = -4,
-					US_ERROR_04 = -5
+					US_ERROR_04 = -5,
+					US_ERROR_05 = -6
 					};	
 
 	//-------------------------------
 	struct UzelState2 {
-					UzelState ValueOld;
-					UzelState ValueNew;
+					UzelState Old;
+					UzelState New;
 					};	
 
 	//-------------------------------
@@ -91,19 +100,19 @@
 					};	
 
    	//-------------------------------
-	enum KeyState {KS_NONE, 
+	enum InputState {KS_NONE, 
 					KS_ON, 
 					KS_OFF,
 					};	
 
 	//-------------------------------
-	struct KeyState2 {
-					KeyState 	Old;
-					KeyState 	New;
+	struct InputState2 {
+					InputState 	Old;
+					InputState 	New;
 					};	
 	//-------------------------------
 	struct KeyInfo {
-					KeyState 	Value;
+					InputState 	Value;
 					String 		Title;
 					String 		StateText;
 					int 		Pin;
@@ -119,7 +128,7 @@
 		static String GetUzelStateText(UzelState);
 		static String GetUzelTypeText(UzelType);
 		static String GetLogicTypeText(LogicType);
-		static String GetKeyStateText(KeyState);
+		static String GetInputStateText(InputState);
 		static String GetConveyorStateText(ConveyorState);
 		static String GetDateTime();
 		static String GetDate();

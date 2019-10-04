@@ -7,7 +7,7 @@
 
 	struct AutomatInfo	{
 					String   	Title;
-					KeyState	State;
+					InputState	State;
 					uint8_t		Pin;
 					String		Logic;
 					bool		Active;
@@ -19,8 +19,8 @@
 	class BaseAutomat : public BaseUzel
 	{
 	public:
-		BaseAutomat(String title, uint8_t pinAutomat, LogicType lt);
-		KeyState	GetState();
+		BaseAutomat(String title, uint8_t pinInput, LogicType lt);
+		InputState	GetState();
 		String		GetStateText();
 		AutomatInfo GetInfo();
          

@@ -9,10 +9,10 @@
 					String   	TypeText;
 					String   	Title;
 					UzelState	State;
-					uint8_t		PinAutomat;
-					uint8_t     PinContactor;
+					uint8_t		PinInput;
+					uint8_t     PinOutput;
 					String		Logic;
-					KeyState	StateAutomat;
+					InputState	StateAutomat;
 					bool		Active;
 					unsigned int TimeOutOn;
 					unsigned int TimeOutOff;
@@ -22,15 +22,17 @@
 	{
 	public:
 	    BaseUzel();
-	    BaseUzel(String title, uint8_t pinAutomat, uint8_t pinContactor, UzelType uzelType, LogicType logicType);
-	    BaseUzel(String title, uint8_t pinAutomat, uint8_t pinContactor, UzelType uzelType, LogicType logicType, unsigned int timeOutOn, unsigned int timeOutOff);
+	    BaseUzel(String title, uint8_t pinInput, uint8_t pinOutput, UzelType uzelType, LogicType logicType);
+	    BaseUzel(String title, uint8_t pinInput, uint8_t pinOutput, UzelType uzelType, LogicType logicType, unsigned int timeOutOn, unsigned int timeOutOff);
 
 		UzelInfo	GetInfo();
-		KeyState 	GetAutomatState();
-		String 		GetAutomatStateText();
-		KeyState2 	CheckAutomatState();
+		InputState 	GetInputState();
+		String 		GetInputStateText();
 		UzelState 	GetState();
 		String 		GetStateText();		
+		//InputState2 	CheckInState();
+		InputState2 	CheckInState(uint8_t loglevel);
+		
 		UzelState2 	CheckState();
 		bool		IsActive();
 		
@@ -40,16 +42,16 @@
 
 	protected:
 		String			_title;
-		uint8_t 		_pinAutomat;
+		uint8_t 		_pinIn;
 		LogicType		_logicType;
-		KeyState		_automatState;
+		InputState		_inputState;
 		bool 			_active;
 		unsigned int 	_timeOutOn;
 		unsigned int 	_timeOutOff;
 
 	private:
 		UzelState		_state;
-		uint8_t 		_pinContactor;
+		uint8_t 		_pinOut;
 		UzelType 		_uzelType;
 		unsigned long 	_millsCheck;
 	};

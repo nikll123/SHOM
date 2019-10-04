@@ -10,8 +10,8 @@
 	    BaseButton();
 	    BaseButton(String title, uint8_t pinButton, LogicType logicType);
 	    
-		KeyState2 	CheckState();
-		KeyState	GetState();
+		InputState2 	CheckState();
+		InputState	GetState();
 		KeyInfo 	GetInfo();
 
 	protected:
@@ -20,7 +20,7 @@
 	private:
 		uint8_t 	_pinButton;
 		String		_title;
-		KeyState	_state;
+		InputState	_state;
 		LogicType	_logicType;
 	};
 #endif

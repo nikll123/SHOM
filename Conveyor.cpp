@@ -22,40 +22,40 @@ Conveyor::Conveyor(String title, uint8_t pin_button_on, uint8_t pin_button_off, 
 	
 	
 // ------------------------------------
-void Conveyor::SetupUzelAutomat(uint8_t index, String title, uint8_t pinAutomat)
+void Conveyor::SetupAutomat(uint8_t index, String title, uint8_t pinInput)
 {
-    Uzelki[index] = Automat(title, pinAutomat);  
+    Uzelki[index] = Automat(title, pinInput);  
 }
 
 // ------------------------------------
-void Conveyor::SetupUzelAutomatInverse(uint8_t index, String title, uint8_t pinAutomat)
+void Conveyor::SetupAutomatInverse(uint8_t index, String title, uint8_t pinInput)
 {
-    Uzelki[index]= AutomatInverse(title, pinAutomat);  
+    Uzelki[index]= AutomatInverse(title, pinInput);  
 }
 
 // ------------------------------------
-void Conveyor::SetupUzelContactor(uint8_t index, String title, uint8_t pinAutomat, uint8_t pinContactor)
+void Conveyor::SetupContactor(uint8_t index, String title, uint8_t pinInput, uint8_t pinOutput)
 {
-	Contactor contactor1 (title, pinAutomat, pinContactor);	
+	Contactor contactor1 (title, pinInput, pinOutput);	
     Uzelki[index]= contactor1;  
 }
 
-void Conveyor::SetupUzelContactor(uint8_t index, String title, uint8_t pinAutomat, uint8_t pinContactor, unsigned int timeOutOn, unsigned int timeOutOff)
+void Conveyor::SetupContactor(uint8_t index, String title, uint8_t pinInput, uint8_t pinOutput, unsigned int timeOutOn, unsigned int timeOutOff)
 {
-	Contactor contactor1 (title, pinAutomat, pinContactor, timeOutOn, timeOutOff);	
+	Contactor contactor1 (title, pinInput, pinOutput, timeOutOn, timeOutOff);	
     Uzelki[index]= contactor1;  
 }
 
 // ------------------------------------
-void Conveyor::SetupUzelContactorInverse(uint8_t index, String title, uint8_t pinAutomat, uint8_t pinContactor)
+void Conveyor::SetupContactorInverse(uint8_t index, String title, uint8_t pinInput, uint8_t pinOutput)
 {
-	ContactorInverse contactor1 (title, pinAutomat, pinContactor);	
+	ContactorInverse contactor1 (title, pinInput, pinOutput);	
     Uzelki[index]= contactor1;  
 }
 
-void Conveyor::SetupUzelContactorInverse(uint8_t index, String title, uint8_t pinAutomat, uint8_t pinContactor, unsigned int timeOutOn, unsigned int timeOutOff)
+void Conveyor::SetupContactorInverse(uint8_t index, String title, uint8_t pinInput, uint8_t pinOutput, unsigned int timeOutOn, unsigned int timeOutOff)
 {
-	ContactorInverse contactor1 (title, pinAutomat, pinContactor, timeOutOn, timeOutOff);	
+	ContactorInverse contactor1 (title, pinInput, pinOutput, timeOutOn, timeOutOff);	
     Uzelki[index]= contactor1;  
 }
 
@@ -446,19 +446,19 @@ TurnOffUzelAction Conveyor::TurnOff_NextAction(UzelState prevUzelState, UzelStat
 // ---------------------------------------------
 bool Conveyor::ButtonOnIsPressed()
 {
-	KeyState2 s = _buttonOn.CheckState();    
+	InputState2 s = _buttonOn.CheckState();    
 	return (s.Old == KS_OFF && s.New == KS_ON);
 }
 
 bool Conveyor::ButtonOffIsPressed()
 {    
-	KeyState2 s = _buttonOff.CheckState();    
+	InputState2 s = _buttonOff.CheckState();    
 	return (s.Old == KS_OFF && s.New == KS_ON);
 }
 
 bool Conveyor::ButtonResetIsPressed()
 {        
-	KeyState2 s = _buttonReset.CheckState();    
+	InputState2 s = _buttonReset.CheckState();    
 	return (s.Old == KS_OFF && s.New == KS_ON);
 }
 

@@ -28,12 +28,12 @@
 		String GetTime();
 		String GetUzelStates();
 
-		void SetupUzelAutomat(uint8_t, String, uint8_t);
-		void SetupUzelAutomatInverse(uint8_t, String, uint8_t);
-		void SetupUzelContactor(uint8_t, String, uint8_t, uint8_t);
-		void SetupUzelContactor(uint8_t, String, uint8_t, uint8_t, unsigned int, unsigned int);
-		void SetupUzelContactorInverse(uint8_t, String, uint8_t, uint8_t);
-		void SetupUzelContactorInverse(uint8_t, String, uint8_t, uint8_t, unsigned int, unsigned int);
+		void SetupAutomat(uint8_t, String, uint8_t);
+		void SetupAutomatInverse(uint8_t, String, uint8_t);
+		void SetupContactor(uint8_t, String, uint8_t, uint8_t);
+		void SetupContactor(uint8_t, String, uint8_t, uint8_t, unsigned int, unsigned int);
+		void SetupContactorInverse(uint8_t, String, uint8_t, uint8_t);
+		void SetupContactorInverse(uint8_t, String, uint8_t, uint8_t, unsigned int, unsigned int);
 		void Reset();
 		void LogText(String);
 		void LogTextln(String);

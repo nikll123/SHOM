@@ -8,8 +8,8 @@
 	class Contactor : public BaseUzel
 	{
 	public:
-         Contactor(String title, uint8_t pinAutomat, uint8_t pinContactor);
-         Contactor(String title, uint8_t pinAutomat, uint8_t pinContactor, unsigned int timeOutOn, unsigned int timeOutOff);
+         Contactor(String title, uint8_t pinInput, uint8_t pinOutput);
+         Contactor(String title, uint8_t pinInput, uint8_t pinOutput, unsigned int timeOutOn, unsigned int timeOutOff);
          
 	protected:
 

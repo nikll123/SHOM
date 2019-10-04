@@ -21,6 +21,7 @@ switch (us)
 	case US_ERROR_02	: return "ERROR_02";
 	case US_ERROR_03	: return "ERROR_03";
 	case US_ERROR_04	: return "ERROR_04";
+	case US_ERROR_05	: return "ERROR_05";
 	default			    : return "GetUzelStateText: unknown-" + String(us);
 	}
 }
@@ -46,7 +47,7 @@ switch (cs)
 }
 
 //------------------------------
-static String Core::GetKeyStateText(KeyState as)
+static String Core::GetInputStateText(InputState as)
 {
 String stateText = "";
 switch (as)
@@ -54,7 +55,7 @@ switch (as)
 	case KS_NONE		: return "NONE";
 	case KS_ON			: return "ON";
 	case KS_OFF			: return "OFF";
-	default			    : return "GetKeyStateText: unknown-" + String(as);
+	default			    : return "GetInputStateText: unknown-" + String(as);
 	}
 }
 

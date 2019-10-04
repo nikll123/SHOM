@@ -2,31 +2,31 @@
 //#include "Define.h"
 #include "BaseAutomat.h"
 
-BaseAutomat::BaseAutomat(String title, uint8_t pinAutomat, LogicType lt) : BaseUzel(title, pinAutomat, 0, UT_AUTOMAT, lt)
+BaseAutomat::BaseAutomat(String title, uint8_t pinInput, LogicType lt) : BaseUzel(title, pinInput, 0, UT_AUTOMAT, lt)
 {
 
 }
 
-KeyState BaseAutomat::GetState()
+InputState BaseAutomat::GetState()
 {
-	return BaseUzel::GetAutomatState();
+	return BaseUzel::GetInputState();
 }
 
 String BaseAutomat::GetStateText()
 {
-	return BaseUzel::GetAutomatStateText();
+	return BaseUzel::GetInputStateText();
 }
 
 // ------------------------------------
 AutomatInfo BaseAutomat::GetInfo()
-{
-	return  { _title,
-			_automatState,
-			_pinAutomat,
+	{
+	return  { 
+			_title,
+			_inputState,
+			_pinIn,
 			Core::GetLogicTypeText(_logicType),
 			_active,
 			_timeOutOn,
 			_timeOutOff
 			};
-	
-}
+	}
