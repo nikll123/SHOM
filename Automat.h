@@ -1,18 +1,17 @@
 #ifndef Automat_h
 	#define Automat_h
-	
-	#include "Core.h"
-	#include "BaseAutomat.h"
 
-	class Automat : public BaseAutomat
+	#include "Button.h"
+
+	class Automat : public Button
 	{
 	public:
-		Automat(String title, uint8_t pinInput);
-         
+	    Automat(String title, uint8_t pinButton);
+
 	protected:
+
 	private:
 
 	};
-	
 #endif
 

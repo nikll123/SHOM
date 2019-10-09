@@ -1,40 +1,44 @@
-#include "Arduino.h"
-#include "Core.h"
 #include "BaseButton.h"
 
 // ------------------------------------
-BaseButton::BaseButton() : BaseButton("btn", 0, LT_NONE)
+BaseButton::BaseButton(String title, uint8_t pinButton, LogicType logicType) : BaseButton(title, pinButton, logicType, 0) 
 {
 
 }
 
-// ------------------------------------
-BaseButton::BaseButton(String title, uint8_t pinButton, LogicType logicType)
+BaseButton::BaseButton(String title, uint8_t pinButton, LogicType logicType, uint8_t _pinLed) : Unit(title, UT_BUTTON)
 {
-	_title = title;
+
 	_pinButton = pinButton;
+	_pinLed = _pinLed;
+	_in_state = KS_NONE;
 	_logicType = logicType;
-	_state = KS_NONE;
+		
+	uint8_t impmode;
 	if (_logicType == LT_NORMAL)
-		pinMode(_pinButton, INPUT);
+		impmode = INPUT;
 	else
-		pinMode(_pinButton, INPUT_PULLUP);
+		impmode = INPUT_PULLUP;
 	
-	_refreshState();		
+	pinMode(_pinButton, impmode);
+	_refreshState();
+
+
 }
+
 
 // ------------------------------------
 InState2 BaseButton::CheckState()
 {
 	InState2 is2;
-    is2.Old = _state;
+    is2.Old = _in_state;
 	_refreshState();
-	is2.New = _state;
+	is2.New = _in_state;
 	if (LOGLEVEL > LL_NONE) 
 		{
-		Core::LogTextLn("ButtonState " + GetInfo().Title);
-		Core::LogTextLn("  old=" + Core::GetInStateText(is2.Old));
-		Core::LogTextLn("  new=" + Core::GetInStateText(is2.New));
+		LogText(_title);
+		LogText("  " + GetInStateText(is2.Old));
+		LogTextLn(" -> " + GetInStateText(is2.New));
 		}
 	return is2;
 }
@@ -44,34 +48,68 @@ InState2 BaseButton::CheckState()
 void BaseButton::_refreshState()
 {
 	bool newState = digitalRead(_pinButton);
+			
 	if (_logicType == LT_INVERSE)
 		newState = !newState;
 
 	if (newState == 1)
-		{
-		_state = KS_ON;				
-		}
+		_in_state = KS_ON;				
 	else  //  if (newState == 0)
-		{
-		_state = KS_OFF;				
-		}
+		_in_state = KS_OFF;				
+}
+
+//------------------------------
+String BaseButton::GetLogicTypeText()
+{
+switch (_logicType)
+	{
+	case LT_NONE 		: return "NONE";
+	case LT_NORMAL	 	: return "NORMAL";
+	case LT_INVERSE 	: return "INVERSE";
+	default			    : return "GetLogicTypeText: unknown-" + String(_logicType);
+	}
 }
 
 // ------------------------------------
 InState  BaseButton::GetState()
 {
-	return _state;
+	return _in_state;
 }
 
 // ------------------------------------
 ButtonInfo BaseButton::GetInfo()
-{
-    return {_state, 
-			_title, 
-			Core::GetInStateText(_state), 
+	{
+	UnitInfo ui = Unit::GetInfo();
+    return {_in_state, 
+			ui.Title,
+			ui.UnitType, 
+			GetInStateText(_in_state), 
 			_pinButton, 
-			Core::GetLogicTypeText(_logicType)
+			GetLogicTypeText(),
+			_pinLed 
 			}; 
-      
-}
+	}
 
+// ------------------------------------
+void BaseButton::LogInfo()
+	{
+	ButtonInfo bi = GetInfo();
+	LogText(bi.Title + "; ");
+	LogText(bi.UnitType + "; ");
+	LogText(String(_pinButton) + "; ");
+	LogText(bi.Logic + "; ");
+	LogText(String(_pinLed) + "; ");
+	LogTextLn(bi.State + ".");
+	}
+
+//------------------------------
+String BaseButton::GetInStateText(InState instate)
+{
+switch (instate)
+	{
+	case KS_NONE		: return "NONE";
+	case KS_ON			: return "ON";
+	case KS_OFF			: return "OFF";
+	default			    : return "GetInStateText: unknown-" + String(instate);
+	}
+}

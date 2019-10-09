@@ -1,8 +1,8 @@
-#include "Arduino.h"
-//#include "Define.h"
 #include "Automat.h"
 
-Automat::Automat(String title, uint8_t pinInput) : BaseAutomat(title, pinInput, LT_NORMAL)
+// ------------------------------------
+Automat::Automat(String title, uint8_t pinButton) : Button(title, pinButton)
 {
+	_type = UT_AUTOMAT;
 }
-
+ 

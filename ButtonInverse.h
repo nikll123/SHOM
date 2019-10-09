@@ -1,7 +1,6 @@
 #ifndef ButtonInverse_h
 	#define ButtonInverse_h
 
-	#include "Core.h"
 	#include "BaseButton.h"
 
 	class ButtonInverse : public BaseButton

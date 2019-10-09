@@ -1,7 +1,6 @@
 #ifndef Button_h
 	#define Button_h
 
-	#include "Core.h"
 	#include "BaseButton.h"
 
 	class Button : public BaseButton
@@ -14,5 +13,6 @@
 	private:
 
 	};
+	
 #endif
 
