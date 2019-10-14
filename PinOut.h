@@ -22,6 +22,7 @@
 		PinState 	GetState();
 		PinOutInfo 	GetInfo();
 		void 		LogInfo();
+		void 		LogState();
 
 
 	protected:

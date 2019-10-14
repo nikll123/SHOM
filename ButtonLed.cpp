@@ -25,7 +25,7 @@ PinState2 ButtonLed::GetState()
 		LedState2 ls2 = LedIndicator.CheckState();
 		}
 		
-	if (LOGLEVEL > LL_NONE && ps2.Old != ps2.New)
+	if (LOGLEVEL > LL_MIN && ps2.Old != ps2.New)
 		{
 		LogText(_title);
 		LogText("  " + Button.GetPinStateText(ps2.Old));

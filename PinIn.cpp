@@ -42,7 +42,7 @@ PinState2 PinIn::GetState()
 	_refreshState();
 	ps2.New = _state;
 		
-	if (LOGLEVEL > LL_NONE && ps2.Old != ps2.New) 
+	if (LOGLEVEL > LL_MIN && ps2.Old != ps2.New) 
 		{
 		LogText(_title);
 		LogText(" " + GetPinStateText(ps2.Old));
@@ -86,6 +86,15 @@ void PinIn::LogInfo()
 	LogText(pi.State + "; ");
 	LogText(String(_pin) + "; ");
 	LogText(pi.Logic + "; ");
+	LogLn();
+	}
+
+// ------------------------------------
+void PinIn::LogState()
+	{
+	PinInInfo pi = GetInfo();
+	LogText(pi.Title + "; ");
+	LogText(pi.State + "; ");
 	LogLn();
 	}
 

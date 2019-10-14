@@ -62,7 +62,7 @@ LedState2 Led::CheckState()
 	ls2.Old = _state; 
 	_refreshState();
 	ls2.New = _state;
-/*	if (LOGLEVEL > LL_NONE && ls2.Old != ls2.New) 
+/*	if (LOGLEVEL > LL_MIN && ls2.Old != ls2.New) 
 		{
 		LogText(_title);
 		LogText("  " + GetLedStateText(ls2.Old));
@@ -100,7 +100,7 @@ void Led::_setState(LedState ls)
 	{
 	if (_state != ls)
 		{
-		if (LOGLEVEL > LL_NONE) 
+		if (LOGLEVEL > LL_MIN) 
 			{
 			LogText(_title);
 			LogText("  " + GetLedStateText(_state));

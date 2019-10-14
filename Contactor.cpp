@@ -96,8 +96,7 @@ ContactorState2 Contactor::GetState()
 			{
 			if (!(stateKeyOut == KS_OFF && stateKeyIn == KS_OFF))
 				{
-//LogTextLn(KeyIn.GetPinStateText(stateKeyIn));
-//LogTextLn(KeyIn.GetPinStateText(stateKeyOut));
+				LogKeysState();
 				_state = CS_ERR1;
 				}
 			}
@@ -116,8 +115,7 @@ ContactorState2 Contactor::GetState()
 
 			if (!(stateKeyOut == KS_ON && stateKeyIn == KS_ON))
 				{
-//LogTextLn(KeyIn.GetPinStateText(stateKeyIn));
-//LogTextLn(KeyIn.GetPinStateText(stateKeyOut));
+				LogKeysState();
 				_state = CS_ERR2;
 				}
 			}
@@ -218,7 +216,7 @@ void Contactor::_Turn(ContactorState csNew)
 
 void Contactor::LogChange(String comment, ContactorState2 cs2)
 	{
-	if (LOGLEVEL > LL_NONE && cs2.Old != cs2.New) 
+	if (LOGLEVEL > LL_MIN && cs2.Old != cs2.New) 
 		{
 		LogText(GetInfo().Title);
 		LogText(" " + comment);
@@ -229,3 +227,11 @@ void Contactor::LogChange(String comment, ContactorState2 cs2)
 	}
 	
 
+void Contactor::LogKeysState()
+	{
+	if (LOGLEVEL > LL_NORMAL) 
+		{
+		KeyIn.LogState();
+		KeyOut.LogState();
+		}
+	}

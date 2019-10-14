@@ -70,7 +70,8 @@
 		void TurnOffAlarm();
 
 	protected:
-
+		void LogKeysState();
+		
 	private:
 		ContactorState	_state;
 		unsigned int 	_timeOutOn;

@@ -29,11 +29,9 @@ void PinOut::_setState(PinState state)
 	digitalWrite(_pin, value);
 	_state = state; 
 	ps2.New = _state;
-	if (LOGLEVEL > LL_NONE && ps2.Old != ps2.New) 
+	if (LOGLEVEL > LL_MIN && ps2.Old != ps2.New) 
 		{
 		LogText(_title);
-		LogText(value);
-		LogText(String(_pin));
 		LogText(" " + GetPinStateText(ps2.Old));
 		LogTextLn(" -> " + GetPinStateText(ps2.New));
 		}
@@ -64,5 +62,14 @@ void PinOut::LogInfo()
 	LogText(pi.UnitType + "; ");
 	LogText(pi.State + "; ");
 	LogText(String(_pin) + "; ");
+	LogLn();
+	}
+
+// ------------------------------------
+void PinOut::LogState()
+	{
+	PinOutInfo pi = GetInfo();
+	LogText(pi.Title + "; ");
+	LogText(pi.State + "; ");
 	LogLn();
 	}

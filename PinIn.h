@@ -30,6 +30,7 @@
 		PinInInfo 	GetInfo();
 		void 		LogicInverse();
 		void 		LogicNormal();
+		void 		LogState();
 
 		void		LogInfo();
 		String 		GetLogicTypeText();
