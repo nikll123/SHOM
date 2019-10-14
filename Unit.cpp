@@ -9,23 +9,51 @@ Unit::Unit(String title, UnitType type)
 	}
 
 //------------------------------
+void Unit::LogTextLn(int x)
+	{
+	LogText(x);
+	LogLn();
+	}
+	
+//------------------------------
+void Unit::LogText(int x)
+	{
+	Serial.print(x);
+	}
+
+//------------------------------
+void Unit::LogTextLn(bool b)
+	{
+	LogText(b);
+	LogLn();
+	}
+	
+//------------------------------
+void Unit::LogText(bool b)
+	{
+	if (b)
+		Serial.print("True");
+	else
+		Serial.print("False");
+	}
+
+//------------------------------
 void Unit::LogTextLn(String txt)
 	{
-	LogText(txt , 1);
+	LogText(txt);
+	LogLn();
 	}
 	
 //------------------------------
 void Unit::LogText(String txt)
 	{
-	LogText(txt, 0);
-	}
-	
-//------------------------------
-void Unit::LogText(String txt, bool ln)
-	{
 	Serial.print(txt);
-	if (ln) Serial.println("");
-	}	
+	}
+
+void Unit::LogLn()
+	{
+	Serial.println("");
+	}
 
 //------------------------------
 UnitInfo Unit::GetInfo()
@@ -44,10 +72,13 @@ String Unit::GetUnitTypeText()
 		case UT_NONE 		: return "NONE";
 		case UT_BUTTON 		: return "BUTTON";
 		case UT_LED         : return "LED";
+		case UT_PIN         : return "PIN";
+		case UT_PININ		: return "PININ";
+		case UT_PINOUT		: return "PINOUT";
+		case UT_PININLED	: return "PININLED";
 		case UT_AUTOMAT 	: return "AUTOMAT";
 		case UT_CONTACTOR 	: return "CONTACTOR";
 		default			    : return "GetUnitTypeText: unknown-" + String(_type);
 		}
 	}
-
 
