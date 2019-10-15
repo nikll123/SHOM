@@ -7,7 +7,7 @@
 	#define LL_NORMAL	2
 	#define LL_MAX		3
 
-	#define LOGLEVEL LL_MAX
+	#define LOGLEVEL LL_NORMAL
 
     #ifndef LOGLEVEL
 		#define LOGLEVEL LL_NONE

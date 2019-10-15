@@ -192,8 +192,6 @@ void Contactor::_Turn(ContactorState csNew)
 				}
 			}
 		ContactorState2 cs2(csCurr, csNew); 
-//LogTextLn(GetContactorStateText(cs2.New));
-//LogLn();
 		LogChange("Switch:", cs2);
 		}
 	else
