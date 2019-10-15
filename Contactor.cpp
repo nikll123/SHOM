@@ -10,7 +10,6 @@ Contactor::Contactor(String title, uint8_t pinOut, uint8_t pinIn) : Contactor(ti
 {
 }
 
-
 Contactor::Contactor(String title, uint8_t pinOut, uint8_t pinIn, uint8_t pinLed) : Unit(title, UT_CONTACTOR)
 {
 	_timeOutOn = TURN_ON_TIMEOUT;
@@ -24,10 +23,12 @@ Contactor::Contactor(String title, uint8_t pinOut, uint8_t pinIn, uint8_t pinLed
 
 void Contactor::Init()
 	{
+ 	LogTextLn(_title + " Init");
 	KeyIn.GetState();
 	KeyOut.SetOff();
 	KeyOut.GetState();
 	_state = CS_OFF;
+	LedIndicator.SetOff();
 	GetState();
 	}
 
@@ -73,12 +74,7 @@ switch (state)
 	case CS_STARTING	: return "STARTING";
 	case CS_STOPPING	: return "STOPPING";
 	case CS_UNKNOWN		: return "UNKNOWN";
-	case CS_ERR			: return "ERR";
-	case CS_ERR1		: return "ERR1";
-	case CS_ERR2		: return "ERR2";
-	case CS_ERR3		: return "ERR3";
-	case CS_ERR4		: return "ERR4";
-	default			    : return "ContactorState: unknown-" + String(state);
+	default			    : return "ContactorState error " + String(state);
 	}
 }
 
@@ -94,11 +90,8 @@ ContactorState2 Contactor::GetState()
 		PinState stateKeyOut = KeyOut.GetState(); 
 		if(_state == CS_OFF)
 			{
-			if (!(stateKeyOut == KS_OFF && stateKeyIn == KS_OFF))
-				{
-				LogKeysState();
-				_state = CS_ERR1;
-				}
+			if (stateKeyOut != KS_OFF) 		_state = CS_ERR1;
+			else if (stateKeyIn != KS_OFF) 	_state = CS_ERR2;
 			}
 		else if(_state == CS_STARTING)
 			{
@@ -113,11 +106,9 @@ ContactorState2 Contactor::GetState()
 			stateKeyOut = KeyOut.GetState(); 
 			stateKeyIn = (KeyIn.GetState()).New;
 
-			if (!(stateKeyOut == KS_ON && stateKeyIn == KS_ON))
-				{
-				LogKeysState();
-				_state = CS_ERR2;
-				}
+			if (stateKeyOut != KS_ON) 		_state = CS_ERR3;
+			else if (stateKeyIn != KS_ON) 	_state = CS_ERR4;
+
 			}
 		else if(_state == CS_STOPPING)
 			{
@@ -135,32 +126,42 @@ ContactorState2 Contactor::GetState()
 
 			if (_state == CS_OFF)
 				{
+				if (stateKeyOut != KS_OFF) 		_state = CS_ERR5;
+				else if (stateKeyIn != KS_OFF) 	_state = CS_ERR6;
+				
 				if (!(stateKeyOut == KS_OFF && stateKeyIn == KS_OFF))
 					_state = CS_ERR3;
 				}
 			else    // US_STOPPING
 				{
-				if (!(stateKeyOut == KS_ON && stateKeyIn == KS_ON))
-					_state = CS_ERR4;
+				if (stateKeyOut != KS_ON) 		_state = CS_ERR7;
+				else if (stateKeyIn != KS_ON) 	_state = CS_ERR8;
 				}
 			}
+		else if(_state == CS_ON)
+			{
+			if (stateKeyOut != KS_ON) 		_state = CS_ERR9;
+			else if (stateKeyIn != KS_ON) 	_state = CS_ERR10;
+			}
+
 		cs2.New = _state;
-		LogChange("State change", cs2);
+		IfChanged(cs2);
 		}
-		return cs2;
+	LedIndicator.Refresh();
+	return cs2;
 	}
 
 // ------------------------------------
 void Contactor::TurnOn()
 	{
- 	LogTextLn(String("TurnOn"));
+ 	LogTextLn(_title + " TurnOn");
     _Turn(CS_STARTING);
 	}
 
 // ------------------------------------
 void Contactor::TurnOff()
 	{
- 	LogTextLn(String("TurnOff"));
+ 	LogTextLn(_title + " TurnOff");
     _Turn(CS_STOPPING);
 	}
 
@@ -173,26 +174,22 @@ void Contactor::_Turn(ContactorState csNew)
 		switch (csNew)
 			{
 			case CS_STARTING :
-				{
 				if (csCurr == CS_OFF)   // start!
 					{
 					_millsCheck = 0;
 					_state = csNew;
 					}
 				break;
-				}
 			case CS_STOPPING :
-				{
 				if (csCurr == CS_ON || csCurr == CS_STARTING)
 					{
 					_millsCheck = 0;
 					_state = csNew;
 					}
 				break;
-				}
 			}
 		ContactorState2 cs2(csCurr, csNew); 
-		LogChange("Switch:", cs2);
+		IfChanged(cs2);
 		}
 	else
 		{
@@ -212,24 +209,35 @@ void Contactor::_Turn(ContactorState csNew)
 		}
 	}*/
 
-void Contactor::LogChange(String comment, ContactorState2 cs2)
+void Contactor::IfChanged(ContactorState2 cs2)
 	{
-	if (LOGLEVEL > LL_MIN && cs2.Old != cs2.New) 
+	if(cs2.Old != cs2.New)
 		{
-		LogText(GetInfo().Title);
-		LogText(" " + comment);
-		LogText(" " + GetContactorStateText(cs2.Old));
-		LogText(" -> " + GetContactorStateText(cs2.New));
-		LogLn();
+		if (cs2.New == CS_ON)
+			LedIndicator.SetOn();
+		else if (cs2.New == CS_STARTING || cs2.New == CS_STOPPING)
+			LedIndicator.SetBlink();
+		else if (cs2.New >= CS_ERR)
+			LedIndicator.SetBlinkFast();
+		else 
+			LedIndicator.SetOff();
+
+		if (LOGLEVEL > LL_MIN) 
+			{
+			LogText(GetInfo().Title);
+			LogText(" " + GetContactorStateText(cs2.Old));
+			LogText(" -> " + GetContactorStateText(cs2.New));
+			LogLn();
+			}
 		}
 	}
 	
 
-void Contactor::LogKeysState()
+/*void Contactor::LogKeysState()
 	{
 	if (LOGLEVEL > LL_NORMAL) 
 		{
 		KeyIn.LogState();
 		KeyOut.LogState();
 		}
-	}
+	}*/

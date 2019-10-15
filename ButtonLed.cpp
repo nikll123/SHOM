@@ -22,13 +22,13 @@ PinState2 ButtonLed::GetState()
 			LedIndicator.SetOn();
 		else
 			LedIndicator.SetBlink();
-		LedState2 ls2 = LedIndicator.CheckState();
+		LedState2 ls2 = LedIndicator.Refresh();
 		}
 		
 	if (LOGLEVEL > LL_MIN && ps2.Old != ps2.New)
 		{
 		LogText(_title);
-		LogText("  " + Button.GetPinStateText(ps2.Old));
+		LogText(" " + Button.GetPinStateText(ps2.Old));
 		LogTextLn(" -> " + Button.GetPinStateText(ps2.New));
 		}
 	return ps2;

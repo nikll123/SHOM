@@ -51,23 +51,27 @@ switch (ls)
 	case LEDS_ON			: return "ON";
 	case LEDS_OFF			: return "OFF";
 	case LEDS_BLINK			: return "BLINK";
+	case LEDS_BLINKFAST		: return "BLINKFAST";
+	case LEDS_BLINKSLOW		: return "BLINKSLOW";
+	case LEDS_BLINK2		: return "BLINK2";
+	case LEDS_BLINK3		: return "BLINK3";
 	default			    	: return "GetLedStateText: unknown-" + String(ls);
 	}
 }
 
 //------------------------------------
-LedState2 Led::CheckState()
+LedState2 Led::Refresh()
 {
 	LedState2 ls2;
 	ls2.Old = _state; 
 	_refreshState();
 	ls2.New = _state;
-/*	if (LOGLEVEL > LL_MIN && ls2.Old != ls2.New) 
+	if (LOGLEVEL >= LL_NORMAL && ls2.Old != ls2.New) 
 		{
 		LogText(_title);
 		LogText("  " + GetLedStateText(ls2.Old));
 		LogTextLn(" -> " + GetLedStateText(ls2.New));
-		}*/
+		}
 	 
 	return ls2;
 }
@@ -75,24 +79,36 @@ LedState2 Led::CheckState()
 void Led::_refreshState()
 	{
 	bool b = digitalRead(Pin);
-	unsigned long _millis2; 
 	switch (_state)
 		{
 		case LEDS_BLINK  :
-			_millis2 = millis(); 
-			if (_millis2 > _millis + INTERVAL_BLINK1)
-				{
-				_millis = _millis2;
-				b = !b;
-				}
+			b = _checkBlink(b, INTERVAL_BLINK);
+			break;
+		case LEDS_BLINKFAST  :
+			b = _checkBlink(b, INTERVAL_BLINKFAST);
+			break;
+		case LEDS_BLINKSLOW  :
+			b = _checkBlink(b, INTERVAL_BLINKSLOW);
 			break;
 		case LEDS_ON  :
-			b = 1;
+			b = true;
 			break;
 		default :
-			b = 0;
+			b = false;
 		}	
 	digitalWrite(Pin, b);				
+	}
+
+//------------------------------------
+bool Led::_checkBlink(bool b, int interval)
+	{
+	unsigned long _millis2 = millis(); 
+	if (_millis2 > _millis + interval)
+		{
+		_millis = _millis2;
+		b = !b;
+		}
+	return b;
 	}
 
 //------------------------------------
@@ -103,7 +119,7 @@ void Led::_setState(LedState ls)
 		if (LOGLEVEL > LL_MIN) 
 			{
 			LogText(_title);
-			LogText("  " + GetLedStateText(_state));
+			LogText(" " + GetLedStateText(_state));
 			LogTextLn(" -> " + GetLedStateText(ls));
 			}
 		_state = ls;
@@ -125,4 +141,14 @@ void Led::SetOff()
 void Led::SetBlink()
 	{
 	_setState(LEDS_BLINK);
+	}
+
+void Led::SetBlinkSlow()
+	{
+	_setState(LEDS_BLINKSLOW);
+	}
+
+void Led::SetBlinkFast()
+	{
+	_setState(LEDS_BLINKFAST);
 	}

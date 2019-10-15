@@ -1,8 +1,8 @@
 #ifndef Contactor_h
 	#define Contactor_h
 	
-	#define TURN_ON_TIMEOUT 2000
-	#define TURN_OFF_TIMEOUT 1000
+	#define TURN_ON_TIMEOUT 3000
+	#define TURN_OFF_TIMEOUT 2000
 	
 	#include "Unit.h"
 	#include "Led.h"
@@ -21,6 +21,12 @@
 						CS_ERR2		= 102,
 						CS_ERR3		= 103,
 						CS_ERR4		= 104,
+						CS_ERR5		= 105,
+						CS_ERR6		= 106,
+						CS_ERR7		= 107,
+						CS_ERR8		= 108,
+						CS_ERR9		= 109,
+						CS_ERR10	= 110,
 						};
 						
 	struct ContactorState2
@@ -59,7 +65,7 @@
 		String			GetContactorStateText(ContactorState state);
 		void			Init();
 		void			LogInfo();
-		void 			LogChange(String comment, ContactorState2 cs2);
+		void 			IfChanged(ContactorState2 cs2);
 		Led				LedIndicator;
 		PinIn			KeyIn;
 		PinOut			KeyOut;
@@ -78,7 +84,6 @@
 		unsigned int 	_timeOutOff;
 		unsigned long 	_millsCheck;
 		void 			_Turn(ContactorState csNew);
-
 	};
 #endif
 

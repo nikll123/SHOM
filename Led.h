@@ -2,7 +2,9 @@
 	#define Led_h
 
 	#include "Unit.h"
-	#define INTERVAL_BLINK1 300
+	#define INTERVAL_BLINK 300
+    #define INTERVAL_BLINKFAST 100
+	#define INTERVAL_BLINKSLOW 800
 
 	struct LedInfo {
 					String 		Title;
@@ -15,7 +17,11 @@
 					LEDS_NOTINIT,
 					LEDS_ON,
 					LEDS_OFF,
-					LEDS_BLINK
+					LEDS_BLINK,
+					LEDS_BLINK2,
+					LEDS_BLINK3,
+					LEDS_BLINKFAST,
+					LEDS_BLINKSLOW
 					};
 
 	struct LedState2 {
@@ -32,12 +38,14 @@
 					Led(String title, uint8_t pin, LedState ledState);
 		LedInfo 	GetInfo();
 		LedState	GetState();
-		LedState2	CheckState();
+		LedState2	Refresh();
 
 		void 		LogInfo();
 		void 		SetOn();
 		void 		SetOff();
 		void 		SetBlink();
+		void 		SetBlinkFast();
+		void 		SetBlinkSlow();
 		String 		GetLedStateText(LedState ls);
 	    uint8_t		Pin;
 
@@ -49,6 +57,7 @@
 		unsigned long 	_millis;
 		void 			_setState(LedState ls);
 		void 			_refreshState();
+		bool 			_checkBlink(bool b, int interval);
 	};
 
 #endif
