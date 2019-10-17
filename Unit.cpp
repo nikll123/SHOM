@@ -2,6 +2,12 @@
 #include "Unit.h"
 
 // =========   CONSTRUCTORS   =========
+Unit::Unit()
+	{
+	_title = "";
+	_type = UT_NONE;
+	}
+
 Unit::Unit(String title, UnitType type)
 	{
 	_title = title;
@@ -65,6 +71,14 @@ UnitInfo Unit::GetInfo()
 	}
 
 //------------------------------
+void Unit::LogInfo()
+	{
+	UnitInfo ui = GetInfo();
+	LogTextLn(ui.Title);
+	LogTextLn(ui.UnitType);
+	}
+
+//------------------------------
 String Unit::GetUnitTypeText()
 	{
 	switch (_type)
@@ -78,6 +92,7 @@ String Unit::GetUnitTypeText()
 		case UT_PININLED	: return "PININLED";
 		case UT_AUTOMAT 	: return "AUTOMAT";
 		case UT_CONTACTOR 	: return "CONTACTOR";
+		case UT_CONVEYOR 	: return "CONVEYOR";
 		default			    : return "GetUnitTypeText: unknown-" + String(_type);
 		}
 	}

@@ -27,7 +27,8 @@
 					UT_PINOUT,
 					UT_PININLED,
 					UT_AUTOMAT, 
-					UT_CONTACTOR
+					UT_CONTACTOR,
+					UT_CONVEYOR
 					};	
 
 	//-------------------------------
@@ -64,6 +65,7 @@
 	class Unit
 	{
 	public:
+					Unit();
 					Unit(String title, UnitType type);
 		void		LogText(String);
 		void		LogTextLn(String);
@@ -72,6 +74,7 @@
 		void 		LogText(int x);
 		void 		LogTextLn(int x);
 		void 		LogLn();
+		void 		LogInfo();
 		
 		UnitInfo 	GetInfo();
 		String		GetUnitTypeText();
