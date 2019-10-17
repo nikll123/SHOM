@@ -10,7 +10,7 @@
 	public:
 	    Conveyor();
 	    Conveyor(String title, uint8_t pin_button_on, uint8_t _pin_button_off, uint8_t pin_button_reset);
-		Unit units[];
+		//Contactor contactors[];
 
 	private:
 	};

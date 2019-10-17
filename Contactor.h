@@ -55,9 +55,10 @@
 	{
 	public:
 					    Contactor();
-					    Contactor(String title, uint8_t pinOut, uint8_t pinIn);
-					    Contactor(String title, uint8_t pinOut, uint8_t pinIn, uint8_t pinLed);
-					    Contactor(String title, uint8_t pinOut, uint8_t pinIn, uint8_t pinLed, unsigned int timeOutOn, unsigned int timeOutOff);
+					    Contactor(String title, uint8_t pinIn);
+					    Contactor(String title, uint8_t pinIn, uint8_t pinOut);
+					    Contactor(String title, uint8_t pinIn, uint8_t pinOut, uint8_t pinLed);
+					    Contactor(String title, uint8_t pinIn, uint8_t pinOut, uint8_t pinLed, unsigned int timeOutOn, unsigned int timeOutOff);
 
 
 		ContactorState2	GetState();

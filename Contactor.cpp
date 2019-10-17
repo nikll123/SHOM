@@ -6,11 +6,15 @@ Contactor::Contactor() : Unit("contactor", UT_CONTACTOR)
 	_state = CS_NOTINIT;
 }
 
-Contactor::Contactor(String title, uint8_t pinOut, uint8_t pinIn) : Contactor(title, pinOut, pinIn, 0) 
+Contactor::Contactor(String title, uint8_t pinIn) : Contactor(title, 0, pinIn, 0) 
 {
 }
 
-Contactor::Contactor(String title, uint8_t pinOut, uint8_t pinIn, uint8_t pinLed) : Unit(title, UT_CONTACTOR)
+Contactor::Contactor(String title, uint8_t pinIn, uint8_t pinOut) : Contactor(title, pinIn, pinOut, 0) 
+{
+}
+
+Contactor::Contactor(String title, uint8_t pinIn, uint8_t pinOut, uint8_t pinLed) : Unit(title, UT_CONTACTOR)
 {
 	_timeOutOn = TURN_ON_TIMEOUT;
 	_timeOutOff = TURN_OFF_TIMEOUT;
