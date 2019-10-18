@@ -1,7 +1,7 @@
 #include "Uzel.h"
 
 // =========   CONSTRUCTORS   =========
-Uzel::Uzel() : Unit("contactor", UT_NONE) 
+Uzel::Uzel() : Unit("uzel", UT_NONE) 
 {
 	_state = CS_NOTINIT;
 }
