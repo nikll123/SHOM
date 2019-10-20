@@ -1,76 +1,62 @@
-#include "Uzel.h"
+#include "Contactor.h"
 
 // =========   CONSTRUCTORS   =========
-Uzel::Uzel() : Unit("uzel", UT_NONE) 
+Contactor::Contactor() : Unit("uzel", UT_NONE) 
 {
 	_state = CS_NOTINIT;
 }
 
-
-Uzel::Uzel(String title, uint8_t pinIn, uint8_t pinOut) : Uzel(title, pinIn, pinOut, 0) 
-{
-}
-
-Uzel::Uzel(String title, uint8_t pinIn, uint8_t pinOut, uint8_t pinLed) : Uzel(title, pinIn, pinOut, pinLed, TURN_ON_TIMEOUT, TURN_OFF_TIMEOUT) 
+Contactor::Contactor(String title, uint8_t pinIn, uint8_t pinOut) : Contactor(title, pinIn, pinOut, TURN_ON_TIMEOUT, TURN_OFF_TIMEOUT) 
 {
 }
 
 
-Uzel::Uzel(String title, uint8_t pinIn, uint8_t pinOut, uint8_t pinLed, unsigned long timeOutOn, unsigned long timeOutOff) : Unit(title, UT_CONTACTOR)
+Contactor::Contactor(String title, uint8_t pinIn, uint8_t pinOut, unsigned long timeOutOn, unsigned long timeOutOff) : Unit(title, UT_CONTACTOR)
 	{
 	_timeOutOn = timeOutOn;
 	_timeOutOff = timeOutOff;
 	KeyIn = PinIn(title + "_KeyIn", pinIn);
 	KeyOut = PinOut(title + "_KeyOut", pinOut);
-	LedIndicator = Led(title + "_led", pinLed);
-	LogTextLn(String(_type) + "_type; ");
-	
 	_state = CS_UNKNOWN;
-	
 	}
 
-void Uzel::Init()
+void Contactor::Init()
 	{
- 	LogTextLn(_title + " Init");
 	KeyIn.GetState();
 	_state = CS_OFF;
-	LedIndicator.SetOff();
 	GetState();
 	}
 
 // ------------------------------------
-UzelInfo Uzel::GetInfo()
+ContactorInfo Contactor::GetInfo()
 	{
 	UnitInfo ui = Unit::GetInfo();
 	PinInInfo kii = KeyIn.GetInfo();
 	PinOutInfo koi = KeyOut.GetInfo();
-	LedInfo li = LedIndicator.GetInfo();
     return {ui.Title,
 			ui.UnitType, 
-			GetUzelStateText(_state), 
+			GetContactorStateText(_state), 
 			kii.Pin, 
 			koi.Pin, 
-			li.Pin,
 			_timeOutOn,
 			_timeOutOff 
 			}; 
 	}
 	
 // ------------------------------------
-void Uzel::LogInfo()
+void Contactor::LogInfo()
 	{
-	UzelInfo ci = GetInfo();
+	ContactorInfo ci = GetInfo();
 	LogText(ci.Title + "; ");
 	LogText(ci.UnitType + "; ");
 	LogText("in-" + String(ci.PinIn) + "; ");
 	LogText("out-" + String(ci.PinOut) + "; ");
-	LogText("led-" + String(ci.PinLed) + "; ");
 	LogText(ci.State + ".");
 	LogLn();
 	}
 
 //------------------------------
-String Uzel::GetUzelStateText(UzelState state)
+String Contactor::GetContactorStateText(ContactorState state)
 {
 switch (state)
 	{
@@ -80,19 +66,19 @@ switch (state)
 	case CS_STARTING	: return "STARTING";
 	case CS_STOPPING	: return "STOPPING";
 	case CS_UNKNOWN		: return "UNKNOWN";
-	default			    : return "UzelState error " + String(state);
+	default			    : return "ContactorState error " + String(state);
 	}
 }
 
 // ------------------------------------
-UzelState2 Uzel::GetState()
+ContactorState2 Contactor::GetState()
 	{
-	UzelState2 cs2 = {_state, _state};
+	ContactorState2 cs2 = {_state, _state};
 	if (_state != CS_NOTINIT)
 		{
 
 		cs2.Old = _state;
-	//LogTextLn(GetUzelStateText(cs2.Old));
+	//LogTextLn(GetContactorStateText(cs2.Old));
 		PinState stateKeyIn = (KeyIn.GetState()).New;
 		PinState stateKeyOut = KeyOut.GetState(); 
 		if(_state == CS_OFF)
@@ -151,31 +137,29 @@ UzelState2 Uzel::GetState()
 		cs2.New = _state;
 		IfChanged(cs2);
 
-		
-		LedIndicator.Refresh();
 		}
 	return cs2;
 	}
 
 // ------------------------------------
-void Uzel::TurnOn()
+void Contactor::TurnOn()
 	{
  	LogTextLn(_title + " TurnOn");
     _Turn(CS_STARTING);
 	}
 
 // ------------------------------------
-void Uzel::TurnOff()
+void Contactor::TurnOff()
 	{
  	LogTextLn(_title + " TurnOff");
     _Turn(CS_STOPPING);
 	}
 
-void Uzel::_Turn(UzelState csNew)
+void Contactor::_Turn(ContactorState csNew)
 	{
 	if (csNew == CS_STARTING || csNew == CS_STOPPING) 
 		{
-		UzelState csCurr = (GetState()).New;
+		ContactorState csCurr = (GetState()).New;
 		bool err = false; 
 		switch (csNew)
 			{
@@ -194,18 +178,18 @@ void Uzel::_Turn(UzelState csNew)
 					}
 				break;
 			}
-		UzelState2 cs2(csCurr, csNew); 
+		ContactorState2 cs2(csCurr, csNew); 
 		IfChanged(cs2);
 		}
 	else
 		{
-		 	LogTextLn("_Turn: wrong arg " + GetUzelStateText(csNew));
+		 	LogTextLn("_Turn: wrong arg " + GetContactorStateText(csNew));
 		}
 	}
 	
 
 // ------------------------------------
-/*void Uzel::TurnOffAlarm()
+/*void Contactor::TurnOffAlarm()
 	{
 	if (_uzelType == UT_CONTACTOR && _active)
 		{
@@ -215,31 +199,23 @@ void Uzel::_Turn(UzelState csNew)
 		}
 	}*/
 
-void Uzel::IfChanged(UzelState2 cs2)
+void Contactor::IfChanged(ContactorState2 cs2)
 	{
 	if (cs2.Old != cs2.New)
 		{
-		if (cs2.New == CS_ON)
-			LedIndicator.SetOn();
-		else if (cs2.New == CS_STARTING || cs2.New == CS_STOPPING)
-			LedIndicator.SetBlink();
-		else if (cs2.New >= CS_ERR100)
-			LedIndicator.SetBlinkFast();
-		else 
-			LedIndicator.SetOff();
 
 		if (LOGLEVEL > LL_MIN) 
 			{
 			LogText(GetInfo().Title);
-			LogText(" " + GetUzelStateText(cs2.Old));
-			LogText(" -> " + GetUzelStateText(cs2.New));
+			LogText(" " + GetContactorStateText(cs2.Old));
+			LogText(" -> " + GetContactorStateText(cs2.New));
 			LogLn();
 			}
 		}
 	}
 	
 
-/*void Uzel::LogKeysState()
+/*void Contactor::LogKeysState()
 	{
 	if (LOGLEVEL > LL_NORMAL) 
 		{

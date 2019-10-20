@@ -1,15 +1,14 @@
-#ifndef Uzel_h
-	#define Uzel_h
+#ifndef Contactor_h
+	#define Contactor_h
 	
 	#define TURN_ON_TIMEOUT 3000
 	#define TURN_OFF_TIMEOUT 2000
 	
 	#include "Unit.h"
-	#include "Led.h"
 	#include "PinIn.h"
 	#include "PinOut.h"
 
-	enum UzelState{ 
+	enum ContactorState{ 
 						CS_NOTINIT	= 0,
 						CS_ON		= 1,
 						CS_OFF		= 2,
@@ -29,15 +28,15 @@
 						CS_ERR110		= 110,
 					};
 						
-	struct UzelState2
+	struct ContactorState2
 					{
-					UzelState Old;  
-					UzelState New;
+					ContactorState Old;  
+					ContactorState New;
 					
-					UzelState2(UzelState csOld = CS_NOTINIT, UzelState csNew = CS_NOTINIT):Old(csOld ),New(csNew ){};  
+					ContactorState2(ContactorState csOld = CS_NOTINIT, ContactorState csNew = CS_NOTINIT):Old(csOld ),New(csNew ){};  
 					}; 
 	
-    struct UzelInfo	
+    struct ContactorInfo	
 					{
 					String   		Title;
 					String	 		UnitType;
@@ -51,21 +50,19 @@
 					}; 
 
 	
-	class Uzel : public Unit
+	class Contactor : public Unit
 	{
 	public:
-					    Uzel();
-					    Uzel(String title, uint8_t pinIn, uint8_t pinOut);
-					    Uzel(String title, uint8_t pinIn, uint8_t pinOut, uint8_t pinLed);
-					    Uzel(String title, uint8_t pinIn, uint8_t pinOut, uint8_t pinLed, unsigned long timeOutOn, unsigned long  timeOutOff);
+					    Contactor();
+					    Contactor(String title, uint8_t pinIn, uint8_t pinOut);
+					    Contactor(String title, uint8_t pinIn, uint8_t pinOut, unsigned long timeOutOn, unsigned long  timeOutOff);
 
-		UzelState2	GetState();
-		UzelInfo 	GetInfo();
-		String			GetUzelStateText(UzelState state);
+		ContactorState2	GetState();
+		ContactorInfo 	GetInfo();
+		String			GetContactorStateText(ContactorState state);
 		void			Init();
 		void			LogInfo();
-		void 			IfChanged(UzelState2 cs2);
-		Led				LedIndicator;
+		void 			IfChanged(ContactorState2 cs2);
 		PinIn			KeyIn;
 		PinOut			KeyOut;
 
@@ -78,13 +75,13 @@
 		void LogKeysState();
 		
 	private:
-		UzelState2	_getStateAutomat();
-		UzelState2	_getStateContactor();
-		UzelState	_state;
+		ContactorState2	_getStateAutomat();
+		ContactorState2	_getStateContactor();
+		ContactorState	_state;
 		unsigned int 	_timeOutOn;
 		unsigned int 	_timeOutOff;
 		unsigned long 	_millsCheck;
-		void 			_Turn(UzelState csNew);
+		void 			_Turn(ContactorState csNew);
 	};
 #endif
 
