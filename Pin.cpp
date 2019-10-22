@@ -10,6 +10,17 @@ Pin::Pin(String title, uint8_t pin, UnitType ut) : Unit(title, ut)
 	_state = KS_NONE;
 }
 
+// ------------------------------------
+bool Pin::IsHigh()
+	{
+	return digitalRead(_pin);
+	}
+
+// ------------------------------------
+bool Pin::IsLow()
+	{
+ 	return !IsHigh();
+	}
 
 // ------------------------------------
 PinState Pin::GetState()

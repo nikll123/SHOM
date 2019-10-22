@@ -22,6 +22,8 @@ Contactor::Contactor(String title, uint8_t pinIn, uint8_t pinOut, unsigned long 
 
 void Contactor::Init()
 	{
+ 	Log(_title + " Init");
+ 	KeyOut.SetOff();
 	KeyIn.GetState();
 	_state = CS_OFF;
 	GetState();
@@ -66,7 +68,7 @@ switch (state)
 	case CS_STARTING	: return "STARTING";
 	case CS_STOPPING	: return "STOPPING";
 	case CS_UNKNOWN		: return "UNKNOWN";
-	default			    : return "ContactorState error " + String(state);
+	default			    : return "Error " + String(state);
 	}
 }
 
@@ -81,12 +83,9 @@ ContactorState2 Contactor::GetState()
 	//LogTextLn(GetContactorStateText(cs2.Old));
 		PinState stateKeyIn = (KeyIn.GetState()).New;
 		PinState stateKeyOut = KeyOut.GetState(); 
-		if(_state == CS_OFF)
-			{
-			if (stateKeyOut != KS_OFF) 		_state = CS_ERR101;
-			else if (stateKeyIn != KS_OFF) 	_state = CS_ERR102;
-			}
-		else if(_state == CS_STARTING)
+		if		(_state == CS_OFF	&& stateKeyOut != KS_OFF) 	_state = CS_ERR101;
+		else if (_state == CS_OFF	&& stateKeyIn != KS_OFF) 	_state = CS_ERR102;
+		else if (_state == CS_STARTING)
 			{
 			if(_millsCheck == 0)
 				{
@@ -144,14 +143,14 @@ ContactorState2 Contactor::GetState()
 // ------------------------------------
 void Contactor::TurnOn()
 	{
- 	LogTextLn(_title + " TurnOn");
+ 	Log(_title + " TurnOn");
     _Turn(CS_STARTING);
 	}
 
 // ------------------------------------
 void Contactor::TurnOff()
 	{
- 	LogTextLn(_title + " TurnOff");
+ 	Log(_title + " TurnOff");
     _Turn(CS_STOPPING);
 	}
 
@@ -183,7 +182,7 @@ void Contactor::_Turn(ContactorState csNew)
 		}
 	else
 		{
-		 	LogTextLn("_Turn: wrong arg " + GetContactorStateText(csNew));
+		 Log("_Turn: wrong arg " + GetContactorStateText(csNew));
 		}
 	}
 	
@@ -202,16 +201,12 @@ void Contactor::_Turn(ContactorState csNew)
 void Contactor::IfChanged(ContactorState2 cs2)
 	{
 	if (cs2.Old != cs2.New)
-		{
-
-		if (LOGLEVEL > LL_MIN) 
-			{
-			LogText(GetInfo().Title);
-			LogText(" " + GetContactorStateText(cs2.Old));
-			LogText(" -> " + GetContactorStateText(cs2.New));
-			LogLn();
-			}
-		}
+		Log(GetInfo().Title + " " + GetContactorStateText(cs2.Old) + " -> " + GetContactorStateText(cs2.New));
+	}
+	
+void Contactor::Log(String str)
+	{
+	if (LOGLEVEL >= LL_NORMAL) LogTextLn(str);
 	}
 	
 

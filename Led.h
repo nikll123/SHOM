@@ -2,6 +2,7 @@
 	#define Led_h
 
 	#include "Unit.h"
+	#include "PinOut.h"
 	#define INTERVAL_BLINK 300
     #define INTERVAL_BLINKFAST 100
 	#define INTERVAL_BLINKSLOW 800
@@ -41,18 +42,20 @@
 		LedState2	Refresh();
 
 		void 		LogInfo();
+		void		Log(String str);
 		void 		SetOn();
 		void 		SetOff();
 		void 		SetBlink();
 		void 		SetBlinkFast();
 		void 		SetBlinkSlow();
 		String 		GetLedStateText(LedState ls);
-	    uint8_t		Pin;
-
+	    PinOut		PinOutLed;
+	    bool 		IsActive();
 
 	protected:
 
 	private:
+		void 			_logState(LedState2);
 	    LedState		_state;
 		unsigned long 	_millis;
 		void 			_setState(LedState ls);

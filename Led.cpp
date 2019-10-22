@@ -1,7 +1,7 @@
 #include "Led.h"
 
 //------------------------------------
-Led::Led() : Led("", 0)
+Led::Led() : Led("dummy led", 0, LEDS_NOTINIT)
 {
 }
 
@@ -11,74 +11,79 @@ Led::Led(String title, uint8_t pin) : Led(title, pin, LEDS_OFF)
 
 Led::Led(String title, uint8_t pin, LedState ledState) : Unit(title, UT_LED)
 {
-    Pin = pin;
-    pinMode (Pin, OUTPUT);
-    _state = ledState;
-
+    PinOutLed = PinOut(title + "_pin", pin);
+    if(pin > 0)
+    	_state = ledState;
+    else
+	    _state = LEDS_NOTINIT;
 }
+
+//------------------------------------
+bool Led::IsActive()
+	{
+	return _state != LEDS_NOTINIT;;
+	}
+
 
 //------------------------------------
 LedState Led::GetState()
-{
+	{
 	return _state;
-}
+	}
 
 //------------------------------------
 LedInfo Led::GetInfo()
-{
+	{
 	UnitInfo ui = Unit::GetInfo();
+	PinOutInfo pi = PinOutLed.GetInfo();
     return { 
 			ui.Title,
 			ui.UnitType,
-			Pin,
+			pi.Pin,
 			GetLedStateText(_state)
 			}; 
-}
+	}
 
 void Led::LogInfo()
-{
-   LedInfo li = GetInfo();
-   LogTextLn(li.Title + "; " + li.UnitType + "; " + String(li.Pin) + "; " + GetLedStateText(_state));
-}
+	{
+	LedInfo li = GetInfo();
+	Log(li.Title + "; " + li.UnitType + "; " + String(li.Pin) + "; " + GetLedStateText(_state));
+	}
 
 
 //------------------------------
 String Led::GetLedStateText(LedState ls)
-{
-switch (ls)
 	{
-	case LEDS_NOTINIT		: return "NOTINIT";
-	case LEDS_ON			: return "ON";
-	case LEDS_OFF			: return "OFF";
-	case LEDS_BLINK			: return "BLINK";
-	case LEDS_BLINKFAST		: return "BLINKFAST";
-	case LEDS_BLINKSLOW		: return "BLINKSLOW";
-	case LEDS_BLINK2		: return "BLINK2";
-	case LEDS_BLINK3		: return "BLINK3";
-	default			    	: return "GetLedStateText: unknown-" + String(ls);
+	switch (ls)
+		{
+		case LEDS_NOTINIT		: return "NOTINIT";
+		case LEDS_ON			: return "ON";
+		case LEDS_OFF			: return "OFF";
+		case LEDS_BLINK			: return "BLINK";
+		case LEDS_BLINKFAST		: return "BLINKFAST";
+		case LEDS_BLINKSLOW		: return "BLINKSLOW";
+		case LEDS_BLINK2		: return "BLINK2";
+		case LEDS_BLINK3		: return "BLINK3";
+		default			    	: return "GetLedStateText: unknown-" + String(ls);
+		}
 	}
-}
 
 //------------------------------------
 LedState2 Led::Refresh()
-{
+	{
 	LedState2 ls2;
 	ls2.Old = _state; 
 	_refreshState();
 	ls2.New = _state;
-	if (LOGLEVEL >= LL_NORMAL && ls2.Old != ls2.New) 
-		{
-		LogText(_title);
-		LogText("  " + GetLedStateText(ls2.Old));
-		LogTextLn(" -> " + GetLedStateText(ls2.New));
-		}
+	if (ls2.Old != ls2.New) 
+		_logState(ls2);
 	 
 	return ls2;
-}
+	}
 
 void Led::_refreshState()
 	{
-	bool b = digitalRead(Pin);
+	bool b = PinOutLed.IsHigh();
 	switch (_state)
 		{
 		case LEDS_BLINK  :
@@ -95,8 +100,11 @@ void Led::_refreshState()
 			break;
 		default :
 			b = false;
-		}	
-	digitalWrite(Pin, b);				
+		}
+	if (b)
+		PinOutLed.SetOn();	
+	else				
+		PinOutLed.SetOff();
 	}
 
 //------------------------------------
@@ -116,16 +124,22 @@ void Led::_setState(LedState ls)
 	{
 	if (_state != ls)
 		{
-		if (LOGLEVEL > LL_MIN) 
-			{
-			LogText(_title);
-			LogText(" " + GetLedStateText(_state));
-			LogTextLn(" -> " + GetLedStateText(ls));
-			}
+		_logState({_state, ls});
 		_state = ls;
 		_millis = millis();
 		_refreshState();
 		} 
+	}
+	
+//------------------------------------
+void Led::_logState(LedState2 ls2)
+	{
+	Log(_title + " " + GetLedStateText(ls2.Old) + " -> " + GetLedStateText(ls2.New));
+	}
+	
+void Led::Log(String str)
+	{
+	if (LOGLEVEL >= LL_NORMAL) LogTextLn(str);
 	}
 
 void Led::SetOn()

@@ -4,7 +4,7 @@ ButtonLed::ButtonLed() : ButtonLed("ButtonLed", 0, 0)
 {
 }
 
-ButtonLed::ButtonLed(String title, uint8_t pinBtn, uint8_t pinLed) : Unit(title, UT_PININLED) 
+ButtonLed::ButtonLed(String title, uint8_t pinBtn, uint8_t pinLed) : Unit(title, UT_BUTTONLED) 
 {
 	Button = PinIn(title + "_but", pinBtn);
 	LedIndicator = Led(title + "_led", pinLed);
@@ -16,7 +16,7 @@ PinState2 ButtonLed::GetState()
 	{
 	PinState2 ps2 = Button.GetState();
 
-	if(LedIndicator.Pin > 0)
+	if(LedIndicator.IsActive())
 		{
 		if (ps2.New == KS_ON)
 			LedIndicator.SetOn();
@@ -25,7 +25,7 @@ PinState2 ButtonLed::GetState()
 		LedState2 ls2 = LedIndicator.Refresh();
 		}
 		
-	if (LOGLEVEL > LL_MIN && ps2.Old != ps2.New)
+	if (LOGLEVEL >= LL_NORMAL && ps2.Old != ps2.New)
 		{
 		LogText(_title);
 		LogText(" " + Button.GetPinStateText(ps2.Old));

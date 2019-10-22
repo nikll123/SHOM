@@ -35,6 +35,8 @@
 		PinState	GetState();
 
 		String 		GetPinStateText(PinState);
+		bool		IsHigh();
+		bool		IsLow();
 
 	protected:
 		uint8_t 	_pin;

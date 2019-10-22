@@ -19,6 +19,7 @@
 				    PinOut(String title, uint8_t pin);
 		void		SetOn();
 		void		SetOff();
+		void		Inverse();
 		PinState 	GetState();
 		PinOutInfo 	GetInfo();
 		void 		LogInfo();

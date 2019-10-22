@@ -3,14 +3,14 @@
 	
 	
 	#define LL_NONE		0
-	#define LL_MIN		1
+	#define LL_HIGH		1
 	#define LL_NORMAL	2
-	#define LL_MAX		3
+	#define LL_LOW		3
 
 	#define LOGLEVEL LL_NORMAL
 
     #ifndef LOGLEVEL
-		#define LOGLEVEL LL_NONE
+		#define LOGLEVEL LL_NORMAL
 	#endif
 
 	#include "Arduino.h"
@@ -20,15 +20,15 @@
 
 	//-------------------------------
 	enum UnitType  {UT_NONE,
-					UT_BUTTON,
-					UT_LED,
 					UT_PIN,
 					UT_PININ,
 					UT_PINOUT,
-					UT_PININLED,
+					UT_LED,
+					UT_BUTTONLED,
 					UT_AUTOMAT, 
 					UT_CONTACTOR,
-					UT_CONVEYOR
+					UT_CONVEYOR,
+					UT_SYSTEM
 					};	
 
 	//-------------------------------

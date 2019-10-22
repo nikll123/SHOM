@@ -2,7 +2,7 @@
 	#define Contactor_h
 	
 	#define TURN_ON_TIMEOUT 3000
-	#define TURN_OFF_TIMEOUT 2000
+	#define TURN_OFF_TIMEOUT 0 //2000
 	
 	#include "Unit.h"
 	#include "PinIn.h"
@@ -43,7 +43,6 @@
 					String			State;
 					uint8_t			PinIn;
 					uint8_t     	PinOut;
-					uint8_t     	PinLed;
 					bool			Active;
 					unsigned int 	TimeOutOn;
 					unsigned int 	TimeOutOff;
@@ -62,10 +61,10 @@
 		String			GetContactorStateText(ContactorState state);
 		void			Init();
 		void			LogInfo();
+		void 			Log(String str);
 		void 			IfChanged(ContactorState2 cs2);
 		PinIn			KeyIn;
 		PinOut			KeyOut;
-
 
 		void TurnOn();
 		void TurnOff();
