@@ -9,22 +9,22 @@
 
 	enum ConveyorState{ 
 						US_NOTINIT		= 0,
-						US_ON			= 1,
-						US_OFF			= 2,
-						US_STARTING		= 3,
-						US_STOPPING		= 4,
-						US_UNKNOWN		= 5,
-						US_ERR1000		= 1000,
-						US_ERR1001		= 1001,
-						US_ERR1002		= 1002,
-						US_ERR1003		= 1003,
-						US_ERR1004		= 1004,
-						US_ERR1005		= 1005,
-						US_ERR1006		= 1006,
-						US_ERR1007		= 1007,
-						US_ERR1008		= 1008,
-						US_ERR1009		= 1009,
-						US_ERR1010		= 1010,
+						US_UNKNOWN		= 1,
+						US_ON			= 2,
+						US_OFF			= 3,
+						US_STARTING		= 4,
+						US_STOPPING		= 5,
+						US_ERR200		= 200,
+						US_ERR201		= 201,
+						US_ERR202		= 202,
+						US_ERR203		= 203,
+						US_ERR204		= 204,
+						US_ERR205		= 205,
+						US_ERR206		= 206,
+						US_ERR207		= 207,
+						US_ERR208		= 208,
+						US_ERR209		= 209,
+						US_ERR210		= 210,
 					};
 						
 	struct ConveyorState2
@@ -69,9 +69,10 @@
 		Contactor		ContactorConveyor;
 		PinIn			AtomatConveyor;
 
-		void TurnOn();
-		void TurnOff();
-		void TurnOffAlarm();
+		void 			TurnOn();
+		void 			TurnOff();
+		void 			TurnOffAlarm();
+        bool			IsActive();
 
 	protected:
 		void LogKeysState();

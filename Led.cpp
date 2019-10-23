@@ -77,7 +77,6 @@ LedState2 Led::Refresh()
 	ls2.New = _state;
 	if (ls2.Old != ls2.New) 
 		_logState(ls2);
-	 
 	return ls2;
 	}
 

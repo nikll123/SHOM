@@ -1,7 +1,7 @@
 #include "Conveyor.h"
 
 // =========   CONSTRUCTORS   =========
-Conveyor::Conveyor() : Unit("dummy uzel", UT_NONE) 
+Conveyor::Conveyor() : Unit("dummy", UT_CONVEYOR) 
 {
 	_state = US_NOTINIT;
 }
@@ -43,7 +43,7 @@ ConveyorInfo Conveyor::GetInfo()
 			ci.PinOut,
 			ai.Pin, 
 			li.Pin,
-			_state != US_NOTINIT
+			IsActive(),
 			}; 
 	}
 	
@@ -71,11 +71,11 @@ String Conveyor::GetConveyorStateText(ConveyorState state)
 switch (state)
 	{
 	case US_NOTINIT		: return "NOTINIT";
+	case US_UNKNOWN		: return "UNKNOWN";
 	case US_ON			: return "ON";
 	case US_OFF			: return "OFF";
 	case US_STARTING	: return "STARTING";
 	case US_STOPPING	: return "STOPPING";
-	case US_UNKNOWN		: return "UNKNOWN";
 	default			    : return "Error " + String(state);
 	}
 }
@@ -84,25 +84,26 @@ switch (state)
 ConveyorState2 Conveyor::GetState()
 	{
 	ConveyorState2 us2 = {_state, _state};
-	if (_state != US_NOTINIT && _state < US_ERR1000)
+	if (_state != US_NOTINIT && _state < US_ERR200)
 		{
         ContactorState2 cs2 = ContactorConveyor.GetState();
         PinState2 as2 = AtomatConveyor.GetState();
 
-        if (cs2.New >= CS_ERR100) _state = US_ERR1001;
-		else if (cs2.New == CS_ON		&& as2.New == KS_OFF) 	_state = US_ERR1002;
-		else if (cs2.New == CS_OFF		&& as2.New == KS_ON) 	_state = US_ERR1003;
-		else if (cs2.New == CS_STARTING	&& as2.New == KS_OFF) 	_state = US_ERR1005;
+        if 		(cs2.New >= CS_ERR100) 							_state = US_ERR201;
+		else if (cs2.New == CS_ON		&& as2.New == KS_OFF) 	_state = US_ERR202;
+		else if (cs2.New == CS_OFF		&& as2.New == KS_OFF) 	_state = US_ERR203;
+		else if (cs2.New == CS_STARTING	&& as2.New == KS_OFF) 	_state = US_ERR205;
+		else if (cs2.New == CS_STOPPING	&& as2.New == KS_OFF) 	_state = US_ERR206;
 
-		else if (cs2.New == CS_OFF		&& as2.New == KS_OFF) 	_state = US_OFF;
+		else if (cs2.New == CS_OFF		&& as2.New == KS_ON) 	_state = US_OFF;
 		else if (cs2.New == CS_ON		&& as2.New == KS_ON) 	_state = US_ON;
 		else if (cs2.New == CS_STARTING	&& as2.New == KS_ON) 	_state = US_STARTING;
 		else if (cs2.New == CS_STOPPING	&& as2.New == KS_ON) 	_state = US_STOPPING;
 
 		else
 			{
-			Log("US_ERR1000 : " + ContactorConveyor.GetContactorStateText(cs2.New) + " && " + AtomatConveyor.GetPinStateText(as2.New));
-			_state = US_ERR1000;
+			Log("US_ERR200 : " + ContactorConveyor.GetContactorStateText(cs2.New) + " && " + AtomatConveyor.GetPinStateText(as2.New));
+			_state = US_ERR200;
 			}
 		
 		us2.New = _state;
@@ -121,7 +122,7 @@ void Conveyor::IfChanged(ConveyorState2 cs2)
 			LedConveyor.SetOn();
 		else if (cs2.New == US_STARTING || cs2.New == US_STOPPING)
 			LedConveyor.SetBlink();
-		else if (cs2.New >= US_ERR1000)
+		else if (cs2.New >= US_ERR200)
 			LedConveyor.SetBlinkFast();
 		else 
 			LedConveyor.SetOff();
@@ -166,7 +167,7 @@ void Conveyor::_Turn(ConveyorState csNew)
 			_state = csNew;
 			}
 		else
-			_state = US_ERR1004;
+			_state = US_ERR204;
 
 		cs2.New = _state;	
 		IfChanged(cs2);
@@ -201,7 +202,10 @@ void Conveyor::LogStates(ConveyorState2 cs2)
 	Log(GetInfo().Title + " " + GetConveyorStateText(cs2.Old) + " -> " + GetConveyorStateText(cs2.New));
 	}
 		
-	
+bool Conveyor::IsActive()
+	{
+	return _state != US_NOTINIT;
+	}	
 
 /*void Conveyor::LogKeysState()
 	{
