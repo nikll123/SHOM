@@ -37,6 +37,7 @@
 		String 		GetPinStateText(PinState);
 		bool		IsHigh();
 		bool		IsLow();
+		void 		Log(String str);
 
 	protected:
 		uint8_t 	_pin;

@@ -188,15 +188,10 @@ void Contactor::_Turn(ContactorState csNew)
 	
 
 // ------------------------------------
-/*void Contactor::TurnOffAlarm()
+void Contactor::TurnOffAlarm()
 	{
-	if (_uzelType == UT_CONTACTOR && _active)
-		{
-		//_millsCheck = 0;
-		digitalWrite(_pinOut, 0);
-		_state = US_OFF;
-		}
-	}*/
+	TurnOff();
+	}
 
 void Contactor::IfChanged(ContactorState2 cs2)
 	{

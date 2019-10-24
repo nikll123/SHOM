@@ -42,11 +42,10 @@ PinState2 PinIn::GetState()
 	_refreshState();
 	ps2.New = _state;
 		
-	if (LOGLEVEL >= LL_LOW && ps2.Old != ps2.New) 
+	if (ps2.Old != ps2.New) 
 		{
-		LogText(_title);
-		LogText(" " + GetPinStateText(ps2.Old));
-		LogTextLn(" -> " + GetPinStateText(ps2.New));
+		String str = _title + ": " + GetPinStateText(ps2.Old) + " -> " + GetPinStateText(ps2.New); 
+		Log(str);
 		}
 	return ps2;
 }
@@ -81,22 +80,22 @@ PinInInfo PinIn::GetInfo()
 void PinIn::LogInfo()
 	{
 	PinInInfo pi = GetInfo();
-	LogText(pi.Title + "; ");
-	LogText(pi.UnitType + "; ");
-	LogText(pi.State + "; ");
-	LogText(String(_pin) + "; ");
-	LogText(pi.Logic + "; ");
-	LogLn();
+	String str = _title + ": ";
+	str = str + (pi.Title + "; ");
+	str = str + (pi.UnitType + "; ");
+	str = str + (pi.State + "; ");
+	str = str + (String(_pin) + "; ");
+	str = str + (pi.Logic + "; ");
+	Log(str);
 	}
 	
 
 // ------------------------------------
 void PinIn::LogState()
 	{
-	PinInInfo pi = GetInfo();
-	LogText(pi.Title + "; ");
-	LogText(pi.State + "; ");
-	LogLn();
+	String str = _title + ": ";
+	str = str + GetPinStateText(_state) + "; ";
+	Log(str);
 	}
 
 //------------------------------

@@ -1,9 +1,10 @@
 #ifndef System_h
 	#define System_h
 
-	#include "Conveyor.h"
+	
+	#define MAX_UNIT_NUMBER 15
 
-	#define MAX_UNIT_NUMBER 20
+	#include "Conveyor.h"
 
 enum SystemState 
 				{
@@ -24,6 +25,7 @@ enum SystemState
 				SS_ERR308		= 308,
 				SS_ERR309		= 309,
 				};
+				
 struct	SystemState2 
 				{
 				SystemState		Old;
@@ -44,7 +46,7 @@ struct	SystemInfo
 	{
 	public:
 	    				System();
-			    		System(String title, uint8_t pin_button_on, uint8_t _pin_button_off, uint8_t pin_button_reset);
+			    		System(uint8_t unitCount, String title, uint8_t pin_button_on, uint8_t _pin_button_off, uint8_t pin_button_reset);
 		void 			Init();
 		SystemInfo 		GetInfo();
 		void 			LogInfo();
@@ -53,8 +55,10 @@ struct	SystemInfo
 		void 			SetupConveyor(uint8_t index, String title, uint8_t pinIn, uint8_t pinOut, uint8_t pinAuto, uint8_t pinLed);
 		PinIn 			SetupButton(String suffix, uint8_t pin);
 		String 			GetSystemStateText(SystemState state);
+		uint8_t			UnitCount;
 
 		Conveyor 		Conveyors[MAX_UNIT_NUMBER];
+		ConveyorState2	ConveyorStates[MAX_UNIT_NUMBER];
 		PinIn			BtnOn;
 		PinIn			BtnOff;
 		PinIn			BtnReset;
@@ -68,6 +72,11 @@ struct	SystemInfo
 		void 			_setState(SystemState state);
 		void 			_ifChanged(SystemState2 cs2);
 		void 			_logStates(SystemState2 cs2);
+		void 			_updateConveyorStates();
+		void 			_checkStateOff();
+		void 			_checkStateOn();
+		void 			_checkStateStarting();
+		void 			_checkStateStopping();
 		SystemState		_state;
 		
 	};

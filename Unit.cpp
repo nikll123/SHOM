@@ -4,7 +4,7 @@
 // =========   CONSTRUCTORS   =========
 Unit::Unit()
 	{
-	_title = "";
+	_title = "DummyUnit";
 	_type = UT_NONE;
 	}
 

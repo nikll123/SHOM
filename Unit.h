@@ -1,6 +1,8 @@
 #ifndef Unit_h
 	#define Unit_h
-	
+
+	#include "Arduino.h"
+	#include <Wire.h>
 	
 	#define LL_NONE		0
 	#define LL_HIGH		1
@@ -13,9 +15,6 @@
 		#define LOGLEVEL LL_NORMAL
 	#endif
 
-	#include "Arduino.h"
-	#include <Wire.h>
-	
 	#define PortMonitorLog 1
 
 	//-------------------------------

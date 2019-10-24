@@ -1,6 +1,6 @@
 #include "Pin.h"
 // ------------------------------------
-Pin::Pin() : Pin("Pin", 0, UT_PIN) 
+Pin::Pin() : Pin("DummyPin", 0, UT_PIN) 
 {
 }
 
@@ -50,3 +50,9 @@ switch (instate)
 	}
 }
 
+//------------------------------
+void Pin::Log(String str)
+	{
+	if (LOGLEVEL >= LL_NORMAL) 
+		LogTextLn(str);
+	}

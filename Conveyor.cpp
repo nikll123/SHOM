@@ -181,15 +181,11 @@ void Conveyor::_Turn(ConveyorState csNew)
 
 
 // ------------------------------------
-/*void Conveyor::TurnOffAlarm()
+void Conveyor::TurnOffAlarm()
 	{
-	if (_uzelType == UT_CONTACTOR && _active)
-		{
-		//_millsCheck = 0;
-		digitalWrite(_pinOut, 0);
-		_state = US_OFF;
-		}
-	}*/
+	ContactorConveyor.TurnOff();
+	_state = US_OFF;
+	}
 
 
 void Conveyor::Log(String str)
