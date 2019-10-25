@@ -1,13 +1,12 @@
 #include "System.h"
 
 // ------------------------------------
-System::System() : System(0, "DummySystem", 0, 0, 0)
+System::System() : System("DummySystem", 0, 0, 0)
 	{
 	}
 
-System::System(uint8_t unitCount, String title, uint8_t pinBtnOn, uint8_t pinBtnOff, uint8_t pinBtnReset) : Unit(title, UT_SYSTEM)
+System::System(String title, uint8_t pinBtnOn, uint8_t pinBtnOff, uint8_t pinBtnReset) : Unit(title, UT_SYSTEM)
 	{
-	UnitCount = unitCount;
 	Init();
 	BtnOn = SetupButton("_BtnOn", pinBtnOn);
 	BtnOff = SetupButton("_BtnOff", pinBtnOff);
@@ -24,9 +23,9 @@ PinIn System::SetupButton(String suffix,uint8_t pin)
 	
 // ------------------------------------
 void System::Init()
-	{
+	{ 
 	Log(_title + ": Init");
-	for(int i = 0; i < UnitCount; i++)
+	/*for(int i = 0; i < UnitCount; i++)
 		{
 		ConveyorStates[i] = {US_NOTINIT, US_NOTINIT};
 		Conveyor cnv = Conveyors[i]; 
@@ -36,7 +35,8 @@ void System::Init()
 			ConveyorStates[i] = {US_OFF, US_OFF};
 			}
 		}
-	_setState(SS_OFF);
+		*/
+	_setState(SS_OFF);  
 	}
 
 // ------------------------------------
@@ -113,10 +113,11 @@ String System::GetSystemStateText(SystemState state)
 	}
 
 // ------------------------------------
-void System::SetupConveyor(uint8_t index, String title, uint8_t pinIn, uint8_t pinOut, uint8_t pinAuto, uint8_t pinLed)
+void System::SetupConveyor(String title, uint8_t pinIn, uint8_t pinOut, uint8_t pinAuto, uint8_t pinLed)
 	{
-	Conveyors[index] = Conveyor(title, pinIn, pinOut, pinAuto, pinLed);
-	Conveyors[index].Init();
+	Conveyors[UnitCount] = Conveyor(title, pinIn, pinOut, pinAuto, pinLed);
+	Conveyors[UnitCount].Init();
+	UnitCount++;
 	}
 	
 // ------------------------------------
@@ -147,32 +148,33 @@ SystemState2 System::GetState()
 				if (_state == SS_OFF)
 					{
 					if (cs2.New != US_OFF)
-						_state = SS_ERR301; 	
+						_setState(SS_ERR301);
 					}
 				else if  (_state == SS_ON)
 					{
 					if (cs2.New != US_ON)
-						_state = SS_ERR302; 	
+						_setState(SS_ERR302);
 					}
 				else if  (_state == SS_STARTING)
 					{
+				//Log("SS_STARTING : " + String(_state));
+				cnv.LogInfo();
 					if (cs2.New != US_ON && cs2.New != US_OFF && cs2.New != US_STARTING)
-						_state = SS_ERR303;
+						_setState(SS_ERR303);
 					}
 				else if  (_state == SS_STOPPING)
 					{
 					if (cs2.New != US_ON && cs2.New != US_OFF && cs2.New != US_STOPPING) 
-						_state = SS_ERR304;
+						_setState(SS_ERR304);
 					}
 				else
 					{
-					Log("SS_ERR300 : " + GetSystemStateText(_state) + " && " +cnv.GetConveyorStateText(cs2.New));
-					_state = SS_ERR300; 	
+					Log("SS_ERR305 : " + String(i) + " " + String(_state) + " " + GetSystemStateText(_state) + " && " +cnv.GetConveyorStateText(cs2.New));
+					_setState(SS_ERR305);
 					}
 				}
 			}
-			
-			}
+		}
 			
 		for(int i = UnitCount - 1; i >= 0 ; i--)
 			{
@@ -234,22 +236,15 @@ void System::_checkStateOff()
 	bool alarmTurnOff = false;
 	for(int i = UnitCount - 1; i >= 0 ; i--)
 		{
-		if (!alarmTurnOff)
-			{
-			alarmTurnOff = ConveyorStates[i].New != US_OFF;
-			if(alarmTurnOff)
-				{
-				Log("SS_ERR300OFF : ");
-				_state = SS_ERR300; 	
-				}
-			}
-			
-		if(alarmTurnOff)
-			{
+		if (alarmTurnOff)
 			Conveyors[i].TurnOffAlarm();
+		else
+			{
+			if (ConveyorStates[i].New != US_OFF)
+				_state = SS_ERR300; 	
+				alarmTurnOff = true;
 			}
 		}
-
 	}
 
 // ------------------------------------
@@ -258,19 +253,13 @@ void System::_checkStateOn()
 	bool alarmTurnOff = false;
 	for(int i = UnitCount - 1; i >= 0 ; i--)
 		{
-		if (!alarmTurnOff)
-			{
-			alarmTurnOff = ConveyorStates[i].New != US_ON;
-			if(alarmTurnOff)
-				{
-				Log("SS_ERR300On : ");
-				_state = SS_ERR300; 	
-				}
-			}
-			
-		if(alarmTurnOff)
-			{
+		if (alarmTurnOff)
 			Conveyors[i].TurnOffAlarm();
+		else
+			{
+			if (ConveyorStates[i].New != US_OFF)
+				_state = SS_ERR300; 	
+				alarmTurnOff = true;
 			}
 		}
 
@@ -280,28 +269,42 @@ void System::_checkStateOn()
 void System::_checkStateStarting()
 	{
 	bool alarmTurnOff = false;
-	ConveyorState ConveyorStatePrev = US_ON; 	
-	ConveyorState ConveyorStateCur; 	
+	ConveyorStatePrevCurr cs; 
+	cs.Prev = US_ON; 	
 	for(int i = UnitCount - 1; i >= 0 ; i--)
 		{
-		ConveyorStateCur = ConveyorStates[i].New;
-		if (ConveyorStatePrev == US_ON && ConveyorStateCur == US_OFF)
+		if (alarmTurnOff)
+			Conveyors[i].TurnOffAlarm();
+		else
 			{
-			Conveyors[i].TurnOn();			
-			}
-		else if (ConveyorStatePrev == US_ON && ConveyorStateCur == US_STARTING)
-			{
-			// wait
-			}
-		else if (ConveyorStatePrev == US_ON && ConveyorStateCur == US_ON)
-			{
-			// NEXT
-			}
-		else if (ConveyorStatePrev == US_OFF && ConveyorStateCur == US_ON)
-			{
-			// Err
-			_state = SS_ERR300;
-			alarmTurnOff = true;
+			cs.Curr = ConveyorStates[i].New;
+			if (cs.Prev == US_ON)
+				{ 
+				if (cs.Curr == US_OFF)
+					Conveyors[i].TurnOn();
+				else if (cs.Curr == US_STARTING || cs.Curr == US_ON)
+					{}
+				else
+					_state = SS_ERR300;
+				}
+			else if (cs.Prev == US_STARTING)
+				{ 
+				if (cs.Curr == US_OFF)
+					{}
+				else
+					_state = SS_ERR300;
+				}
+			else if (cs.Prev == US_OFF)
+				{ 
+				if (cs.Curr == US_OFF)
+					{}
+				else
+					_state = SS_ERR300;
+				}
+			else
+				_state = SS_ERR300;
+				
+			alarmTurnOff = (_state >= SS_ERR300);
 			}
 		}	
 	}

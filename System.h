@@ -46,16 +46,16 @@ struct	SystemInfo
 	{
 	public:
 	    				System();
-			    		System(uint8_t unitCount, String title, uint8_t pin_button_on, uint8_t _pin_button_off, uint8_t pin_button_reset);
+			    		System(String title, uint8_t pin_button_on, uint8_t _pin_button_off, uint8_t pin_button_reset);
 		void 			Init();
 		SystemInfo 		GetInfo();
 		void 			LogInfo();
 		void 			LogInfo(bool conv);
 		void			Log(String str);
-		void 			SetupConveyor(uint8_t index, String title, uint8_t pinIn, uint8_t pinOut, uint8_t pinAuto, uint8_t pinLed);
+		void 			SetupConveyor(String title, uint8_t pinIn, uint8_t pinOut, uint8_t pinAuto, uint8_t pinLed);
 		PinIn 			SetupButton(String suffix, uint8_t pin);
 		String 			GetSystemStateText(SystemState state);
-		uint8_t			UnitCount;
+		uint8_t			UnitCount = 0;
 
 		Conveyor 		Conveyors[MAX_UNIT_NUMBER];
 		ConveyorState2	ConveyorStates[MAX_UNIT_NUMBER];

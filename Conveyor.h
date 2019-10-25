@@ -34,6 +34,14 @@
 					
 					ConveyorState2(ConveyorState csOld = US_NOTINIT, ConveyorState csNew = US_NOTINIT):Old(csOld ),New(csNew ){};  
 					}; 
+
+	struct ConveyorStatePrevCurr
+					{
+					ConveyorState Prev;  
+					ConveyorState Curr;
+					
+					ConveyorStatePrevCurr(ConveyorState csPrev = US_NOTINIT, ConveyorState csCurr = US_NOTINIT):Prev(csPrev ),Curr(csCurr ){};  
+					}; 
 	
     struct ConveyorInfo	
 					{
