@@ -230,7 +230,7 @@ void System::_logStates(SystemState2 ss2)
 // ------------------------------------
 void System::_updateConveyorStates()
 	{
-	Log("_updateConveyorStates()");
+	//Log("_updateConveyorStates()");
 	for(int i = UnitCount - 1; i >= 0 ; i--)
 		{
 		Conveyor cnv = Conveyors[i];

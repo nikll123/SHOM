@@ -75,7 +75,7 @@
 	private:
 		ContactorState2	_getStateAutomat();
 		ContactorState2	_getStateContactor();
-		ContactorState	_state;
+		ContactorState	_state = CS_UNKNOWN;
 		void 			_ifChanged(ContactorState2 cs2);
 		unsigned int 	_timeOutOn;
 		unsigned int 	_timeOutOff;

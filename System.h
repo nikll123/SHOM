@@ -77,7 +77,7 @@ struct	SystemInfo
 		void 			_checkStateOn();
 		void 			_checkStateStarting();
 		void 			_checkStateStopping();
-		SystemState		_state;
+		SystemState		_state = SS_UNKNOWN;
 		
 	};
 #endif

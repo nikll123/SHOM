@@ -44,7 +44,7 @@
 
 	protected:
 		uint8_t 	_pin;
-		PinState	_state;
+		PinState	_state = KS_NONE;
 
 	private:
 	};

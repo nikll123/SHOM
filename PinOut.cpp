@@ -1,6 +1,6 @@
 #include "PinOut.h"
 // ------------------------------------
-PinOut::PinOut() : PinOut("KeyOut", 0) 
+PinOut::PinOut() : PinOut("Dummy PinOut", 0) 
 	{
 	}
 
