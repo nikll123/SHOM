@@ -22,7 +22,7 @@ Contactor::Contactor(String title, uint8_t pinIn, uint8_t pinOut, unsigned long 
 
 void Contactor::Init()
 	{
- 	Log(_title + " Init");
+ 	Log(_title + ": Init");
  	KeyOut.SetOff();
 	KeyIn.GetState();
 	_state = CS_OFF;
@@ -143,14 +143,14 @@ ContactorState2 Contactor::GetState()
 // ------------------------------------
 void Contactor::TurnOn()
 	{
- 	Log(_title + " TurnOn");
+ 	Log(_title + ": TurnOn");
     _Turn(CS_STARTING);
 	}
 
 // ------------------------------------
 void Contactor::TurnOff()
 	{
- 	Log(_title + " TurnOff");
+ 	Log(_title + ": TurnOff");
     _Turn(CS_STOPPING);
 	}
 
@@ -196,20 +196,10 @@ void Contactor::TurnOffAlarm()
 void Contactor::IfChanged(ContactorState2 cs2)
 	{
 	if (cs2.Old != cs2.New)
-		Log(GetInfo().Title + " " + GetContactorStateText(cs2.Old) + " -> " + GetContactorStateText(cs2.New));
+		Log(GetInfo().Title + ": " + GetContactorStateText(cs2.Old) + " -> " + GetContactorStateText(cs2.New));
 	}
 	
 void Contactor::Log(String str)
 	{
 	if (LOGLEVEL >= LL_NORMAL) LogTextLn(str);
 	}
-	
-
-/*void Contactor::LogKeysState()
-	{
-	if (LOGLEVEL > LL_NORMAL) 
-		{
-		KeyIn.LogState();
-		KeyOut.LogState();
-		}
-	}*/

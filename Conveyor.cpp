@@ -109,7 +109,7 @@ ConveyorState2 Conveyor::GetState()
 		us2.New = _state;
 		IfChanged(us2);
 		}
-		LedConveyor.Refresh();
+	LedConveyor.Refresh();
 	return us2;
 	}
 
@@ -135,7 +135,7 @@ void Conveyor::TurnOn()
 	{
 	if (_state == US_OFF) 
 		{
-		Log(_title + " TurnOn");
+		Log(_title + ": TurnOn");
 	    _Turn(US_STARTING);
 	    }
 	}
@@ -145,7 +145,7 @@ void Conveyor::TurnOff()
 	{
 	if (_state == US_ON || _state == US_STARTING) 
 		{
-		Log(_title + " TurnOff");
+		Log(_title + ": TurnOff");
 	    _Turn(US_STOPPING);
 	    }
 	}

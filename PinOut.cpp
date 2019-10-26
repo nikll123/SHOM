@@ -40,7 +40,7 @@ void PinOut::_setState(PinState state)
 	if (LOGLEVEL >= LL_LOW && ps2.Old != ps2.New) 
 		{
 		LogText(_title);
-		LogText(" " + GetPinStateText(ps2.Old));
+		LogText(": " + GetPinStateText(ps2.Old));
 		LogTextLn(" -> " + GetPinStateText(ps2.New));
 		}
 	}

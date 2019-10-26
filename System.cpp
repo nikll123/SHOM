@@ -50,8 +50,8 @@ void  System::Start()
 // ------------------------------------
 void System::_setState(SystemState state)
 	{
-	_state = state;
 	_logStates({_state, state});
+	_state = state;
 	}	
 
 // ------------------------------------
@@ -115,9 +115,13 @@ String System::GetSystemStateText(SystemState state)
 // ------------------------------------
 void System::SetupConveyor(String title, uint8_t pinIn, uint8_t pinOut, uint8_t pinAuto, uint8_t pinLed)
 	{
-	Conveyors[UnitCount] = Conveyor(title, pinIn, pinOut, pinAuto, pinLed);
-	Conveyors[UnitCount].Init();
-	UnitCount++;
+	if(UnitCount < MAX_UNIT_NUMBER)
+		{
+		title = title + "_" + String(UnitCount); 
+		Conveyors[UnitCount] = Conveyor(title, pinIn, pinOut, pinAuto, pinLed);
+		Conveyors[UnitCount].Init();
+		UnitCount++;
+		}
 	}
 	
 // ------------------------------------
@@ -133,7 +137,11 @@ SystemState2 System::GetState()
 	if (_state < SS_ERR300)
 		{
 		_updateConveyorStates();
-		if (_state == SS_OFF)
+		
+		if (_state == SS_STARTING)
+			_checkStateStarting();
+		
+		/*if (_state == SS_OFF)
 			_checkStateOff();
 		else if (_state == SS_ON)
 			_checkStateOn();
@@ -158,7 +166,9 @@ SystemState2 System::GetState()
 				else if  (_state == SS_STARTING)
 					{
 				//Log("SS_STARTING : " + String(_state));
-				cnv.LogInfo();
+				//cnv.LogInfo();
+				_checkStateStarting();
+				
 					if (cs2.New != US_ON && cs2.New != US_OFF && cs2.New != US_STARTING)
 						_setState(SS_ERR303);
 					}
@@ -173,8 +183,8 @@ SystemState2 System::GetState()
 					_setState(SS_ERR305);
 					}
 				}
-			}
-		}
+			}*/
+		}  
 			
 		for(int i = UnitCount - 1; i >= 0 ; i--)
 			{
@@ -220,6 +230,7 @@ void System::_logStates(SystemState2 ss2)
 // ------------------------------------
 void System::_updateConveyorStates()
 	{
+	Log("_updateConveyorStates()");
 	for(int i = UnitCount - 1; i >= 0 ; i--)
 		{
 		Conveyor cnv = Conveyors[i];
@@ -268,6 +279,7 @@ void System::_checkStateOn()
 // ------------------------------------
 void System::_checkStateStarting()
 	{
+
 	bool alarmTurnOff = false;
 	ConveyorStatePrevCurr cs; 
 	cs.Prev = US_ON; 	
@@ -277,6 +289,8 @@ void System::_checkStateStarting()
 			Conveyors[i].TurnOffAlarm();
 		else
 			{
+	Log("_checkStateStarting()");
+			Conveyors[i].LogInfo();
 			cs.Curr = ConveyorStates[i].New;
 			if (cs.Prev == US_ON)
 				{ 
