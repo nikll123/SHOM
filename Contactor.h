@@ -62,8 +62,7 @@
 		void			Init();
 		void			LogInfo();
 		void 			Log(String str);
-		void 			IfChanged(ContactorState2 cs2);
-		PinIn			KeyIn;
+		PinIn			KeyIn;		//Why not PinIn? PinIn is already used as a class name
 		PinOut			KeyOut;
 
 		void TurnOn();
@@ -77,6 +76,7 @@
 		ContactorState2	_getStateAutomat();
 		ContactorState2	_getStateContactor();
 		ContactorState	_state;
+		void 			_ifChanged(ContactorState2 cs2);
 		unsigned int 	_timeOutOn;
 		unsigned int 	_timeOutOff;
 		unsigned long 	_millsCheck;

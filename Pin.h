@@ -14,6 +14,9 @@
 	struct PinState2 {
 					PinState 	Old;
 					PinState 	New;
+					bool Front()	{return Old == KS_OFF && New == KS_ON;};
+					bool Back()		{return Old == KS_ON && New == KS_OFF;};
+					bool Changed()	{return Old != New;};
 					};	
 
    	//-------------------------------

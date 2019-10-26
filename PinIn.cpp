@@ -7,6 +7,13 @@ PinIn::PinIn() : PinIn("PinIn", 0)
 PinIn::PinIn(String title, uint8_t pin) : Pin(title, pin, UT_PININ)
 {
 	LogicNormal();	
+	Init();
+}
+
+// ------------------------------------
+void PinIn::Init()
+{
+	_refreshState();
 }
 
 // ------------------------------------
@@ -21,6 +28,8 @@ void PinIn::LogicNormal()
 	_setLogicType(LT_NORMAL);
 }
 
+
+
 // ------------------------------------
 void PinIn::_setLogicType(LogicType logicType)
 {
@@ -31,7 +40,6 @@ void PinIn::_setLogicType(LogicType logicType)
 	else
 		impmode = INPUT_PULLUP;
 	pinMode(_pin, impmode);
-	_refreshState();
 }
 
 // ------------------------------------

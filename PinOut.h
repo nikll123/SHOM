@@ -17,6 +17,7 @@
 	public:
 				    PinOut();
 				    PinOut(String title, uint8_t pin);
+		void		Init();
 		void		SetOn();
 		void		SetOff();
 		void		Inverse();
@@ -24,6 +25,7 @@
 		PinOutInfo 	GetInfo();
 		void 		LogInfo();
 		void 		LogState();
+		void 		Log(String str);
 
 
 	protected:

@@ -28,6 +28,7 @@
 	    
 		PinState2	GetState();
 		PinInInfo 	GetInfo();
+		void 		Init();
 		void 		LogicInverse();
 		void 		LogicNormal();
 		void 		LogState();

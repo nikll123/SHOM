@@ -17,7 +17,7 @@ Contactor::Contactor(String title, uint8_t pinIn, uint8_t pinOut, unsigned long 
 	_timeOutOff = timeOutOff;
 	KeyIn = PinIn(title + "_KeyIn", pinIn);
 	KeyOut = PinOut(title + "_KeyOut", pinOut);
-	_state = CS_UNKNOWN;
+	Init();
 	}
 
 void Contactor::Init()
@@ -25,7 +25,11 @@ void Contactor::Init()
  	Log(_title + ": Init");
  	KeyOut.SetOff();
 	KeyIn.GetState();
+	ContactorState2 cs2;
+	cs2.Old = _state; 
 	_state = CS_OFF;
+	cs2.New = _state; 
+	_ifChanged(cs2);
 	GetState();
 	}
 
@@ -83,8 +87,11 @@ ContactorState2 Contactor::GetState()
 	//LogTextLn(GetContactorStateText(cs2.Old));
 		PinState stateKeyIn = (KeyIn.GetState()).New;
 		PinState stateKeyOut = KeyOut.GetState(); 
-		if		(_state == CS_OFF	&& stateKeyOut != KS_OFF) 	_state = CS_ERR101;
-		else if (_state == CS_OFF	&& stateKeyIn != KS_OFF) 	_state = CS_ERR102;
+		if (_state == CS_OFF)
+			{
+			if (stateKeyOut != KS_OFF) _state = CS_ERR101;
+			if (stateKeyIn != KS_OFF) _state = CS_ERR102;
+			}
 		else if (_state == CS_STARTING)
 			{
 			if(_millsCheck == 0)
@@ -134,8 +141,7 @@ ContactorState2 Contactor::GetState()
 			}
 	
 		cs2.New = _state;
-		IfChanged(cs2);
-
+		_ifChanged(cs2);
 		}
 	return cs2;
 	}
@@ -143,15 +149,23 @@ ContactorState2 Contactor::GetState()
 // ------------------------------------
 void Contactor::TurnOn()
 	{
- 	Log(_title + ": TurnOn");
-    _Turn(CS_STARTING);
+ 	String str = _title + ": TurnOn";
+	if(_state == CS_OFF)
+	    _Turn(CS_STARTING);
+    else
+   	 	str = str + " - wrong status";
+    Log(str);
 	}
 
 // ------------------------------------
 void Contactor::TurnOff()
 	{
- 	Log(_title + ": TurnOff");
-    _Turn(CS_STOPPING);
+ 	String str = _title + ": TurnOff";
+	if(_state == CS_ON || _state == CS_STARTING)
+	    _Turn(CS_STOPPING);
+    else
+   	 	str = str + " - wrong status";
+    Log(str);
 	}
 
 void Contactor::_Turn(ContactorState csNew)
@@ -178,7 +192,7 @@ void Contactor::_Turn(ContactorState csNew)
 				break;
 			}
 		ContactorState2 cs2(csCurr, csNew); 
-		IfChanged(cs2);
+		_ifChanged(cs2);
 		}
 	else
 		{
@@ -193,7 +207,7 @@ void Contactor::TurnOffAlarm()
 	TurnOff();
 	}
 
-void Contactor::IfChanged(ContactorState2 cs2)
+void Contactor::_ifChanged(ContactorState2 cs2)
 	{
 	if (cs2.Old != cs2.New)
 		Log(GetInfo().Title + ": " + GetContactorStateText(cs2.Old) + " -> " + GetContactorStateText(cs2.New));

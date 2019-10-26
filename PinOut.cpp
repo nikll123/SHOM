@@ -7,6 +7,11 @@ PinOut::PinOut() : PinOut("KeyOut", 0)
 PinOut::PinOut(String title, uint8_t pin) : Pin(title, pin, UT_PINOUT)
 	{
 	pinMode(pin, OUTPUT);
+	Init();
+	}
+
+void PinOut::Init()
+	{
  	SetOff();
 	}   
 
@@ -33,15 +38,13 @@ void PinOut::_setState(PinState state)
 	{
 	PinState2 ps2;
 	ps2.Old = _state;
-	bool value = state == KS_ON;
-	digitalWrite(_pin, value);
+	digitalWrite(_pin, (state == KS_ON));
 	_state = state; 
 	ps2.New = _state;
-	if (LOGLEVEL >= LL_LOW && ps2.Old != ps2.New) 
+	if (ps2.Changed()) 
 		{
-		LogText(_title);
-		LogText(": " + GetPinStateText(ps2.Old));
-		LogTextLn(" -> " + GetPinStateText(ps2.New));
+		String str = _title + ": " + GetPinStateText(ps2.Old) + " -> " + GetPinStateText(ps2.New); 
+		Log(str);
 		}
 	}
 
@@ -80,4 +83,13 @@ void PinOut::LogState()
 	LogText(pi.Title + "; ");
 	LogText(pi.State + "; ");
 	LogLn();
+	}
+
+// ------------------------------------
+void PinOut::Log(String str)
+	{
+	if (LOGLEVEL >= LL_LOW) 
+		{
+		LogTextLn(str);
+		}
 	}
