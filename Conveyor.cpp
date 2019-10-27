@@ -163,12 +163,13 @@ void Conveyor::TurnOff()
 	    }
 	}
 
+// ------------------------------------
 void Conveyor::_Turn(ConveyorState csNew)
 	{
 	if (csNew == US_STARTING || csNew == US_STOPPING) 
 		{
 		ConveyorState2 cs2;
-		cs2.Old = (GetState()).New;
+		cs2.Old = _state;
 		bool err = false; 
 		if ((csNew == US_STARTING && cs2.Old == US_OFF)									// start!
 			|| (csNew == US_STOPPING && (cs2.Old == US_ON || cs2.Old == US_STARTING)))	// stop!
