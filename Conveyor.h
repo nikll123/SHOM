@@ -66,10 +66,12 @@
 					    Conveyor(String title, uint8_t pinIn, uint8_t pinOut, uint8_t pinAuto, uint8_t pinLed, unsigned long timeOutOn, unsigned long  timeOutOff);
 
 		ConveyorState2	GetState();
+		ConveyorState2	GetState(String logText);
 		ConveyorInfo 	GetInfo();
 		String			GetConveyorStateText(ConveyorState state);
 		void			Init();
 		void			LogInfo();
+		void			LogInfo(String str);
 		void			Log(String str);
 		void 			LogStates(ConveyorState2 cs2);
 		void 			IfChanged(ConveyorState2 cs2);
@@ -89,7 +91,6 @@
 		ConveyorState2	_getStateAutomat();
 		ConveyorState2	_getStateContactor();
 		ConveyorState	_state;
-		unsigned long 	_millsCheck;
 		void 			_Turn(ConveyorState csNew);
 	};
 #endif

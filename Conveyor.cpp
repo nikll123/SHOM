@@ -48,6 +48,12 @@ ConveyorInfo Conveyor::GetInfo()
 	}
 	
 // ------------------------------------
+void Conveyor::LogInfo(String str)
+	{
+	Log(str);
+	LogInfo();
+	}
+// ------------------------------------
 void Conveyor::LogInfo()
 	{
 	ConveyorInfo ci = GetInfo();
@@ -79,6 +85,13 @@ switch (state)
 	default			    : return "Error " + String(state);
 	}
 }
+
+// ------------------------------------
+ConveyorState2 Conveyor::GetState(String logText)
+	{
+	Log(logText);	
+	return GetState();
+	}
 
 // ------------------------------------
 ConveyorState2 Conveyor::GetState()

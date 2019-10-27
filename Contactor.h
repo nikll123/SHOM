@@ -57,6 +57,7 @@
 					    Contactor(String title, uint8_t pinIn, uint8_t pinOut, unsigned long timeOutOn, unsigned long  timeOutOff);
 
 		ContactorState2	GetState();
+		ContactorState2	GetState(String logTexts);
 		ContactorInfo 	GetInfo();
 		String			GetContactorStateText(ContactorState state);
 		void			Init();
@@ -77,9 +78,9 @@
 		ContactorState2	_getStateContactor();
 		ContactorState	_state = CS_UNKNOWN;
 		void 			_ifChanged(ContactorState2 cs2);
-		unsigned int 	_timeOutOn;
-		unsigned int 	_timeOutOff;
-		unsigned long 	_millsCheck;
+		unsigned int 	_timeOutOn = 0;
+		unsigned int 	_timeOutOff = 0;
+		unsigned long 	_millsCheck = 0;
 		void 			_Turn(ContactorState csNew);
 	};
 #endif
