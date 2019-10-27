@@ -107,7 +107,8 @@ ContactorState2 Contactor::GetState()
 				{
 		//Log("_millsCheck 0 " + String (_millsCheck));
 				KeyOut.SetOn();
-				_millsCheck = millis();
+				//_millsCheck = millis();
+				FixTime(1);
 		//Log("_millsCheck 1 " + String (_millsCheck));
 				}
 			else if (millis() - _millsCheck > _timeOutOn)
@@ -126,7 +127,8 @@ ContactorState2 Contactor::GetState()
 			{
 			if(_millsCheck == 0)
 				{
-				_millsCheck = millis();
+				//_millsCheck = millis();
+				FixTime(1);
 				}
 			else if (millis() - _millsCheck > _timeOutOff)
 				{
@@ -196,14 +198,16 @@ void Contactor::_Turn(ContactorState csNew)
 			case CS_STARTING :
 				if (csCurr == CS_OFF)   // start!
 					{
-					_millsCheck = 0;
+					//_millsCheck = 0;
+					FixTime(0);
 					_state = csNew;
 					}
 				break;
 			case CS_STOPPING :
 				if (csCurr == CS_ON || csCurr == CS_STARTING)
 					{
-					_millsCheck = 0;
+					//_millsCheck = 0;
+					FixTime(0);
 					_state = csNew;
 					}
 				break;
@@ -234,3 +238,12 @@ void Contactor::Log(String str)
 	{
 	if (LOGLEVEL >= LL_NORMAL) LogTextLn(str);
 	}
+
+ void Contactor::FixTime(bool x)
+	 {
+	if (x)
+		_millsCheck = millis();
+	else
+		_millsCheck = 0;
+	 }
+ 

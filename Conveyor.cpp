@@ -217,11 +217,3 @@ bool Conveyor::IsActive()
 	return _state != US_NOTINIT;
 	}	
 
-/*void Conveyor::LogKeysState()
-	{
-	if (LOGLEVEL > LL_NORMAL) 
-		{
-		KeyIn.LogState();
-		KeyOut.LogState();
-		}
-	}*/

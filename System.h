@@ -64,8 +64,10 @@ struct	SystemInfo
 		PinIn			BtnReset;
 
 		void 			Start();
+		void 			Stop();
 		void 			TurnOff();
 		void 			TurnOffAlarm();
+		//void 			Test();
 		SystemState2	GetState();
 
 	private:
@@ -73,11 +75,12 @@ struct	SystemInfo
 		void 			_ifChanged(SystemState2 cs2);
 		void 			_logStates(SystemState2 cs2);
 		void 			_updateConveyorStates();
-		void 			_checkStateOff();
-		void 			_checkStateOn();
-		void 			_checkStateStarting();
-		void 			_checkStateStopping();
+		SystemState		_checkStateOff();
+		SystemState		_checkStateOn();
+		SystemState		_checkStateStarting();
+		SystemState		_checkStateStopping();
 		SystemState		_state = SS_UNKNOWN;
+		SystemState 	_calcState(int cntErr, int cntOn, int cntOff, int cntStoping, int cntStarting);
 		
 	};
 #endif
