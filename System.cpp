@@ -55,6 +55,15 @@ void  System::Stop()
 	}
 
 // ------------------------------------
+void  System::Reset()
+	{
+	Log(_title + ": Reset()");
+	Init();
+	} 
+	
+
+
+// ------------------------------------
 void System::_setState(SystemState state)
 	{
 	_logStates({_state, state});
@@ -165,12 +174,14 @@ SystemState2 System::GetState()
 		Conveyors[i].LedConveyor.Refresh();
 		}
 
-	///   BUTTONS
-	if(BtnOff.GetState().Front())
-		Stop();
-	else if (BtnOn.GetState().Front()) 
-		Start();
 	
+	///   BUTTONS
+	if(_state <= SS_ERR300 && BtnOff.GetState().Front())
+		Stop();
+	else if (_state <= SS_ERR300 && BtnOn.GetState().Front()) 
+		Start();
+	else if (BtnReset.GetState().Front()) 
+		Reset();
 	
 	return ss2; 
 	}

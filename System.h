@@ -65,6 +65,7 @@ struct	SystemInfo
 
 		void 			Start();
 		void 			Stop();
+		void 			Reset();
 		void 			TurnOff();
 		void 			TurnOffAlarm();
 		//void 			Test();
