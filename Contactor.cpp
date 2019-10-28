@@ -215,6 +215,11 @@ void Contactor::_Turn(ContactorState csNew)
 		ContactorState2 cs2(csCurr, csNew); 
 		_ifChanged(cs2);
 		}
+	else if (csNew == CS_HALT)
+		{
+		KeyOut.SetOff();
+		_state = CS_HALT;
+		}
 	else
 		{
 		 Log("_Turn: wrong arg " + GetContactorStateText(csNew));
@@ -223,15 +228,16 @@ void Contactor::_Turn(ContactorState csNew)
 	
 
 // ------------------------------------
-void Contactor::TurnOffAlarm()
+void Contactor::Halt()
 	{
-	TurnOff();
+	_Turn(CS_HALT);
+	Log(_title + ".Halt()");
 	}
 
 void Contactor::_ifChanged(ContactorState2 cs2)
 	{
 	if (cs2.Old != cs2.New)
-		Log(GetInfo().Title + ": " + GetContactorStateText(cs2.Old) + " -> " + GetContactorStateText(cs2.New));
+		Log(_title + ": " + GetContactorStateText(cs2.Old) + " -> " + GetContactorStateText(cs2.New));
 	}
 	
 void Contactor::Log(String str)

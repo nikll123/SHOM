@@ -15,7 +15,7 @@
 						CS_STARTING	= 3,
 						CS_STOPPING	= 4,
 						CS_UNKNOWN	= 5,
-						CS_ERR100		= 100,
+						CS_ERR			= 100,
 						CS_ERR101		= 101,
 						CS_ERR102		= 102,
 						CS_ERR103		= 103,
@@ -26,6 +26,7 @@
 						CS_ERR108		= 108,
 						CS_ERR109		= 109,
 						CS_ERR110		= 110,
+						CS_HALT			= 199,
 					};
 						
 	struct ContactorState2
@@ -69,7 +70,7 @@
 
 		void TurnOn();
 		void TurnOff();
-		void TurnOffAlarm();
+		void Halt();
 
 	protected:
 		void LogKeysState();

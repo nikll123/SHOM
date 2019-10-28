@@ -14,7 +14,7 @@
 						US_OFF			= 3,
 						US_STARTING		= 4,
 						US_STOPPING		= 5,
-						US_ERR200		= 200,
+						US_ERR			= 200,
 						US_ERR201		= 201,
 						US_ERR202		= 202,
 						US_ERR203		= 203,
@@ -72,6 +72,7 @@
 		void			Init();
 		void			LogInfo();
 		void			LogInfo(String str);
+		void 			LogErr(ConveyorState err);
 		void			Log(String str);
 		void 			LogStates(ConveyorState2 cs2);
 		void 			IfChanged(ConveyorState2 cs2);

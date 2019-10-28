@@ -123,8 +123,7 @@ String System::GetSystemStateText(SystemState state)
 		case SS_OFF			: return "OFF";
 		case SS_STARTING	: return "STARTING";
 		case SS_STOPPING	: return "STOPPING";
-		case SS_ERR300		: return "ERROR";
-		default			    : return "Error " + String(state);
+		default			    : return "ERROR";
 		}
 	}
 
@@ -147,10 +146,17 @@ void System::Log(String str)
 	}
 
 // ------------------------------------
+void System::LogErr(SystemState err)
+	{
+	Log("   Error! " + _title + " SS_ERR" + String(err));
+	}
+
+
+// ------------------------------------
 SystemState2 System::GetState()
 	{
 	SystemState2 ss2 = {_state, _state};
-	if (_state < SS_ERR300)
+	if (_state < SS_ERR)
 		{
 		_updateConveyorStates();
 		SystemState ss;
@@ -163,7 +169,7 @@ SystemState2 System::GetState()
 		else if (_state == SS_ON)
 			ss = _checkStateOn();
 		else
-			ss = SS_ERR300;	
+			ss = SS_ERR;	
 		_state = ss;
 		}  
 	ss2.New = _state;
@@ -173,12 +179,11 @@ SystemState2 System::GetState()
 		{
 		Conveyors[i].LedConveyor.Refresh();
 		}
-
 	
 	///   BUTTONS
-	if(_state <= SS_ERR300 && BtnOff.GetState().Front())
+	if(_state < SS_ERR && BtnOff.GetState().Front())
 		Stop();
-	else if (_state <= SS_ERR300 && BtnOn.GetState().Front()) 
+	else if (_state < SS_ERR && BtnOn.GetState().Front()) 
 		Start();
 	else if (BtnReset.GetState().Front()) 
 		Reset();
@@ -235,6 +240,7 @@ SystemState System::_checkStateStarting()
 			{
 			Conveyors[i].TurnOffAlarm();
 			cntErr++;
+			LogErr(SS_ERR305);
 			}
 		else
 			{
@@ -251,24 +257,36 @@ SystemState System::_checkStateStarting()
 				else if (cspc2.Curr == US_ON)
 					cntOn++;
 				else
+					{
 					cntErr++;
+					LogErr(SS_ERR301);
+					}
 				}
 			else if (cspc2.Prev == US_STARTING)
 				{ 
 				if (cspc2.Curr == US_OFF)
 					cntOff++;
 				else
+					{
 					cntErr++;
+					LogErr(SS_ERR302);
+					}
 				}
 			else if (cspc2.Prev == US_OFF)
 				{ 
 				if (cspc2.Curr == US_OFF)
 					cntOff++;
 				else
+					{
 					cntErr++;
+					LogErr(SS_ERR303);
+					}
 				}
 			else
+				{
 				cntErr++;
+				LogErr(SS_ERR304);
+				}
 				
 			alarmTurnOff = (cntErr > 0);
 			}
@@ -289,6 +307,7 @@ SystemState System::_checkStateStopping()
 			{
 			Conveyors[i].TurnOffAlarm();
 			cntErr++;
+			LogErr(SS_ERR306);
 			}
 		else
 			{
@@ -307,6 +326,7 @@ SystemState System::_checkStateStopping()
 				else
 					{
 					cntErr++;
+					LogErr(SS_ERR307);
 					}
 				}
 			else if (cspc2.Prev == US_STOPPING)
@@ -314,17 +334,26 @@ SystemState System::_checkStateStopping()
 				if (cspc2.Curr == US_ON)
 					cntOn++;
 				else
+					{
 					cntErr++;
+					LogErr(SS_ERR308);
+					}
 				}
 			else if (cspc2.Prev == US_ON)
 				{ 
 				if (cspc2.Curr == US_ON)
 					cntOn++;
 				else
+					{
 					cntErr++;
+					LogErr(SS_ERR309);
+					}
 				}
 			else
+				{
 				cntErr++;
+				LogErr(SS_ERR310);
+				}
 				
 			alarmTurnOff = (cntErr > 0);
 			}
@@ -343,13 +372,17 @@ SystemState System::_checkStateOff()
 			{
 			Conveyors[i].TurnOffAlarm();
 			cntErr++;
+			LogErr(SS_ERR311);
 			}
 		else
 			{
 			if (ConveyorStates[i].New == US_OFF)
 				cntOff++;
 			else
+				{
 				cntErr++;
+				LogErr(SS_ERR312);
+				}
 
 			alarmTurnOff = (cntErr > 0);
 			}
@@ -368,14 +401,17 @@ SystemState System::_checkStateOn()
 			{
 			Conveyors[i].TurnOffAlarm();
 			cntErr++;
+			LogErr(SS_ERR313);
 			}
 		else
 			{
 			if (ConveyorStates[i].New == US_ON)
 				cntOn++;
 			else
+				{
 				cntErr++;
-
+				LogErr(SS_ERR314);
+				}
 			alarmTurnOff = (cntErr > 0);
 			}
 		}
@@ -387,7 +423,7 @@ SystemState System::_calcState(int cntErr, int cntOn, int cntOff, int cntStoping
 	{
 	SystemState ss = SS_UNKNOWN; 
 	if (cntErr > 0)
-		ss = SS_ERR300; 
+		ss = SS_ERR; 
 	else if (cntStoping > 0)
 		ss = SS_STOPPING; 
 	else if (cntStarting > 0)
@@ -397,7 +433,10 @@ SystemState System::_calcState(int cntErr, int cntOn, int cntOff, int cntStoping
 	else if (cntOn == UnitCount)
 		ss = SS_ON;
 	else
-		ss = SS_ERR300; 
+		{
+		LogErr(SS_ERR315);
+		ss = SS_ERR;
+		} 
 	return ss;
 	}
 

@@ -14,7 +14,7 @@ enum SystemState
 				SS_OFF			= 4,
 				SS_STARTING		= 5,
 				SS_STOPPING		= 6,
-				SS_ERR300		= 300,
+				SS_ERR			= 300,
 				SS_ERR301		= 301,
 				SS_ERR302		= 302,
 				SS_ERR303		= 303,
@@ -24,6 +24,12 @@ enum SystemState
 				SS_ERR307		= 307,
 				SS_ERR308		= 308,
 				SS_ERR309		= 309,
+				SS_ERR310		= 310,
+				SS_ERR311		= 311,
+				SS_ERR312		= 312,
+				SS_ERR313		= 313,
+				SS_ERR314		= 314,
+				SS_ERR315		= 315,
 				};
 				
 struct	SystemState2 
@@ -52,6 +58,7 @@ struct	SystemInfo
 		void 			LogInfo();
 		void 			LogInfo(bool conv);
 		void			Log(String str);
+		void			LogErr(SystemState err);
 		void 			SetupConveyor(String title, uint8_t pinIn, uint8_t pinOut, uint8_t pinAuto, uint8_t pinLed);
 		PinIn 			SetupButton(String suffix, uint8_t pin);
 		String 			GetSystemStateText(SystemState state);
