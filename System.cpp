@@ -314,7 +314,7 @@ SystemState System::_checkStateStopping()
 			cspc2.Curr = ConveyorStates[i].New;
 			if (cspc2.Prev == US_OFF)
 				{ 
-				if (cspc2.Curr == US_ON)
+				if (cspc2.Curr == US_ON || cspc2.Curr == US_STARTING)
 					{
 					Conveyors[i].TurnOff();
 					cntStoping++;

@@ -10,21 +10,37 @@ PinOut::PinOut(String title, uint8_t pin) : Pin(title, pin, UT_PINOUT)
 	Init();
 	}
 
+// ------------------------------------
 void PinOut::Init()
 	{
  	SetOff();
 	}   
 
+// ------------------------------------
 void PinOut::SetOn()
 	{
-	_setState(KS_ON);
+	SetOn(0);
 	}
 
+// ------------------------------------
+void PinOut::SetOn(bool noLog)
+	{
+	_setState(KS_ON, noLog);
+	}
+
+// ------------------------------------
 void PinOut::SetOff()
 	{
-	_setState(KS_OFF);
+	SetOff(0);
 	}
 
+// ------------------------------------
+void PinOut::SetOff(bool noLog)
+	{
+	_setState(KS_OFF, noLog);
+	}
+
+// ------------------------------------
 void PinOut::Inverse()
 	{
 	if (_state == KS_ON)
@@ -34,14 +50,14 @@ void PinOut::Inverse()
 	}
 
 // ------------------------------------
-void PinOut::_setState(PinState state)
+void PinOut::_setState(PinState state, bool noLog)
 	{
 	PinState2 ps2;
 	ps2.Old = _state;
 	digitalWrite(_pin, (state == KS_ON));
 	_state = state; 
 	ps2.New = _state;
-	if (ps2.Changed()) 
+	if (ps2.Changed() && !noLog) 
 		{
 		String str = _title + ": " + GetPinStateText(ps2.Old) + " -> " + GetPinStateText(ps2.New); 
 		Log(str);

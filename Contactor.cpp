@@ -86,14 +86,11 @@ ContactorState2 Contactor::GetState(String logText)
 // ------------------------------------
 ContactorState2 Contactor::GetState()
 	{
-//Log("_millsCheck -----1 " + String (_millsCheck));
-			
 	ContactorState2 cs2 = {_state, _state};
 	if (_state != CS_NOTINIT)
 		{
 
 		cs2.Old = _state;
-	//LogTextLn(GetContactorStateText(cs2.Old));
 		PinState stateKeyIn = (KeyIn.GetState()).New;
 		PinState stateKeyOut = KeyOut.GetState(); 
 		if (_state == CS_OFF)
@@ -105,16 +102,11 @@ ContactorState2 Contactor::GetState()
 			{
 			if(_millsCheck == 0)
 				{
-		//Log("_millsCheck 0 " + String (_millsCheck));
 				KeyOut.SetOn();
-				//_millsCheck = millis();
 				FixTime(1);
-		//Log("_millsCheck 1 " + String (_millsCheck));
 				}
 			else if (millis() - _millsCheck > _timeOutOn)
 				_state = CS_ON;
-	
-		//Log("_millsCheck " + String (_millsCheck));
 	
 			stateKeyOut = KeyOut.GetState(); 
 			stateKeyIn = (KeyIn.GetState()).New;
@@ -198,7 +190,6 @@ void Contactor::_Turn(ContactorState csNew)
 			case CS_STARTING :
 				if (csCurr == CS_OFF)   // start!
 					{
-					//_millsCheck = 0;
 					FixTime(0);
 					_state = csNew;
 					}
@@ -206,7 +197,6 @@ void Contactor::_Turn(ContactorState csNew)
 			case CS_STOPPING :
 				if (csCurr == CS_ON || csCurr == CS_STARTING)
 					{
-					//_millsCheck = 0;
 					FixTime(0);
 					_state = csNew;
 					}
