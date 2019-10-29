@@ -25,6 +25,7 @@
 						US_ERR208		= 208,
 						US_ERR209		= 209,
 						US_ERR210		= 210,
+						US_HALT			= 299,
 					};
 						
 	struct ConveyorState2
@@ -82,7 +83,7 @@
 
 		void 			TurnOn();
 		void 			TurnOff();
-		void 			TurnOffAlarm();
+		void 			Halt();
         bool			IsActive();
 
 	protected:

@@ -238,7 +238,7 @@ SystemState System::_checkStateStarting()
 		{
 		if (alarmTurnOff)
 			{
-			Conveyors[i].TurnOffAlarm();
+			Conveyors[i].Halt();
 			cntErr++;
 			LogErr(SS_ERR305);
 			}
@@ -250,6 +250,7 @@ SystemState System::_checkStateStarting()
 				if (cspc2.Curr == US_OFF)
 					{
 					Conveyors[i].TurnOn();
+					cspc2.Curr = US_STARTING; 
 					cntStarting++;
 					}
 				else if (cspc2.Curr == US_STARTING)
@@ -265,7 +266,10 @@ SystemState System::_checkStateStarting()
 			else if (cspc2.Prev == US_STARTING)
 				{ 
 				if (cspc2.Curr == US_OFF)
+					{
+					cspc2.Prev = US_STARTING;
 					cntOff++;
+					}
 				else
 					{
 					cntErr++;
@@ -288,6 +292,8 @@ SystemState System::_checkStateStarting()
 				LogErr(SS_ERR304);
 				}
 				
+			cspc2.Prev = cspc2.Curr; 
+
 			alarmTurnOff = (cntErr > 0);
 			}
 		}
@@ -305,7 +311,7 @@ SystemState System::_checkStateStopping()
 		{
 		if (alarmTurnOff)
 			{
-			Conveyors[i].TurnOffAlarm();
+			Conveyors[i].Halt();
 			cntErr++;
 			LogErr(SS_ERR306);
 			}
@@ -370,7 +376,7 @@ SystemState System::_checkStateOff()
 		{
 		if (alarmTurnOff)
 			{
-			Conveyors[i].TurnOffAlarm();
+			Conveyors[i].Halt();
 			cntErr++;
 			LogErr(SS_ERR311);
 			}
@@ -399,7 +405,7 @@ SystemState System::_checkStateOn()
 		{
 		if (alarmTurnOff)
 			{
-			Conveyors[i].TurnOffAlarm();
+			Conveyors[i].Halt();
 			cntErr++;
 			LogErr(SS_ERR313);
 			}

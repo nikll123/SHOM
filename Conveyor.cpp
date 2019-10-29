@@ -212,10 +212,10 @@ void Conveyor::_Turn(ConveyorState csNew)
 	}
 
 // ------------------------------------
-void Conveyor::TurnOffAlarm()
+void Conveyor::Halt()
 	{
-	ContactorConveyor.TurnOff();
-	_state = US_OFF;
+	ContactorConveyor.Halt();
+	_state = US_HALT;
 	}
 
 
