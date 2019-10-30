@@ -230,13 +230,13 @@ void System::_updateConveyorStates()
 // ------------------------------------
 SystemState System::_checkStateStarting()
 	{
-	bool alarmTurnOff = false;
+	bool doHalt = false;
 	int cntErr=0, cntOn=0, cntOff=0, cntStarting=0;
 	ConveyorStatePrevCurr cspc2; 
 	cspc2.Prev = US_ON; 	
 	for(int i = UnitCount - 1; i >= 0 ; i--)
 		{
-		if (alarmTurnOff)
+		if (doHalt)
 			{
 			Conveyors[i].Halt();
 			cntErr++;
@@ -294,7 +294,7 @@ SystemState System::_checkStateStarting()
 				
 			cspc2.Prev = cspc2.Curr; 
 
-			alarmTurnOff = (cntErr > 0);
+			doHalt = (cntErr > 0);
 			}
 		}
 	return _calcState(cntErr, cntOn, cntOff, 0, cntStarting);
@@ -303,13 +303,13 @@ SystemState System::_checkStateStarting()
 // ------------------------------------
 SystemState System::_checkStateStopping()
 	{
-	bool alarmTurnOff = false;
+	bool doHalt = false;
 	int cntErr=0, cntOn=0, cntOff=0, cntStoping=0;
 	ConveyorStatePrevCurr cspc2; 
 	cspc2.Prev = US_OFF; 	
 	for(int i = 0; i < UnitCount ; i++)
 		{
-		if (alarmTurnOff)
+		if (doHalt)
 			{
 			Conveyors[i].Halt();
 			cntErr++;
@@ -361,7 +361,7 @@ SystemState System::_checkStateStopping()
 				LogErr(SS_ERR310);
 				}
 				
-			alarmTurnOff = (cntErr > 0);
+			doHalt = (cntErr > 0);
 			}
 		}
 	return _calcState(cntErr, cntOn, cntOff, cntStoping, 0);
@@ -371,27 +371,32 @@ SystemState System::_checkStateStopping()
 SystemState System::_checkStateOff()
 	{
 	int cntErr=0, cntOff=0;
-	bool alarmTurnOff = false;
+	bool haltRest = false;
 	for(int i = 0; i < UnitCount ; i++)
 		{
-		if (alarmTurnOff)
+		bool err = false;
+		if (haltRest)
 			{
 			Conveyors[i].Halt();
 			cntErr++;
 			LogErr(SS_ERR311);
 			}
-		else
+		//else
 			{
 			if (ConveyorStates[i].New == US_OFF)
 				cntOff++;
 			else
 				{
+				err = true;
 				cntErr++;
 				LogErr(SS_ERR312);
 				}
-
-			alarmTurnOff = (cntErr > 0);
+			haltRest = (cntErr > 0);
 			}
+		if(err) 
+			Conveyors[i].LedConveyor.SetBlinkFast();
+		else
+			Conveyors[i].LedConveyor.SetOff();
 		}
 	return _calcState(cntErr, 0, cntOff, 0, 0);
 	}
@@ -400,10 +405,10 @@ SystemState System::_checkStateOff()
 SystemState System::_checkStateOn()
 	{
 	int cntErr=0, cntOn=0;
-	bool alarmTurnOff = false;
+	bool doHalt = false;
 	for(int i = UnitCount - 1; i >= 0 ; i--)
 		{
-		if (alarmTurnOff)
+		if (doHalt)
 			{
 			Conveyors[i].Halt();
 			cntErr++;
@@ -418,7 +423,7 @@ SystemState System::_checkStateOn()
 				cntErr++;
 				LogErr(SS_ERR314);
 				}
-			alarmTurnOff = (cntErr > 0);
+			doHalt = (cntErr > 0);
 			}
 		}
 	return _calcState(cntErr, cntOn, 0, 0, 0);
