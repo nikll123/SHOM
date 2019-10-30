@@ -144,7 +144,7 @@ ContactorState2 Contactor::GetState()
 		else if(_state == CS_ON)
 			{
 			if (stateKeyOut != KS_ON) 		_state = CS_ERR109;
-			else if (stateKeyIn != KS_ON) 	_state = CS_ERR110;
+			else if (stateKeyIn != KS_ON) 	_state = CS_ERR;
 			}
 	
 		cs2.New = _state;

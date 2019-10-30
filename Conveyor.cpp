@@ -102,7 +102,7 @@ ConveyorState2 Conveyor::GetState()
         ContactorState2 cs2 = ContactorConveyor.GetState();
         PinState2 as2 = AtomatConveyor.GetState();
 		bool err = false;
-        if (cs2.New >= US_ERR)
+        if (cs2.New >= CS_ERR)
         	{
 			err = true;
 			LogErr(US_ERR201);        	
