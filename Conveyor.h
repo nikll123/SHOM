@@ -69,13 +69,14 @@
 		ConveyorState2	GetState();
 		ConveyorState2	GetState(String logText);
 		ConveyorInfo 	GetInfo();
-		String			GetConveyorStateText(ConveyorState state);
+		static String	GetConveyorStateText(ConveyorState state);
 		void			Init();
 		void			LogInfo();
 		void			LogInfo(String str);
-		void 			LogErr(ConveyorState err);
-		void			Log(String str);
+		void 			SetErrState(ConveyorState err);
+		static void		Log(String str);
 		void 			LogStates(ConveyorState2 cs2);
+		static void 	LogStatesPrevCurr(ConveyorStatePrevCurr cs2);
 		void 			IfChanged(ConveyorState2 cs2);
 		Led				LedConveyor;
 		Contactor		ContactorConveyor;

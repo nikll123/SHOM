@@ -15,27 +15,27 @@ Unit::Unit(String title, UnitType type)
 	}
 
 //------------------------------
-void Unit::LogTextLn(int x)
+static void Unit::LogTextLn(int x)
 	{
 	LogText(x);
 	LogLn();
 	}
 	
 //------------------------------
-void Unit::LogText(int x)
+static void Unit::LogText(int x)
 	{
 	Serial.print(x);
 	}
 
 //------------------------------
-void Unit::LogTextLn(bool b)
+static void Unit::LogTextLn(bool b)
 	{
 	LogText(b);
 	LogLn();
 	}
 	
 //------------------------------
-void Unit::LogText(bool b)
+static void Unit::LogText(bool b)
 	{
 	if (b)
 		Serial.print("True");
@@ -44,19 +44,19 @@ void Unit::LogText(bool b)
 	}
 
 //------------------------------
-void Unit::LogTextLn(String txt)
+static void Unit::LogTextLn(String txt)
 	{
 	LogText(txt);
 	LogLn();
 	}
 	
 //------------------------------
-void Unit::LogText(String txt)
+static void Unit::LogText(String txt)
 	{
 	Serial.print(txt);
 	}
 
-void Unit::LogLn()
+static void Unit::LogLn()
 	{
 	Serial.println("");
 	}

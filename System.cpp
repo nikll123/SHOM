@@ -260,6 +260,7 @@ SystemState System::_checkStateStarting()
 				else
 					{
 					cntErr++;
+					Conveyor::LogStatesPrevCurr(cspc2.Curr);
 					LogErr(SS_ERR301);
 					}
 				}

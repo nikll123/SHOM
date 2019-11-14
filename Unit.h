@@ -66,13 +66,13 @@
 	public:
 					Unit();
 					Unit(String title, UnitType type);
-		void		LogText(String);
-		void		LogTextLn(String);
-		void		LogText(bool);
-		void		LogTextLn(bool);
-		void 		LogText(int x);
-		void 		LogTextLn(int x);
-		void 		LogLn();
+		static void	LogText(String);
+		static void	LogTextLn(String);
+		static void	LogText(bool);
+		static void	LogTextLn(bool);
+		static void LogText(int x);
+		static void LogTextLn(int x);
+		static void LogLn();
 		void 		LogInfo();
 		
 		UnitInfo 	GetInfo();

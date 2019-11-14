@@ -72,7 +72,7 @@ switch (state)
 	case CS_STARTING	: return "STARTING";
 	case CS_STOPPING	: return "STOPPING";
 	case CS_UNKNOWN		: return "UNKNOWN";
-	default			    : return "Error " + String(state);
+	default			    : return "ERROR";
 	}
 }
 
@@ -95,8 +95,8 @@ ContactorState2 Contactor::GetState()
 		PinState stateKeyOut = KeyOut.GetState(); 
 		if (_state == CS_OFF)
 			{
-			if (stateKeyOut != KS_OFF) _state = CS_ERR101;
-			if (stateKeyIn != KS_OFF) _state = CS_ERR102;
+			if (stateKeyOut != KS_OFF) SetErrState(CS_ERR101);
+			if (stateKeyIn != KS_OFF) SetErrState(CS_ERR102);
 			}
 		else if (_state == CS_STARTING)
 			{
@@ -111,8 +111,8 @@ ContactorState2 Contactor::GetState()
 			stateKeyOut = KeyOut.GetState(); 
 			stateKeyIn = (KeyIn.GetState()).New;
 	
-			if (stateKeyOut != KS_ON) 		_state = CS_ERR103;
-			else if (stateKeyIn != KS_ON) 	_state = CS_ERR104;
+			if (stateKeyOut != KS_ON) 		SetErrState(CS_ERR103);
+			else if (stateKeyIn != KS_ON) 	SetErrState(CS_ERR104);
 	
 			}
 		else if(_state == CS_STOPPING)
@@ -132,19 +132,19 @@ ContactorState2 Contactor::GetState()
 	
 			if (_state == CS_OFF)
 				{
-				if (stateKeyOut != KS_OFF) 		_state = CS_ERR105;
-				else if (stateKeyIn != KS_OFF) 	_state = CS_ERR106;
+				if (stateKeyOut != KS_OFF) 		SetErrState(CS_ERR105);
+				else if (stateKeyIn != KS_OFF) 	SetErrState(CS_ERR106);
 				}
 			else    // US_STOPPING
 				{
-				if (stateKeyOut != KS_ON) 		_state = CS_ERR107;
-				else if (stateKeyIn != KS_ON) 	_state = CS_ERR108;
+				if (stateKeyOut != KS_ON) 		SetErrState(CS_ERR107);
+				else if (stateKeyIn != KS_ON) 	SetErrState(CS_ERR108);
 				}
 			}
 		else if(_state == CS_ON)
 			{
-			if (stateKeyOut != KS_ON) 		_state = CS_ERR109;
-			else if (stateKeyIn != KS_ON) 	_state = CS_ERR;
+			if (stateKeyOut != KS_ON) 		SetErrState(CS_ERR109);
+			else if (stateKeyIn != KS_ON) 	SetErrState(CS_ERR110);
 			}
 	
 		cs2.New = _state;
@@ -233,6 +233,12 @@ void Contactor::_ifChanged(ContactorState2 cs2)
 void Contactor::Log(String str)
 	{
 	if (LOGLEVEL >= LL_NORMAL) LogTextLn(str);
+	}
+
+void Contactor::SetErrState(ContactorState err)
+	{
+	Log("   Error! " + _title + " CS_ERR" + String(err));
+	_state = CS_ERR;
 	}
 
  void Contactor::FixTime(bool x)

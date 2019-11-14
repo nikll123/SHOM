@@ -72,7 +72,7 @@ void Conveyor::LogInfo()
 	}
 
 //------------------------------
-String Conveyor::GetConveyorStateText(ConveyorState state)
+static String Conveyor::GetConveyorStateText(ConveyorState state)
 {
 switch (state)
 	{
@@ -104,35 +104,26 @@ ConveyorState2 Conveyor::GetState()
 		bool err = false;
         if (cs2.New >= CS_ERR)
         	{
-			err = true;
-			LogErr(US_ERR201);        	
+			SetErrState(US_ERR201);        	
 			}
 		else if (as2.New == KS_ON)
-		{
+			{
 			if (cs2.New == CS_OFF) 				_state = US_OFF;
 			else if (cs2.New == CS_ON) 			_state = US_ON;
 			else if (cs2.New == CS_STARTING) 	_state = US_STARTING;
 			else if (cs2.New == CS_STOPPING) 	_state = US_STOPPING;
-		}
+			}
 		else if(as2.New == KS_OFF)
 			{
-			err = true;
-			if (cs2.New == CS_ON) 				LogErr(US_ERR202);
-			else if (cs2.New == CS_OFF)			LogErr(US_ERR203); 
-			else if (cs2.New == CS_STARTING)	LogErr(US_ERR205); 
-			else if (cs2.New == CS_STOPPING)	LogErr(US_ERR206);
-			else 								LogErr(US_ERR207);
+			if (cs2.New == CS_ON) 				SetErrState(US_ERR202);
+			else if (cs2.New == CS_OFF)			SetErrState(US_ERR203); 
+			else if (cs2.New == CS_STARTING)	SetErrState(US_ERR205); 
+			else if (cs2.New == CS_STOPPING)	SetErrState(US_ERR206);
+			else 								SetErrState(US_ERR207);
 			}
 		else
 			{
-			err = true;
-			LogErr(US_ERR208);
-			}
-		
-		if (err)
-			{
-			ContactorConveyor.Halt();
-			_state = US_ERR;
+			SetErrState(US_ERR208);
 			}
 			
 		us2.New = _state;
@@ -198,8 +189,7 @@ void Conveyor::_Turn(ConveyorState csNew)
 			}
 		else
 			{
-			LogErr(US_ERR209);
-			_state = US_ERR;
+			SetErrState(US_ERR209);
 			}
 
 		cs2.New = _state;	
@@ -221,21 +211,29 @@ void Conveyor::Halt()
 
 
 // ------------------------------------
-void Conveyor::Log(String str)
+static void Conveyor::Log(String str)
 	{
 	if (LOGLEVEL >= LL_NORMAL) LogTextLn(str);
 	}
 
 // ------------------------------------
-void Conveyor::LogErr(ConveyorState err)
+void Conveyor::SetErrState(ConveyorState err)
 	{
 	Log("   Error! " + _title + " US_ERR" + String(err));
+	ContactorConveyor.Halt();
+	_state = US_ERR;
 	}
 
 // ------------------------------------
 void Conveyor::LogStates(ConveyorState2 cs2)
 	{
 	Log(GetInfo().Title + " " + GetConveyorStateText(cs2.Old) + " -> " + GetConveyorStateText(cs2.New));
+	}
+
+// ------------------------------------
+static void Conveyor::LogStatesPrevCurr(ConveyorStatePrevCurr cs2)
+	{
+	Log("Conveyor states: previous " + GetConveyorStateText(cs2.Prev) + ", current " + GetConveyorStateText(cs2.Curr));
 	}
 		
 // ------------------------------------
