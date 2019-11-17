@@ -6,7 +6,7 @@ Pin::Pin() : Pin("DummyPin", 0, UT_PIN)
 
 Pin::Pin(String title, uint8_t pin, UnitType ut) : Unit(title, ut)
 {
-	_logLevel = ll_NORMAL;
+	_logLevel = LL_NORMAL;
 	_pin = pin;
 	_state = KS_NONE;
 }
