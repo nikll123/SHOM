@@ -25,7 +25,6 @@ bool Led::IsActive()
 	return _state != LEDS_NOTINIT;;
 	}
 
-
 //------------------------------------
 LedState Led::GetState()
 	{
@@ -50,7 +49,6 @@ void Led::LogInfo()
 	LedInfo li = GetInfo();
 	Log(li.UnitType + "; " + String(li.Pin) + "; " + GetLedStateText(_state));
 	}
-
 
 //------------------------------
 String Led::GetLedStateText(LedState ls)

@@ -15,9 +15,9 @@ System::System(String title, uint8_t pinBtnOn, uint8_t pinBtnOff, uint8_t pinBtn
 	}
 	
 // ------------------------------------
-PinIn System::SetupButton(String title, uint8_t pin)
+PinIn System::SetupButton(String btnTitle, uint8_t pin)
 	{
-	PinIn btn = PinIn(title, pin);    //  title must not be longer than 12!! 
+	PinIn btn = PinIn(_title + "." + btnTitle, pin);  
 	btn.LogicInverse();
 	btn.Init();
 	return btn ; 
@@ -62,8 +62,6 @@ void  System::Reset()
 	Init();
 	} 
 	
-
-
 // ------------------------------------
 void System::_setState(SystemState state)
 	{

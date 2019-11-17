@@ -6,6 +6,7 @@ Unit::Unit()
 	{
 	_title = "DummyUnit";
 	_type = UT_NONE;
+	_logLevel = LL_NONE;
 	}
 
 Unit::Unit(String title, UnitType type)

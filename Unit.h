@@ -9,20 +9,11 @@
 	#define LL_NORMAL	2
 	#define LL_LOW		3
 
-	#define LOGLEVEL LL_NORMAL
-
     #ifndef LOGLEVEL
 		#define LOGLEVEL LL_NORMAL
 	#endif
 
 	#define PortMonitorLog 1
-
-  	//-------------------------------
-	enum LogLevel  {ll_NONE 	= 0,
-					ll_HIGH		= 1,
-					ll_NORMAL	= 2,
-					ll_LOW		= 3
-					};
 
 	//-------------------------------
 	enum UnitType  {UT_NONE,
@@ -42,7 +33,6 @@
 					String 		Title;
 					String 		UnitType;
 					};	
-
 
 	//-------------------------------
 	class Unit
@@ -64,7 +54,7 @@
 	protected:
 		String			_title;
 		UnitType		_type;
-		LogLevel		_logLevel = ll_NONE;
+		byte			_logLevel;
 
 	private: 
 	};

@@ -48,7 +48,6 @@
 					unsigned int 	TimeOutOn;
 					unsigned int 	TimeOutOff;
 					}; 
-
 	
 	class Contactor : public Unit
 	{
