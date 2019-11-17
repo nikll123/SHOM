@@ -1,7 +1,7 @@
 #include "Led.h"
 
 //------------------------------------
-Led::Led() : Led("dummy led", 0, LEDS_NOTINIT)
+Led::Led() : Led("Dummy Led", 0, LEDS_NOTINIT)
 {
 }
 
@@ -12,6 +12,7 @@ Led::Led(String title, uint8_t pin) : Led(title, pin, LEDS_OFF)
 Led::Led(String title, uint8_t pin, LedState ledState) : Unit(title, UT_LED)
 {
     PinOutLed = PinOut(title + "_pin", pin);
+    _logLevel = LL_NORMAL;
     if(pin > 0)
     	_state = ledState;
     else
@@ -47,7 +48,7 @@ LedInfo Led::GetInfo()
 void Led::LogInfo()
 	{
 	LedInfo li = GetInfo();
-	Log(li.Title + "; " + li.UnitType + "; " + String(li.Pin) + "; " + GetLedStateText(_state));
+	Log(li.UnitType + "; " + String(li.Pin) + "; " + GetLedStateText(_state));
 	}
 
 
@@ -138,14 +139,9 @@ void Led::_setState(LedState ls)
 //------------------------------------
 void Led::_logState(LedState2 ls2)
 	{
-	Log(_title + " " + GetLedStateText(ls2.Old) + " -> " + GetLedStateText(ls2.New));
+	Log(GetLedStateText(ls2.Old) + " -> " + GetLedStateText(ls2.New));
 	}
 	
-void Led::Log(String str)
-	{
-	if (LOGLEVEL >= LL_NORMAL) LogTextLn(str);
-	}
-
 void Led::SetOn()
 	{
 	_setState(LEDS_ON);

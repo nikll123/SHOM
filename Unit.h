@@ -9,13 +9,20 @@
 	#define LL_NORMAL	2
 	#define LL_LOW		3
 
-	#define LOGLEVEL LL_LOW
+	#define LOGLEVEL LL_NORMAL
 
     #ifndef LOGLEVEL
 		#define LOGLEVEL LL_NORMAL
 	#endif
 
 	#define PortMonitorLog 1
+
+  	//-------------------------------
+	enum LogLevel  {ll_NONE 	= 0,
+					ll_HIGH		= 1,
+					ll_NORMAL	= 2,
+					ll_LOW		= 3
+					};
 
 	//-------------------------------
 	enum UnitType  {UT_NONE,
@@ -31,34 +38,11 @@
 					};	
 
 	//-------------------------------
-	enum TurnOnUnitAction {
-					TON_UA_UNKNOWN = 1, 
-					TON_UA_NONE = 2, 
-					TON_UA_ON = 3, 
-					TON_UA_ERROR = -1, 
-					TON_UA_ERROR_01 = -2, 
-					TON_UA_ERROR_02 = -3, 
-					TON_UA_ERROR_03 = -4, 
-					TON_UA_ERROR_04 = -5 
-					};	
-
-	//-------------------------------
-	enum TurnOffUnitAction {
-					TOFF_UA_UNKNOWN = 1, 
-					TOFF_UA_NONE = 2, 
-					TOFF_UA_OFF = 3, 
-					TOFF_UA_ERROR = -1, 
-					TOFF_UA_ERROR_01 = -2, 
-					TOFF_UA_ERROR_02 = -3, 
-					TOFF_UA_ERROR_03 = -4, 
-					TOFF_UA_ERROR_04 = -5 
-					};	
-
-	//-------------------------------
 	struct UnitInfo {
 					String 		Title;
 					String 		UnitType;
 					};	
+
 
 	//-------------------------------
 	class Unit
@@ -68,11 +52,9 @@
 					Unit(String title, UnitType type);
 		static void	LogText(String);
 		static void	LogTextLn(String);
-		static void	LogText(bool);
-		static void	LogTextLn(bool);
-		static void LogText(int x);
-		static void LogTextLn(int x);
 		static void LogLn();
+		void 		Log(String);
+		void 		LogErr(String pref, int err);
 		void 		LogInfo();
 		
 		UnitInfo 	GetInfo();
@@ -82,6 +64,7 @@
 	protected:
 		String			_title;
 		UnitType		_type;
+		LogLevel		_logLevel = ll_NONE;
 
 	private: 
 	};

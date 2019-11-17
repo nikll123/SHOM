@@ -27,7 +27,6 @@
 		PinOutInfo 	GetInfo();
 		void 		LogInfo();
 		void 		LogState();
-		void 		Log(String str);
 
 
 	protected:

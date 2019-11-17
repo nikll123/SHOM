@@ -63,7 +63,6 @@
 		String			GetContactorStateText(ContactorState state);
 		void			Init();
 		void			LogInfo();
-		void 			Log(String str);
 		void 			SetErrState(ContactorState state);
 		void 			FixTime(bool x);
 		PinIn			KeyIn;		//Why not PinIn? PinIn is already used as a class name

@@ -52,7 +52,7 @@ PinState2 PinIn::GetState()
 		
 	if (ps2.Old != ps2.New) 
 		{
-		String str = _title + ": " + GetPinStateText(ps2.Old) + " -> " + GetPinStateText(ps2.New); 
+		String str = GetPinStateText(ps2.Old) + " -> " + GetPinStateText(ps2.New); 
 		Log(str);
 		}
 	return ps2;
@@ -88,8 +88,7 @@ PinInInfo PinIn::GetInfo()
 void PinIn::LogInfo()
 	{
 	PinInInfo pi = GetInfo();
-	String str = _title + ": ";
-	str = str + (pi.Title + "; ");
+	String str = (pi.Title + "; ");
 	str = str + (pi.UnitType + "; ");
 	str = str + (pi.State + "; ");
 	str = str + (String(_pin) + "; ");
@@ -101,8 +100,7 @@ void PinIn::LogInfo()
 // ------------------------------------
 void PinIn::LogState()
 	{
-	String str = _title + ": ";
-	str = str + GetPinStateText(_state) + "; ";
+	String str = GetPinStateText(_state) + "; ";
 	Log(str);
 	}
 

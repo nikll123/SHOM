@@ -15,6 +15,7 @@ Contactor::Contactor(String title, uint8_t pinIn, uint8_t pinOut, unsigned long 
 	{
 	_timeOutOn = timeOutOn;
 	_timeOutOff = timeOutOff;
+	_logLevel = LL_NORMAL;
 	KeyIn = PinIn(title + "_KeyIn", pinIn);
 	KeyOut = PinOut(title + "_KeyOut", pinOut);
 	Init();
@@ -22,7 +23,7 @@ Contactor::Contactor(String title, uint8_t pinIn, uint8_t pinOut, unsigned long 
 
 void Contactor::Init()
 	{
- 	Log(_title + ": Init");
+ 	Log("Init");
  	KeyOut.SetOff();
 	KeyIn.GetState();
 	ContactorState2 cs2;
@@ -159,7 +160,7 @@ ContactorState2 Contactor::GetState()
 // ------------------------------------
 void Contactor::TurnOn()
 	{
- 	String str = _title + ": TurnOn";
+ 	String str = "TurnOn";
 	if(_state == CS_OFF)
 	    _Turn(CS_STARTING);
     else
@@ -170,7 +171,7 @@ void Contactor::TurnOn()
 // ------------------------------------
 void Contactor::TurnOff()
 	{
- 	String str = _title + ": TurnOff";
+ 	String str = "TurnOff";
 	if(_state == CS_ON || _state == CS_STARTING)
 	    _Turn(CS_STOPPING);
     else
@@ -215,33 +216,30 @@ void Contactor::_Turn(ContactorState csNew)
 		 Log("_Turn: wrong arg " + GetContactorStateText(csNew));
 		}
 	}
-	
 
 // ------------------------------------
 void Contactor::Halt()
 	{
 	_Turn(CS_HALT);
-	Log(_title + ".Halt()");
+	Log("Halt()");
 	}
 
+// ------------------------------------
 void Contactor::_ifChanged(ContactorState2 cs2)
 	{
 	if (cs2.Old != cs2.New)
-		Log(_title + ": " + GetContactorStateText(cs2.Old) + " -> " + GetContactorStateText(cs2.New));
+		Log(GetContactorStateText(cs2.Old) + " -> " + GetContactorStateText(cs2.New));
 	}
 	
-void Contactor::Log(String str)
-	{
-	if (LOGLEVEL >= LL_NORMAL) LogTextLn(str);
-	}
-
+// ------------------------------------
 void Contactor::SetErrState(ContactorState err)
 	{
-	Log("   Error! " + _title + " CS_ERR" + String(err));
+	LogErr("CS_ERR", err);
 	_state = CS_ERR;
 	}
 
- void Contactor::FixTime(bool x)
+// ------------------------------------
+void Contactor::FixTime(bool x)
 	 {
 	if (x)
 		_millsCheck = millis();

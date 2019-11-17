@@ -42,7 +42,6 @@
 		LedState2	Refresh();
 
 		void 		LogInfo();
-		void		Log(String str);
 		void 		SetOn();
 		void 		SetOff();
 		void 		SetBlink();

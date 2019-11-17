@@ -15,35 +15,6 @@ Unit::Unit(String title, UnitType type)
 	}
 
 //------------------------------
-static void Unit::LogTextLn(int x)
-	{
-	LogText(x);
-	LogLn();
-	}
-	
-//------------------------------
-static void Unit::LogText(int x)
-	{
-	Serial.print(x);
-	}
-
-//------------------------------
-static void Unit::LogTextLn(bool b)
-	{
-	LogText(b);
-	LogLn();
-	}
-	
-//------------------------------
-static void Unit::LogText(bool b)
-	{
-	if (b)
-		Serial.print("True");
-	else
-		Serial.print("False");
-	}
-
-//------------------------------
 static void Unit::LogTextLn(String txt)
 	{
 	LogText(txt);
@@ -56,10 +27,27 @@ static void Unit::LogText(String txt)
 	Serial.print(txt);
 	}
 
+//------------------------------
 static void Unit::LogLn()
 	{
 	Serial.println("");
 	}
+
+//------------------------------
+void Unit::Log(String str)
+	{
+	if (LOGLEVEL >= _logLevel)
+		{ 
+		str = _title + " : " + str;
+		LogTextLn(str);
+		}
+	}
+	
+//------------------------------
+void Unit::LogErr(String pref, int err)
+	{
+	LogTextLn("   Error! " + _title + " " + pref + String(err));
+	}	
 
 //------------------------------
 UnitInfo Unit::GetInfo()

@@ -59,7 +59,7 @@ void PinOut::_setState(PinState state, bool noLog)
 	ps2.New = _state;
 	if (ps2.Changed() && !noLog) 
 		{
-		String str = _title + ": " + GetPinStateText(ps2.Old) + " -> " + GetPinStateText(ps2.New); 
+		String str = GetPinStateText(ps2.Old) + " -> " + GetPinStateText(ps2.New); 
 		Log(str);
 		}
 	}
@@ -101,11 +101,4 @@ void PinOut::LogState()
 	LogLn();
 	}
 
-// ------------------------------------
-void PinOut::Log(String str)
-	{
-	if (LOGLEVEL >= LL_LOW) 
-		{
-		LogTextLn(str);
-		}
-	}
+

@@ -17,12 +17,12 @@ Conveyor::Conveyor(String title, uint8_t pinIn, uint8_t pinOut, uint8_t pinAuto,
 	AtomatConveyor = PinIn(title + "_auto", pinAuto); 
 	LedConveyor = Led(title + "_led", pinLed);
 	_state = US_UNKNOWN;
-	
+	_logLevel = LL_NORMAL;
 	}
 
 void Conveyor::Init()
 	{
-	Log(_title + " Init");
+	Log("Init");
 	_state = US_OFF;
 	LedConveyor.SetOff();
 	ContactorConveyor.Init();
@@ -48,27 +48,29 @@ ConveyorInfo Conveyor::GetInfo()
 	}
 	
 // ------------------------------------
-void Conveyor::LogInfo(String str)
+/*void Conveyor::LogInfo(String str)
 	{
 	Log(str);
 	LogInfo();
-	}
+	}*/
 // ------------------------------------
-void Conveyor::LogInfo()
+String Conveyor::GetInfoTxt()
 	{
+	String str = ""; 
 	ConveyorInfo ci = GetInfo();
-	LogText(ci.Title + "; ");
-	LogText(ci.UnitType + "; ");
-	LogText("in-" + String(ci.PinIn) + "; ");
-	LogText("out-" + String(ci.PinOut) + "; ");
-	LogText("auto-" + String(ci.PinAuto) + "; ");
-	LogText("led-" + String(ci.PinLed) + "; ");
+	str = str + ci.Title + "; ";
+	str = str + ci.UnitType + "; ";
+	str = str + "in-" + String(ci.PinIn) + "; ";
+	str = str + "out-" + String(ci.PinOut) + "; ";
+	str = str + "auto-" + String(ci.PinAuto) + "; ";
+	str = str + "led-" + String(ci.PinLed) + "; ";
 	if(ci.Active)
-		LogText(String("Active; "));
+		str = str + "Active; ";
 	else
-		LogText(String("Not active; "));
-	LogText(ci.State + ".");
-	LogLn();
+		str = str + "Not active; ";
+	
+	str = str + ci.State + ".";
+	return str;
 	}
 
 //------------------------------
@@ -155,7 +157,7 @@ void Conveyor::TurnOn()
 	{
 	if (_state == US_OFF) 
 		{
-		Log(_title + ": TurnOn");
+		Log("TurnOn");
 	    _Turn(US_STARTING);
 	    }
 	}
@@ -165,7 +167,7 @@ void Conveyor::TurnOff()
 	{
 	if (_state == US_ON || _state == US_STARTING) 
 		{
-		Log(_title + ": TurnOff");
+		Log("TurnOff");
 	    _Turn(US_STOPPING);
 	    }
 	}
@@ -209,17 +211,10 @@ void Conveyor::Halt()
 	_state = US_HALT;
 	}
 
-
-// ------------------------------------
-static void Conveyor::Log(String str)
-	{
-	if (LOGLEVEL >= LL_NORMAL) LogTextLn(str);
-	}
-
 // ------------------------------------
 void Conveyor::SetErrState(ConveyorState err)
 	{
-	Log("   Error! " + _title + " US_ERR" + String(err));
+	LogErr("US_ERR", err);
 	ContactorConveyor.Halt();
 	_state = US_ERR;
 	}
@@ -227,11 +222,11 @@ void Conveyor::SetErrState(ConveyorState err)
 // ------------------------------------
 void Conveyor::LogStates(ConveyorState2 cs2)
 	{
-	Log(GetInfo().Title + " " + GetConveyorStateText(cs2.Old) + " -> " + GetConveyorStateText(cs2.New));
+	Log(GetConveyorStateText(cs2.Old) + " -> " + GetConveyorStateText(cs2.New));
 	}
 
 // ------------------------------------
-static void Conveyor::LogStatesPrevCurr(ConveyorStatePrevCurr cs2)
+void Conveyor::LogStatesPrevCurr(ConveyorStatePrevCurr cs2)
 	{
 	Log("Conveyor states: previous " + GetConveyorStateText(cs2.Prev) + ", current " + GetConveyorStateText(cs2.Curr));
 	}

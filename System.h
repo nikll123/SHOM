@@ -57,8 +57,6 @@ struct	SystemInfo
 		SystemInfo 		GetInfo();
 		void 			LogInfo();
 		void 			LogInfo(bool conv);
-		void			Log(String str);
-		void			LogErr(SystemState err);
 		void 			SetupConveyor(String title, uint8_t pinIn, uint8_t pinOut, uint8_t pinAuto, uint8_t pinLed);
 		PinIn 			SetupButton(String suffix, uint8_t pin);
 		String 			GetSystemStateText(SystemState state);
@@ -75,6 +73,7 @@ struct	SystemInfo
 		void 			Reset();
 		void 			TurnOff();
 		void 			TurnOffAlarm();
+		void 			SetErrState(SystemState err);
 		//void 			Test();
 		SystemState2	GetState();
 

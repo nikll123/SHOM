@@ -7,6 +7,7 @@ System::System() : System("DummySystem", 0, 0, 0)
 
 System::System(String title, uint8_t pinBtnOn, uint8_t pinBtnOff, uint8_t pinBtnReset) : Unit(title, UT_SYSTEM)
 	{
+	_logLevel = LL_NORMAL;
 	Init();
 	BtnOn = SetupButton("BtnOn", pinBtnOn);
 	BtnOff = SetupButton("BtnOff", pinBtnOff);
@@ -14,9 +15,9 @@ System::System(String title, uint8_t pinBtnOn, uint8_t pinBtnOff, uint8_t pinBtn
 	}
 	
 // ------------------------------------
-PinIn System::SetupButton(String suffix,uint8_t pin)
+PinIn System::SetupButton(String title, uint8_t pin)
 	{
-	PinIn btn = PinIn(_title + "." + suffix, pin);
+	PinIn btn = PinIn(title, pin);    //  title must not be longer than 12!! 
 	btn.LogicInverse();
 	btn.Init();
 	return btn ; 
@@ -25,7 +26,7 @@ PinIn System::SetupButton(String suffix,uint8_t pin)
 // ------------------------------------
 void System::Init()
 	{ 
-	Log(_title + ": Init");
+	Log("Init sys");
 	for(int i = 0; i < UnitCount; i++)
 		{
 		ConveyorStates[i] = {US_NOTINIT, US_NOTINIT};
@@ -41,7 +42,7 @@ void System::Init()
 // ------------------------------------
 void  System::Start()
 	{
-	Log(_title + ": Start()"); 
+	Log("Start()"); 
 	if(_state == SS_OFF)
 		_setState(SS_STARTING);
 	}
@@ -49,7 +50,7 @@ void  System::Start()
 // ------------------------------------
 void  System::Stop()
 	{
-	Log(_title + ": Stop()"); 
+	Log("Stop()"); 
 	if(_state == SS_STARTING || _state == SS_ON)
 		_setState(SS_STOPPING);
 	}
@@ -57,7 +58,7 @@ void  System::Stop()
 // ------------------------------------
 void  System::Reset()
 	{
-	Log(_title + ": Reset()");
+	Log("Reset()");
 	Init();
 	} 
 	
@@ -96,7 +97,7 @@ void System::LogInfo()
 void System::LogInfo(bool conv)
 	{
 	SystemInfo si = GetInfo();
-	String str = si.Title + "; " + si.UnitType + "; " + si.State; 
+	String str = si.UnitType + "; " + si.State; 
 	str = str + "; BtnOn-" + String(si.PinOn) + "; BtnOff-" + String(si.PinOff) + "; BtnReset-" + String(si.PinReset);
 	Log(str);
 	if (conv)
@@ -105,8 +106,9 @@ void System::LogInfo(bool conv)
 			{
 			if(Conveyors[i].IsActive())
 				{
-				LogText("i=" + String(i) + "; ");
-				Conveyors[i].LogInfo();
+				String str = String(i) + ") ";
+				str = str + Conveyors[i].GetInfoTxt();
+				Log(str);
 				}
 			}
 		} 		
@@ -139,19 +141,6 @@ void System::SetupConveyor(String title, uint8_t pinIn, uint8_t pinOut, uint8_t 
 		}
 	}
 	
-// ------------------------------------
-void System::Log(String str)
-	{
-	if (LOGLEVEL >= LL_HIGH) LogTextLn(str);
-	}
-
-// ------------------------------------
-void System::LogErr(SystemState err)
-	{
-	Log("   Error! " + _title + " SS_ERR" + String(err));
-	}
-
-
 // ------------------------------------
 SystemState2 System::GetState()
 	{
@@ -211,7 +200,7 @@ void System::_ifChanged(SystemState2 ss2)
 // ------------------------------------
 void System::_logStates(SystemState2 ss2)
 	{
-	Log(_title + " " + GetSystemStateText(ss2.Old) + " -> " + GetSystemStateText(ss2.New));
+	Log(GetSystemStateText(ss2.Old) + " -> " + GetSystemStateText(ss2.New));
 	}
 
 // ------------------------------------
@@ -240,7 +229,7 @@ SystemState System::_checkStateStarting()
 			{
 			Conveyors[i].Halt();
 			cntErr++;
-			LogErr(SS_ERR305);
+			SetErrState(SS_ERR305);
 			}
 		else
 			{
@@ -260,8 +249,8 @@ SystemState System::_checkStateStarting()
 				else
 					{
 					cntErr++;
-					Conveyor::LogStatesPrevCurr(cspc2.Curr);
-					LogErr(SS_ERR301);
+					Conveyors[i].LogStatesPrevCurr(cspc2.Curr);
+					SetErrState(SS_ERR301);
 					}
 				}
 			else if (cspc2.Prev == US_STARTING)
@@ -274,7 +263,7 @@ SystemState System::_checkStateStarting()
 				else
 					{
 					cntErr++;
-					LogErr(SS_ERR302);
+					SetErrState(SS_ERR302);
 					}
 				}
 			else if (cspc2.Prev == US_OFF)
@@ -284,13 +273,13 @@ SystemState System::_checkStateStarting()
 				else
 					{
 					cntErr++;
-					LogErr(SS_ERR303);
+					SetErrState(SS_ERR303);
 					}
 				}
 			else
 				{
 				cntErr++;
-				LogErr(SS_ERR304);
+				SetErrState(SS_ERR304);
 				}
 				
 			cspc2.Prev = cspc2.Curr; 
@@ -314,7 +303,7 @@ SystemState System::_checkStateStopping()
 			{
 			Conveyors[i].Halt();
 			cntErr++;
-			LogErr(SS_ERR306);
+			SetErrState(SS_ERR306);
 			}
 		else
 			{
@@ -333,7 +322,7 @@ SystemState System::_checkStateStopping()
 				else
 					{
 					cntErr++;
-					LogErr(SS_ERR307);
+					SetErrState(SS_ERR307);
 					}
 				}
 			else if (cspc2.Prev == US_STOPPING)
@@ -343,7 +332,7 @@ SystemState System::_checkStateStopping()
 				else
 					{
 					cntErr++;
-					LogErr(SS_ERR308);
+					SetErrState(SS_ERR308);
 					}
 				}
 			else if (cspc2.Prev == US_ON)
@@ -353,13 +342,13 @@ SystemState System::_checkStateStopping()
 				else
 					{
 					cntErr++;
-					LogErr(SS_ERR309);
+					SetErrState(SS_ERR309);
 					}
 				}
 			else
 				{
 				cntErr++;
-				LogErr(SS_ERR310);
+				SetErrState(SS_ERR310);
 				}
 				
 			doHalt = (cntErr > 0);
@@ -380,7 +369,7 @@ SystemState System::_checkStateOff()
 			{
 			Conveyors[i].Halt();
 			cntErr++;
-			LogErr(SS_ERR311);
+			SetErrState(SS_ERR311);
 			}
 		//else
 			{
@@ -390,7 +379,7 @@ SystemState System::_checkStateOff()
 				{
 				err = true;
 				cntErr++;
-				LogErr(SS_ERR312);
+				SetErrState(SS_ERR312);
 				}
 			haltRest = (cntErr > 0);
 			}
@@ -413,7 +402,7 @@ SystemState System::_checkStateOn()
 			{
 			Conveyors[i].Halt();
 			cntErr++;
-			LogErr(SS_ERR313);
+			SetErrState(SS_ERR313);
 			}
 		else
 			{
@@ -422,7 +411,7 @@ SystemState System::_checkStateOn()
 			else
 				{
 				cntErr++;
-				LogErr(SS_ERR314);
+				SetErrState(SS_ERR314);
 				}
 			doHalt = (cntErr > 0);
 			}
@@ -446,9 +435,15 @@ SystemState System::_calcState(int cntErr, int cntOn, int cntOff, int cntStoping
 		ss = SS_ON;
 	else
 		{
-		LogErr(SS_ERR315);
+		SetErrState(SS_ERR315);
 		ss = SS_ERR;
 		} 
 	return ss;
 	}
 
+// ------------------------------------
+void System::SetErrState(SystemState err)
+	{
+	LogErr("SS_ERR", err);
+	_state = SS_ERR;
+	}
