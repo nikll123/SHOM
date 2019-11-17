@@ -2,7 +2,7 @@
 	#define Unit_h
 
 	#include "Arduino.h"
-	#include <Wire.h>
+	//#include <Wire.h>
 	
 	#define LL_NONE		0
 	#define LL_HIGH		1
