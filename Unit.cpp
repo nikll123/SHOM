@@ -81,6 +81,7 @@ String Unit::GetUnitTypeText()
 		case UT_SYSTEM 		: return "SYSTEM";
 		case UT_CONTACTOR 	: return "CONTACTOR";
 		case UT_CONVEYOR 	: return "CONVEYOR";
+		case UT_CANBUS 		: return "CANBUS";
 		default			    : return "GetUnitTypeText: unknown-" + String(_type);
 		}
 	}
