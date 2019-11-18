@@ -36,8 +36,53 @@ ShomCanBus::ShomCanBus(String title, uint8_t pin_ss, uint8_t canbus_id) :  Unit(
 		}
 	}
 
+// ------------------------------------
 void ShomCanBus::SetErrState(CanBusState err)
 	{
 	LogErr("CBS_ERR", err);
 	_state = CBS_ERR;
+	}
+
+
+// ------------------------------------
+void ShomCanBus::Send()
+	{
+	canbus.sendMsgBuf(_canbus_id, 0, DATA_LENGHT, _data_buffer); 
+	}
+
+// ------------------------------------
+byte ShomCanBus::Receive()
+	{
+	byte dataLen = 0;
+
+	if (CAN_MSGAVAIL == canbus.checkReceive())
+	  	canbus.readMsgBuf(&dataLen, _data_buffer);
+
+	return dataLen;  
+	}
+
+// ------------------------------------
+void ShomCanBus::SetDataByte(byte data, byte i)
+	{
+	_data_buffer[i] = data;
+	}
+
+// ------------------------------------
+void ShomCanBus::ResetData()
+	{
+	for (int i = 0; i < DATA_LENGHT; i++)
+		{
+		_data_buffer[i] = 0;
+		}
+	}
+
+// ------------------------------------
+void ShomCanBus::LogData()
+	{
+	String str = "_data_buffer ";
+	for (int i = 0; i < DATA_LENGHT; i++)
+		{
+		str = str + String(_data_buffer[i]) + "; ";
+		}
+	Log(str);
 	}

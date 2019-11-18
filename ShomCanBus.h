@@ -3,6 +3,8 @@
 	#include "mcp_can.h"
 	#define ShomCanBus_h
 	#define CREATE_TRY_MAX 10
+	#define DATA_LENGHT 8
+	
 
   	enum CanBusState{ 
 					CBS_UNKNOWN		= 1,
@@ -23,12 +25,17 @@
 						ShomCanBus(String title, uint8_t pin_ss, uint8_t canbus_id);
 		MCP_CAN     	canbus;
 		void			SetErrState(CanBusState err);
-						
+		void			Send();
+		byte			Receive();
+		void 			SetDataByte(byte data, byte i);
+		void 			ResetData();
+		void			LogData();						
 	protected:
 
 	private:
 		CanBusState 	_state = CBS_UNKNOWN;
 		uint8_t			_canbus_id;
+		byte 			_data_buffer[DATA_LENGHT];
  
 	};
 	    
