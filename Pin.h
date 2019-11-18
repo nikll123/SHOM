@@ -31,8 +31,8 @@
 	class Pin : public Unit
 	{
 	public:
-	    Pin();
-	    Pin(String title, uint8_t pin, UnitType ut);
+	    			Pin();
+	    			Pin(String title, uint8_t pin, UnitType ut);
 	    
 		PinInfo 	GetInfo();
 		PinState	GetState();
