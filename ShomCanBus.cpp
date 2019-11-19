@@ -6,11 +6,11 @@ ShomCanBus::ShomCanBus() : Unit("dummy", UT_CANBUS)
 	}
 
 
-ShomCanBus::ShomCanBus(String title, uint8_t pin_ss, uint8_t canbus_id) :  Unit(title, UT_CANBUS)
+ShomCanBus::ShomCanBus(String title, uint8_t pin_ss, unsigned long canbus_id) :  Unit(title, UT_CANBUS)
 	{
 	_logLevel = LL_NORMAL;
 	_canbus_id = canbus_id; 
-	MCP_CAN canbus(pin_ss);
+	canbus = MCP_CAN(pin_ss);
 	int i = 1;
 	bool canbus_ok = false;
 	while (!canbus_ok)
@@ -47,15 +47,14 @@ void ShomCanBus::SetErrState(CanBusState err)
 // ------------------------------------
 void ShomCanBus::Send()
 	{
-	canbus.sendMsgBuf(_canbus_id, 0, DATA_LENGHT, _data_buffer); 
+    canbus.sendMsgBuf(_canbus_id, 0, DATA_LENGHT, _data_buffer);
 	}
 
 // ------------------------------------
-byte ShomCanBus::Receive()
+unsigned char ShomCanBus::Receive()
 	{
-	byte dataLen = 0;
-
-	if (CAN_MSGAVAIL == canbus.checkReceive())
+	unsigned char dataLen = 0;
+ 	if (CAN_MSGAVAIL == canbus.checkReceive())
 	  	canbus.readMsgBuf(&dataLen, _data_buffer);
 
 	return dataLen;  

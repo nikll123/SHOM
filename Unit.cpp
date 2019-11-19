@@ -72,17 +72,18 @@ String Unit::GetUnitTypeText()
 	{
 	switch (_type)
 		{
-		case UT_NONE 		: return "NONE";
-		case UT_LED         : return "LED";
-		case UT_PIN         : return "PIN";
-		case UT_PININ		: return "PININ";
-		case UT_PINOUT		: return "PINOUT";
-		case UT_BUTTONLED	: return "BUTTONLED";
-		case UT_SYSTEM 		: return "SYSTEM";
-		case UT_CONTACTOR 	: return "CONTACTOR";
-		case UT_CONVEYOR 	: return "CONVEYOR";
-		case UT_CANBUS 		: return "CANBUS";
-		default			    : return "GetUnitTypeText: unknown-" + String(_type);
+		case UT_NONE 			: return "NONE";
+		case UT_LED         	: return "LED";
+		case UT_PIN         	: return "PIN";
+		case UT_PININ			: return "PININ";
+		case UT_PINOUT			: return "PINOUT";
+		case UT_BUTTONLED		: return "BUTTONLED";
+		case UT_SYSTEM 			: return "SYSTEM";
+		case UT_CONTACTOR 		: return "CONTACTOR";
+		case UT_CONVEYOR 		: return "CONVEYOR";
+		case UT_CONVEYORHANDLER	: return "CONVEYORHANDLER";
+		case UT_CANBUS 			: return "CANBUS";
+		default			    	: return "GetUnitTypeText: unknown-" + String(_type);
 		}
 	}
 

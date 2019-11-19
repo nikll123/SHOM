@@ -22,11 +22,11 @@
 	{
 	public:
 						ShomCanBus();
-						ShomCanBus(String title, uint8_t pin_ss, uint8_t canbus_id);
+						ShomCanBus(String title, uint8_t pin_ss, unsigned long canbus_id);
 		MCP_CAN     	canbus;
 		void			SetErrState(CanBusState err);
 		void			Send();
-		byte			Receive();
+		unsigned char	Receive();
 		void 			SetDataByte(byte data, byte i);
 		void 			ResetData();
 		void			LogData();						
@@ -34,7 +34,7 @@
 
 	private:
 		CanBusState 	_state = CBS_UNKNOWN;
-		uint8_t			_canbus_id;
+		unsigned long 	_canbus_id;
 		byte 			_data_buffer[DATA_LENGHT];
  
 	};

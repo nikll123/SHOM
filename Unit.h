@@ -25,6 +25,7 @@
 					UT_AUTOMAT, 
 					UT_CONTACTOR,
 					UT_CONVEYOR,
+					UT_CONVEYORHANDLER,
 					UT_CANBUS,
 					UT_SYSTEM
 					};	
