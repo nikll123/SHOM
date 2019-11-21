@@ -2,7 +2,8 @@
 	#define Pin_h
 	
 	#include "Unit.h"
-	
+	#include "ShomCanBus.h"
+		
    	//-------------------------------
 	enum PinState {KS_NONE, 
 					KS_ON, 
@@ -40,6 +41,7 @@
 		String 		GetPinStateText(PinState);
 		bool		IsHigh();
 		bool		IsLow();
+		static ShomCanBus CanBus;
 
 	protected:
 		uint8_t 	_pin;
