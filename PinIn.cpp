@@ -39,7 +39,9 @@ void PinIn::_setLogicType(LogicType logicType)
 		impmode = INPUT;
 	else
 		impmode = INPUT_PULLUP;
-	pinMode(_pin, impmode);
+	//pinMode(_pin, impmode);
+	ShomPinMode(impmode);
+	
 }
 
 // ------------------------------------

@@ -43,6 +43,7 @@
 		bool				IsLow();
 		bool 				ShomPinRead();
 		void 				ShomPinWrite(bool val);
+		void 				ShomPinMode(uint8_t pinmode);
 		static ShomCanBus 	CanBus;
 
 	protected:

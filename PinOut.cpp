@@ -6,7 +6,8 @@ PinOut::PinOut() : PinOut("Dummy PinOut", 0)
 
 PinOut::PinOut(String title, uint8_t pin) : Pin(title, pin, UT_PINOUT)
 	{
-	pinMode(pin, OUTPUT);
+	//pinMode(pin, OUTPUT);
+	ShomPinMode(OUTPUT);
 	Init();
 	}
 

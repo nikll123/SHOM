@@ -58,6 +58,7 @@ switch (instate)
 //------------------------------
 bool Pin::ShomPinRead()
 	{
+	//Log("ShomPinRead");
 	bool res = false;
 	if (_pin < 100)
 		{
@@ -68,7 +69,7 @@ bool Pin::ShomPinRead()
 		Pin::CanBus.ResetData();
 		Pin::CanBus.SetDataByte(0, CANBUS_READ);
 		Pin::CanBus.SetDataByte(1, _pin - 100);
-		Pin::CanBus.LogData();
+		//Pin::CanBus.LogData();
 		Pin::CanBus.Send();
 		}
 	return res;
@@ -77,6 +78,7 @@ bool Pin::ShomPinRead()
 //------------------------------
 void Pin::ShomPinWrite(bool val)
 	{
+	//Log("ShomPinWrite");
 	if (_pin < 100)
 		{
 		digitalWrite(_pin, val);
@@ -86,7 +88,26 @@ void Pin::ShomPinWrite(bool val)
 		Pin::CanBus.ResetData();
 		Pin::CanBus.SetDataByte(0, CANBUS_WRITE);
 		Pin::CanBus.SetDataByte(1, _pin - 100);
-		Pin::CanBus.LogData();
+		//Pin::CanBus.LogData();
+		Pin::CanBus.Send();
+		}
+	}
+
+//------------------------------
+void Pin::ShomPinMode(byte pinmode)
+	{
+	//Log("ShomPinMode");
+	if (_pin < 100)
+		{
+		pinMode(_pin, pinmode);
+		}
+	else
+		{
+		Pin::CanBus.ResetData();
+		Pin::CanBus.SetDataByte(0, CANBUS_MODE);
+		Pin::CanBus.SetDataByte(1, _pin - 100);
+		Pin::CanBus.SetDataByte(2, pinmode);
+		//Pin::CanBus.LogData();
 		Pin::CanBus.Send();
 		}
 	}
