@@ -18,7 +18,7 @@ ShomCanBus Pin::CanBus = ShomCanBus();
 // ------------------------------------
 bool Pin::IsHigh()
 	{
-	return digitalRead(_pin);
+	return ShomPinRead();
 	}
 
 // ------------------------------------
@@ -55,3 +55,38 @@ switch (instate)
 	}
 }
 
+//------------------------------
+bool Pin::ShomPinRead()
+	{
+	bool res = false;
+	if (_pin < 100)
+		{
+		res = digitalRead(_pin);
+		}
+	else
+		{
+		Pin::CanBus.ResetData();
+		Pin::CanBus.SetDataByte(0, CANBUS_READ);
+		Pin::CanBus.SetDataByte(1, _pin - 100);
+		Pin::CanBus.LogData();
+		Pin::CanBus.Send();
+		}
+	return res;
+	}
+
+//------------------------------
+void Pin::ShomPinWrite(bool val)
+	{
+	if (_pin < 100)
+		{
+		digitalWrite(_pin, val);
+		}
+	else
+		{
+		Pin::CanBus.ResetData();
+		Pin::CanBus.SetDataByte(0, CANBUS_WRITE);
+		Pin::CanBus.SetDataByte(1, _pin - 100);
+		Pin::CanBus.LogData();
+		Pin::CanBus.Send();
+		}
+	}

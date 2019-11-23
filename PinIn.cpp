@@ -61,7 +61,7 @@ PinState2 PinIn::GetState()
 // ------------------------------------
 void PinIn::_refreshState()
 {
-	bool newState = digitalRead(_pin);
+	bool newState = ShomPinRead();
 			
 	if (_logicType == LT_INVERSE)
 		newState = !newState;

@@ -32,20 +32,22 @@
 	class Pin : public Unit
 	{
 	public:
-	    			Pin();
-	    			Pin(String title, uint8_t pin, UnitType ut);
+	    					Pin();
+	    					Pin(String title, uint8_t pin, UnitType ut);
 	    
-		PinInfo 	GetInfo();
-		PinState	GetState();
+		PinInfo 			GetInfo();
+		PinState			GetState();
 
-		String 		GetPinStateText(PinState);
-		bool		IsHigh();
-		bool		IsLow();
-		static ShomCanBus CanBus;
+		String 				GetPinStateText(PinState);
+		bool				IsHigh();
+		bool				IsLow();
+		bool 				ShomPinRead();
+		void 				ShomPinWrite(bool val);
+		static ShomCanBus 	CanBus;
 
 	protected:
-		uint8_t 	_pin;
-		PinState	_state = KS_NONE;
+		uint8_t 			_pin;
+		PinState			_state = KS_NONE;
 
 	private:
 	};
