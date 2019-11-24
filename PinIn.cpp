@@ -28,8 +28,6 @@ void PinIn::LogicNormal()
 	_setLogicType(LT_NORMAL);
 }
 
-
-
 // ------------------------------------
 void PinIn::_setLogicType(LogicType logicType)
 {
@@ -41,7 +39,6 @@ void PinIn::_setLogicType(LogicType logicType)
 		impmode = INPUT_PULLUP;
 	//pinMode(_pin, impmode);
 	ShomPinMode(impmode);
-	
 }
 
 // ------------------------------------

@@ -6,7 +6,6 @@ PinOut::PinOut() : PinOut("Dummy PinOut", 0)
 
 PinOut::PinOut(String title, uint8_t pin) : Pin(title, pin, UT_PINOUT)
 	{
-	//pinMode(pin, OUTPUT);
 	ShomPinMode(OUTPUT);
 	Init();
 	}
@@ -26,7 +25,7 @@ void PinOut::SetOn()
 // ------------------------------------
 void PinOut::SetOn(bool noLog)
 	{
-	_setState(KS_ON, noLog);
+	SetState(KS_ON, noLog);
 	}
 
 // ------------------------------------
@@ -38,7 +37,7 @@ void PinOut::SetOff()
 // ------------------------------------
 void PinOut::SetOff(bool noLog)
 	{
-	_setState(KS_OFF, noLog);
+	SetState(KS_OFF, noLog);
 	}
 
 // ------------------------------------
@@ -48,27 +47,6 @@ void PinOut::Inverse()
 		SetOff();	
 	else
 		SetOn();
-	}
-
-// ------------------------------------
-void PinOut::_setState(PinState state, bool noLog)
-	{
-	PinState2 ps2;
-	ps2.Old = _state;
-	digitalWrite(_pin, (state == KS_ON));
-	_state = state; 
-	ps2.New = _state;
-	if (ps2.Changed() && !noLog) 
-		{
-		String str = GetPinStateText(ps2.Old) + " -> " + GetPinStateText(ps2.New); 
-		Log(str);
-		}
-	}
-
-// ------------------------------------
-PinState PinOut::GetState()
-	{
-	return _state;
 	}
 
 // ------------------------------------

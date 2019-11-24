@@ -23,7 +23,6 @@
 		void		SetOn(bool noLog);
 		void		SetOff(bool noLog);
 		void		Inverse();
-		PinState 	GetState();
 		PinOutInfo 	GetInfo();
 		void 		LogInfo();
 		void 		LogState();
@@ -32,7 +31,6 @@
 	protected:
 
 	private:
-		void		_setState(PinState state, bool noLog);	
 	};
 #endif
 

@@ -5,19 +5,22 @@
 ShomCanBus::ShomCanBus()
 	{
 	Serial.begin(115200);
-  	canbus=MCP_CAN(CANBUS_PIN_SS);
-  	_canbus_id = CANBUS_ID;
-	_title = "ShomCanBus";
-	Log("Init 1");
+  	_canbus_id = 0;
+	_title = "ShomCanBus(id="+ String(_canbus_id) + ")";
+	Log("Init 0");
 	}
 
 
 // ------------------------------------
-void ShomCanBus::Begin()
+void ShomCanBus::Init(byte id, byte pin_ss)
 	{
 	if(_state != CBS_ON)
 		{
 		Log("Init");
+		_canbus_id = id;
+		_title = "ShomCanBus(id="+ String(_canbus_id) + ")";
+		_canbus_pin_ss = pin_ss; 
+		canbus=MCP_CAN(_canbus_pin_ss);
 		bool canbus_ok = false;
 		canbus_ok = (CAN_OK == canbus.begin(CAN_50KBPS));
 		for (int i = 0; i<CREATE_TRY_MAX; i++)
@@ -41,10 +44,10 @@ void ShomCanBus::Begin()
 			SetErrState(CBS_ERR402);
 			}
 		}
-	else
+	/*else
 		{
 		Log("Init is done already");
-		}
+		}*/
 	}
 		
 
@@ -84,6 +87,12 @@ void ShomCanBus::SetDataByte(byte i, byte data)  // index, data
 	}
 
 // ------------------------------------
+byte ShomCanBus::GetDataByte(byte i)  // index
+	{
+	return _data_buffer[i];
+	}
+
+// ------------------------------------
 void ShomCanBus::ResetData()
 	{
 	for (int i = 0; i < DATA_LENGHT; i++)
@@ -95,10 +104,32 @@ void ShomCanBus::ResetData()
 // ------------------------------------
 void ShomCanBus::LogData()
 	{
-	String str = "_data_buffer ";
-	for (int i = 0; i < DATA_LENGHT; i++)
+	String str = GetCmdTitle(_data_buffer[0]) + "; ";
+	for (int i = 1; i < DATA_LENGHT; i++)
 		{
 		str = str + String(_data_buffer[i]) + "; ";
 		}
 	Log(str);
+	}
+
+// ------------------------------------
+void ShomCanBus::LogInfo()
+	{
+	String str = "Pin SS=" + String(_canbus_pin_ss);
+	Log(str);
+	}
+
+// ------------------------------------
+String ShomCanBus::GetCmdTitle(CanBusCmd cmd)
+	{
+	String res = "";
+	if(cmd == CANBUS_READ)
+	 	res = "CANBUS_READ";
+	else if(cmd == CANBUS_WRITE) 
+	 	res = "CANBUS_WRITE";
+	else if(cmd == CANBUS_MODE)
+	 	res = "CANBUS_MODE";
+	else 
+	 	res = "Unknown";
+	return res; 
 	}

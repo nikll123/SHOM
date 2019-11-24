@@ -2,10 +2,16 @@
 	#define ShomCanBus_h
 
 	#include "mcp_can.h"
-	#include "ShomCanBusCfg.h"
+	
 	
 	#define CREATE_TRY_MAX 10
 	#define DATA_LENGHT 4
+
+  	enum CanBusCmd	{ 
+					CANBUS_READ,
+					CANBUS_WRITE,
+					CANBUS_MODE
+					};
 
   	enum CanBusState{ 
 					CBS_UNKNOWN		= 1,
@@ -26,18 +32,22 @@
 						//ShomCanBus(String title, uint8_t pin_ss, unsigned long canbus_id);
 		MCP_CAN     	canbus;
 		void 			Log(String str);
-		void 			Begin();
+		void 			Init(byte id, byte pin_ss);
 		void			SetErrState(CanBusState err);
 		void			Send();
 		unsigned char	Receive();
-		void 			SetDataByte(byte data, byte i);
+		void 			SetDataByte(byte i, byte data);
+		byte 			GetDataByte(byte i);
 		void 			ResetData();
 		void			LogData();
+		void			LogInfo();
+		String			GetCmdTitle(CanBusCmd cmd);
 								
 	protected:
 
 	private:
 		unsigned long 	_canbus_id;
+		byte 			_canbus_pin_ss;
 		String			_title;
 		CanBusState 	_state = CBS_UNKNOWN;
 		byte 			_data_buffer[DATA_LENGHT];

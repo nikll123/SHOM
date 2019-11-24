@@ -1,9 +1,10 @@
 #include "Pin.h"
+
+
 // ------------------------------------
 Pin::Pin() : Pin("DummyPin", 0, UT_PIN) 
 {
 }
-
 
 Pin::Pin(String title, uint8_t pin, UnitType ut) : Unit(title, ut)
 {
@@ -13,7 +14,6 @@ Pin::Pin(String title, uint8_t pin, UnitType ut) : Unit(title, ut)
 }
 
 ShomCanBus Pin::CanBus = ShomCanBus(); 
-
 
 // ------------------------------------
 bool Pin::IsHigh()
@@ -32,6 +32,22 @@ PinState Pin::GetState()
 {
 	return _state;
 }
+
+// ------------------------------------
+void Pin::SetState(PinState state, bool noLog)
+	{
+	PinState2 ps2;
+	ps2.Old = _state;
+	//digitalWrite(_pin, (state == KS_ON));
+	ShomPinWrite(state == KS_ON);
+	_state = state; 
+	ps2.New = _state;
+	if (ps2.Changed() && !noLog) 
+		{
+		String str = GetPinStateText(ps2.Old) + " -> " + GetPinStateText(ps2.New); 
+		Log(str);
+		}
+	}
 
 // ------------------------------------
 PinInfo Pin::GetInfo()
@@ -88,6 +104,7 @@ void Pin::ShomPinWrite(bool val)
 		Pin::CanBus.ResetData();
 		Pin::CanBus.SetDataByte(0, CANBUS_WRITE);
 		Pin::CanBus.SetDataByte(1, _pin - 100);
+		Pin::CanBus.SetDataByte(2, val);
 		//Pin::CanBus.LogData();
 		Pin::CanBus.Send();
 		}

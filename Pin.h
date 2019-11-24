@@ -37,6 +37,7 @@
 	    
 		PinInfo 			GetInfo();
 		PinState			GetState();
+		void				SetState(PinState state, bool noLog);	
 
 		String 				GetPinStateText(PinState);
 		bool				IsHigh();
