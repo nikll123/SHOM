@@ -39,11 +39,11 @@ int Slave::DoCmd()
 				if(cmd == CANBUS_READ)
 					{
 					res = digitalRead(pin);
-            		Slave::CanBus.ResetData();
-            		Slave::CanBus.SetDataByte(0, CANBUS_RETURN);
-            		Slave::CanBus.SetDataByte(1, _pin - 100);
-            		Slave::CanBus.SetDataByte(2, res);
-            		Pin::CanBus.Send();
+					Slave::CanBus.ResetData();
+					Slave::CanBus.SetDataByte(0, CANBUS_RESPONSE);
+					Slave::CanBus.SetDataByte(1, pin);
+					Slave::CanBus.SetDataByte(2, res);
+					Slave::CanBus.Send();
 					}
 				else if (cmd == CANBUS_WRITE)
 					{

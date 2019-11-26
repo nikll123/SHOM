@@ -87,6 +87,42 @@ bool Pin::ShomPinRead()
 		Pin::CanBus.SetDataByte(1, _pin - 100);
 		//Pin::CanBus.LogData();
 		Pin::CanBus.Send();
+		bool received = false;
+		for (int i=0; i<RESPONSE_TRY_CNT; i++)
+			{
+			if(!received)
+				{
+				delay(RESPONSE_DELAY);
+				byte len = Pin::CanBus.Receive();
+				received = len > 0;
+				if(received)
+					{
+					CanBusCmd cmd = Pin::CanBus.GetDataByte(0);
+					if(CANBUS_RESPONSE == cmd)
+						{
+						byte pin = Pin::CanBus.GetDataByte(1);
+						if(pin == _pin - 100)
+							{
+							byte data = Pin::CanBus.GetDataByte(2);
+							if(data == 0 || data == 1)
+								{
+								res = data; 
+								}
+							//else
+							//	int res = -5;
+							}
+						//else
+							//int res = -6;
+						}
+					//else
+						//int res = -7;
+					}
+				}
+			}
+		if(!received)
+			{
+			//int res = -8;
+			}	
 		}
 	return res;
 	}
