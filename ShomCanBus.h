@@ -10,7 +10,8 @@
   	enum CanBusCmd	{ 
 					CANBUS_READ,
 					CANBUS_WRITE,
-					CANBUS_MODE
+					CANBUS_MODE,
+					CANBUS_RETURN
 					};
 
   	enum CanBusState{ 
