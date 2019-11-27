@@ -50,10 +50,8 @@ PinState2 PinIn::GetState()
 	ps2.New = _state;
 		
 	if (ps2.Old != ps2.New) 
-		{
-		String str = GetPinStateText(ps2.Old) + " -> " + GetPinStateText(ps2.New); 
-		Log(str);
-		}
+		LogStates(ps2);
+		
 	return ps2;
 }
 

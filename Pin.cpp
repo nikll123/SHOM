@@ -43,10 +43,14 @@ void Pin::SetState(PinState state, bool noLog)
 	_state = state; 
 	ps2.New = _state;
 	if (ps2.Changed() && !noLog) 
-		{
-		String str = GetPinStateText(ps2.Old) + " -> " + GetPinStateText(ps2.New); 
-		Log(str);
-		}
+		LogStates(ps2);
+	}
+// ------------------------------------
+void Pin::LogStates(PinState2 ps2)
+	{
+	String str  = String(_pin) + "; ";
+	str = str + GetPinStateText(ps2.Old) + " -> " + GetPinStateText(ps2.New); 
+	Log(str);
 	}
 
 // ------------------------------------
@@ -54,7 +58,8 @@ PinInfo Pin::GetInfo()
 	{
 	UnitInfo ui = Unit::GetInfo();
     return {ui.Title,
-			ui.UnitType, 
+			ui.UnitType,
+			GetPinModeText(), 
 			GetPinStateText(_state), 
 			_pin}; 
 	}
@@ -124,6 +129,11 @@ bool Pin::ShomPinRead()
 			//int res = -8;
 			}	
 		}
+	if(res == true)
+		_state = KS_ON;
+	else
+		_state = KS_OFF;
+	 
 	return res;
 	}
 
@@ -131,6 +141,11 @@ bool Pin::ShomPinRead()
 void Pin::ShomPinWrite(bool val)
 	{
 	//Log("ShomPinWrite");
+	if(val == true)
+		_state = KS_ON;
+	else
+		_state = KS_OFF;
+		
 	if (_pin < 100)
 		{
 		digitalWrite(_pin, val);
@@ -149,18 +164,39 @@ void Pin::ShomPinWrite(bool val)
 //------------------------------
 void Pin::ShomPinMode(byte pinmode)
 	{
-	//Log("ShomPinMode");
+	Log("ShomPinMode " + GetPinModeText());
+	_pinmode = pinmode;
 	if (_pin < 100)
 		{
-		pinMode(_pin, pinmode);
+		pinMode(_pin, _pinmode);
 		}
 	else
 		{
 		Pin::CanBus.ResetData();
 		Pin::CanBus.SetDataByte(0, CANBUS_MODE);
 		Pin::CanBus.SetDataByte(1, _pin - 100);
-		Pin::CanBus.SetDataByte(2, pinmode);
-		//Pin::CanBus.LogData();
+		Pin::CanBus.SetDataByte(2, _pinmode);
 		Pin::CanBus.Send();
 		}
+	}
+
+//------------------------------
+void Pin::LogInfo()
+	{
+	PinInfo	pi = GetInfo();
+	String str = pi.UnitType + ", " + pi.PinMode + ", " + pi.State + ", " + String(pi.Pin);
+	Log(str);   
+  	}
+
+//------------------------------
+String Pin::GetPinModeText()
+	{
+	if(_pinmode == INPUT_PULLUP)
+		return "INPUT_PULLUP";
+	else if(_pinmode == INPUT)
+		return "INPUT";
+	else if(_pinmode == OUTPUT)
+		return "OUTPUT";
+	else
+		return "Unknown";
 	}

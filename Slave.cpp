@@ -33,33 +33,31 @@ int Slave::DoCmd()
 	    {
 		if( pin > 0 && pin < 54)
 			{
-			if(data == 0 || data == 1)
+			res = 0;
+			if(cmd == CANBUS_WRITE)
 				{
-				res = 0;
-				if(cmd == CANBUS_READ)
-					{
-					res = digitalRead(pin);
-					Slave::CanBus.ResetData();
-					Slave::CanBus.SetDataByte(0, CANBUS_RESPONSE);
-					Slave::CanBus.SetDataByte(1, pin);
-					Slave::CanBus.SetDataByte(2, res);
-					Slave::CanBus.Send();
-					}
-				else if (cmd == CANBUS_WRITE)
-					{
-	//String str ="CANBUS_WRITE " + String(pin) + " " + String(data); 
-	//Slave::CanBus.Log(str);
+				if(data == 0 || data == 1)
 					digitalWrite(pin, data);
-					}
-				else if (cmd == CANBUS_MODE)
-					{
-	//String str ="CANBUS_MODE " + String(pin) + " " + String(data); 
-	//Slave::CanBus.Log(str);
-					pinMode(pin, data);
-					}
+				else
+					res = -4;				
 				}
-			else 
-				res = -4;
+				
+			else if(cmd == CANBUS_READ)
+				{
+				res = digitalRead(pin);
+				Slave::CanBus.ResetData();
+				Slave::CanBus.SetDataByte(0, CANBUS_RESPONSE);
+				Slave::CanBus.SetDataByte(1, pin);
+				Slave::CanBus.SetDataByte(2, res);
+				Slave::CanBus.Send();
+				}
+			else if (cmd == CANBUS_MODE)
+				{
+				if(data == INPUT || data == INPUT_PULLUP || data == OUTPUT)
+					digitalWrite(pin, data);
+				else
+					res = -5;
+				}
 			}
 		else 
 			res = -3;
