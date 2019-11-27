@@ -14,7 +14,6 @@
 
 		byte				GetData();
 		void 				Do();
-		//void 				Init();
 		//String				GetUnitTypeText();
 		//String 				GetLogicTypeText();
 

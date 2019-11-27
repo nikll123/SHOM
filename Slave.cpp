@@ -9,11 +9,6 @@ Slave::Slave()
 
 ShomCanBus Slave::CanBus = ShomCanBus(); 
 
-// ------------------------------------
-/*void Slave::Init()
-	{
-	}*/
-
 
 // ------------------------------------
 byte Slave::GetData()
@@ -54,7 +49,7 @@ int Slave::DoCmd()
 			else if (cmd == CANBUS_MODE)
 				{
 				if(data == INPUT || data == INPUT_PULLUP || data == OUTPUT)
-					digitalWrite(pin, data);
+					pinMode(pin, data);
 				else
 					res = -5;
 				}
