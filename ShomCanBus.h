@@ -6,8 +6,6 @@
 	
 	#define CREATE_TRY_MAX 10
 	#define DATA_LENGHT 4
-	#define RESPONSE_DELAY 5
-	#define RESPONSE_TRY_CNT 5
 
   	enum CanBusCmd	{ 
 					CANBUS_READ,

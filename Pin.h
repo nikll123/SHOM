@@ -3,6 +3,8 @@
 	
 	#include "Unit.h"
 	#include "ShomCanBus.h"
+	#define RESPONSE_DELAY 5
+	#define RESPONSE_TRY_CNT 5
 		
    	//-------------------------------
 	enum PinState {KS_NONE, 
