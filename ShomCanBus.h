@@ -2,6 +2,7 @@
 	#define ShomCanBus_h
 
 	#include "mcp_can.h"
+	#include "Unit.h"
 	
 	
 	#define CREATE_TRY_MAX 10
@@ -18,15 +19,10 @@
 					CBS_UNKNOWN		= 1,
 					CBS_ON			= 2,
 					CBS_ERR			= 400,
-					CBS_ERR401		= 401,
-					CBS_ERR402		= 402,
-					CBS_ERR403		= 403,
-					CBS_ERR404		= 404,
-					CBS_ERR405		= 405
 				};
 	
 	//-------------------------------
-	class ShomCanBus 
+	class ShomCanBus : Unit
 	{
 	public:
 						ShomCanBus();
@@ -34,7 +30,7 @@
 		MCP_CAN     	canbus;
 		void 			Log(String str);
 		void 			Init(byte id, byte pin_ss);
-		void			SetErrState(CanBusState err);
+		void			SetErrState(UnitError err);
 		void			Send();
 		unsigned char	Receive();
 		void 			SetDataByte(byte i, byte data);

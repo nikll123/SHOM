@@ -15,18 +15,9 @@
 						CS_STARTING	= 3,
 						CS_STOPPING	= 4,
 						CS_UNKNOWN	= 5,
-						CS_ERR			= 100,
-						CS_ERR101		= 101,
-						CS_ERR102		= 102,
-						CS_ERR103		= 103,
-						CS_ERR104		= 104,
-						CS_ERR105		= 105,
-						CS_ERR106		= 106,
-						CS_ERR107		= 107,
-						CS_ERR108		= 108,
-						CS_ERR109		= 109,
-						CS_ERR110		= 110,
-						CS_HALT			= 199,
+						CS_HALT		= 6,
+						CS_ERR		= 100,
+
 					};
 						
 	struct ContactorState2
@@ -62,7 +53,7 @@
 		String			GetContactorStateText(ContactorState state);
 		void			Init();
 		void			LogInfo();
-		void 			SetErrState(ContactorState state);
+		void			SetErrState(UnitError err);
 		void 			FixTime(bool x);
 		PinIn			KeyIn;		//Why not PinIn? PinIn is already used as a class name
 		PinOut			KeyOut;

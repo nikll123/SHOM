@@ -440,8 +440,8 @@ SystemState System::_calcState(int cntErr, int cntOn, int cntOff, int cntStoping
 	}
 
 // ------------------------------------
-void System::SetErrState(SystemState err)
+void System::SetErrState(UnitError err)
 	{
-	LogErr("SS_ERR", err);
+	LogErr(err);
 	_state = SS_ERR;
 	}

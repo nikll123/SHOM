@@ -211,9 +211,9 @@ void Conveyor::Halt()
 	}
 
 // ------------------------------------
-void Conveyor::SetErrState(ConveyorState err)
+void Conveyor::SetErrState(UnitError err)
 	{
-	LogErr("US_ERR", err);
+	LogErr(err);
 	ContactorConveyor.Halt();
 	_state = US_ERR;
 	}

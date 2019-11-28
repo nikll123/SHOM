@@ -15,21 +15,6 @@ enum SystemState
 				SS_STARTING		= 5,
 				SS_STOPPING		= 6,
 				SS_ERR			= 300,
-				SS_ERR301		= 301,
-				SS_ERR302		= 302,
-				SS_ERR303		= 303,
-				SS_ERR304		= 304,
-				SS_ERR305		= 305,
-				SS_ERR306		= 306,
-				SS_ERR307		= 307,
-				SS_ERR308		= 308,
-				SS_ERR309		= 309,
-				SS_ERR310		= 310,
-				SS_ERR311		= 311,
-				SS_ERR312		= 312,
-				SS_ERR313		= 313,
-				SS_ERR314		= 314,
-				SS_ERR315		= 315,
 				};
 				
 struct	SystemState2 
@@ -73,7 +58,7 @@ struct	SystemInfo
 		void 			Reset();
 		void 			TurnOff();
 		void 			TurnOffAlarm();
-		void 			SetErrState(SystemState err);
+		void 			SetErrState(UnitError err);
 		//void 			Test();
 		SystemState2	GetState();
 

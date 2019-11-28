@@ -232,9 +232,9 @@ void Contactor::_ifChanged(ContactorState2 cs2)
 	}
 	
 // ------------------------------------
-void Contactor::SetErrState(ContactorState err)
+void Contactor::SetErrState(UnitError err)
 	{
-	LogErr("CS_ERR", err);
+	LogErr(err);
 	_state = CS_ERR;
 	}
 

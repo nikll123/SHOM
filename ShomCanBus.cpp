@@ -2,7 +2,7 @@
 
 // =========   CONSTRUCTORS   =========
 
-ShomCanBus::ShomCanBus()
+ShomCanBus::ShomCanBus() : Unit("ShomCanBus", UT_CANBUS)
 	{
 	Serial.begin(115200);
   	_canbus_id = 0;
@@ -58,9 +58,9 @@ void ShomCanBus::Log(String str)
 	}
 	
 // ------------------------------------
-void ShomCanBus::SetErrState(CanBusState err)
+void ShomCanBus::SetErrState(UnitError err)
 	{
-	Log("CBS_ERR" + String(err));
+	LogErr(err);
 	_state = CBS_ERR;
 	}
 	

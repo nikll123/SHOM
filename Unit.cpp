@@ -45,8 +45,9 @@ void Unit::Log(String str)
 	}
 	
 //------------------------------
-void Unit::LogErr(String pref, int err)
+void Unit::LogErr(UnitError err)
 	{
+	String pref = ""; 
 	LogTextLn("   Error! " + _title + " " + pref + String(err));
 	}	
 

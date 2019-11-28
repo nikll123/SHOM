@@ -15,16 +15,6 @@
 						US_STARTING		= 4,
 						US_STOPPING		= 5,
 						US_ERR			= 200,
-						US_ERR201		= 201,
-						US_ERR202		= 202,
-						US_ERR203		= 203,
-						US_ERR204		= 204,
-						US_ERR205		= 205,
-						US_ERR206		= 206,
-						US_ERR207		= 207,
-						US_ERR208		= 208,
-						US_ERR209		= 209,
-						US_ERR210		= 210,
 						US_HALT			= 299,
 					};
 						
@@ -72,7 +62,7 @@
 		static String	GetConveyorStateText(ConveyorState state);
 		void			Init();
 		String			GetInfoTxt();
-		void 			SetErrState(ConveyorState err);
+		void 			SetErrState(UnitError err);
 		void 			LogStates(ConveyorState2 cs2);
 		void 			LogStatesPrevCurr(ConveyorStatePrevCurr cs2);
 		void 			IfChanged(ConveyorState2 cs2);
