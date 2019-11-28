@@ -15,8 +15,8 @@
 						CS_STARTING	= 3,
 						CS_STOPPING	= 4,
 						CS_UNKNOWN	= 5,
-						CS_HALT		= 6,
 						CS_ERR		= 100,
+						CS_HALT		= 199,
 
 					};
 						
