@@ -47,8 +47,19 @@ void Unit::Log(String str)
 //------------------------------
 void Unit::LogErr(UnitError err)
 	{
-	String pref = ""; 
-	LogTextLn("   Error! " + _title + " " + pref + String(err));
+	String pref; 
+	if (100 < err && err < 200)
+		pref = "CS";
+	else if (200 < err && err < 300)
+		pref = "US";
+	else if (300 < err && err < 400)
+		pref = "SS";
+	else if (400 < err && err < 500)
+		pref = "CBS";
+	else
+		pref = "Unknown";
+		
+	LogTextLn("   Error! " + _title + " " + pref + "_ERR" + String(err));
 	}	
 
 //------------------------------
