@@ -18,7 +18,7 @@ ShomCanBus Pin::CanBus = ShomCanBus();
 // ------------------------------------
 bool Pin::IsHigh()
 	{
-	return ShomPinRead();
+	return ShomPinRead().Value; 
 	}
 
 // ------------------------------------
@@ -77,23 +77,23 @@ switch (instate)
 }
 
 //------------------------------
-bool Pin::ShomPinRead()
+PinRespCode Pin::ShomPinRead()
 	{
-	//Log("ShomPinRead");
-	bool res = false;
+	PinRespCode res;
 	if (_pin < 100)
 		{
-		res = digitalRead(_pin);
+		res.Value = digitalRead(_pin);
 		}
 	else
 		{
+		byte pin = _pin - 100; 
 		Pin::CanBus.ResetData();
 		Pin::CanBus.SetDataByte(0, CANBUS_READ);
-		Pin::CanBus.SetDataByte(1, _pin - 100);
+		Pin::CanBus.SetDataByte(1, pin);
 		//Pin::CanBus.LogData();
 		Pin::CanBus.Send();
 		bool received = false;
-		for (int i=0; i<RESPONSE_TRY_CNT; i++)
+		for (int i=0; i < RESPONSE_TRY_CNT; i++)
 			{
 			if(!received)
 				{
@@ -106,30 +106,28 @@ bool Pin::ShomPinRead()
 					if(CANBUS_RESPONSE == cmd)
 						{
 						byte pin = Pin::CanBus.GetDataByte(1);
-						if(pin == _pin - 100)
+						if(pin == pin)
 							{
 							byte data = Pin::CanBus.GetDataByte(2);
 							if(data == 0 || data == 1)
-								{
-								res = data; 
-								}
-							//else
-							//	int res = -5;
+								res.Value = data; 
+							else
+								res.RespCode = -5;
 							}
-						//else
-							//int res = -6;
+						else
+							res.RespCode  = -6;
 						}
-					//else
-						//int res = -7;
+					else
+						res.RespCode = -7;
 					}
 				}
 			}
 		if(!received)
 			{
-			//int res = -8;
+			res.RespCode = -8;
 			}	
 		}
-	if(res == true)
+	if(res.Value == true)
 		_state = KS_ON;
 	else
 		_state = KS_OFF;

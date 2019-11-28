@@ -58,7 +58,7 @@ PinState2 PinIn::GetState()
 // ------------------------------------
 void PinIn::_refreshState()
 {
-	bool newState = ShomPinRead();
+	bool newState = ShomPinRead().Value;
 			
 	if (_logicType == LT_INVERSE)
 		newState = !newState;

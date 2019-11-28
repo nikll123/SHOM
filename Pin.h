@@ -31,6 +31,12 @@
 					uint8_t		Pin;
 					};	
 
+	//-------------------------------
+	struct PinRespCode{
+					int	RespCode = 0;
+					bool Value = false;
+					};	
+
    	//-------------------------------
 	class Pin : public Unit
 	{
@@ -48,7 +54,7 @@
 		String 				GetPinModeText();
 		bool				IsHigh();
 		bool				IsLow();
-		bool 				ShomPinRead();
+		PinRespCode 		ShomPinRead();
 		void 				ShomPinWrite(bool val);
 		void 				ShomPinMode(uint8_t pinmode);
 		static ShomCanBus 	CanBus;
