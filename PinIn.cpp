@@ -31,14 +31,13 @@ void PinIn::LogicNormal()
 // ------------------------------------
 void PinIn::_setLogicType(LogicType logicType)
 {
-	uint8_t impmode;
+	uint8_t inpmode;
 	_logicType = logicType; 
 	if (_logicType == LT_NORMAL)
-		impmode = INPUT;
+		inpmode = INPUT;
 	else
-		impmode = INPUT_PULLUP;
-	//pinMode(_pin, impmode);
-	ShomPinMode(impmode);
+		inpmode = INPUT_PULLUP;
+	ShomPinMode(inpmode);
 }
 
 // ------------------------------------

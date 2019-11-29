@@ -131,7 +131,10 @@ PinRespCode Pin::ShomPinRead()
 		_state = KS_ON;
 	else
 		_state = KS_OFF;
-	 
+		
+	if (res.RespCode < 0)
+		LogErr(res.RespCode);
+
 	return res;
 	}
 
