@@ -17,7 +17,8 @@ System::System(String title, uint8_t pinBtnOn, uint8_t pinBtnOff, uint8_t pinBtn
 // ------------------------------------
 PinIn System::SetupButton(String btnTitle, uint8_t pin)
 	{
-	PinIn btn = PinIn(_title + "." + btnTitle, pin);  
+	String title = _title + "." + btnTitle;
+	PinIn btn = PinIn(title, pin);  
 	btn.LogicInverse();
 	btn.Init();
 	return btn ; 

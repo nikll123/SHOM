@@ -92,12 +92,13 @@ bool Pin::ShomPinRead()
 		Pin::CanBus.SetDataByte(1, pin);
 		Pin::CanBus.Send();
 		bool received = false;
+		byte len = 0;
 		for (int i=0; i < RESPONSE_TRY_CNT; i++)
 			{
-			if(!received)
-				{
 				delay(RESPONSE_DELAY);
-				byte len = Pin::CanBus.Receive();
+				len = Pin::CanBus.Receive();
+				//Log("i=" + String(i) + " len=" + String(len));
+				//Pin::CanBus.LogData();
 				received = len > 0;
 				if(received)
 					{
@@ -113,14 +114,21 @@ bool Pin::ShomPinRead()
 							else 
 								SetErrState(KS_ERR501);
 							}
-						else SetErrState(KS_ERR502);
+						else 
+							SetErrState(KS_ERR502);
 						}
-					else SetErrState(KS_ERR503);
+					else 
+						SetErrState(KS_ERR503);
+
+                    received = (_state == KS_NONE);
+					if(received)
+						break;
 					}
-				}
 			}
-		if(!received) 
+		if(!received)
+			{
 			SetErrState(KS_ERR504);
+			}
 		}
 	if (_state == KS_NONE)
 		{
