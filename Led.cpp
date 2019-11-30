@@ -1,11 +1,11 @@
 #include "Led.h"
 
 //------------------------------------
-Led::Led() : Led("Dummy Led", 0, LEDS_NOTINIT)
+Led::Led() : Led("Dummy Led", 0, LED_NOTINIT)
 {
 }
 
-Led::Led(String title, uint8_t pin) : Led(title, pin, LEDS_OFF)
+Led::Led(String title, uint8_t pin) : Led(title, pin, LED_OFF)
 {
 }
 
@@ -16,13 +16,13 @@ Led::Led(String title, uint8_t pin, LedState ledState) : Unit(title, UT_LED)
     if(pin > 0)
     	_state = ledState;
     else
-	    _state = LEDS_NOTINIT;
+	    _state = LED_NOTINIT;
 }
 
 //------------------------------------
 bool Led::IsActive()
 	{
-	return _state != LEDS_NOTINIT;;
+	return _state != LED_NOTINIT;;
 	}
 
 //------------------------------------
@@ -55,15 +55,15 @@ String Led::GetLedStateText(LedState ls)
 	{
 	switch (ls)
 		{
-		case LEDS_NOTINIT		: return "NOTINIT";
-		case LEDS_ON			: return "ON";
-		case LEDS_OFF			: return "OFF";
-		case LEDS_BLINK			: return "BLINK";
-		case LEDS_BLINKFAST		: return "BLINKFAST";
-		case LEDS_BLINKSLOW		: return "BLINKSLOW";
-		case LEDS_BLINK2		: return "BLINK2";
-		case LEDS_BLINK3		: return "BLINK3";
-		default			    	: return "GetLedStateText: unknown-" + String(ls);
+		case LED_NOTINIT		: return "LED_NOTINIT";
+		case LED_ON				: return "LED_ON";
+		case LED_OFF			: return "LED_OFF";
+		case LED_BLINK			: return "LED_BLINK";
+		case LED_BLINKFAST		: return "LED_BLINKFAST";
+		case LED_BLINKSLOW		: return "LED_BLINKSLOW";
+		case LED_BLINK2			: return "LED_BLINK2";
+		case LED_BLINK3			: return "LED_BLINK3";
+		default			    	: return "LED_unknown-" + String(ls);
 		}
 	}
 
@@ -79,25 +79,26 @@ LedState2 Led::Refresh()
 	return ls2;
 	}
 
+//------------------------------------
 void Led::_refreshState()
 	{
 	bool b = PinOutLed.IsHigh();
 	bool noLog = false;
 	switch (_state)
 		{
-		case LEDS_BLINK  :
+		case LED_BLINK  :
 			b = _checkBlink(b, INTERVAL_BLINK);
 			noLog = true;
 			break;
-		case LEDS_BLINKFAST  :
+		case LED_BLINKFAST  :
 			b = _checkBlink(b, INTERVAL_BLINKFAST);
 			noLog = true;
 			break;
-		case LEDS_BLINKSLOW  :
+		case LED_BLINKSLOW  :
 			b = _checkBlink(b, INTERVAL_BLINKSLOW);
 			noLog = true;
 			break;
-		case LEDS_ON  :
+		case LED_ON  :
 			b = true;
 			break;
 		default :
@@ -142,25 +143,25 @@ void Led::_logState(LedState2 ls2)
 	
 void Led::SetOn()
 	{
-	_setState(LEDS_ON);
+	_setState(LED_ON);
 	}
 
 void Led::SetOff()
 	{
-	_setState(LEDS_OFF);
+	_setState(LED_OFF);
 	}
 
 void Led::SetBlink()
 	{
-	_setState(LEDS_BLINK);
+	_setState(LED_BLINK);
 	}
 
 void Led::SetBlinkSlow()
 	{
-	_setState(LEDS_BLINKSLOW);
+	_setState(LED_BLINKSLOW);
 	}
 
 void Led::SetBlinkFast()
 	{
-	_setState(LEDS_BLINKFAST);
+	_setState(LED_BLINKFAST);
 	}

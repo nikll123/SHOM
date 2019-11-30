@@ -56,6 +56,8 @@ void Unit::LogErr(UnitError err)
 		pref = "SS";
 	else if (400 < err && err < 500)
 		pref = "CBS";
+	else if (500 < err && err < 600)
+		pref = "KS";
 	else
 		pref = "Unknown";
 		

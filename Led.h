@@ -15,14 +15,14 @@
 					};
 
 	enum LedState 	{
-					LEDS_NOTINIT,
-					LEDS_ON,
-					LEDS_OFF,
-					LEDS_BLINK,
-					LEDS_BLINK2,
-					LEDS_BLINK3,
-					LEDS_BLINKFAST,
-					LEDS_BLINKSLOW
+					LED_NOTINIT,
+					LED_ON,
+					LED_OFF,
+					LED_BLINK,
+					LED_BLINK2,
+					LED_BLINK3,
+					LED_BLINKFAST,
+					LED_BLINKSLOW
 					};
 
 	struct LedState2 {

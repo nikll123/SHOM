@@ -129,6 +129,8 @@ String ShomCanBus::GetCmdTitle(CanBusCmd cmd)
 	 	res = "CANBUS_WRITE";
 	else if(cmd == CANBUS_MODE)
 	 	res = "CANBUS_MODE";
+	else if(cmd == CANBUS_RESPONSE)
+	 	res = "CANBUS_RESPONSE";
 	else 
 	 	res = "Unknown";
 	return res; 

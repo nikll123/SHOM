@@ -84,7 +84,16 @@
 					CBS_ERR402		= 402,
 					CBS_ERR403		= 403,
 					CBS_ERR404		= 404,
-					CBS_ERR405		= 405
+					CBS_ERR405		= 405,
+					
+					// Pin
+					KS_ERR501		= 501,
+					KS_ERR502		= 502,
+					KS_ERR503		= 503,
+					KS_ERR504		= 504,
+					KS_ERR505		= 505,
+					KS_ERR506		= 506,
+					KS_ERR507		= 507,
 					
 					};	
 

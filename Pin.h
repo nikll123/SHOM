@@ -3,15 +3,15 @@
 	
 	#include "Unit.h"
 	#include "ShomCanBus.h"
-	#define RESPONSE_DELAY 5
+	#define RESPONSE_DELAY 2
 	#define RESPONSE_TRY_CNT 5
 		
    	//-------------------------------
-	enum PinState {KS_NONE, 
-					KS_ON, 
-					KS_OFF,
+	enum PinState {KS_NONE	= 1, 
+					KS_ON	= 2, 
+					KS_OFF	= 3,
+					KS_ERR	= 500,
 					};	
-
 
 	//-------------------------------
 	struct PinState2 {
@@ -54,9 +54,10 @@
 		String 				GetPinModeText();
 		bool				IsHigh();
 		bool				IsLow();
-		PinRespCode 		ShomPinRead();
+		bool				ShomPinRead();
 		void 				ShomPinWrite(bool val);
 		void 				ShomPinMode(uint8_t pinmode);
+		void 				SetErrState(UnitError err);
 		static ShomCanBus 	CanBus;
 
 	protected:

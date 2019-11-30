@@ -18,7 +18,7 @@ ShomCanBus Pin::CanBus = ShomCanBus();
 // ------------------------------------
 bool Pin::IsHigh()
 	{
-	return ShomPinRead().Value; 
+	return ShomPinRead(); 
 	}
 
 // ------------------------------------
@@ -69,28 +69,27 @@ String Pin::GetPinStateText(PinState instate)
 {
 switch (instate)
 	{
-	case KS_NONE		: return "NONE";
-	case KS_ON			: return "ON";
-	case KS_OFF			: return "OFF";
-	default			    : return "GetPinStateText: unknown-" + String(instate);
+	case KS_NONE		: return "KS_NONE";
+	case KS_ON			: return "KS_ON";
+	case KS_OFF			: return "KS_OFF";
+	default			    : return "KS_unknown-" + String(instate);
 	}
 }
 
 //------------------------------
-PinRespCode Pin::ShomPinRead()
+bool Pin::ShomPinRead()
 	{
-	PinRespCode res;
-	if (_pin < 100)
-		{
-		res.Value = digitalRead(_pin);
-		}
+	bool res = false;
+	_state = KS_NONE;
+	byte pin = _pin; 
+	if (pin < 100)
+		res = digitalRead(pin);
 	else
 		{
-		byte pin = _pin - 100; 
+		pin = _pin - 100; 
 		Pin::CanBus.ResetData();
 		Pin::CanBus.SetDataByte(0, CANBUS_READ);
 		Pin::CanBus.SetDataByte(1, pin);
-		//Pin::CanBus.LogData();
 		Pin::CanBus.Send();
 		bool received = false;
 		for (int i=0; i < RESPONSE_TRY_CNT; i++)
@@ -105,35 +104,31 @@ PinRespCode Pin::ShomPinRead()
 					CanBusCmd cmd = Pin::CanBus.GetDataByte(0);
 					if(CANBUS_RESPONSE == cmd)
 						{
-						byte pin = Pin::CanBus.GetDataByte(1);
-						if(pin == pin)
+						byte pin_resp = Pin::CanBus.GetDataByte(1);
+						if(pin == pin_resp)
 							{
 							byte data = Pin::CanBus.GetDataByte(2);
 							if(data == 0 || data == 1)
-								res.Value = data; 
-							else
-								res.RespCode = -5;
+								res = data;
+							else 
+								SetErrState(KS_ERR501);
 							}
-						else
-							res.RespCode  = -6;
+						else SetErrState(KS_ERR502);
 						}
-					else
-						res.RespCode = -7;
+					else SetErrState(KS_ERR503);
 					}
 				}
 			}
-		if(!received)
-			{
-			res.RespCode = -8;
-			}	
+		if(!received) 
+			SetErrState(KS_ERR504);
 		}
-	if(res.Value == true)
-		_state = KS_ON;
-	else
-		_state = KS_OFF;
-		
-	if (res.RespCode < 0)
-		LogErr(res.RespCode);
+	if (_state == KS_NONE)
+		{
+		if(res)
+			_state = KS_ON;
+		else
+			_state = KS_OFF;
+		}
 
 	return res;
 	}
@@ -141,7 +136,6 @@ PinRespCode Pin::ShomPinRead()
 //------------------------------
 void Pin::ShomPinWrite(bool val)
 	{
-	//Log("ShomPinWrite");
 	if(val == true)
 		_state = KS_ON;
 	else
@@ -200,4 +194,11 @@ String Pin::GetPinModeText()
 		return "OUTPUT";
 	else
 		return "Unknown";
+	}
+
+// ------------------------------------
+void Pin::SetErrState(UnitError err)
+	{
+	LogErr(err);
+	_state = KS_ERR;
 	}
