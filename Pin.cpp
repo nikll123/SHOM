@@ -38,8 +38,10 @@ void Pin::SetState(PinState state, bool noLog)
 	{
 	PinState2 ps2;
 	ps2.Old = _state;
-	//digitalWrite(_pin, (state == KS_ON));
-	ShomPinWrite(state == KS_ON);
+	bool val = (state == KS_ON);
+	if (_logicType == LT_INVERSE)
+		 val = !val;
+	ShomPinWrite(val);
 	_state = state; 
 	ps2.New = _state;
 	if (ps2.Changed() && !noLog) 
@@ -210,3 +212,16 @@ void Pin::SetErrState(UnitError err)
 	LogErr(err);
 	_state = KS_ERR;
 	}
+
+//------------------------------
+String Pin::GetLogicTypeText()
+{
+switch (_logicType)
+	{
+	case LT_NONE 		: return "NONE";
+	case LT_NORMAL	 	: return "NORMAL";
+	case LT_INVERSE 	: return "INVERSE";
+	default			    : return "GetLogicTypeText: unknown-" + String(_logicType);
+	}
+}
+

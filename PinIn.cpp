@@ -6,7 +6,7 @@ PinIn::PinIn() : PinIn("Dummy PinIn", 0)
 
 PinIn::PinIn(String title, uint8_t pin) : Pin(title, pin, UT_PININ)
 {
-	LogicNormal();	
+	LogicInNormal();	
 	Init();
 }
 
@@ -17,13 +17,13 @@ void PinIn::Init()
 }
 
 // ------------------------------------
-void PinIn::LogicInverse()
+void PinIn::LogicInInverse()
 {
 	_setLogicType(LT_INVERSE);
 }
 
 // ------------------------------------
-void PinIn::LogicNormal()
+void PinIn::LogicInNormal()
 {
 	_setLogicType(LT_NORMAL);
 }
@@ -99,16 +99,4 @@ void PinIn::LogState()
 	String str = GetPinStateText(_state) + "; ";
 	Log(str);
 	}
-
-//------------------------------
-String PinIn::GetLogicTypeText()
-{
-switch (_logicType)
-	{
-	case LT_NONE 		: return "NONE";
-	case LT_NORMAL	 	: return "NORMAL";
-	case LT_INVERSE 	: return "INVERSE";
-	default			    : return "GetLogicTypeText: unknown-" + String(_logicType);
-	}
-}
 

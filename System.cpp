@@ -19,7 +19,7 @@ PinIn System::SetupButton(String btnTitle, uint8_t pin)
 	{
 	String title = _title + "." + btnTitle;
 	PinIn btn = PinIn(title, pin);  
-	btn.LogicInverse();
+	btn.LogicInInverse();
 	btn.Init();
 	return btn ; 
 	}
@@ -446,3 +446,4 @@ void System::SetErrState(UnitError err)
 	LogErr(err);
 	_state = SS_ERR;
 	}
+

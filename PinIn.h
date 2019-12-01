@@ -12,12 +12,6 @@
 					String		Logic;
 					};	
 
-	//-------------------------------
-	enum LogicType {
-					LT_NONE,
-					LT_NORMAL, 
-					LT_INVERSE
-					};	
 
    	//-------------------------------
 	class PinIn : public Pin
@@ -29,17 +23,15 @@
 		PinState2	GetState();
 		PinInInfo 	GetInfo();
 		void 		Init();
-		void 		LogicInverse();
-		void 		LogicNormal();
 		void 		LogState();
+		void 		LogicInInverse();
+		void 		LogicInNormal();
 
 		void		LogInfo();
-		String 		GetLogicTypeText();
 
 	protected:
 		void		_setLogicType(LogicType);
 		void 		_refreshState();
-		LogicType	_logicType; 
 
 	private:
 	};

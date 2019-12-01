@@ -13,7 +13,7 @@ PinOut::PinOut(String title, uint8_t pin) : Pin(title, pin, UT_PINOUT)
 // ------------------------------------
 void PinOut::Init()
 	{
- 	SetOff();
+	LogicOutNormal();
 	}   
 
 // ------------------------------------
@@ -81,3 +81,16 @@ void PinOut::LogState()
 	}
 
 
+// ------------------------------------
+void PinOut::LogicOutInverse()
+	{
+	_logicType = LT_INVERSE;
+ 	SetOff();
+	}
+
+// ------------------------------------
+void PinOut::LogicOutNormal()
+	{
+	_logicType = LT_NORMAL;
+ 	SetOff();
+	}

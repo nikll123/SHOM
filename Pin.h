@@ -37,6 +37,13 @@
 					bool Value = false;
 					};	
 
+	//-------------------------------
+	enum LogicType {
+					LT_NONE,
+					LT_NORMAL, 
+					LT_INVERSE
+					};	
+
    	//-------------------------------
 	class Pin : public Unit
 	{
@@ -50,6 +57,8 @@
 		void				LogInfo();	
 		void 				LogStates(PinState2 ps2);
 
+		String 				GetLogicTypeText();
+		
 		String 				GetPinStateText(PinState);
 		String 				GetPinModeText();
 		bool				IsHigh();
@@ -64,6 +73,7 @@
 		uint8_t 			_pin;
 		PinState			_state = KS_NONE;
 		uint8_t 			_pinmode;
+		LogicType			_logicType; 
 
 	private:
 	};
