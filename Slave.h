@@ -3,26 +3,17 @@
 
 	#include "ShomCanBus.h"
 
-
 	//-------------------------------
 	class Slave
 	{
 	public:
-							Slave();
-		static ShomCanBus 	CanBus;
-		static int 		DoCmd();
+								Slave();
+		static ShomCanBus		CanBus;
 
-		byte				GetData();
-		void 				Do();
-		//String				GetUnitTypeText();
-		//String 				GetLogicTypeText();
+		static int				DoCmd();
 
 	protected:
 
-/*		String			_title;
-		UnitType		_type;
-		byte			_logLevel;
-*/
 	private: 
 	};
 

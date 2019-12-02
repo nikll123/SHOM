@@ -131,7 +131,18 @@ String ShomCanBus::GetCmdTitle(CanBusCmd cmd)
 	 	res = "CANBUS_MODE";
 	else if(cmd == CANBUS_RESPONSE)
 	 	res = "CANBUS_RESPONSE";
+	else if(cmd == CANBUS_NOPE)
+	 	res = "CANBUS_NOPE";
+	else if(cmd == CANBUS_RESET)
+	 	res = "CANBUS_RESET";
 	else 
 	 	res = "Unknown";
 	return res; 
+	}
+	
+// ------------------------------------
+unsigned int ShomCanBus::GetMsgId()
+	{
+	_msgId = _msgId + 1;
+	return _msgId;
 	}

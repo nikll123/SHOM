@@ -12,7 +12,9 @@
 					CANBUS_READ,
 					CANBUS_WRITE,
 					CANBUS_MODE,
-					CANBUS_RESPONSE
+					CANBUS_RESPONSE,
+					CANBUS_RESET,
+					CANBUS_NOPE
 					};
 
   	enum CanBusState{ 
@@ -39,12 +41,14 @@
 		void			LogData();
 		void			LogInfo();
 		String			GetCmdTitle(CanBusCmd cmd);
+		unsigned int 	GetMsgId();
 								
 	protected:
 
 	private:
-		unsigned long 	_canbus_id;
+		byte		 	_canbus_id;
 		byte 			_canbus_pin_ss;
+		unsigned int 	_msgId;
 		String			_title;
 		CanBusState 	_state = CBS_UNKNOWN;
 		byte 			_data_buffer[DATA_LENGHT];

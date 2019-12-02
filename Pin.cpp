@@ -1,6 +1,5 @@
 #include "Pin.h"
 
-
 // ------------------------------------
 Pin::Pin() : Pin("DummyPin", 0, UT_PIN) 
 {
@@ -97,35 +96,35 @@ bool Pin::ShomPinRead()
 		byte len = 0;
 		for (int i=0; i < RESPONSE_TRY_CNT; i++)
 			{
-				delay(RESPONSE_DELAY);
-				len = Pin::CanBus.Receive();
-				//Log("i=" + String(i) + " len=" + String(len));
-				//Pin::CanBus.LogData();
-				received = len > 0;
-				if(received)
+			delay(RESPONSE_DELAY);
+			len = Pin::CanBus.Receive();
+			Log("i=" + String(i) + " len=" + String(len));
+			Pin::CanBus.LogData();
+			received = len > 0;
+			if(received)
+				{
+				CanBusCmd cmd = Pin::CanBus.GetDataByte(0);
+				if(CANBUS_RESPONSE == cmd)
 					{
-					CanBusCmd cmd = Pin::CanBus.GetDataByte(0);
-					if(CANBUS_RESPONSE == cmd)
+					byte pin_resp = Pin::CanBus.GetDataByte(1);
+					if(pin == pin_resp)
 						{
-						byte pin_resp = Pin::CanBus.GetDataByte(1);
-						if(pin == pin_resp)
-							{
-							byte data = Pin::CanBus.GetDataByte(2);
-							if(data == 0 || data == 1)
-								res = data;
-							else 
-								SetErrState(KS_ERR501);
-							}
+						byte data = Pin::CanBus.GetDataByte(2);
+						if(data == 0 || data == 1)
+							res = data;
 						else 
-							SetErrState(KS_ERR502);
+							SetErrState(KS_ERR501);
 						}
 					else 
-						SetErrState(KS_ERR503);
-
-                    received = (_state == KS_NONE);
-					if(received)
-						break;
+						SetErrState(KS_ERR502);
 					}
+				else 
+					SetErrState(KS_ERR503);
+
+                received = (_state == KS_NONE);
+				if(received)
+					break;
+				}
 			}
 		if(!received)
 			{

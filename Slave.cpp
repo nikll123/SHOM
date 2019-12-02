@@ -9,13 +9,6 @@ Slave::Slave()
 
 ShomCanBus Slave::CanBus = ShomCanBus(); 
 
-
-// ------------------------------------
-byte Slave::GetData()
-	{
-	//Pin::CanBus.ResetData();
-	byte len = Slave::CanBus.Receive();
-	}
 	
 // ------------------------------------
 int Slave::DoCmd()
@@ -36,7 +29,6 @@ int Slave::DoCmd()
 				else
 					res = -4;				
 				}
-				
 			else if(cmd == CANBUS_READ)
 				{
 				res = digitalRead(pin);
@@ -53,6 +45,18 @@ int Slave::DoCmd()
 				else
 					res = -5;
 				}
+			else if (cmd == CANBUS_RESET)
+				{
+				Slave::CanBus.ResetData();
+				Slave::CanBus.SetDataByte(0, CANBUS_RESPONSE);
+				Slave::CanBus.Send();		// send zeros
+				}
+			else if (cmd == CANBUS_NOPE)
+				{
+				Slave::CanBus.ResetData();
+				Slave::CanBus.SetDataByte(0, CANBUS_RESPONSE);
+				Slave::CanBus.Send();		// send zeros
+				}
 			}
 		else 
 			res = -3;
@@ -61,13 +65,4 @@ int Slave::DoCmd()
 		res = -2;
 	
 	return res;	
-	}
-
-// ------------------------------------
-void Slave::Do()
-	{
-	if (0 < GetData())
-		{
-		 Slave::CanBus.LogData();
-		}
 	}
