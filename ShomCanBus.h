@@ -4,9 +4,13 @@
 	#include "mcp_can.h"
 	#include "Unit.h"
 	
-	
+	#define RESPONSE_DELAY 6
+	#define RESPONSE_TRY_CNT 3
+
 	#define CREATE_TRY_MAX 10
+	
 	#define DATA_LENGHT 	5
+	
 	#define DATA_ID_HIGH 	0
 	#define DATA_ID_LOW 	1
 	#define DATA_CMD 		2
@@ -28,6 +32,8 @@
   	enum CanBusState{ 
 					CBS_UNKNOWN		= 1,
 					CBS_ON			= 2,
+					CBS_HIGH		= 3,
+					CBS_LOW			= 4,
 					CBS_ERR			= 400,
 				};
 	
@@ -42,14 +48,20 @@
 		void 			Init(byte id, byte pin_ss);
 		void			SetErrState(UnitError err);
 		void			Send();
+		unsigned int	SendCmd(CanBusCmd cmd, byte pin);
+		unsigned int	SendCmd(CanBusCmd cmd, byte pin, bool value);
+		unsigned int 	SendCmd(unsigned int id, CanBusCmd cmd, byte pin, bool value);
+
+		CanBusState		GetResponse(unsigned int id);
 		unsigned char	Receive();
 		void 			SetDataByte(byte i, byte data);
 		byte 			GetDataByte(byte i);
+		unsigned int 	GetMsgId();
+		unsigned int 	NewMsgId();
 		void 			ResetData();
 		void			LogData();
 		void			LogInfo();
 		String			GetCmdTitle(CanBusCmd cmd);
-		unsigned int 	GetMsgId();
 								
 	protected:
 

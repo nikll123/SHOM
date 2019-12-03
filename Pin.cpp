@@ -81,105 +81,31 @@ switch (instate)
 bool Pin::ShomPinRead()
 	{
 	bool res = false;
+	CanBusState	canbusres;
 	_state = KS_NONE;
 	byte pin = _pin; 
 	if (pin < 100)
+		{
 		res = digitalRead(pin);
+		if (res)
+			_state = KS_ON;
+		else 
+			_state = KS_OFF;
+		}
 	else
 		{
 		pin = _pin - 100; 
-		Pin::CanBus.ResetData();
-		unsigned int id = Pin::CanBus.GetMsgId();
-		byte idh = highByte(id);
-		byte idl = lowByte(id);
-		Pin::CanBus.SetDataByte(DATA_ID_HIGH, idh);
-		Pin::CanBus.SetDataByte(DATA_ID_LOW, idl);
-		Pin::CanBus.SetDataByte(DATA_CMD, CANBUS_READ);
-		Pin::CanBus.SetDataByte(DATA_PIN, pin);
-		Pin::CanBus.Send();
-		bool received = false;
-		byte len = 0;
-		byte tryId = 0;
-		for (int i=0; i < RESPONSE_TRY_CNT; i++)
-			{
-			delay(RESPONSE_DELAY);
-			len = Pin::CanBus.Receive();
-			//Log("i=" + String(i) + " len=" + String(len));
-			//Pin::CanBus.LogData();
-			received = (len > 0);
-			if(received)
-				{
-				if (len == DATA_LENGHT)
-					{
-					byte idh1 = Pin::CanBus.GetDataByte(DATA_ID_HIGH);
-					byte idl1 = Pin::CanBus.GetDataByte(DATA_ID_LOW);
-					if (idh == idh1 && idl == idl1)
-					    {
-						CanBusCmd cmd = Pin::CanBus.GetDataByte(DATA_CMD);
-						if(CANBUS_RESPONSE == cmd)
-							{
-							byte pin_resp = Pin::CanBus.GetDataByte(DATA_PIN);
-							if(pin == pin_resp)
-								{
-								byte data = Pin::CanBus.GetDataByte(DATA_VALUE);
-								if(data == 0 || data == 1)
-									res = data;
-								else 
-									{
-									Log("wrong data " + String(data));
-									SetErrState(KS_ERR501);	// wrong data
-									}
-								}
-							else
-								{
-								Log("wrong pin " + String(pin)); 
-								SetErrState(KS_ERR502);	// wrong pin
-								}
-							}
-						else
-							{ 
-							Log("wrong cmd " + String(cmd));
-							SetErrState(KS_ERR503);		// wrong cmd (<> CANBUS_RESPONSE)
-							} 
-		
-		                received = (_state == KS_NONE);
-		                
-						if(received)
-							break;
-						}
-					else
-						{
-						Log("idh =" + String(idh) +  " idl= " + String(idl));
-						Log("idh1=" + String(idh1) + " idl1=" + String(idl1));
-						SetErrState(KS_ERR506);		// wrong msgId
-						} 
-					}
-				else
-					{
-					Log("wrong data lenght =" + String(len));
-					SetErrState(KS_ERR504);			// wrong data lenght
-					}
-	            }
-			tryId++;
-			}
-		if(!received)
-			{
-			Log("No data received");
-			SetErrState(KS_ERR505);
-			}
-		else if (tryId > 0) 
-			{
-			Log("tryId = " + String(tryId));
-			}
-		}
-	if (_state == KS_NONE)
-		{
-		if(res)
+		unsigned int id = Pin::CanBus.SendCmd(CANBUS_READ, pin);
+		canbusres = Pin::CanBus.GetResponse(id);
+		if(canbusres == CBS_LOW)
+			_state = KS_OFF;
+		else if (canbusres == CBS_HIGH)
 			_state = KS_ON;
 		else
-			_state = KS_OFF;
+			_state = KS_ERR;
+		res = (canbusres == CBS_HIGH);
 		}
-
+		
 	return res;
 	}
 
@@ -254,13 +180,6 @@ String Pin::GetPinModeText()
 		return "OUTPUT";
 	else
 		return "Unknown";
-	}
-
-// ------------------------------------
-void Pin::SetErrState(UnitError err)
-	{
-	LogErr(err);
-	_state = KS_ERR;
 	}
 
 //------------------------------

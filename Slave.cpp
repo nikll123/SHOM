@@ -14,12 +14,11 @@ ShomCanBus Slave::CanBus = ShomCanBus();
 int Slave::DoCmd()
 	{
 	int res = -1;
-	byte idh = Slave::CanBus.GetDataByte(DATA_ID_HIGH);
-	byte idl = Slave::CanBus.GetDataByte(DATA_ID_LOW);
+	unsigned int id = Slave::CanBus.GetMsgId();
 	CanBusCmd cmd = Slave::CanBus.GetDataByte(DATA_CMD);
 	byte pin = Slave::CanBus.GetDataByte(DATA_PIN);
 	byte data = Slave::CanBus.GetDataByte(DATA_VALUE);
-	if (cmd == CANBUS_READ || cmd == CANBUS_WRITE || cmd == CANBUS_MODE)
+	if (cmd == CANBUS_READ || cmd == CANBUS_WRITE || cmd == CANBUS_MODE || cmd == CANBUS_RESET || cmd == CANBUS_NOPE)
 	    {
 		if( pin > 0 && pin < 54)
 			{
@@ -34,13 +33,7 @@ int Slave::DoCmd()
 			else if(cmd == CANBUS_READ)
 				{
 				res = digitalRead(pin);
-				Slave::CanBus.ResetData();
-				Slave::CanBus.SetDataByte(DATA_ID_HIGH, idh);
-				Slave::CanBus.SetDataByte(DATA_ID_LOW, idl);
-				Slave::CanBus.SetDataByte(DATA_CMD, CANBUS_RESPONSE);
-				Slave::CanBus.SetDataByte(DATA_PIN, pin);
-				Slave::CanBus.SetDataByte(DATA_VALUE, res);
-				Slave::CanBus.Send();
+				id = Slave::CanBus.SendCmd(id, CANBUS_RESPONSE, pin, res);
 				}
 			else if (cmd == CANBUS_MODE)
 				{
@@ -51,17 +44,11 @@ int Slave::DoCmd()
 				}
 			else if (cmd == CANBUS_RESET)
 				{
-				Slave::CanBus.ResetData();
-				Slave::CanBus.SetDataByte(DATA_ID_HIGH, idh);
-				Slave::CanBus.SetDataByte(DATA_ID_LOW, idl);
-				Slave::CanBus.SetDataByte(DATA_CMD, CANBUS_RESPONSE);
-				Slave::CanBus.Send();		// send zeros
+				id = Slave::CanBus.SendCmd(id, CANBUS_RESPONSE, 0, 0); // send zeros
 				}
 			else if (cmd == CANBUS_NOPE)
 				{
-				Slave::CanBus.ResetData();
-				Slave::CanBus.SetDataByte(DATA_CMD, CANBUS_NOPE);
-				Slave::CanBus.Send();		// send zeros
+				id = Slave::CanBus.SendCmd(id, CANBUS_NOPE, 0, 0); // send zeros
 				}
 			}
 		else 

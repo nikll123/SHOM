@@ -3,8 +3,6 @@
 	
 	#include "Unit.h"
 	#include "ShomCanBus.h"
-	#define RESPONSE_DELAY 6
-	#define RESPONSE_TRY_CNT 3
 		
    	//-------------------------------
 	enum PinState {KS_NONE	= 1, 
@@ -66,7 +64,6 @@
 		bool				ShomPinRead();
 		void 				ShomPinWrite(bool val);
 		void 				ShomPinMode(uint8_t pinmode);
-		void 				SetErrState(UnitError err);
 		static ShomCanBus 	CanBus;
 
 	protected:

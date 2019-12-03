@@ -104,8 +104,8 @@ void ShomCanBus::ResetData()
 // ------------------------------------
 void ShomCanBus::LogData()
 	{
-	String str = String(_data_buffer[DATA_ID_HIGH]) + "; ";
-	str = str + String(_data_buffer[DATA_ID_LOW]) + "; ";
+	unsigned int _id = GetMsgId();
+	String str = "id=" + String(_id) + "; ";
 	str = str + GetCmdTitle(_data_buffer[DATA_CMD]) + "; ";
 	str = str + String(_data_buffer[DATA_PIN]) + "; ";
 	str = str + String(_data_buffer[DATA_VALUE]);
@@ -141,8 +141,127 @@ String ShomCanBus::GetCmdTitle(CanBusCmd cmd)
 	}
 	
 // ------------------------------------
-unsigned int ShomCanBus::GetMsgId()
+unsigned int ShomCanBus::NewMsgId()
 	{
-	_msgId = _msgId + 1;
+	_msgId++;
 	return _msgId;
 	}
+
+// ------------------------------------
+unsigned int ShomCanBus::SendCmd(CanBusCmd cmd, byte pin)
+	{
+	return SendCmd(cmd, pin, 0);
+	}
+
+// ------------------------------------
+unsigned int ShomCanBus::SendCmd(CanBusCmd cmd, byte pin, bool value)
+	{
+	return SendCmd(0, cmd, pin, value);
+	}
+
+// ------------------------------------
+unsigned int ShomCanBus::SendCmd(unsigned int id, CanBusCmd cmd, byte pin, bool value)
+	{
+		ResetData();
+		if (id == 0)
+			id = NewMsgId();
+		byte idh = highByte(id);
+		byte idl = lowByte(id);
+		SetDataByte(DATA_ID_HIGH, idh);
+		SetDataByte(DATA_ID_LOW, idl);
+		SetDataByte(DATA_CMD, cmd);
+		SetDataByte(DATA_PIN, pin);
+		SetDataByte(DATA_VALUE, value);
+		Send();
+		return id;
+	}
+
+// ------------------------------------
+CanBusState	ShomCanBus::GetResponse(unsigned int id)
+	{
+	CanBusState res = CBS_ERR; 
+	bool received = false;
+	byte len = 0;
+	byte tryId = 0;
+	for (int i=0; i < RESPONSE_TRY_CNT; i++)
+		{
+		delay(RESPONSE_DELAY);
+		len = Receive();
+		//Log("i=" + String(i) + " len=" + String(len));
+		//Pin::CanBus.LogData();
+		received = (len > 0);
+		if(received)
+			{
+			if (len == DATA_LENGHT)
+				{
+				unsigned int _id = GetMsgId();
+				if (_id == id)
+				    {
+					CanBusCmd cmd = GetDataByte(DATA_CMD);
+					if(CANBUS_RESPONSE == cmd)
+						{
+						byte data = GetDataByte(DATA_VALUE);
+						if(data == 0)
+							res = CBS_LOW;
+						else if(data == 1)
+							res = CBS_HIGH;
+						else 
+							{
+							Log("Error: Wrong data " + String(data));
+							SetErrState(KS_ERR501);
+							}
+						}
+					else
+						{ 
+						Log("Error: Wrong cmd " + String(cmd));
+						SetErrState(KS_ERR503);
+						} 
+	
+	                received = (res == CBS_HIGH || res == CBS_LOW);
+	                
+					if(received)
+						break;
+					}
+				else
+					{
+					Log("Error: id expected " + String(id) + ", got " + String(_id));
+					SetErrState(KS_ERR506);
+					} 
+				}
+			else
+				{
+				Log("wrong data lenght = " + String(len));
+				SetErrState(KS_ERR504);
+				}
+            }
+		tryId++;
+		}
+	if(!received)
+		{
+		Log("No data received");
+		SetErrState(KS_ERR505);
+		}
+	else if (tryId > 0) 
+		{
+		Log("tryId = " + String(tryId));
+		}
+	return res;
+	}
+	
+// ------------------------------------
+unsigned int ShomCanBus::GetMsgId()
+	{
+	byte idh = GetDataByte(DATA_ID_HIGH);
+	byte idl = GetDataByte(DATA_ID_LOW);
+	unsigned int res = 0;
+	for (int i = 0; i < 8; i++)
+		{
+		bitWrite(res, i, bitRead(idl, i));
+		}
+	for (int i = 8; i < 16; i++)
+		{
+		bitWrite(res, i, bitRead(idh, i - 8));
+		}
+	return res;
+	}
+	
