@@ -6,7 +6,15 @@
 	
 	
 	#define CREATE_TRY_MAX 10
-	#define DATA_LENGHT 4
+	#define DATA_LENGHT 	5
+	#define DATA_ID_HIGH 	0
+	#define DATA_ID_LOW 	1
+	#define DATA_CMD 		2
+	#define DATA_PIN 		3
+	#define DATA_VALUE	 	4
+//  data structure
+//	0			1			2		3		4
+//	msgIdHigh	msgIdLow	Cmd		Pin		Data
 
   	enum CanBusCmd	{ 
 					CANBUS_READ,

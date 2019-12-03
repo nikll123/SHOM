@@ -104,11 +104,11 @@ void ShomCanBus::ResetData()
 // ------------------------------------
 void ShomCanBus::LogData()
 	{
-	String str = GetCmdTitle(_data_buffer[0]) + "; ";
-	for (int i = 1; i < DATA_LENGHT; i++)
-		{
-		str = str + String(_data_buffer[i]) + "; ";
-		}
+	String str = String(_data_buffer[DATA_ID_HIGH]) + "; ";
+	str = str + String(_data_buffer[DATA_ID_LOW]) + "; ";
+	str = str + GetCmdTitle(_data_buffer[DATA_CMD]) + "; ";
+	str = str + String(_data_buffer[DATA_PIN]) + "; ";
+	str = str + String(_data_buffer[DATA_VALUE]);
 	Log(str);
 	}
 

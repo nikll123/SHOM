@@ -3,7 +3,7 @@
 	
 	#include "Unit.h"
 	#include "ShomCanBus.h"
-	#define RESPONSE_DELAY 3
+	#define RESPONSE_DELAY 6
 	#define RESPONSE_TRY_CNT 3
 		
    	//-------------------------------

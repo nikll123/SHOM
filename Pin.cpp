@@ -89,46 +89,87 @@ bool Pin::ShomPinRead()
 		{
 		pin = _pin - 100; 
 		Pin::CanBus.ResetData();
-		Pin::CanBus.SetDataByte(0, CANBUS_READ);
-		Pin::CanBus.SetDataByte(1, pin);
+		unsigned int id = Pin::CanBus.GetMsgId();
+		byte idh = highByte(id);
+		byte idl = lowByte(id);
+		Pin::CanBus.SetDataByte(DATA_ID_HIGH, idh);
+		Pin::CanBus.SetDataByte(DATA_ID_LOW, idl);
+		Pin::CanBus.SetDataByte(DATA_CMD, CANBUS_READ);
+		Pin::CanBus.SetDataByte(DATA_PIN, pin);
 		Pin::CanBus.Send();
 		bool received = false;
 		byte len = 0;
+		byte tryId = 0;
 		for (int i=0; i < RESPONSE_TRY_CNT; i++)
 			{
 			delay(RESPONSE_DELAY);
 			len = Pin::CanBus.Receive();
-			Log("i=" + String(i) + " len=" + String(len));
-			Pin::CanBus.LogData();
-			received = len > 0;
+			//Log("i=" + String(i) + " len=" + String(len));
+			//Pin::CanBus.LogData();
+			received = (len > 0);
 			if(received)
 				{
-				CanBusCmd cmd = Pin::CanBus.GetDataByte(0);
-				if(CANBUS_RESPONSE == cmd)
+				if (len == DATA_LENGHT)
 					{
-					byte pin_resp = Pin::CanBus.GetDataByte(1);
-					if(pin == pin_resp)
-						{
-						byte data = Pin::CanBus.GetDataByte(2);
-						if(data == 0 || data == 1)
-							res = data;
-						else 
-							SetErrState(KS_ERR501);
+					byte idh1 = Pin::CanBus.GetDataByte(DATA_ID_HIGH);
+					byte idl1 = Pin::CanBus.GetDataByte(DATA_ID_LOW);
+					if (idh == idh1 && idl == idl1)
+					    {
+						CanBusCmd cmd = Pin::CanBus.GetDataByte(DATA_CMD);
+						if(CANBUS_RESPONSE == cmd)
+							{
+							byte pin_resp = Pin::CanBus.GetDataByte(DATA_PIN);
+							if(pin == pin_resp)
+								{
+								byte data = Pin::CanBus.GetDataByte(DATA_VALUE);
+								if(data == 0 || data == 1)
+									res = data;
+								else 
+									{
+									Log("wrong data " + String(data));
+									SetErrState(KS_ERR501);	// wrong data
+									}
+								}
+							else
+								{
+								Log("wrong pin " + String(pin)); 
+								SetErrState(KS_ERR502);	// wrong pin
+								}
+							}
+						else
+							{ 
+							Log("wrong cmd " + String(cmd));
+							SetErrState(KS_ERR503);		// wrong cmd (<> CANBUS_RESPONSE)
+							} 
+		
+		                received = (_state == KS_NONE);
+		                
+						if(received)
+							break;
 						}
-					else 
-						SetErrState(KS_ERR502);
+					else
+						{
+						Log("idh =" + String(idh) +  " idl= " + String(idl));
+						Log("idh1=" + String(idh1) + " idl1=" + String(idl1));
+						SetErrState(KS_ERR506);		// wrong msgId
+						} 
 					}
-				else 
-					SetErrState(KS_ERR503);
-
-                received = (_state == KS_NONE);
-				if(received)
-					break;
-				}
+				else
+					{
+					Log("wrong data lenght =" + String(len));
+					SetErrState(KS_ERR504);			// wrong data lenght
+					}
+	            }
+			tryId++;
 			}
 		if(!received)
 			{
-			SetErrState(KS_ERR504);
+			Log("No data received");
+			SetErrState(KS_ERR505);
+			}
+		else if (tryId > 0) 
+			{
+			Log("tryId = " + String(tryId));
 			}
 		}
 	if (_state == KS_NONE)
@@ -156,10 +197,15 @@ void Pin::ShomPinWrite(bool val)
 		}
 	else
 		{
+		unsigned int id = Pin::CanBus.GetMsgId();
+		byte idh = highByte(id);
+		byte idl = lowByte(id);
 		Pin::CanBus.ResetData();
-		Pin::CanBus.SetDataByte(0, CANBUS_WRITE);
-		Pin::CanBus.SetDataByte(1, _pin - 100);
-		Pin::CanBus.SetDataByte(2, val);
+		Pin::CanBus.SetDataByte(DATA_ID_HIGH, idh);
+		Pin::CanBus.SetDataByte(DATA_ID_LOW, idl);
+		Pin::CanBus.SetDataByte(DATA_CMD, CANBUS_WRITE);
+		Pin::CanBus.SetDataByte(DATA_PIN, _pin - 100);
+		Pin::CanBus.SetDataByte(DATA_VALUE, val);
 		//Pin::CanBus.LogData();
 		Pin::CanBus.Send();
 		}
@@ -176,10 +222,15 @@ void Pin::ShomPinMode(byte pinmode)
 		}
 	else
 		{
+		unsigned int id = Pin::CanBus.GetMsgId();
+		byte idh = highByte(id);
+		byte idl = lowByte(id);
 		Pin::CanBus.ResetData();
-		Pin::CanBus.SetDataByte(0, CANBUS_MODE);
-		Pin::CanBus.SetDataByte(1, _pin - 100);
-		Pin::CanBus.SetDataByte(2, _pinmode);
+		Pin::CanBus.SetDataByte(DATA_ID_HIGH, idh);
+		Pin::CanBus.SetDataByte(DATA_ID_LOW, idl);
+		Pin::CanBus.SetDataByte(DATA_CMD, CANBUS_MODE);
+		Pin::CanBus.SetDataByte(DATA_PIN, _pin - 100);
+		Pin::CanBus.SetDataByte(DATA_VALUE, _pinmode);
 		Pin::CanBus.Send();
 		}
 	}
