@@ -13,7 +13,7 @@ ShomCanBus Slave::CanBus = ShomCanBus();
 // ------------------------------------
 int Slave::DoCmd()
 	{
-	int res = -1;
+	int res = -1;    // error by default
 	unsigned int id = Slave::CanBus.GetMsgId();
 	CanBusCmd cmd = Slave::CanBus.GetDataByte(DATA_CMD);
 	byte pin = Slave::CanBus.GetDataByte(DATA_PIN);
@@ -28,19 +28,20 @@ int Slave::DoCmd()
 				if(data == 0 || data == 1)
 					digitalWrite(pin, data);
 				else
-					res = -4;				
+					Slave::CanBus.SetErrState(SL_ERR601, "wrong data = " + String(data)); 
 				}
 			else if(cmd == CANBUS_READ)
 				{
 				res = digitalRead(pin);
 				id = Slave::CanBus.SendCmd(id, CANBUS_RESPONSE, pin, res);
+				Slave::CanBus.LogData("after send");
 				}
 			else if (cmd == CANBUS_MODE)
 				{
 				if(data == INPUT || data == INPUT_PULLUP || data == OUTPUT)
 					pinMode(pin, data);
 				else
-					res = -5;
+					Slave::CanBus.SetErrState(SL_ERR602, "wrong pin mode = " + String(data)); 
 				}
 			else if (cmd == CANBUS_RESET)
 				{
@@ -52,10 +53,10 @@ int Slave::DoCmd()
 				}
 			}
 		else 
-			res = -3;
+			Slave::CanBus.SetErrState(SL_ERR603, "wrong pin = " + String(data)); 
 		}
 	else 
-		res = -2;
+		Slave::CanBus.SetErrState(SL_ERR604, "wrong cmd = " + String(data)); 
 	
 	return res;	
 	}

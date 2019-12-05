@@ -22,10 +22,10 @@ void ShomCanBus::Init(byte id, byte pin_ss)
 		_canbus_pin_ss = pin_ss; 
 		canbus=MCP_CAN(_canbus_pin_ss);
 		bool canbus_ok = false;
-		canbus_ok = (CAN_OK == canbus.begin(CAN_50KBPS));
+		canbus_ok = (CAN_OK == canbus.begin(CANBUS_RATE));
 		for (int i = 0; i<CREATE_TRY_MAX; i++)
 			{
-			canbus_ok = (CAN_OK == canbus.begin(CAN_50KBPS));
+			canbus_ok = (CAN_OK == canbus.begin(CANBUS_RATE));
 			if(canbus_ok)
 				break;
 			else
@@ -44,10 +44,6 @@ void ShomCanBus::Init(byte id, byte pin_ss)
 			SetErrState(CBS_ERR402);
 			}
 		}
-	/*else
-		{
-		Log("Init is done already");
-		}*/
 	}
 		
 
@@ -60,8 +56,16 @@ void ShomCanBus::Log(String str)
 // ------------------------------------
 void ShomCanBus::SetErrState(UnitError err)
 	{
+	LogData();
 	LogErr(err);
 	_state = CBS_ERR;
+	}
+	
+// ------------------------------------
+void ShomCanBus::SetErrState(UnitError err, String str)
+	{
+	Log(str);
+	SetErrState(err);
 	}
 	
 // ------------------------------------
@@ -104,8 +108,14 @@ void ShomCanBus::ResetData()
 // ------------------------------------
 void ShomCanBus::LogData()
 	{
+	LogData("");
+	}
+
+// ------------------------------------
+void ShomCanBus::LogData(String comment)
+	{
 	unsigned int _id = GetMsgId();
-	String str = "id=" + String(_id) + "; ";
+	String str = comment + " id=" + String(_id) + "; ";
 	str = str + GetCmdTitle(_data_buffer[DATA_CMD]) + "; ";
 	str = str + String(_data_buffer[DATA_PIN]) + "; ";
 	str = str + String(_data_buffer[DATA_VALUE]);
@@ -144,6 +154,8 @@ String ShomCanBus::GetCmdTitle(CanBusCmd cmd)
 unsigned int ShomCanBus::NewMsgId()
 	{
 	_msgId++;
+	if(_msgId == 0) 
+		_msgId = 1;
 	return _msgId;
 	}
 
@@ -173,6 +185,7 @@ unsigned int ShomCanBus::SendCmd(unsigned int id, CanBusCmd cmd, byte pin, bool 
 		SetDataByte(DATA_PIN, pin);
 		SetDataByte(DATA_VALUE, value);
 		Send();
+		//LogData();
 		return id;
 	}
 
@@ -188,7 +201,7 @@ CanBusState	ShomCanBus::GetResponse(unsigned int id)
 		delay(RESPONSE_DELAY);
 		len = Receive();
 		//Log("i=" + String(i) + " len=" + String(len));
-		//Pin::CanBus.LogData();
+		//LogData();
 		received = (len > 0);
 		if(received)
 			{
@@ -206,16 +219,10 @@ CanBusState	ShomCanBus::GetResponse(unsigned int id)
 						else if(data == 1)
 							res = CBS_HIGH;
 						else 
-							{
-							Log("Error: Wrong data " + String(data));
-							SetErrState(KS_ERR501);
-							}
+							SetErrState(KS_ERR501, "Error: Wrong data " + String(data));
 						}
 					else
-						{ 
-						Log("Error: Wrong cmd " + String(cmd));
-						SetErrState(KS_ERR503);
-						} 
+						SetErrState(KS_ERR503, "Error: Wrong cmd " + String(cmd));
 	
 	                received = (res == CBS_HIGH || res == CBS_LOW);
 	                
@@ -223,23 +230,16 @@ CanBusState	ShomCanBus::GetResponse(unsigned int id)
 						break;
 					}
 				else
-					{
-					Log("Error: id expected " + String(id) + ", got " + String(_id));
-					SetErrState(KS_ERR506);
-					} 
+					SetErrState(KS_ERR506, "Error: id expected " + String(id) + ", got " + String(_id));
 				}
 			else
-				{
-				Log("wrong data lenght = " + String(len));
-				SetErrState(KS_ERR504);
-				}
+				SetErrState(KS_ERR504, "wrong data lenght = " + String(len));
             }
 		tryId++;
 		}
 	if(!received)
 		{
-		Log("No data received");
-		SetErrState(KS_ERR505);
+		SetErrState(KS_ERR505, "No data received");
 		}
 	else if (tryId > 0) 
 		{

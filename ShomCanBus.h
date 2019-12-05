@@ -4,8 +4,9 @@
 	#include "mcp_can.h"
 	#include "Unit.h"
 	
-	#define RESPONSE_DELAY 6
-	#define RESPONSE_TRY_CNT 3
+	#define CANBUS_RATE			CAN_25KBPS  // CAN_50KBPS
+	#define RESPONSE_DELAY		10
+	#define RESPONSE_TRY_CNT	3
 
 	#define CREATE_TRY_MAX 10
 	
@@ -17,8 +18,9 @@
 	#define DATA_PIN 		3
 	#define DATA_VALUE	 	4
 //  data structure
-//	0			1			2		3		4
-//	msgIdHigh	msgIdLow	Cmd		Pin		Data
+//	0				1				2			3			4
+//	DATA_ID_HIGH	DATA_ID_LOW		DATA_CMD	DATA_PIN	DATA_VALUE
+//	00000000		11111111		00000001	00000010	00000000
 
   	enum CanBusCmd	{ 
 					CANBUS_READ,
@@ -47,6 +49,7 @@
 		void 			Log(String str);
 		void 			Init(byte id, byte pin_ss);
 		void			SetErrState(UnitError err);
+		void 			SetErrState(UnitError err, String str);
 		void			Send();
 		unsigned int	SendCmd(CanBusCmd cmd, byte pin);
 		unsigned int	SendCmd(CanBusCmd cmd, byte pin, bool value);
@@ -60,6 +63,7 @@
 		unsigned int 	NewMsgId();
 		void 			ResetData();
 		void			LogData();
+		void			LogData(String comment);
 		void			LogInfo();
 		String			GetCmdTitle(CanBusCmd cmd);
 								
