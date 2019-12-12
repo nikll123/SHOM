@@ -19,7 +19,7 @@ PinIn System::SetupButton(String btnTitle, uint8_t pin)
 	{
 	String title = _title + "." + btnTitle;
 	PinIn btn = PinIn(title, pin);  
-	btn.LogicInInverse();
+	btn.SetLogicType(LT_INVERSE);
 	btn.Init();
 	return btn ; 
 	}

@@ -26,9 +26,7 @@
 		PinOutInfo 	GetInfo();
 		void 		LogInfo();
 		void 		LogState();
-		void 		LogicOutInverse();
-		void 		LogicOutNormal();
-
+		void 		SetLogicType(LogicType logicType);
 
 	protected:
 

@@ -6,7 +6,7 @@ PinIn::PinIn() : PinIn("Dummy PinIn", 0)
 
 PinIn::PinIn(String title, uint8_t pin) : Pin(title, pin, UT_PININ)
 {
-	LogicInNormal();	
+	SetLogicType(LT_NORMAL);	
 	Init();
 }
 
@@ -17,19 +17,7 @@ void PinIn::Init()
 }
 
 // ------------------------------------
-void PinIn::LogicInInverse()
-{
-	_setLogicType(LT_INVERSE);
-}
-
-// ------------------------------------
-void PinIn::LogicInNormal()
-{
-	_setLogicType(LT_NORMAL);
-}
-
-// ------------------------------------
-void PinIn::_setLogicType(LogicType logicType)
+void PinIn::SetLogicType(LogicType logicType)
 {
 	uint8_t inpmode;
 	_logicType = logicType; 

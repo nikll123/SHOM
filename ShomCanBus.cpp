@@ -198,7 +198,6 @@ CanBusState	ShomCanBus::GetResponse(unsigned int id)
 	byte tryId = 0;
 	for (int i=0; i < RESPONSE_TRY_CNT; i++)
 		{
-		delay(RESPONSE_DELAY);
 		len = Receive();
 		//Log("i=" + String(i) + " len=" + String(len));
 		//LogData();
@@ -235,6 +234,7 @@ CanBusState	ShomCanBus::GetResponse(unsigned int id)
 			else
 				SetErrState(KS_ERR504, "wrong data lenght = " + String(len));
             }
+		delay(RESPONSE_DELAY);
 		tryId++;
 		}
 	if(!received)
@@ -265,3 +265,8 @@ unsigned int ShomCanBus::GetMsgId()
 	return res;
 	}
 	
+// ------------------------------------
+void ShomCanBus::RelayDelay()
+	{
+	delay(RELAY_DELAY);
+	}

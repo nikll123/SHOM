@@ -96,6 +96,7 @@ bool Pin::ShomPinRead()
 		{
 		pin = _pin - 100; 
 		unsigned int id = Pin::CanBus.SendCmd(CANBUS_READ, pin);
+		Pin::CanBus.RelayDelay();
 		canbusres = Pin::CanBus.GetResponse(id);
 		if(canbusres == CBS_LOW)
 			_state = KS_OFF;

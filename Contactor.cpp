@@ -18,7 +18,7 @@ Contactor::Contactor(String title, uint8_t pinIn, uint8_t pinOut, unsigned long 
 	_logLevel = LL_NORMAL;
 	KeyIn = PinIn(title + "_KeyIn", pinIn);
 	KeyOut = PinOut(title + "_KeyOut", pinOut);
-	//KeyOut.LogicOutInverse();
+	KeyOut.SetLogicType(LT_INVERSE);
 	Init();
 	}
 
@@ -105,6 +105,7 @@ ContactorState2 Contactor::GetState()
 			if(_millsCheck == 0)
 				{
 				KeyOut.SetOn();
+				delay(RELAY_DELAY);
 				FixTime(1);
 				}
 			else if (millis() - _millsCheck > _timeOutOn)
@@ -127,6 +128,7 @@ ContactorState2 Contactor::GetState()
 			else if (millis() - _millsCheck > _timeOutOff)
 				{
 				KeyOut.SetOff();
+				delay(RELAY_DELAY);
 				_state = CS_OFF;
 				stateKeyOut = KeyOut.GetState(); 
 				stateKeyIn = (KeyIn.GetState()).New;

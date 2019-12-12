@@ -24,13 +24,11 @@
 		PinInInfo 	GetInfo();
 		void 		Init();
 		void 		LogState();
-		void 		LogicInInverse();
-		void 		LogicInNormal();
+		void		SetLogicType(LogicType);
 
 		void		LogInfo();
 
 	protected:
-		void		_setLogicType(LogicType);
 		void 		_refreshState();
 
 	private:
