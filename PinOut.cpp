@@ -83,6 +83,6 @@ void PinOut::LogState()
 // ------------------------------------
 void PinOut::SetLogicType(LogicType logicType)
 	{
-	_logicType = logicType;
+	Pin::SetLogicType(logicType);
  	SetOff();
 	}

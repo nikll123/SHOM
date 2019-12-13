@@ -17,10 +17,11 @@ void PinIn::Init()
 }
 
 // ------------------------------------
-void PinIn::SetLogicType(LogicType logicType)
+void PinIn::SetLogicType(LogicType logicType) 
 {
 	uint8_t inpmode;
-	_logicType = logicType; 
+	Pin::SetLogicType(logicType);
+	//_logicType = logicType; 
 	if (_logicType == LT_NORMAL)
 		inpmode = INPUT;
 	else

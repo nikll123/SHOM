@@ -54,6 +54,7 @@
 		void				SetState(PinState state, bool noLog);	
 		void				LogInfo();	
 		void 				LogStates(PinState2 ps2);
+		void				SetLogicType(LogicType logicType);
 
 		String 				GetLogicTypeText();
 		

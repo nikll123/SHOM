@@ -185,13 +185,18 @@ String Pin::GetPinModeText()
 
 //------------------------------
 String Pin::GetLogicTypeText()
-{
-switch (_logicType)
 	{
-	case LT_NONE 		: return "NONE";
-	case LT_NORMAL	 	: return "NORMAL";
-	case LT_INVERSE 	: return "INVERSE";
-	default			    : return "GetLogicTypeText: unknown-" + String(_logicType);
+	switch (_logicType)
+		{
+		case LT_NONE 		: return "NONE";
+		case LT_NORMAL	 	: return "NORMAL";
+		case LT_INVERSE 	: return "INVERSE";
+		default			    : return "GetLogicTypeText: unknown-" + String(_logicType);
+		}
 	}
-}
 
+//------------------------------
+void Pin::SetLogicType(LogicType logicType)
+	{
+	_logicType = logicType; 
+	}
