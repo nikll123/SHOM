@@ -60,7 +60,7 @@ PinInfo Pin::GetInfo()
 	UnitInfo ui = Unit::GetInfo();
     return {ui.Title,
 			ui.UnitType,
-			GetPinModeText(), 
+			PinMode(), 
 			GetPinStateText(_state), 
 			_pin}; 
 	}
@@ -141,7 +141,7 @@ void Pin::ShomPinWrite(bool val)
 //------------------------------
 void Pin::ShomPinMode(byte pinmode)
 	{
-	Log("ShomPinMode " + GetPinModeText());
+	Log("ShomPinMode " + PinMode());
 	_pinmode = pinmode;
 	if (_pin < 100)
 		{
@@ -171,7 +171,7 @@ void Pin::LogInfo()
   	}
 
 //------------------------------
-String Pin::GetPinModeText()
+String Pin::PinMode()
 	{
 	if(_pinmode == INPUT_PULLUP)
 		return "INPUT_PULLUP";
