@@ -6,16 +6,23 @@ Contactor::Contactor() : Unit("Dummy contactor", UT_NONE)
 	_state = CS_NOTINIT;
 }
 
-Contactor::Contactor(String title, uint8_t pinIn, uint8_t pinOut) : Contactor(title, pinIn, pinOut, LT_NORMAL, LT_NORMAL, TURN_ON_TIMEOUT, TURN_OFF_TIMEOUT) 
+Contactor::Contactor(String title, uint8_t pinIn, uint8_t pinOut) : Contactor(title, pinIn, LT_NORMAL, pinOut, LT_NORMAL, TURN_ON_TIMEOUT, TURN_OFF_TIMEOUT) 
 {
 }
 
-Contactor::Contactor(String title, uint8_t pinIn, uint8_t pinOut, LogicType ltIn, LogicType ltOut) : Contactor(title, pinIn, pinOut, ltIn, ltOut, TURN_ON_TIMEOUT, TURN_OFF_TIMEOUT) 
+Contactor::Contactor(String title, 
+							uint8_t pinIn,  LogicType ltIn, 
+							uint8_t pinOut, LogicType ltOut) : Contactor(title, 
+																			pinIn,  ltIn, 
+																			pinOut, ltOut, 
+																			TURN_ON_TIMEOUT, TURN_OFF_TIMEOUT) 
 {
 }
 
-
-Contactor::Contactor(String title, uint8_t pinIn, uint8_t pinOut, LogicType ltIn, LogicType ltOut,  unsigned long timeOutOn, unsigned long timeOutOff) : Unit(title, UT_CONTACTOR)
+Contactor::Contactor(String title, 
+						uint8_t pinIn,  LogicType ltIn, 
+						uint8_t pinOut, LogicType ltOut,  
+						unsigned long timeOutOn, unsigned long timeOutOff) : Unit(title, UT_CONTACTOR)
 	{
 	_timeOutOn = timeOutOn;
 	_timeOutOff = timeOutOff;
