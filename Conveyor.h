@@ -53,14 +53,31 @@
 	{
 	public:
 					    Conveyor();
-					    Conveyor(String title, uint8_t pinIn, uint8_t pinOut, uint8_t pinAuto, uint8_t pinLed);
-					    Conveyor(String title, uint8_t pinIn, uint8_t pinOut, uint8_t pinAuto, uint8_t pinLed, unsigned long timeOutOn, unsigned long  timeOutOff);
+					    Conveyor(String title, 	
+									uint8_t pinIn, 
+									uint8_t pinOut, 
+									uint8_t pinAuto, 
+									uint8_t pinLed);
+
+					    Conveyor(String title, 	
+									uint8_t pinIn, 		LogicType ltIn, 
+									uint8_t pinOut,		LogicType ltOut,
+									uint8_t pinAuto, 	LogicType ltAut, 
+									uint8_t pinLed);
+												
+					    Conveyor(String title, 	
+									uint8_t pinIn, 		LogicType ltIn, 
+									uint8_t pinOut,		LogicType ltOut,
+									uint8_t pinAuto, 	LogicType ltAut, 
+									uint8_t pinLed, 
+									unsigned long timeOutOn, unsigned long  timeOutOff);
 
 		ConveyorState2	GetState();
 		ConveyorState2	GetState(String logText);
 		ConveyorInfo 	GetInfo();
 		static String	GetConveyorStateText(ConveyorState state);
 		void			Init();
+		void 			SetLogicTypes(LogicType ltIn, LogicType ltOut, LogicType ltAut);
 		String			GetInfoTxt();
 		void 			SetErrState(UnitError err);
 		void 			LogStates(ConveyorState2 cs2);
