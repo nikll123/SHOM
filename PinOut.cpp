@@ -55,7 +55,7 @@ PinOutInfo PinOut::GetInfo()
 	PinInfo pi = Pin::GetInfo();
     return {pi.Title,
 			pi.UnitType, 
-			GetPinStateText(_state), 
+			PinState(_state), 
 			_pin
 			}; 
 	}
