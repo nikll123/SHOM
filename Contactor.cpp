@@ -18,7 +18,7 @@ Contactor::Contactor(String title, uint8_t pinIn, uint8_t pinOut, unsigned long 
 	_logLevel = LL_NORMAL;
 	KeyIn = PinIn(title + "_KeyIn", pinIn);
 	KeyOut = PinOut(title + "_KeyOut", pinOut);
-	KeyOut.SetLogicType(LT_INVERSE);
+	//KeyOut.SetLogicType(LT_INVERSE);
 	Init();
 	}
 
@@ -93,12 +93,12 @@ ContactorState2 Contactor::GetState()
 		{
 
 		cs2.Old = _state;
-		PinState stateKeyIn = (KeyIn.GetState()).New;
-		PinState stateKeyOut = KeyOut.GetState(); 
+		_stateIn = (KeyIn.GetState()).New;
+		_stateOut = KeyOut.GetState(); 
 		if (_state == CS_OFF)
 			{
-			if (stateKeyOut != KS_OFF) SetErrState(CS_ERR101);
-			if (stateKeyIn != KS_OFF) SetErrState(CS_ERR102);
+			if (_stateOut != KS_OFF) SetErrState(CS_ERR101);
+			if (_stateIn != KS_OFF) SetErrState(CS_ERR102);
 			}
 		else if (_state == CS_STARTING)
 			{
@@ -111,11 +111,11 @@ ContactorState2 Contactor::GetState()
 			else if (millis() - _millsCheck > _timeOutOn)
 				_state = CS_ON;
 	
-			stateKeyOut = KeyOut.GetState(); 
-			stateKeyIn = (KeyIn.GetState()).New;
+			_stateOut = KeyOut.GetState(); 
+			_stateIn = (KeyIn.GetState()).New;
 	
-			if (stateKeyOut != KS_ON) 		SetErrState(CS_ERR103);
-			else if (stateKeyIn != KS_ON) 	SetErrState(CS_ERR104);
+			if (_stateOut != KS_ON) 		SetErrState(CS_ERR103);
+			else if (_stateIn != KS_ON) 	SetErrState(CS_ERR104);
 	
 			}
 		else if(_state == CS_STOPPING)
@@ -130,25 +130,25 @@ ContactorState2 Contactor::GetState()
 				KeyOut.SetOff();
 				delay(RELAY_DELAY);
 				_state = CS_OFF;
-				stateKeyOut = KeyOut.GetState(); 
-				stateKeyIn = (KeyIn.GetState()).New;
+				_stateOut = KeyOut.GetState(); 
+				_stateIn = (KeyIn.GetState()).New;
 				}
 	
 			if (_state == CS_OFF)
 				{
-				if (stateKeyOut != KS_OFF) 		SetErrState(CS_ERR105);
-				else if (stateKeyIn != KS_OFF) 	SetErrState(CS_ERR106);
+				if (_stateOut != KS_OFF) 		SetErrState(CS_ERR105);
+				else if (_stateIn != KS_OFF) 	SetErrState(CS_ERR106);
 				}
 			else    // US_STOPPING
 				{
-				if (stateKeyOut != KS_ON) 		SetErrState(CS_ERR107);
-				else if (stateKeyIn != KS_ON) 	SetErrState(CS_ERR108);
+				if (_stateOut != KS_ON) 		SetErrState(CS_ERR107);
+				else if (_stateIn != KS_ON) 	SetErrState(CS_ERR108);
 				}
 			}
 		else if(_state == CS_ON)
 			{
-			if (stateKeyOut != KS_ON) 		SetErrState(CS_ERR109);
-			else if (stateKeyIn != KS_ON) 	SetErrState(CS_ERR110);
+			if (_stateOut != KS_ON) 		SetErrState(CS_ERR109);
+			else if (_stateIn != KS_ON) 	SetErrState(CS_ERR110);
 			}
 	
 		cs2.New = _state;
@@ -237,6 +237,9 @@ void Contactor::_ifChanged(ContactorState2 cs2)
 // ------------------------------------
 void Contactor::SetErrState(UnitError err)
 	{
+	String msg = "Error states Out="  + KeyOut.StateText() +"(" + String(KeyOut.GetInfo().Pin) + ")";
+	msg = msg +" != In="  + KeyIn.StateText()  +"(" + String(KeyIn.GetInfo().Pin) + ")"; 
+	Log(msg);
 	LogErr(err);
 	_state = CS_ERR;
 	}

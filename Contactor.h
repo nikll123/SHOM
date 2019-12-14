@@ -53,6 +53,7 @@
 		void			Init();
 		void			LogInfo();
 		void			SetErrState(UnitError err);
+		void			SetErrState(UnitError err, String msg);
 		void 			FixTime(bool x);
 		PinIn			KeyIn;		//Why not PinIn? PinIn is already used as a class name
 		PinOut			KeyOut;
@@ -68,6 +69,8 @@
 		ContactorState2	_getStateAutomat();
 		ContactorState2	_getStateContactor();
 		ContactorState	_state = CS_UNKNOWN;
+		PinState        _stateIn = KS_NONE;
+		PinState        _stateOut = KS_NONE;
 		void 			_ifChanged(ContactorState2 cs2);
 		unsigned int 	_timeOutOn = 0;
 		unsigned int 	_timeOutOff = 0;
