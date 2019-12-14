@@ -50,7 +50,7 @@ void Pin::SetState(PinState state, bool noLog)
 void Pin::LogStates(PinState2 ps2)
 	{
 	String str  = String(_pin) + "; ";
-	str = str + PinMode(ps2.Old) + " -> " + PinMode(ps2.New); 
+	str = str + GetPinStateText(ps2.Old) + " -> " + GetPinStateText(ps2.New); 
 	Log(str);
 	}
 
@@ -61,12 +61,12 @@ PinInfo Pin::GetInfo()
     return {ui.Title,
 			ui.UnitType,
 			PinMode(), 
-			PinMode(_state), 
+			GetPinStateText(_state), 
 			_pin}; 
 	}
 
 //------------------------------
-String Pin::PinMode(PinState instate)
+String Pin::GetPinStateText(PinState instate)
 {
 switch (instate)
 	{
