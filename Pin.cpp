@@ -60,7 +60,7 @@ PinInfo Pin::GetInfo()
 	return {Unit::_title,
 			Unit::UnitTypeText(),
 			PinModeText(), 
-			PinStateText(_state), 
+			StateText(), 
 			_pin}; 
 	}
 
@@ -68,6 +68,12 @@ PinInfo Pin::GetInfo()
 String Pin::Title1()
 	{
     return Unit::_title + "_" + String(_pin); 
+	}
+
+//------------------------------
+String Pin::StateText()
+	{
+	return Pin::PinStateText(_state);
 	}
 
 //------------------------------
@@ -103,6 +109,7 @@ bool Pin::ShomPinRead()
 		unsigned int id = Pin::CanBus.SendCmd(CANBUS_READ, pin);
 		Pin::CanBus.RelayDelay();
 		canbusres = Pin::CanBus.GetResponse(id);
+		//canbusres = Pin::CanBus.GetResponse(id, pin);
 		if(canbusres == CBS_LOW)
 			_state = KS_OFF;
 		else if (canbusres == CBS_HIGH)

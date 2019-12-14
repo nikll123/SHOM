@@ -60,6 +60,7 @@
 		String 				Title1();
 
 		static String 		PinStateText(PinState);
+		String 				StateText();
 		String 				PinModeText();
 		bool				IsHigh();
 		bool				IsLow();
