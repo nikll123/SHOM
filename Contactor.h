@@ -44,7 +44,8 @@
 	public:
 					    Contactor();
 					    Contactor(String title, uint8_t pinIn, uint8_t pinOut);
-					    Contactor(String title, uint8_t pinIn, uint8_t pinOut, unsigned long timeOutOn, unsigned long  timeOutOff);
+					    Contactor(String title, uint8_t pinIn, uint8_t pinOut, LogicType ltIn, LogicType ltOut);
+					    Contactor(String title, uint8_t pinIn, uint8_t pinOut, LogicType ltIn, LogicType ltOut, unsigned long timeOutOn, unsigned long  timeOutOff);
 
 		ContactorState2	GetState();
 		ContactorState2	GetState(String logTexts);
