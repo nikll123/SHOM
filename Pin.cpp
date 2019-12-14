@@ -60,7 +60,7 @@ PinInfo Pin::GetInfo()
 	UnitInfo ui = Unit::GetInfo();
     return {ui.Title,
 			ui.UnitType,
-			PinMode(), 
+			PinModeText(), 
 			GetPinStateText(_state), 
 			_pin}; 
 	}
@@ -141,7 +141,7 @@ void Pin::ShomPinWrite(bool val)
 //------------------------------
 void Pin::ShomPinMode(byte pinmode)
 	{
-	Log("ShomPinMode " + PinMode());
+	Log("ShomPinMode " + PinModeText());
 	_pinmode = pinmode;
 	if (_pin < 100)
 		{
@@ -166,14 +166,14 @@ void Pin::ShomPinMode(byte pinmode)
 void Pin::LogInfo()
 	{
 	PinInfo	pi = GetInfo();
-	String str = pi.UnitType + ", " + pi.PinMode + ", " + pi.State + ", " + String(pi.Pin);
+	String str = pi.UnitType + ", " + pi.PinModeText + ", " + pi.State + ", " + String(pi.Pin);
 	Log(str);   
   	}
 
 //------------------------------
-String Pin::PinMode()
+String Pin::PinModeText()
 	{
-	if(_pinmode == INPUT_PULLUP)
+	if(_pinmode == INPUT_PULLUP)  // INPUT_PULLUP, INPUT, OUTPUT are Arduino's constants  
 		return "INPUT_PULLUP";
 	else if(_pinmode == INPUT)
 		return "INPUT";

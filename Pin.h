@@ -24,7 +24,7 @@
 	struct PinInfo {
 					String 		Title;
 					String 		UnitType;
-					String 		PinMode;
+					String 		PinModeText;
 					String 		State;
 					uint8_t		Pin;
 					};	
@@ -59,7 +59,7 @@
 		String 				GetLogicTypeText();
 		
 		String 				GetPinStateText(PinState);
-		String 				PinMode();
+		String 				PinModeText();
 		bool				IsHigh();
 		bool				IsLow();
 		bool				ShomPinRead();
