@@ -65,7 +65,7 @@ PinInInfo PinIn::GetInfo()
 			pi.UnitType, 
 			PinStateText(_state), 
 			_pin, 
-			GetLogicTypeText()
+			LogicTypeText()
 			}; 
 	}
 

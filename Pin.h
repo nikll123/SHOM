@@ -56,7 +56,7 @@
 		void 				LogStates(PinState2 ps2);
 		void				SetLogicType(LogicType logicType);
 
-		String 				GetLogicTypeText();
+		String 				LogicTypeText();
 		String 				Title1();
 
 		String 				PinStateText(PinState);

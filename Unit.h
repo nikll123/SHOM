@@ -120,7 +120,7 @@
 		
 		UnitInfo 	GetInfo();
 		String		UnitTypeText();
-		String 		GetLogicTypeText();
+		String 		LogicTypeText();
 
 	protected:
 		String			_title;
