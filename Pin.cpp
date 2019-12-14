@@ -71,7 +71,7 @@ String Pin::Title1()
 	}
 
 //------------------------------
-String Pin::PinStateText(PinState instate)
+static String Pin::PinStateText(PinState instate)
 {
 switch (instate)
 	{

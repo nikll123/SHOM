@@ -59,7 +59,7 @@
 		String 				LogicTypeText();
 		String 				Title1();
 
-		String 				PinStateText(PinState);
+		static String 		PinStateText(PinState);
 		String 				PinModeText();
 		bool				IsHigh();
 		bool				IsLow();

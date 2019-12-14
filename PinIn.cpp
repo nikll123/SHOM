@@ -63,7 +63,7 @@ PinInInfo PinIn::GetInfo()
 	PinInfo pi = Pin::GetInfo();
     return {pi.Title,
 			pi.UnitType, 
-			PinStateText(_state), 
+			Pin::PinStateText(_state), 
 			_pin, 
 			LogicTypeText()
 			}; 
@@ -85,7 +85,7 @@ void PinIn::LogInfo()
 // ------------------------------------
 void PinIn::LogState()
 	{
-	String str = PinStateText(_state) + "; ";
+	String str = Pin::PinStateText(_state) + "; ";
 	Log(str);
 	}
 
