@@ -69,7 +69,7 @@ UnitInfo Unit::GetInfo()
 	{
 	return	{
 			_title,
-			GetUnitTypeText()
+			UnitTypeText()
 			};
 	}
 
@@ -82,7 +82,7 @@ void Unit::LogInfo()
 	}
 
 //------------------------------
-String Unit::GetUnitTypeText()
+String Unit::UnitTypeText()
 	{
 	switch (_type)
 		{
@@ -97,7 +97,7 @@ String Unit::GetUnitTypeText()
 		case UT_CONVEYOR 		: return "CONVEYOR";
 		case UT_CONVEYORHANDLER	: return "CONVEYORHANDLER";
 		case UT_CANBUS 			: return "CANBUS";
-		default			    	: return "GetUnitTypeText: unknown-" + String(_type);
+		default			    	: return "UnitTypeText: unknown-" + String(_type);
 		}
 	}
 

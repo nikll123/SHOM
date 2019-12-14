@@ -119,7 +119,7 @@
 		void 		LogInfo();
 		
 		UnitInfo 	GetInfo();
-		String		GetUnitTypeText();
+		String		UnitTypeText();
 		String 		GetLogicTypeText();
 
 	protected:
