@@ -57,9 +57,8 @@ void Pin::LogStates(PinState2 ps2)
 // ------------------------------------
 PinInfo Pin::GetInfo()
 	{
-	UnitInfo ui = Unit::GetInfo();
-    return {ui.Title,
-			ui.UnitType,
+	return {Unit::_title,
+			Unit::UnitTypeText(),
 			PinModeText(), 
 			PinStateText(_state), 
 			_pin}; 
