@@ -65,6 +65,12 @@ PinInfo Pin::GetInfo()
 			_pin}; 
 	}
 
+// ------------------------------------
+String Pin::Title1()
+	{
+    return Unit::_title + "_" + String(_pin); 
+	}
+
 //------------------------------
 String Pin::PinStateText(PinState instate)
 {

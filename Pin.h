@@ -57,7 +57,8 @@
 		void				SetLogicType(LogicType logicType);
 
 		String 				GetLogicTypeText();
-		
+		String 				Title1();
+
 		String 				PinStateText(PinState);
 		String 				PinModeText();
 		bool				IsHigh();
