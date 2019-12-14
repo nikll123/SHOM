@@ -58,7 +58,7 @@
 
 		String 				GetLogicTypeText();
 		
-		String 				GetPinStateText(PinState);
+		String 				PinMode(PinState);
 		String 				PinMode();
 		bool				IsHigh();
 		bool				IsLow();
