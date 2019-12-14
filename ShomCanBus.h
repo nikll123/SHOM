@@ -55,7 +55,7 @@
 		unsigned int	SendCmd(CanBusCmd cmd, byte pin, bool value);
 		unsigned int 	SendCmd(unsigned int id, CanBusCmd cmd, byte pin, bool value);
 
-		CanBusState		GetResponse(unsigned int id);
+		CanBusState		GetResponse(unsigned int id, byte pin);
 		unsigned char	Receive();
 
 		void 			RelayDelay();
@@ -77,6 +77,7 @@
 		byte 			_canbus_pin_ss;
 		unsigned int 	_msgId;
 		String			_title;
+		String			_errMsg(byte pin, String txt, byte data);
 		CanBusState 	_state = CBS_UNKNOWN;
 		byte 			_data_buffer[DATA_LENGHT];
 	};
