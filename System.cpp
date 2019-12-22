@@ -282,7 +282,6 @@ SystemState System::_checkStateStarting()
 				}
 				
 			cspc2.Prev = cspc2.Curr; 
-
 			doHalt = (cntErr > 0);
 			}
 		}
@@ -350,6 +349,7 @@ SystemState System::_checkStateStopping()
 				SetErrState(SS_ERR310);
 				}
 				
+			cspc2.Prev = cspc2.Curr; 
 			doHalt = (cntErr > 0);
 			}
 		}

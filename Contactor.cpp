@@ -8,8 +8,6 @@ Contactor::Contactor() : Unit("Dummy contactor", UT_NONE)
 
 Contactor::Contactor(String title, uint8_t pinIn, uint8_t pinOut) : Unit(title, UT_CONTACTOR)
 	{
-	_timeOutOn = TURN_ON_TIMEOUT;
-	_timeOutOff = TURN_OFF_TIMEOUT;
 	_logLevel = LL_NORMAL;
 	KeyIn = PinIn(title + "_KeyIn", pinIn);
 	KeyIn.SetLogicType(LogicTypeIn);
@@ -125,7 +123,6 @@ ContactorState2 Contactor::GetState()
 			{
 			if(_millsCheck == 0)
 				{
-				//_millsCheck = millis();
 				FixTime(1);
 				}
 			else if (millis() - _millsCheck > _timeOutOff)
@@ -133,9 +130,10 @@ ContactorState2 Contactor::GetState()
 				KeyOut.SetOff();
 				delay(RELAY_DELAY);
 				_state = CS_OFF;
-				_stateOut = KeyOut.GetState(); 
-				_stateIn = (KeyIn.GetState()).New;
 				}
+				
+			_stateOut = KeyOut.GetState(); 
+			_stateIn = (KeyIn.GetState()).New;
 	
 			if (_state == CS_OFF)
 				{

@@ -1,9 +1,6 @@
 #ifndef Contactor_h
 	#define Contactor_h
 	
-	#define TURN_ON_TIMEOUT 3000
-	#define TURN_OFF_TIMEOUT 0
-	
 	#include "Unit.h"
 	#include "PinIn.h"
 	#include "PinOut.h"
@@ -75,7 +72,7 @@
 		PinState        _stateIn = KS_NONE;
 		PinState        _stateOut = KS_NONE;
 		void 			_ifChanged(ContactorState2 cs2);
-		unsigned int 	_timeOutOn = 0;
+		unsigned int 	_timeOutOn = 3000;
 		unsigned int 	_timeOutOff = 0;
 		unsigned long 	_millsCheck = 0;
 		void 			_Turn(ContactorState csNew);
