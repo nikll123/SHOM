@@ -278,4 +278,5 @@ String ShomCanBus::_errMsg(byte pin, String txt, byte data)
 	{
 	String msg = "Error: Pin=" + String(pin) +"; ";
 	msg = msg + txt + " : " + String(data);
+	return msg;
 	}
