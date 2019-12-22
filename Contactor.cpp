@@ -190,22 +190,11 @@ void Contactor::_Turn(ContactorState csNew)
 		{
 		ContactorState csCurr = _state;
 		bool err = false; 
-		switch (csNew)
+		if (csNew == CS_STARTING && csCurr == CS_OFF ||   						// start!
+			csNew == CS_STOPPING && (csCurr == CS_ON || csCurr == CS_STARTING))  // stop !
 			{
-			case CS_STARTING :
-				if (csCurr == CS_OFF)   // start!
-					{
-					FixTime(0);
-					_state = csNew;
-					}
-				break;
-			case CS_STOPPING :
-				if (csCurr == CS_ON || csCurr == CS_STARTING)
-					{
-					FixTime(0);
-					_state = csNew;
-					}
-				break;
+			FixTime(0);
+			_state = csNew;
 			}
 		ContactorState2 cs2(csCurr, csNew); 
 		_ifChanged(cs2);
