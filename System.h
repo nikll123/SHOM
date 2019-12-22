@@ -60,6 +60,7 @@ struct	SystemInfo
 		void 			TurnOff();
 		void 			TurnOffAlarm();
 		void 			SetErrState(UnitError err);
+		void 			SetErrState(UnitError err, String msg);
 		//void 			Test();
 		SystemState2	GetState();
 

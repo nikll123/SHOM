@@ -333,7 +333,7 @@ SystemState System::_checkStateStopping()
 					SetErrState(SS_ERR308);
 					}
 				}
-			else if (cspc2.Prev == US_ON)
+			else if (cspc2.Prev == US_ON || cspc2.Prev == US_STARTING)
 				{ 
 				if (cspc2.Curr == US_ON)
 					cntOn++;
@@ -346,7 +346,7 @@ SystemState System::_checkStateStopping()
 			else
 				{
 				cntErr++;
-				SetErrState(SS_ERR310);
+				SetErrState(SS_ERR310, "Wrong ConveyorStatePrev = " + Conveyor::GetConveyorStateText(cspc2.Prev));
 				}
 				
 			cspc2.Prev = cspc2.Curr; 
@@ -443,6 +443,14 @@ SystemState System::_calcState(int cntErr, int cntOn, int cntOff, int cntStoping
 // ------------------------------------
 void System::SetErrState(UnitError err)
 	{
+	LogErr(err);
+	_state = SS_ERR;
+	}
+
+// ------------------------------------
+void System::SetErrState(UnitError err, String msg)
+	{
+	Log(msg);
 	LogErr(err);
 	_state = SS_ERR;
 	}
