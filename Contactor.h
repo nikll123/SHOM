@@ -2,7 +2,7 @@
 	#define Contactor_h
 	
 	#define TURN_ON_TIMEOUT 3000
-	#define TURN_OFF_TIMEOUT 0 //2000
+	#define TURN_OFF_TIMEOUT 0
 	
 	#include "Unit.h"
 	#include "PinIn.h"
@@ -47,7 +47,6 @@
 	public:
 					    Contactor();
 					    Contactor(String title, uint8_t pinIn, uint8_t pinOut);
-					    Contactor(String title, uint8_t pinIn, uint8_t pinOut, unsigned long timeOutOn, unsigned long  timeOutOff);
 
 		ContactorState2	GetState();
 		ContactorState2	GetState(String logTexts);

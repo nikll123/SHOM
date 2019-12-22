@@ -6,15 +6,10 @@ Contactor::Contactor() : Unit("Dummy contactor", UT_NONE)
 	_state = CS_NOTINIT;
 }
 
-Contactor::Contactor(String title, uint8_t pinIn, uint8_t pinOut) : Contactor(title, pinIn, pinOut, TURN_ON_TIMEOUT, TURN_OFF_TIMEOUT) 
-{
-}
-
-
-Contactor::Contactor(String title, uint8_t pinIn, uint8_t pinOut, unsigned long timeOutOn, unsigned long timeOutOff) : Unit(title, UT_CONTACTOR)
+Contactor::Contactor(String title, uint8_t pinIn, uint8_t pinOut) : Unit(title, UT_CONTACTOR)
 	{
-	_timeOutOn = timeOutOn;
-	_timeOutOff = timeOutOff;
+	_timeOutOn = TURN_ON_TIMEOUT;
+	_timeOutOff = TURN_OFF_TIMEOUT;
 	_logLevel = LL_NORMAL;
 	KeyIn = PinIn(title + "_KeyIn", pinIn);
 	KeyIn.SetLogicType(LogicTypeIn);

@@ -6,13 +6,9 @@ Conveyor::Conveyor() : Unit("dummy", UT_CONVEYOR)
 	_state = US_NOTINIT;
 }
 
-Conveyor::Conveyor(String title, uint8_t pinIn, uint8_t pinOut, uint8_t pinAuto, uint8_t pinLed) : Conveyor(title, pinIn, pinOut, pinAuto, pinLed,  TURN_ON_TIMEOUT, TURN_OFF_TIMEOUT) 
-{
-}
-
-Conveyor::Conveyor(String title, uint8_t pinIn, uint8_t pinOut, uint8_t pinAuto, uint8_t pinLed, unsigned long timeOutOn, unsigned long timeOutOff) : Unit(title, UT_CONVEYOR)
+Conveyor::Conveyor(String title, uint8_t pinIn, uint8_t pinOut, uint8_t pinAuto, uint8_t pinLed) : Unit(title, UT_CONVEYOR)
 	{
-	ContactorConveyor = Contactor(title + "_cont", pinIn, pinOut, timeOutOn, timeOutOff);
+	ContactorConveyor = Contactor(title + "_cont", pinIn, pinOut);
 	AtomatConveyor = PinIn(title + "_auto", pinAuto);
 	AtomatConveyor.SetLogicType(LogicTypeAutomat); 
 	LedConveyor = Led(title + "_led", pinLed);
