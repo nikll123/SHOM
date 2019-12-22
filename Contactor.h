@@ -37,7 +37,10 @@
 					bool			Active;
 					unsigned int 	TimeOutOn;
 					unsigned int 	TimeOutOff;
-					}; 
+					};
+					 
+	static LogicType LogicTypeIn = LT_NORMAL;
+	static LogicType LogicTypeOut = LT_NORMAL;
 	
 	class Contactor : public Unit
 	{
@@ -57,6 +60,7 @@
 		void 			FixTime(bool x);
 		PinIn			KeyIn;		//Why not PinIn? PinIn is already used as a class name
 		PinOut			KeyOut;
+		static void 	SetupLogic(LogicType ltIn, LogicType ltOut);
 
 		void TurnOn();
 		void TurnOff();

@@ -48,6 +48,7 @@
 					unsigned int 	TimeOutOff;
 					}; 
 
+	static LogicType LogicTypeAutomat = LT_NORMAL;
 	
 	class Conveyor : public Unit
 	{
@@ -66,9 +67,11 @@
 		void 			LogStates(ConveyorState2 cs2);
 		void 			LogStatesPrevCurr(ConveyorStatePrevCurr cs2);
 		void 			IfChanged(ConveyorState2 cs2);
+		static void		SetupLogic(LogicType ltIn, LogicType ltOut, LogicType ltAuto);
 		Led				LedConveyor;
 		Contactor		ContactorConveyor;
 		PinIn			AtomatConveyor;
+
 
 		void 			TurnOn();
 		void 			TurnOff();

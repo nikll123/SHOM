@@ -13,7 +13,8 @@ Conveyor::Conveyor(String title, uint8_t pinIn, uint8_t pinOut, uint8_t pinAuto,
 Conveyor::Conveyor(String title, uint8_t pinIn, uint8_t pinOut, uint8_t pinAuto, uint8_t pinLed, unsigned long timeOutOn, unsigned long timeOutOff) : Unit(title, UT_CONVEYOR)
 	{
 	ContactorConveyor = Contactor(title + "_cont", pinIn, pinOut, timeOutOn, timeOutOff);
-	AtomatConveyor = PinIn(title + "_auto", pinAuto); 
+	AtomatConveyor = PinIn(title + "_auto", pinAuto);
+	AtomatConveyor.SetLogicType(LogicTypeAutomat); 
 	LedConveyor = Led(title + "_led", pinLed);
 	_state = US_UNKNOWN;
 	_logLevel = LL_NORMAL;
@@ -47,11 +48,12 @@ ConveyorInfo Conveyor::GetInfo()
 	}
 	
 // ------------------------------------
-/*void Conveyor::LogInfo(String str)
+static void Conveyor::SetupLogic(LogicType ltIn, LogicType ltOut, LogicType ltAuto)
 	{
-	Log(str);
-	LogInfo();
-	}*/
+	Contactor::SetupLogic(ltIn, ltOut);
+	LogicTypeAutomat = ltAuto;
+	}
+
 // ------------------------------------
 String Conveyor::GetInfoTxt()
 	{

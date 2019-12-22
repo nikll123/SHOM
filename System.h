@@ -32,7 +32,7 @@ struct	SystemInfo
 				uint8_t     	PinOff;
 				uint8_t     	PinReset;
 				};
-	
+
 	class System : Unit 
 	{
 	public:
@@ -44,6 +44,7 @@ struct	SystemInfo
 		void 			LogInfo(bool conv);
 		void 			SetupConveyor(String title, uint8_t pinIn, uint8_t pinOut, uint8_t pinAuto, uint8_t pinLed);
 		PinIn 			SetupButton(String suffix, uint8_t pin);
+		void			SetupLogic(LogicType ltIn, LogicType ltOut);
 		String 			GetSystemStateText(SystemState state);
 		uint8_t			UnitCount = 0;
 
