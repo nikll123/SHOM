@@ -156,6 +156,8 @@ SystemState2 System::GetState()
 			ss = _checkStateOff();
 		else if (_state == SS_ON)
 			ss = _checkStateOn();
+		else if (_state == SS_SELFTEST)
+			ss = _selfTest();
 		else
 			ss = SS_ERR;	
 		_state = ss;
@@ -169,12 +171,22 @@ SystemState2 System::GetState()
 		}
 	
 	///   BUTTONS
-	if(_state < SS_ERR && BtnOff.GetState().Front())
+	if (BtnReset.GetState().Front())
+		{
+		unsigned long sink = Time(TA_FIX); 
+		Reset();
+		}
+	else if (BtnReset.GetState().Back())
+		{
+		unsigned long sink = Time(TA_RESET); 
+		}
+	else if (BtnReset.GetState().High() && Time(TA_GET) > _selfTestPause && _state != SS_SELFTEST)
+		_state = SS_SELFTEST;
+		
+	else if(_state < SS_ERR && BtnOff.GetState().Front())
 		Stop();
 	else if (_state < SS_ERR && BtnOn.GetState().Front()) 
 		Start();
-	else if (BtnReset.GetState().Front()) 
-		Reset();
 	
 	return ss2; 
 	}
@@ -448,7 +460,8 @@ void System::SetErrState(UnitError err, String msg)
 	}
 
 // ------------------------------------
-void System::SelfTest()
+SystemState System::_selfTest()
 	{
 	Log("SelfTest");
+	return SS_SELFTEST;
 	}

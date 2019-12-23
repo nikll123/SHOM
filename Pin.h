@@ -15,6 +15,8 @@
 	struct PinState2 {
 					PinState 	Old;
 					PinState 	New;
+					bool High()	{return Old == KS_ON && New == KS_ON;};
+					bool Low()	{return Old == KS_OFF && New == KS_OFF;};
 					bool Front()	{return Old == KS_OFF && New == KS_ON;};
 					bool Back()		{return Old == KS_ON && New == KS_OFF;};
 					bool Changed()	{return Old != New;};
