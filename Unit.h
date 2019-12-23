@@ -106,26 +106,34 @@
 					};	
 
 	//-------------------------------
+	enum TimeAct  {	TA_NONE,
+					TA_FIX,
+					TA_RESET,
+					TA_GET,
+					};	
+	//-------------------------------
 	class Unit
 	{
 	public:
-					Unit();
-					Unit(String title, UnitType type);
-		static void	LogText(String);
-		static void	LogTextLn(String);
-		static void LogLn();
-		void 		Log(String);
-		void 		LogErr(UnitError err);
-		void 		LogInfo();
+						Unit();
+						Unit(String title, UnitType type);
+		static void		LogText(String);
+		static void		LogTextLn(String);
+		static void 	LogLn();
+		void 			Log(String);
+		void 			LogErr(UnitError err);
+		void 			LogInfo();
+		unsigned long	Time(TimeAct ta);
 		
-		UnitInfo 	GetInfo();
-		String		UnitTypeText();
-		String 		LogicTypeText();
+		UnitInfo 		GetInfo();
+		String			UnitTypeText();
+		String 			LogicTypeText();
 
 	protected:
 		String			_title;
 		UnitType		_type;
 		byte			_logLevel;
+		unsigned long 	_millsCheck = 0;
 
 	private: 
 	};

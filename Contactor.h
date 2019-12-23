@@ -53,7 +53,6 @@
 		void			LogInfo();
 		void			SetErrState(UnitError err);
 		void			SetErrState(UnitError err, String msg);
-		void 			FixTime(bool x);
 		PinIn			KeyIn;		//Why not PinIn? PinIn is already used as a class name
 		PinOut			KeyOut;
 		static void 	SetupLogic(LogicType ltIn, LogicType ltOut);
@@ -74,7 +73,6 @@
 		void 			_logIfChanged(ContactorState2 cs2);
 		unsigned int 	_timeOutOn = 3000;
 		unsigned int 	_timeOutOff = 0;
-		unsigned long 	_millsCheck = 0;
 		void 			_Turn(ContactorState csNew);
 	};
 #endif

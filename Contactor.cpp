@@ -107,9 +107,9 @@ ContactorState2 Contactor::GetState()
 				{
 				KeyOut.SetOn();
 				delay(RELAY_DELAY);
-				FixTime(1);
+				unsigned long sink = Time(TA_FIX);
 				}
-			else if (millis() - _millsCheck > _timeOutOn)
+			else if (Time(TA_GET) > _timeOutOn)
 				_state = CS_ON;
 	
 			_stateOut = KeyOut.GetState(); 
@@ -123,9 +123,9 @@ ContactorState2 Contactor::GetState()
 			{
 			if(_millsCheck == 0)
 				{
-				FixTime(1);
+				unsigned long sink = Time(TA_FIX);
 				}
-			else if (millis() - _millsCheck > _timeOutOff)
+			else if (Time(TA_GET) > _timeOutOff)
 				{
 				KeyOut.SetOff();
 				delay(RELAY_DELAY);
@@ -193,7 +193,7 @@ void Contactor::_Turn(ContactorState csNew)
 		if (csNew == CS_STARTING && csCurr == CS_OFF ||   						// start!
 			csNew == CS_STOPPING && (csCurr == CS_ON || csCurr == CS_STARTING))  // stop !
 			{
-			FixTime(0);
+			Time(TA_RESET);
 			_state = csNew;
 			}
 		ContactorState2 cs2(csCurr, csNew); 
@@ -234,12 +234,3 @@ void Contactor::SetErrState(UnitError err)
 	_state = CS_ERR;
 	}
 
-// ------------------------------------
-void Contactor::FixTime(bool x)
-	 {
-	if (x)
-		_millsCheck = millis();
-	else
-		_millsCheck = 0;
-	 }
- 
