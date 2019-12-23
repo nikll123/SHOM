@@ -66,7 +66,7 @@ struct	SystemInfo
 
 	private:
 		void 			_setState(SystemState state);
-		void 			_ifChanged(SystemState2 cs2);
+		void 			_logIfChanged(SystemState2 cs2);
 		void 			_logStates(SystemState2 cs2);
 		void 			_updateConveyorStates();
 		SystemState		_checkStateOff();

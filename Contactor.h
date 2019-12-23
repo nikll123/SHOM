@@ -71,7 +71,7 @@
 		ContactorState	_state = CS_UNKNOWN;
 		PinState        _stateIn = KS_NONE;
 		PinState        _stateOut = KS_NONE;
-		void 			_ifChanged(ContactorState2 cs2);
+		void 			_logIfChanged(ContactorState2 cs2);
 		unsigned int 	_timeOutOn = 3000;
 		unsigned int 	_timeOutOff = 0;
 		unsigned long 	_millsCheck = 0;

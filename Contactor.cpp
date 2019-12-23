@@ -25,7 +25,7 @@ void Contactor::Init()
 	cs2.Old = _state; 
 	_state = CS_OFF;
 	cs2.New = _state; 
-	_ifChanged(cs2);
+	_logIfChanged(cs2);
 	GetState();
 	}
 
@@ -153,7 +153,7 @@ ContactorState2 Contactor::GetState()
 			}
 	
 		cs2.New = _state;
-		_ifChanged(cs2);
+		_logIfChanged(cs2);
 		}
 
 	//Log("_millsCheck __3 " + String (_millsCheck));
@@ -197,7 +197,7 @@ void Contactor::_Turn(ContactorState csNew)
 			_state = csNew;
 			}
 		ContactorState2 cs2(csCurr, csNew); 
-		_ifChanged(cs2);
+		_logIfChanged(cs2);
 		}
 	else if (csNew == CS_HALT)
 		{
@@ -218,7 +218,7 @@ void Contactor::Halt()
 	}
 
 // ------------------------------------
-void Contactor::_ifChanged(ContactorState2 cs2)
+void Contactor::_logIfChanged(ContactorState2 cs2)
 	{
 	if (cs2.Old != cs2.New)
 		Log(GetContactorStateText(cs2.Old) + " -> " + GetContactorStateText(cs2.New));

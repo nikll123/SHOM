@@ -144,7 +144,7 @@ void System::SetupConveyor(String title, uint8_t pinIn, uint8_t pinOut, uint8_t 
 SystemState2 System::GetState()
 	{
 	SystemState2 ss2 = {_state, _state};
-	if (_state < SS_ERR)
+	if (_state < SS_ERR)       // no system error 
 		{
 		_updateConveyorStates();
 		SystemState ss;
@@ -161,7 +161,7 @@ SystemState2 System::GetState()
 		_state = ss;
 		}  
 	ss2.New = _state;
-	_ifChanged(ss2);
+	_logIfChanged(ss2);
 	
 	for(int i = 0; i < UnitCount ; i++)
 		{
@@ -180,19 +180,11 @@ SystemState2 System::GetState()
 	}
 
 // ------------------------------------
-void System::_ifChanged(SystemState2 ss2)
+void System::_logIfChanged(SystemState2 ss2)
 	{
 	if (ss2.Old != ss2.New)
 		{
 		_logStates(ss2);
-		/*if (cs2.New == US_ON)
-			LedConveyor.SetOn();
-		else if (cs2.New == US_STARTING || cs2.New == US_STOPPING)
-			LedConveyor.SetBlink();
-		else if (cs2.New >= US_ERR200)
-			LedConveyor.SetBlinkFast();
-		else 
-			LedConveyor.SetOff();*/
 		}
 	}
 
