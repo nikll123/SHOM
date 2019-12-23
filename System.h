@@ -61,7 +61,7 @@ struct	SystemInfo
 		void 			TurnOffAlarm();
 		void 			SetErrState(UnitError err);
 		void 			SetErrState(UnitError err, String msg);
-		//void 			Test();
+		void 			SelfTest();
 		SystemState2	GetState();
 
 	private:

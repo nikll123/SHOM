@@ -455,3 +455,8 @@ void System::SetErrState(UnitError err, String msg)
 	_state = SS_ERR;
 	}
 
+// ------------------------------------
+void System::SelfTest()
+	{
+	Log("SelfTest");
+	}
