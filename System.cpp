@@ -28,6 +28,7 @@ PinIn System::SetupButton(String btnTitle, uint8_t pin)
 void System::Init()
 	{ 
 	Log("Init");
+	unsigned long sink = Time(TA_RESET); 
 	for(int i = 0; i < UnitCount; i++)
 		{
 		ConveyorStates[i] = {US_NOTINIT, US_NOTINIT};
