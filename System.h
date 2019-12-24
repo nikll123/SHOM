@@ -69,7 +69,7 @@ struct	SystemInfo
 		void 			_logIfChanged(SystemState2 cs2);
 		void 			_logStates(SystemState2 cs2);
 		void 			_updateConveyorStates();
-		SystemState		_selfTest();
+		SystemState		_checkSelfTest();
 		SystemState		_checkStateOff();
 		SystemState		_checkStateOn();
 		SystemState		_checkStateStarting();

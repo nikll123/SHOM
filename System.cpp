@@ -157,7 +157,7 @@ SystemState2 System::GetState()
 		else if (_state == SS_ON)
 			ss = _checkStateOn();
 		else if (_state == SS_SELFTEST)
-			ss = _selfTest();
+			ss = _checkSelfTest();
 		else
 			ss = SS_ERR;	
 		_state = ss;
@@ -460,7 +460,7 @@ void System::SetErrState(UnitError err, String msg)
 	}
 
 // ------------------------------------
-SystemState System::_selfTest()
+SystemState System::_checkSelfTest()
 	{
 	Log("SelfTest");
 	return SS_SELFTEST;
