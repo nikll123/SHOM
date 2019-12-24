@@ -28,7 +28,6 @@ PinIn System::SetupButton(String btnTitle, uint8_t pin)
 void System::Init()
 	{ 
 	Log("Init");
-	unsigned long sink = Time(TA_RESET); 
 	for(int i = 0; i < UnitCount; i++)
 		{
 		ConveyorStates[i] = {US_NOTINIT, US_NOTINIT};
@@ -61,6 +60,7 @@ void  System::Stop()
 void  System::Reset()
 	{
 	Log("Reset()");
+	unsigned long sink = Time(TA_RESET); 
 	Init();
 	} 
 	
@@ -174,16 +174,18 @@ SystemState2 System::GetState()
 	///   BUTTONS
 	if (BtnReset.GetState().Front())
 		{
-		unsigned long sink = Time(TA_FIX); 
 		Reset();
+		unsigned long sink = Time(TA_FIX); 
 		}
 	else if (BtnReset.GetState().Back())
 		{
 		unsigned long sink = Time(TA_RESET); 
 		}
 	else if (BtnReset.GetState().High() && Time(TA_PERIOD) > _selfTestPause && _state != SS_SELFTEST)
+		{
+		Log("SelfTest");
 		_state = SS_SELFTEST;
-		
+		}
 	else if(_state < SS_ERR && BtnOff.GetState().Front())
 		Stop();
 	else if (_state < SS_ERR && BtnOn.GetState().Front()) 
@@ -463,6 +465,13 @@ void System::SetErrState(UnitError err, String msg)
 // ------------------------------------
 SystemState System::_checkSelfTest()
 	{
-	Log("SelfTest");
+	if(0 == Time(TA_GET) || 1000 <= Time(TA_PERIOD))
+		{
+		unsigned long sink = Time(TA_FIX); 
+		for(int i = 0; i < UnitCount; i++)
+			{
+			Conveyors[i].LedConveyor.Inverse();
+			}
+		}
 	return SS_SELFTEST;
 	}
