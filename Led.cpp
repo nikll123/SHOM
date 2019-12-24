@@ -141,26 +141,40 @@ void Led::_logState(LedState2 ls2)
 	Log(GetLedStateText(ls2.Old) + " -> " + GetLedStateText(ls2.New));
 	}
 	
+//------------------------------------
 void Led::SetOn()
 	{
 	_setState(LED_ON);
 	}
 
+//------------------------------------
 void Led::SetOff()
 	{
 	_setState(LED_OFF);
 	}
 
+//------------------------------------
+void Led::Inverse()
+	{
+	if (_state == LED_ON)
+		SetOff();
+	else
+		SetOn();
+	}
+
+//------------------------------------
 void Led::SetBlink()
 	{
 	_setState(LED_BLINK);
 	}
 
+//------------------------------------
 void Led::SetBlinkSlow()
 	{
 	_setState(LED_BLINKSLOW);
 	}
 
+//------------------------------------
 void Led::SetBlinkFast()
 	{
 	_setState(LED_BLINKFAST);
