@@ -180,7 +180,7 @@ SystemState2 System::GetState()
 		{
 		unsigned long sink = Time(TA_RESET); 
 		}
-	else if (BtnReset.GetState().High() && Time(TA_GET) > _selfTestPause && _state != SS_SELFTEST)
+	else if (BtnReset.GetState().High() && Time(TA_PERIOD) > _selfTestPause && _state != SS_SELFTEST)
 		_state = SS_SELFTEST;
 		
 	else if(_state < SS_ERR && BtnOff.GetState().Front())

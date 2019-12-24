@@ -107,9 +107,11 @@ unsigned long Unit::Time(TimeAct ta)
 	unsigned long res = 0; 
 	if (ta == TA_FIX)
 		_millsCheck = millis();
+	else if (ta == TA_GET)
+		res = _millsCheck;
 	else if (ta == TA_RESET)
 		_millsCheck = 0;
-	else if (ta == TA_GET)
+	else if (ta == TA_PERIOD)
 	    res = millis() - _millsCheck;
 	    
 	return res;

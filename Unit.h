@@ -110,6 +110,7 @@
 					TA_FIX,
 					TA_RESET,
 					TA_GET,
+					TA_PERIOD,
 					};	
 	//-------------------------------
 	class Unit

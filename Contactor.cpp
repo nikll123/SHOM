@@ -109,7 +109,7 @@ ContactorState2 Contactor::GetState()
 				delay(RELAY_DELAY);
 				unsigned long sink = Time(TA_FIX);
 				}
-			else if (Time(TA_GET) > _timeOutOn)
+			else if (Time(TA_PERIOD) > _timeOutOn)
 				_state = CS_ON;
 	
 			_stateOut = KeyOut.GetState(); 
@@ -125,7 +125,7 @@ ContactorState2 Contactor::GetState()
 				{
 				unsigned long sink = Time(TA_FIX);
 				}
-			else if (Time(TA_GET) > _timeOutOff)
+			else if (Time(TA_PERIOD) > _timeOutOff)
 				{
 				KeyOut.SetOff();
 				delay(RELAY_DELAY);
