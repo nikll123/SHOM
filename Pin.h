@@ -53,6 +53,7 @@
 	    
 		PinInfo 			GetInfo();
 		PinState			GetState();
+		uint8_t				GetPin();
 		void				SetState(PinState state, bool noLog);	
 		void				LogInfo();	
 		void 				LogStates(PinState2 ps2);

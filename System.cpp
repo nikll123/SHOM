@@ -93,6 +93,7 @@ void System::LogInfo()
 // ------------------------------------
 void System::LogInfo(bool conv)
 	{
+	Log("----- LogInfo -----");
 	SystemInfo si = GetInfo();
 	String str;
 	if (conv)
@@ -107,7 +108,7 @@ void System::LogInfo(bool conv)
 		}
 	str = si.UnitType + "; " + si.State; 
 	str = str + "; BtnOn-" + String(si.PinOn) + "; BtnOff-" + String(si.PinOff) + "; BtnReset-" + String(si.PinReset);
-	//Log(str);
+	Log(str);
 		 		
 	}
 
@@ -162,10 +163,10 @@ SystemState2 System::GetState()
 	ss2.New = _state;
 	_logIfChanged(ss2);
 	
-	for(int i = 0; i < UnitCount ; i++)
+	/*for(int i = 0; i < UnitCount ; i++)
 		{
-		Conveyors[i].LedConveyor.Refresh();
-		}
+		//Conveyors[i].LedConveyor.Refresh();
+		}*/  
 	
 	///   BUTTONS
 	if (BtnReset.GetState().Front())

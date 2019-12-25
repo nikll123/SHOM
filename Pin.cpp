@@ -43,7 +43,7 @@ void Pin::SetState(PinState state, bool noLog)
 	ShomPinWrite(val);
 	_state = state; 
 	ps2.New = _state;
-	if (ps2.Changed() && !noLog) 
+	if (ps2.Changed() && !noLog && _pin != 0) 
 		LogStates(ps2);
 	}
 // ------------------------------------
@@ -62,6 +62,12 @@ PinInfo Pin::GetInfo()
 			PinModeText(), 
 			StateText(), 
 			_pin}; 
+	}
+
+// ------------------------------------
+uint8_t	 Pin::GetPin()
+	{
+	return _pin;
 	}
 
 // ------------------------------------
@@ -95,7 +101,12 @@ bool Pin::ShomPinRead()
 	CanBusState	canbusres;
 	_state = KS_NONE;
 	byte pin = _pin; 
-	if (pin < 100)
+	if (pin == 0)
+		{
+		res = 1;
+		_state = KS_ON;
+		}
+	else if (pin < 100)
 		{
 		res = digitalRead(pin);
 		if (res)

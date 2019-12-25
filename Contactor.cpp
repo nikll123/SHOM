@@ -95,11 +95,15 @@ ContactorState2 Contactor::GetState()
 
 		cs2.Old = _state;
 		_stateIn = (KeyIn.GetState()).New;
-		_stateOut = KeyOut.GetState(); 
+		_stateOut = KeyOut.GetState();
+		bool notDummy = KeyIn.GetPin() != 0; 
 		if (_state == CS_OFF)
 			{
-			if (_stateOut != KS_OFF) SetErrState(CS_ERR101);
-			if (_stateIn != KS_OFF) SetErrState(CS_ERR102);
+			if (notDummy)
+				{
+				if (_stateOut != KS_OFF) SetErrState(CS_ERR101);
+				if (_stateIn != KS_OFF) SetErrState(CS_ERR102);
+				}
 			}
 		else if (_state == CS_STARTING)
 			{
@@ -115,9 +119,11 @@ ContactorState2 Contactor::GetState()
 			_stateOut = KeyOut.GetState(); 
 			_stateIn = (KeyIn.GetState()).New;
 	
-			if (_stateOut != KS_ON) 		SetErrState(CS_ERR103);
-			else if (_stateIn != KS_ON) 	SetErrState(CS_ERR104);
-	
+			if (notDummy)
+				{
+				if (_stateOut != KS_ON) 		SetErrState(CS_ERR103);
+				else if (_stateIn != KS_ON) 	SetErrState(CS_ERR104);
+				}	
 			}
 		else if(_state == CS_STOPPING)
 			{
@@ -137,26 +143,33 @@ ContactorState2 Contactor::GetState()
 	
 			if (_state == CS_OFF)
 				{
-				if (_stateOut != KS_OFF) 		SetErrState(CS_ERR105);
-				else if (_stateIn != KS_OFF) 	SetErrState(CS_ERR106);
+				if (notDummy)
+					{
+					if (_stateOut != KS_OFF) 		SetErrState(CS_ERR105);
+					else if (_stateIn != KS_OFF) 	SetErrState(CS_ERR106);
+					}
 				}
 			else    // US_STOPPING
 				{
-				if (_stateOut != KS_ON) 		SetErrState(CS_ERR107);
-				else if (_stateIn != KS_ON) 	SetErrState(CS_ERR108);
+				if (notDummy)
+					{
+					if (_stateOut != KS_ON) 		SetErrState(CS_ERR107);
+					else if (_stateIn != KS_ON) 	SetErrState(CS_ERR108);
+					}
 				}
 			}
 		else if(_state == CS_ON)
 			{
-			if (_stateOut != KS_ON) 		SetErrState(CS_ERR109);
-			else if (_stateIn != KS_ON) 	SetErrState(CS_ERR110);
+			if (notDummy)
+				{
+				if (_stateOut != KS_ON) 		SetErrState(CS_ERR109);
+				else if (_stateIn != KS_ON) 	SetErrState(CS_ERR110);
+				}
 			}
 	
 		cs2.New = _state;
 		_logIfChanged(cs2);
 		}
-
-	//Log("_millsCheck __3 " + String (_millsCheck));
 
 	return cs2;
 	}
