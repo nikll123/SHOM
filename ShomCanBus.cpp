@@ -22,7 +22,6 @@ void ShomCanBus::Init(byte id, byte pin_ss)
 		_canbus_pin_ss = pin_ss; 
 		canbus=MCP_CAN(_canbus_pin_ss);
 		bool canbus_ok = false;
-		canbus_ok = (CAN_OK == canbus.begin(CANBUS_RATE));
 		for (int i = 0; i<CREATE_TRY_MAX; i++)
 			{
 			canbus_ok = (CAN_OK == canbus.begin(CANBUS_RATE));
