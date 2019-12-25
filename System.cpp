@@ -136,7 +136,7 @@ void System::SetupConveyor(String title, uint8_t pinIn, uint8_t pinOut, uint8_t 
 		{
 		title = _title + "." + title + "_" + String(UnitCount); 
 		Conveyors[UnitCount] = Conveyor(title, pinIn, pinOut, pinAuto, pinLed);
-		Conveyors[UnitCount].Init();
+		//Conveyors[UnitCount].Init();
 		UnitCount++;
 		}
 	}
