@@ -94,18 +94,21 @@ void System::LogInfo()
 void System::LogInfo(bool conv)
 	{
 	SystemInfo si = GetInfo();
-	String str = si.UnitType + "; " + si.State; 
-	str = str + "; BtnOn-" + String(si.PinOn) + "; BtnOff-" + String(si.PinOff) + "; BtnReset-" + String(si.PinReset);
-	Log(str);
+	String str;
 	if (conv)
 		{
 		for(int i = 0; i < UnitCount; i++)
 			{
-			String str = String(i) + ") ";
-			str = str + Conveyors[i].GetInfoTxt();
+			str = i;
+			str.concat(") ");
+			str.concat(Conveyors[i].GetInfoTxt());
 			Log(str);
 			}
-		} 		
+		}
+	str = si.UnitType + "; " + si.State; 
+	str = str + "; BtnOn-" + String(si.PinOn) + "; BtnOff-" + String(si.PinOff) + "; BtnReset-" + String(si.PinReset);
+	//Log(str);
+		 		
 	}
 
 // ------------------------------------

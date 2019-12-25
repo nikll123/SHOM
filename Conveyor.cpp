@@ -52,20 +52,15 @@ static void Conveyor::SetupLogic(LogicType ltIn, LogicType ltOut, LogicType ltAu
 // ------------------------------------
 String Conveyor::GetInfoTxt()
 	{
-	String str = ""; 
 	ConveyorInfo ci = GetInfo();
-	str = str + ci.Title + "; ";
-	str = str + ci.UnitType + "; ";
-	str = str + "in-" + String(ci.PinIn) + "; ";
-	str = str + "out-" + String(ci.PinOut) + "; ";
-	str = str + "auto-" + String(ci.PinAuto) + "; ";
-	str = str + "led-" + String(ci.PinLed) + "; ";
-	/*if(ci.Active)
-		str = str + "Active; ";
-	else
-		str = str + "Not active; ";
-	*/
-	str = str + ci.State + ".";
+	String str = ""; 
+	str.concat(ci.Title + "; ");
+	str.concat(ci.UnitType + "; ");
+	str.concat("in-" + String(ci.PinIn) + "; ");
+	str.concat("out-" + String(ci.PinOut) + "; ");
+	str.concat("auto-" + String(ci.PinAuto) + "; ");
+	str.concat("led-" + String(ci.PinLed) + "; ");
+	str.concat(ci.State + ".");
 	return str;
 	}
 
