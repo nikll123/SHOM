@@ -50,7 +50,6 @@
 		void 		SetBlinkSlow();
 		String 		GetLedStateText(LedState ls);
 	    PinOut		PinOutLed;
-	    bool 		IsActive();
 
 	protected:
 
