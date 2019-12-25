@@ -43,7 +43,7 @@
 					uint8_t     	PinOut;
 					uint8_t     	PinAuto;
 					uint8_t     	PinLed;
-					bool			Active;
+					//bool			Active;
 					unsigned int 	TimeOutOn;
 					unsigned int 	TimeOutOff;
 					}; 
@@ -76,7 +76,6 @@
 		void 			TurnOn();
 		void 			TurnOff();
 		void 			Halt();
-        bool			IsActive();
 
 	protected:
 		void LogKeysState();

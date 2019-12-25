@@ -31,11 +31,8 @@ void System::Init()
 	for(int i = 0; i < UnitCount; i++)
 		{
 		ConveyorStates[i] = {US_NOTINIT, US_NOTINIT};
-		if(Conveyors[i].IsActive())
-			{
-			Conveyors[i].Init();
-			ConveyorStates[i] = {US_OFF, US_OFF};
-			}
+		Conveyors[i].Init();
+		ConveyorStates[i] = {US_OFF, US_OFF};
 		}
 	_setState(SS_OFF);  
 	}
@@ -104,12 +101,9 @@ void System::LogInfo(bool conv)
 		{
 		for(int i = 0; i < UnitCount; i++)
 			{
-			if(Conveyors[i].IsActive())
-				{
-				String str = String(i) + ") ";
-				str = str + Conveyors[i].GetInfoTxt();
-				Log(str);
-				}
+			String str = String(i) + ") ";
+			str = str + Conveyors[i].GetInfoTxt();
+			Log(str);
 			}
 		} 		
 	}
@@ -215,10 +209,7 @@ void System::_updateConveyorStates()
 	
 	for(int i = UnitCount - 1; i >= 0 ; i--)
 		{
-		if(Conveyors[i].IsActive())
-			{
-			ConveyorStates[i] = Conveyors[i].GetState();
-			}
+		ConveyorStates[i] = Conveyors[i].GetState();
 		}
 	}
 	

@@ -39,7 +39,6 @@ ConveyorInfo Conveyor::GetInfo()
 			ci.PinOut,
 			ai.Pin, 
 			li.Pin,
-			IsActive(),
 			}; 
 	}
 	
@@ -61,11 +60,11 @@ String Conveyor::GetInfoTxt()
 	str = str + "out-" + String(ci.PinOut) + "; ";
 	str = str + "auto-" + String(ci.PinAuto) + "; ";
 	str = str + "led-" + String(ci.PinLed) + "; ";
-	if(ci.Active)
+	/*if(ci.Active)
 		str = str + "Active; ";
 	else
 		str = str + "Not active; ";
-	
+	*/
 	str = str + ci.State + ".";
 	return str;
 	}
@@ -228,9 +227,3 @@ void Conveyor::LogStatesPrevCurr(ConveyorStatePrevCurr cs2)
 	Log("Conveyor states: previous " + GetConveyorStateText(cs2.Prev) + ", current " + GetConveyorStateText(cs2.Curr));
 	}
 		
-// ------------------------------------
-bool Conveyor::IsActive()
-	{
-	return _state != US_NOTINIT;
-	}	
-
