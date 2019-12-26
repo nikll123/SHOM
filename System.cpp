@@ -159,14 +159,17 @@ SystemState2 System::GetState()
 		else
 			ss = SS_ERR;	
 		_state = ss;
+		}
+	else
+		{
+		for(int i = 0; i < UnitCount ; i++)
+			{
+			Conveyors[i].LedConveyor.Refresh();
+			}  
 		}  
 	ss2.New = _state;
 	_logIfChanged(ss2);
 	
-	/*for(int i = 0; i < UnitCount ; i++)
-		{
-		//Conveyors[i].LedConveyor.Refresh();
-		}*/  
 	
 	///   BUTTONS
 	if (BtnReset.GetState().Front())

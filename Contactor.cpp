@@ -96,7 +96,7 @@ ContactorState2 Contactor::GetState()
 		cs2.Old = _state;
 		_stateIn = (KeyIn.GetState()).New;
 		_stateOut = KeyOut.GetState();
-		bool notDummy = KeyIn.GetPin() != 0; 
+		bool notDummy = KeyIn.GetPin() != 0;   // not Dummy conveyor 
 		if (_state == CS_OFF)
 			{
 			if (notDummy)
