@@ -56,7 +56,8 @@ PinOutInfo PinOut::GetInfo()
     return {pi.Title,
 			pi.UnitType, 
 			StateText(),
-			_pin
+			_pin,
+			LogicTypeText()
 			}; 
 	}
 
@@ -68,6 +69,7 @@ void PinOut::LogInfo()
 	LogText(pi.UnitType + "; ");
 	LogText(pi.State + "; ");
 	LogText(String(_pin) + "; ");
+	LogText(pi.Logic + "; ");
 	LogLn();
 	}
 

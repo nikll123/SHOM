@@ -4,10 +4,10 @@
 
 ShomCanBus::ShomCanBus() : Unit("ShomCanBus", UT_CANBUS)
 	{
-	Serial.begin(115200);
+	//Serial.begin(115200);
   	_canbus_id = 0;
 	_title = "ShomCanBus(id="+ String(_canbus_id) + ")";
-	Log("Init 0");
+	//Log("Init 0");
 	}
 
 

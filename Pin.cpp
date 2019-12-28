@@ -163,7 +163,6 @@ void Pin::ShomPinWrite(bool val)
 //------------------------------
 void Pin::ShomPinMode(byte pinmode)
 	{
-	Log("ShomPinMode " + PinModeText());
 	_pinmode = pinmode;
 	if (_pin < 100)
 		{
@@ -195,26 +194,35 @@ void Pin::LogInfo()
 //------------------------------
 String Pin::PinModeText()
 	{
-	if(_pinmode == INPUT_PULLUP)  // INPUT_PULLUP, INPUT, OUTPUT are Arduino's constants  
-		return "INPUT_PULLUP";
+/*	String res1;
+	// INPUT_PULLUP, INPUT, OUTPUT are Arduino's constants
+	if(_pinmode == INPUT_PULLUP)
+		res1 = " INPUT_PULLUP";
 	else if(_pinmode == INPUT)
-		return "INPUT";
+		res1 = " INPUT";
 	else if(_pinmode == OUTPUT)
-		return "OUTPUT";
+		res1 = " OUTPUT";
 	else
-		return "Unknown";
+		res1 = " PinModeText: unknown-" + String(_pinmode);
+		
+	String res = String(_pin) + res1;*/
+		
+	return " PinModeText: unknown-";
 	}
 
 //------------------------------
 String Pin::LogicTypeText()
 	{
-	switch (_logicType)
-		{
-		case LT_NONE 		: return "NONE";
-		case LT_NORMAL	 	: return "NORMAL";
-		case LT_INVERSE 	: return "INVERSE";
-		default			    : return "LogicTypeText: unknown-" + String(_logicType);
-		}
+	String res = "";
+	if(_logicType == LT_NONE )
+		res = "NONE";
+	else if (_logicType == LT_NORMAL)
+		res = "NORMAL";
+	else if (_logicType == LT_INVERSE)
+		res =  "INVERSE";
+	else
+		res = "LogicTypeText: unknown-" + String(_logicType);
+	return res;
 	}
 
 //------------------------------

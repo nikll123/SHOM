@@ -6,7 +6,6 @@ PinIn::PinIn() : PinIn("Dummy PinIn", 0)
 
 PinIn::PinIn(String title, uint8_t pin) : Pin(title, pin, UT_PININ)
 {
-	SetLogicType(LT_NORMAL);	
 	Init();
 }
 
@@ -21,7 +20,6 @@ void PinIn::SetLogicType(LogicType logicType)
 {
 	uint8_t inpmode;
 	Pin::SetLogicType(logicType);
-	//_logicType = logicType; 
 	if (_logicType == LT_NORMAL)
 		inpmode = INPUT;
 	else
@@ -73,7 +71,7 @@ PinInInfo PinIn::GetInfo()
 void PinIn::LogInfo()
 	{
 	PinInInfo pi = GetInfo();
-	String str = (pi.Title + "; ");
+	String str = ""; // (pi.Title + "; ");
 	str = str + (pi.UnitType + "; ");
 	str = str + (pi.State + "; ");
 	str = str + (String(_pin) + "; ");
@@ -85,7 +83,7 @@ void PinIn::LogInfo()
 // ------------------------------------
 void PinIn::LogState()
 	{
-	String str = StateText() + "; ";
+	String str = String(_pin) + " " + StateText() + "; ";
 	Log(str);
 	}
 

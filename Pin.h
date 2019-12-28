@@ -76,7 +76,7 @@
 		uint8_t 			_pin;
 		PinState			_state = KS_NONE;
 		uint8_t 			_pinmode;
-		LogicType			_logicType; 
+		LogicType			_logicType = LT_NORMAL; 
 
 	private:
 	};

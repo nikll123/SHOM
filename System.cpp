@@ -1,7 +1,7 @@
 #include "System.h"
 
 // ------------------------------------
-System::System() : System("DummySystem", 0, 0, 0)
+System::System() //: System("DummySystem", 0, 0, 0)
 	{
 	}
 
@@ -18,7 +18,7 @@ System::System(String title, uint8_t pinBtnOn, uint8_t pinBtnOff, uint8_t pinBtn
 PinIn System::SetupButton(String btnTitle, uint8_t pin)
 	{
 	String title = _title + "." + btnTitle;
-	PinIn btn = PinIn(title, pin);  
+	PinIn btn = PinIn(title, pin);
 	btn.SetLogicType(LT_INVERSE);
 	btn.Init();
 	return btn ; 
@@ -93,23 +93,27 @@ void System::LogInfo()
 // ------------------------------------
 void System::LogInfo(bool conv)
 	{
-	Log("----- LogInfo -----");
 	SystemInfo si = GetInfo();
 	String str;
 	if (conv)
 		{
 		for(int i = 0; i < UnitCount; i++)
 			{
-			str = i;
+			str = "";
+			str.concat(i);
 			str.concat(") ");
 			str.concat(Conveyors[i].GetInfoTxt());
-			Log(str);
+			Serial.println(str);
 			}
 		}
 	str = si.UnitType + "; " + si.State; 
-	str = str + "; BtnOn-" + String(si.PinOn) + "; BtnOff-" + String(si.PinOff) + "; BtnReset-" + String(si.PinReset);
-	Log(str);
-		 		
+	str.concat("; BtnOn-");
+	str.concat(si.PinOn);
+	str.concat("; BtnOff-");
+	str.concat(si.PinOff);
+	str.concat("; BtnReset-");
+	str.concat(si.PinReset);
+	Serial.println(str);
 	}
 
 // ------------------------------------
@@ -170,7 +174,6 @@ SystemState2 System::GetState()
 	ss2.New = _state;
 	_logIfChanged(ss2);
 	
-	
 	///   BUTTONS
 	if (BtnReset.GetState().Front())
 		{
@@ -212,7 +215,6 @@ void System::_logStates(SystemState2 ss2)
 // ------------------------------------
 void System::_updateConveyorStates()
 	{
-	
 	for(int i = UnitCount - 1; i >= 0 ; i--)
 		{
 		ConveyorStates[i] = Conveyors[i].GetState();

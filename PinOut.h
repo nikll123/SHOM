@@ -9,6 +9,7 @@
 					String 		UnitType;
 					String 		State;
 					uint8_t		Pin;
+					String		Logic;
 					};	
 	
    	//-------------------------------
