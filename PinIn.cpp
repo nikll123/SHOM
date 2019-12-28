@@ -42,6 +42,16 @@ PinState2 PinIn::GetState()
 }
 
 // ------------------------------------
+String PinIn::GetStateTxt()
+	{
+	String str = "PinIn(";
+	str += GetPin();
+	str += ") state=";
+	str += Pin::PinStateText(_state);
+	return str;
+	}
+
+// ------------------------------------
 void PinIn::_refreshState()
 {
 	bool newState = ShomPinRead();

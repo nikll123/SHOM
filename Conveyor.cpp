@@ -205,17 +205,9 @@ void Conveyor::Halt()
 // ------------------------------------
 void Conveyor::SetErrState(UnitError err, ContactorState cs, PinState as)
 	{
-	String str = "ContactorState(in=";
-	str += ContactorConveyor.KeyIn.GetPin();
-	str += ",out=";
-	str += ContactorConveyor.KeyOut.GetPin();
-	str += ")=";
-	str += Contactor::GetContactorStateText(cs);
-
-	str += "; AutomatState(";
-	str += AtomatConveyor.GetPin();
-	str += ")=";
-	str += Pin::PinStateText(as); 
+	String str = ContactorConveyor.GetStateTxt();
+	str += " ";
+	str += AtomatConveyor.GetStateTxt();
 	Log(str);
 	SetErrState(err);
 	}

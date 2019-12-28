@@ -64,6 +64,18 @@ void Contactor::LogInfo()
 	LogLn();
 	}
 
+// ------------------------------------
+String Contactor::GetStateTxt()
+	{
+	String str = "Contactor (in=";
+	str += KeyIn.GetPin();
+	str += ",out=";
+	str += KeyOut.GetPin();
+	str += ") state=";
+	str += GetContactorStateText(_state);
+	return str;
+	}
+
 //------------------------------
 static String Contactor::GetContactorStateText(ContactorState state)
 {
