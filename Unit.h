@@ -4,7 +4,7 @@
 	#include "Arduino.h"
 	//#include <Wire.h>
 	
-	#define RELAY_DELAY	50 // --10
+	#define RELAY_DELAY	20 // --10
 
 	#define LL_NONE		0
 	#define LL_HIGH		1

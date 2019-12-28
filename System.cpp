@@ -163,6 +163,7 @@ SystemState2 System::GetState()
 		else
 			ss = SS_ERR;	
 		_state = ss;
+		//Serial.println(_state);
 		}
 	else
 		{
@@ -174,7 +175,14 @@ SystemState2 System::GetState()
 	ss2.New = _state;
 	_logIfChanged(ss2);
 	
-	///   BUTTONS
+	_checkButtons();
+	
+	return ss2; 
+	}
+
+// ------------------------------------
+void System::_checkButtons()
+	{
 	if (BtnReset.GetState().Front())
 		{
 		Reset();
@@ -193,8 +201,6 @@ SystemState2 System::GetState()
 		Stop();
 	else if (_state < SS_ERR && BtnOn.GetState().Front()) 
 		Start();
-	
-	return ss2; 
 	}
 
 // ------------------------------------
@@ -230,65 +236,69 @@ SystemState System::_checkStateStarting()
 	cspc2.Prev = US_ON; 	
 	for(int i = UnitCount - 1; i >= 0 ; i--)
 		{
-		if (doHalt)
+		//_checkButtons();
+		//if(_state == SS_STARTING)
 			{
-			Conveyors[i].Halt();
-			cntErr++;
-			SetErrState(SS_ERR305);
-			}
-		else
-			{
-			cspc2.Curr = ConveyorStates[i].New;
-			if (cspc2.Prev == US_ON)
-				{ 
-				if (cspc2.Curr == US_OFF)
-					{
-					Conveyors[i].TurnOn();
-					cspc2.Curr = US_STARTING; 
-					cntStarting++;
-					}
-				else if (cspc2.Curr == US_STARTING)
-					cntStarting++;
-				else if (cspc2.Curr == US_ON)
-					cntOn++;
-				else
-					{
-					cntErr++;
-					Conveyors[i].LogStatesPrevCurr(cspc2.Curr);
-					SetErrState(SS_ERR301);
-					}
-				}
-			else if (cspc2.Prev == US_STARTING)
-				{ 
-				if (cspc2.Curr == US_OFF)
-					{
-					cspc2.Prev = US_STARTING;
-					cntOff++;
-					}
-				else
-					{
-					cntErr++;
-					SetErrState(SS_ERR302);
-					}
-				}
-			else if (cspc2.Prev == US_OFF)
-				{ 
-				if (cspc2.Curr == US_OFF)
-					cntOff++;
-				else
-					{
-					cntErr++;
-					SetErrState(SS_ERR303);
-					}
+			if (doHalt)
+				{
+				Conveyors[i].Halt();
+				cntErr++;
+				SetErrState(SS_ERR305);
 				}
 			else
 				{
-				cntErr++;
-				SetErrState(SS_ERR304);
+				cspc2.Curr = ConveyorStates[i].New;
+				if (cspc2.Prev == US_ON)
+					{ 
+					if (cspc2.Curr == US_OFF)
+						{
+						Conveyors[i].TurnOn();
+						cspc2.Curr = US_STARTING; 
+						cntStarting++;
+						}
+					else if (cspc2.Curr == US_STARTING)
+						cntStarting++;
+					else if (cspc2.Curr == US_ON)
+						cntOn++;
+					else
+						{
+						cntErr++;
+						Conveyors[i].LogStatesPrevCurr(cspc2.Curr);
+						SetErrState(SS_ERR301);
+						}
+					}
+				else if (cspc2.Prev == US_STARTING)
+					{ 
+					if (cspc2.Curr == US_OFF)
+						{
+						cspc2.Prev = US_STARTING;
+						cntOff++;
+						}
+					else
+						{
+						cntErr++;
+						SetErrState(SS_ERR302);
+						}
+					}
+				else if (cspc2.Prev == US_OFF)
+					{ 
+					if (cspc2.Curr == US_OFF)
+						cntOff++;
+					else
+						{
+						cntErr++;
+						SetErrState(SS_ERR303);
+						}
+					}
+				else
+					{
+					cntErr++;
+					SetErrState(SS_ERR304);
+					}
+					
+				cspc2.Prev = cspc2.Curr; 
+				doHalt = (cntErr > 0);
 				}
-				
-			cspc2.Prev = cspc2.Curr; 
-			doHalt = (cntErr > 0);
 			}
 		}
 	return _calcState(cntErr, cntOn, cntOff, 0, cntStarting);
@@ -303,60 +313,64 @@ SystemState System::_checkStateStopping()
 	cspc2.Prev = US_OFF; 	
 	for(int i = 0; i < UnitCount ; i++)
 		{
-		if (doHalt)
+		//_checkButtons();
+		//if(_state == SS_STOPPING)
 			{
-			Conveyors[i].Halt();
-			cntErr++;
-			SetErrState(SS_ERR306);
-			}
-		else
-			{
-			cspc2.Curr = ConveyorStates[i].New;
-			if (cspc2.Prev == US_OFF)
-				{ 
-				if (cspc2.Curr == US_ON || cspc2.Curr == US_STARTING)
-					{
-					Conveyors[i].TurnOff();
-					cntStoping++;
-					}
-				else if (cspc2.Curr == US_STOPPING)
-					cntStoping++;
-				else if (cspc2.Curr == US_OFF)
-					cntOff++;
-				else
-					{
-					cntErr++;
-					SetErrState(SS_ERR307);
-					}
-				}
-			else if (cspc2.Prev == US_STOPPING)
-				{ 
-				if (cspc2.Curr == US_ON)
-					cntOn++;
-				else
-					{
-					cntErr++;
-					SetErrState(SS_ERR308);
-					}
-				}
-			else if (cspc2.Prev == US_ON || cspc2.Prev == US_STARTING)
-				{ 
-				if (cspc2.Curr == US_ON)
-					cntOn++;
-				else
-					{
-					cntErr++;
-					SetErrState(SS_ERR309);
-					}
+			if (doHalt)
+				{
+				Conveyors[i].Halt();
+				cntErr++;
+				SetErrState(SS_ERR306);
 				}
 			else
 				{
-				cntErr++;
-				SetErrState(SS_ERR310, "Wrong ConveyorStatePrev = " + Conveyor::GetConveyorStateText(cspc2.Prev));
+				cspc2.Curr = ConveyorStates[i].New;
+				if (cspc2.Prev == US_OFF)
+					{ 
+					if (cspc2.Curr == US_ON || cspc2.Curr == US_STARTING)
+						{
+						Conveyors[i].TurnOff();
+						cntStoping++;
+						}
+					else if (cspc2.Curr == US_STOPPING)
+						cntStoping++;
+					else if (cspc2.Curr == US_OFF)
+						cntOff++;
+					else
+						{
+						cntErr++;
+						SetErrState(SS_ERR307);
+						}
+					}
+				else if (cspc2.Prev == US_STOPPING)
+					{ 
+					if (cspc2.Curr == US_ON)
+						cntOn++;
+					else
+						{
+						cntErr++;
+						SetErrState(SS_ERR308);
+						}
+					}
+				else if (cspc2.Prev == US_ON || cspc2.Prev == US_STARTING)
+					{ 
+					if (cspc2.Curr == US_ON)
+						cntOn++;
+					else
+						{
+						cntErr++;
+						SetErrState(SS_ERR309);
+						}
+					}
+				else
+					{
+					cntErr++;
+					SetErrState(SS_ERR310, "Wrong ConveyorStatePrev = " + Conveyor::GetConveyorStateText(cspc2.Prev));
+					}
+					
+				cspc2.Prev = cspc2.Curr; 
+				doHalt = (cntErr > 0);
 				}
-				
-			cspc2.Prev = cspc2.Curr; 
-			doHalt = (cntErr > 0);
 			}
 		}
 	return _calcState(cntErr, cntOn, cntOff, cntStoping, 0);
@@ -367,33 +381,44 @@ SystemState System::_checkStateOff()
 	{
 	int cntErr=0, cntOff=0;
 	bool haltRest = false;
+
+
 	for(int i = 0; i < UnitCount ; i++)
 		{
-		bool err = false;
-		if (haltRest)
+//Serial.println(_state);
+		_checkButtons();
+		if(_state == SS_OFF)
 			{
-			Conveyors[i].Halt();
-			cntErr++;
-			SetErrState(SS_ERR311);
-			}
-		//else
-			{
-			if (ConveyorStates[i].New == US_OFF)
-				cntOff++;
-			else
+			bool err = false;
+			if (haltRest)
 				{
-				err = true;
+				Conveyors[i].Halt();
 				cntErr++;
-				SetErrState(SS_ERR312);
+				SetErrState(SS_ERR311);
 				}
-			haltRest = (cntErr > 0);
+			//else
+				{
+				if (ConveyorStates[i].New == US_OFF)
+					cntOff++;
+				else
+					{
+					err = true;
+					cntErr++;
+					SetErrState(SS_ERR312);
+					}
+				haltRest = (cntErr > 0);
+				}
+			if(err) 
+				Conveyors[i].LedConveyor.SetBlinkFast();
+			else
+				Conveyors[i].LedConveyor.SetOff();
 			}
-		if(err) 
-			Conveyors[i].LedConveyor.SetBlinkFast();
-		else
-			Conveyors[i].LedConveyor.SetOff();
 		}
-	return _calcState(cntErr, 0, cntOff, 0, 0);
+	
+	if(_state == SS_OFF)
+		return _calcState(cntErr, 0, cntOff, 0, 0);
+	else
+		return _state;        // button has been pressed
 	}
 
 // ------------------------------------
@@ -403,22 +428,26 @@ SystemState System::_checkStateOn()
 	bool doHalt = false;
 	for(int i = UnitCount - 1; i >= 0 ; i--)
 		{
-		if (doHalt)
+		//_checkButtons();
+		//if(_state == SS_ON)
 			{
-			Conveyors[i].Halt();
-			cntErr++;
-			SetErrState(SS_ERR313);
-			}
-		else
-			{
-			if (ConveyorStates[i].New == US_ON)
-				cntOn++;
+			if (doHalt)
+				{
+				Conveyors[i].Halt();
+				cntErr++;
+				SetErrState(SS_ERR313);
+				}
 			else
 				{
-				cntErr++;
-				SetErrState(SS_ERR314);
+				if (ConveyorStates[i].New == US_ON)
+					cntOn++;
+				else
+					{
+					cntErr++;
+					SetErrState(SS_ERR314);
+					}
+				doHalt = (cntErr > 0);
 				}
-			doHalt = (cntErr > 0);
 			}
 		}
 	return _calcState(cntErr, cntOn, 0, 0, 0);

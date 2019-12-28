@@ -77,6 +77,7 @@ struct	SystemInfo
 		SystemState		_state = SS_UNKNOWN;
 		SystemState 	_calcState(int cntErr, int cntOn, int cntOff, int cntStoping, int cntStarting);
 		unsigned long 	_selfTestPause = 4000;
+		void 			_checkButtons();
 	};
 #endif
 
