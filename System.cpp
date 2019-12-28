@@ -15,10 +15,10 @@ System::System(String title, uint8_t pinBtnOn, uint8_t pinBtnOff, uint8_t pinBtn
 	}
 	
 // ------------------------------------
-PinIn System::SetupButton(String btnTitle, uint8_t pin)
+Button System::SetupButton(String btnTitle, uint8_t pin)
 	{
 	String title = _title + "." + btnTitle;
-	PinIn btn = PinIn(title, pin);
+	Button btn = Button(title, pin);
 	btn.SetLogicType(LT_INVERSE);
 	btn.Init();
 	return btn ; 
