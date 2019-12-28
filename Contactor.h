@@ -48,7 +48,7 @@
 		ContactorState2	GetState();
 		ContactorState2	GetState(String logTexts);
 		ContactorInfo 	GetInfo();
-		String			GetContactorStateText(ContactorState state);
+		static String	GetContactorStateText(ContactorState state);
 		void			Init();
 		void			LogInfo();
 		void			SetErrState(UnitError err);

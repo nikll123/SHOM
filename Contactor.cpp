@@ -65,7 +65,7 @@ void Contactor::LogInfo()
 	}
 
 //------------------------------
-String Contactor::GetContactorStateText(ContactorState state)
+static String Contactor::GetContactorStateText(ContactorState state)
 {
 switch (state)
 	{
