@@ -50,7 +50,19 @@ void Pin::SetState(PinState state, bool noLog)
 void Pin::LogStates(PinState2 ps2)
 	{
 	String str  = String(_pin) + "; ";
-	str = str + PinStateText(ps2.Old) + " -> " + PinStateText(ps2.New); 
+	if (_isBtn)
+		{
+		if (ps2.Front())
+			str += " Front";
+		else if (ps2.Back())
+			str += " Back";
+		else  if (ps2.High())
+			str += " Pressed";
+		else  if (ps2.Low())
+			str += " Not pressed";
+		}
+	else
+		str += PinStateText(ps2.Old) + " -> " + PinStateText(ps2.New); 
 	Log(str);
 	}
 

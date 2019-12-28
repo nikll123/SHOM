@@ -77,6 +77,7 @@
 		PinState			_state = KS_NONE;
 		uint8_t 			_pinmode;
 		LogicType			_logicType = LT_NORMAL; 
+		bool				_isBtn = false; 
 
 	private:
 	};
