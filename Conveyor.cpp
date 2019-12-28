@@ -208,7 +208,7 @@ void Conveyor::SetErrState(UnitError err, ContactorState cs, PinState as)
 	String str = ContactorConveyor.GetStateTxt();
 	str += " ";
 	str += AtomatConveyor.GetStateTxt();
-	Log(str);
+	Serial.println(str);
 	SetErrState(err);
 	}
 
