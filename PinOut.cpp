@@ -6,15 +6,10 @@ PinOut::PinOut() : PinOut("Dummy PinOut", 0)
 
 PinOut::PinOut(String title, uint8_t pin) : Pin(title, pin, UT_PINOUT)
 	{
-	ShomPinMode(OUTPUT);
-	Init();
-	}
-
-// ------------------------------------
-void PinOut::Init()
-	{
 	SetLogicType(LT_NORMAL);
-	}   
+	SetOff();
+	ShomPinMode(OUTPUT);
+	}
 
 // ------------------------------------
 void PinOut::SetOn()
@@ -86,5 +81,4 @@ void PinOut::LogState()
 void PinOut::SetLogicType(LogicType logicType)
 	{
 	Pin::SetLogicType(logicType);
- 	SetOff();
 	}
