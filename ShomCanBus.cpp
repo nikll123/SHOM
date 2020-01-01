@@ -244,7 +244,7 @@ CanBusState	ShomCanBus::GetResponse(unsigned int id, byte pin)
 		}
 	else if (tryId > 0) 
 		{
-		//Log("tryId = " + String(tryId));    // place to check he connection quolity
+		//Log("tryId = " + String(tryId));    // place to check the connection quolity
 		}
 	return res;
 	}
