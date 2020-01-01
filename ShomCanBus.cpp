@@ -224,9 +224,7 @@ CanBusState	ShomCanBus::GetResponse(unsigned int id, byte pin)
 					else
 						SetErrState(KS_ERR503, _errMsg(pin, "Wrong cmd", cmd));
 	
-	                received = (res == CBS_HIGH || res == CBS_LOW);
-	                
-					if(received)
+					if(res == CBS_HIGH || res == CBS_LOW)
 						break;
 					}
 				else
