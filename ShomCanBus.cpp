@@ -244,7 +244,7 @@ CanBusState	ShomCanBus::GetResponse(unsigned int id, byte pin)
 		}
 	else if (tryId > 0) 
 		{
-		Log("tryId = " + String(tryId));
+		//Log("tryId = " + String(tryId));    // place to check he connection quolity
 		}
 	return res;
 	}
@@ -267,10 +267,10 @@ unsigned int ShomCanBus::GetMsgId()
 	}
 	
 // ------------------------------------
-void ShomCanBus::RelayDelay()
+/*void ShomCanBus::RelayDelay()
 	{
-	delay(RELAY_DELAY);
-	}
+	delay(CANBUS_DELAY);
+	}*/
 
 // ------------------------------------
 String ShomCanBus::_errMsg(byte pin, String txt, byte data)

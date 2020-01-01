@@ -122,7 +122,7 @@ ContactorState2 Contactor::GetState()
 			if(_millsCheck == 0)
 				{
 				KeyOut.SetOn();
-				delay(RELAY_DELAY);
+				//delay(CANBUS_DELAY);
 				unsigned long sink = Time(TA_FIX);
 				}
 			else if (Time(TA_PERIOD) > _timeOutOn)
@@ -146,7 +146,7 @@ ContactorState2 Contactor::GetState()
 			else if (Time(TA_PERIOD) > _timeOutOff)
 				{
 				KeyOut.SetOff();
-				delay(RELAY_DELAY);
+				//delay(CANBUS_DELAY);
 				_state = CS_OFF;
 				}
 				

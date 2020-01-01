@@ -27,7 +27,7 @@
 
 	#define CANBUS_RATE			CAN_20KBPS
 	#define RESPONSE_DELAY		10
-	#define RESPONSE_TRY_CNT	3
+	#define RESPONSE_TRY_CNT	5
 
 	#define CREATE_TRY_MAX 10
 	
@@ -79,7 +79,7 @@
 		CanBusState		GetResponse(unsigned int id, byte pin);
 		unsigned char	Receive();
 
-		void 			RelayDelay();
+	//	void 			RelayDelay();
 		
 		void 			SetDataByte(byte i, byte data);
 		byte 			GetDataByte(byte i);
