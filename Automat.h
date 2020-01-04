@@ -1,5 +1,5 @@
-#ifndef Button_h
-	#define Button_h
+#ifndef Automat_h
+	#define Automat_h
 	
 	#include "PinIn.h"
 
