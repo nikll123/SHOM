@@ -4,7 +4,8 @@
 	#include "Unit.h"
 	#include "Led.h"
 	#include "PinIn.h"
-	#include "PinOut.h"
+	//#include "PinOut.h"
+	#include "Automat.h"
 	#include "Contactor.h"
 
 	enum ConveyorState{ 
@@ -71,7 +72,7 @@
 		static void		SetupLogic(LogicType ltIn, LogicType ltOut, LogicType ltAuto);
 		Led				LedConveyor;
 		Contactor		ContactorConveyor;
-		PinIn			AutomatConveyor;
+		Automat			AutomatConveyor;
 		
 		void 			TurnOn();
 		void 			TurnOff();
