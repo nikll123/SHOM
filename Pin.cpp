@@ -50,12 +50,12 @@ void Pin::SetState(PinState state, bool noLog)
 void Pin::LogStates(PinState2 ps2)
 	{
 	String str  = String(_pin) + "; ";
-	if (_isBtn)
+	if (_pinType == PT_BUTTON)
 		{
 		if (ps2.Front())
-			str += " Rising edge";
+			str += " Rise";
 		else if (ps2.Back())
-			str += " Falling edge";
+			str += " Falle";
 		else  if (ps2.High())
 			str += " Pressed";
 		else  if (ps2.Low())

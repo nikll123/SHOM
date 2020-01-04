@@ -11,6 +11,11 @@
 					KS_ERR	= 500,
 					};	
 
+   	//-------------------------------
+	enum PinType {	PT_BASIC, 
+					PT_BUTTON, 
+					PT_AUTOMAT,
+					};	
 	//-------------------------------
 	struct PinState2 {
 					PinState 	Old;
@@ -77,7 +82,7 @@
 		PinState			_state = KS_NONE;
 		uint8_t 			_pinmode;
 		LogicType			_logicType = LT_NORMAL; 
-		bool				_isBtn = false; 
+		PinType				_pinType = PT_BASIC; 
 
 	private:
 	};
