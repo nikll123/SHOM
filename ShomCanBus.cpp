@@ -30,7 +30,7 @@ void ShomCanBus::Init(byte id, byte pin_ss)
 			else
 				SetErrState(CBS_ERR401);
 				
-			delay(100);
+			//delay(10);
 			}     
 		
 		if (canbus_ok)
@@ -236,6 +236,7 @@ CanBusState	ShomCanBus::GetResponse(unsigned int id, byte pin)
 		delay(RESPONSE_DELAY);
 		tryId++;
 		}
+				
 	if(!received)
 		{
 		SetErrState(KS_ERR505, _errMsg(pin, "No data received", 0));
