@@ -9,8 +9,8 @@ Conveyor::Conveyor() : Unit("dummy", UT_CONVEYOR)
 Conveyor::Conveyor(String title, uint8_t pinIn, uint8_t pinOut, uint8_t pinAuto, uint8_t pinLed) : Unit(title, UT_CONVEYOR)
 	{
 	ContactorConveyor = Contactor(title + "_cont", pinIn, pinOut);
-	AtomatConveyor = PinIn(title + "_auto", pinAuto);
-	AtomatConveyor.SetLogicType(LogicTypeAutomat); 
+	AutomatConveyor = PinIn(title + "_auto", pinAuto);
+	AutomatConveyor.SetLogicType(LogicTypeAutomat); 
 	LedConveyor = Led(title + "_led", pinLed);
 	_state = US_UNKNOWN;
 	_logLevel = LL_NORMAL;
@@ -31,7 +31,7 @@ ConveyorInfo Conveyor::GetInfo()
 	UnitInfo ui = Unit::GetInfo();
 	ContactorInfo ci = ContactorConveyor.GetInfo();
 	LedInfo li = LedConveyor.GetInfo();
-	PinInInfo ai = AtomatConveyor.GetInfo();
+	PinInInfo ai = AutomatConveyor.GetInfo();
     return {ui.Title,
 			ui.UnitType, 
 			GetConveyorStateText(_state), 
@@ -93,7 +93,7 @@ ConveyorState2 Conveyor::GetState()
 	if (_state != US_NOTINIT && _state < US_ERR)
 		{
         ContactorState2 cs2 = ContactorConveyor.GetState();
-        PinState2 as2 = AtomatConveyor.GetState();
+        PinState2 as2 = AutomatConveyor.GetState();
 		bool err = false;
         if (cs2.New >= CS_ERR)
         	{
@@ -207,7 +207,7 @@ void Conveyor::SetErrState(UnitError err, ContactorState cs, PinState as)
 	{
 	String str = ContactorConveyor.GetStateTxt();
 	str += " ";
-	str += AtomatConveyor.GetStateTxt();
+	str += AutomatConveyor.GetStateTxt();
 	Serial.println(str);
 	SetErrState(err);
 	}

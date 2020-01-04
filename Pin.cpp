@@ -55,7 +55,7 @@ void Pin::LogStates(PinState2 ps2)
 		if (ps2.Front())
 			str += " Rise";
 		else if (ps2.Back())
-			str += " Falle";
+			str += " Fall";
 		else  if (ps2.High())
 			str += " Pressed";
 		else  if (ps2.Low())
