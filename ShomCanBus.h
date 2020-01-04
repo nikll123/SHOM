@@ -25,7 +25,7 @@
 	CAN_1000KBPS
 	*/        
 
-	#define CANBUS_RATE			CAN_20KBPS
+	#define CANBUS_RATE			CAN_50KBPS
 	#define RESPONSE_DELAY		10
 	#define RESPONSE_TRY_CNT	5
 
