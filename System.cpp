@@ -183,6 +183,7 @@ SystemState2 System::GetState()
 // ------------------------------------
 void System::_checkButtons()
 	{
+	Log("_checkButtons()");
 	if (BtnReset.GetState().Front())
 		{
 		Reset();
@@ -236,8 +237,8 @@ SystemState System::_checkStateStarting()
 	cspc2.Prev = US_ON; 	
 	for(int i = UnitCount - 1; i >= 0 ; i--)
 		{
-		//_checkButtons();
-		//if(_state == SS_STARTING)
+		_checkButtons();
+		if(_state == SS_STARTING)
 			{
 			if (doHalt)
 				{
@@ -313,8 +314,8 @@ SystemState System::_checkStateStopping()
 	cspc2.Prev = US_OFF; 	
 	for(int i = 0; i < UnitCount ; i++)
 		{
-		//_checkButtons();
-		//if(_state == SS_STOPPING)
+		_checkButtons();
+		if(_state == SS_STOPPING)
 			{
 			if (doHalt)
 				{
@@ -428,8 +429,8 @@ SystemState System::_checkStateOn()
 	bool doHalt = false;
 	for(int i = UnitCount - 1; i >= 0 ; i--)
 		{
-		//_checkButtons();
-		//if(_state == SS_ON)
+		_checkButtons();
+		if(_state == SS_ON)
 			{
 			if (doHalt)
 				{
