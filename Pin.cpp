@@ -158,7 +158,7 @@ void Pin::ShomPinWrite(bool val)
 		}
 	else
 		{
-		unsigned int id = Pin::CanBus.GetMsgId();
+		unsigned int id = Pin::CanBus.NewMsgId();
 		byte idh = highByte(id);
 		byte idl = lowByte(id);
 		Pin::CanBus.ResetData();
@@ -182,7 +182,7 @@ void Pin::ShomPinMode(byte pinmode)
 		}
 	else
 		{
-		unsigned int id = Pin::CanBus.GetMsgId();
+		unsigned int id = Pin::CanBus.NewMsgId();
 		byte idh = highByte(id);
 		byte idl = lowByte(id);
 		Pin::CanBus.ResetData();
@@ -191,6 +191,7 @@ void Pin::ShomPinMode(byte pinmode)
 		Pin::CanBus.SetDataByte(DATA_CMD, CANBUS_MODE);
 		Pin::CanBus.SetDataByte(DATA_PIN, _pin - 100);
 		Pin::CanBus.SetDataByte(DATA_VALUE, _pinmode);
+		//Pin::CanBus.LogData();
 		Pin::CanBus.Send();
 		}
 	}
