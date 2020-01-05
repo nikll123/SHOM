@@ -17,7 +17,7 @@ Contactor::Contactor(String title, uint8_t pinIn, uint8_t pinOut) : Unit(title, 
 void Contactor::Init()
 	{
  	//Log("Init");
- 	//KeyOut.SetOff();
+ 	KeyOut.SetOff();
 	KeyIn.GetState();
 	ContactorState2 cs2;
 	cs2.Old = _state; 

@@ -185,11 +185,11 @@ SystemState2 System::GetState()
 void System::_checkButtons()
 	{
 	//Log("_checkButtons()");
-	Serial.print(BtnOn.GetStateTxt());
+	/*Serial.print(BtnOn.GetStateTxt());
 	Serial.print(" ");
 	Serial.print(BtnOff.GetStateTxt());
 	Serial.print(" ");
-	Serial.println(BtnReset.GetStateTxt());
+	Serial.println(BtnReset.GetStateTxt());*/
 	
 	if (BtnReset.GetState().Front())
 		{

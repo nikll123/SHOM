@@ -4,7 +4,7 @@
 	#include "Arduino.h"
 	//#include <Wire.h>
 	
-	#define CANBUS_DELAY	0 // --10
+	#define CANBUS_DELAY	10
 
 	#define LL_NONE		0
 	#define LL_HIGH		1
