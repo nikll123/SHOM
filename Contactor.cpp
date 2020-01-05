@@ -9,8 +9,7 @@ Contactor::Contactor() : Unit("Dummy contactor", UT_NONE)
 Contactor::Contactor(String title, uint8_t pinIn, uint8_t pinOut) : Unit(title, UT_CONTACTOR)
 	{
 	_logLevel = LL_NORMAL;
-	KeyIn = PinIn(title + "_KeyIn", pinIn);
-	KeyIn.SetLogicType(LogicTypeIn);
+	KeyIn = PinIn(title + "_KeyIn", pinIn, LogicTypeIn);
 	KeyOut = PinOut(title + "_KeyOut", pinOut);
 	KeyOut.SetLogicType(LogicTypeOut);
 	Init();

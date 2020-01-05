@@ -1,31 +1,44 @@
 #include "PinIn.h"
 // ------------------------------------
 PinIn::PinIn() : PinIn("Dummy PinIn", 0) 
-{
-}
+	{
+	}
 
-PinIn::PinIn(String title, uint8_t pin) : Pin(title, pin, UT_PININ)
-{
-	Init();
-}
+PinIn::PinIn(String title, uint8_t pin) : PinIn(title, pin, LT_NORMAL)
+	{
+	}
 
-// ------------------------------------
-void PinIn::Init()
-{
-	_refreshState();
-}
 
-// ------------------------------------
-void PinIn::SetLogicType(LogicType logicType) 
-{
+PinIn::PinIn(String title, uint8_t pin, LogicType lt) : Pin(title, pin, UT_PININ)
+	{
 	uint8_t inpmode;
-	Pin::SetLogicType(logicType);
+	Pin::SetLogicType(lt);
 	if (_logicType == LT_NORMAL)
 		inpmode = INPUT;
 	else
 		inpmode = INPUT_PULLUP;
 	ShomPinMode(inpmode);
+
+//	Init();
+	}
+
+// ------------------------------------
+void PinIn::Init()
+{
+//	_refreshState();
 }
+
+// ------------------------------------
+/*void PinIn::_setLogicType(LogicType lt) 
+{
+	uint8_t inpmode;
+	Pin::SetLogicType(lt);
+	if (_logicType == LT_NORMAL)
+		inpmode = INPUT;
+	else
+		inpmode = INPUT_PULLUP;
+	ShomPinMode(inpmode);
+}   */
 
 // ------------------------------------
 PinState2 PinIn::GetState()
