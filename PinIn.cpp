@@ -31,18 +31,6 @@ void PinIn::Init()
 }
 
 // ------------------------------------
-/*void PinIn::_setLogicType(LogicType lt) 
-{
-	uint8_t inpmode;
-	Pin::SetLogicType(lt);
-	if (_logicType == LT_NORMAL)
-		inpmode = INPUT;
-	else
-		inpmode = INPUT_PULLUP;
-	ShomPinMode(inpmode);
-}   */
-
-// ------------------------------------
 PinState2 PinIn::GetState()
 {
 	PinState2 ps2;

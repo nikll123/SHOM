@@ -31,7 +31,6 @@
 
 	protected:
 		void 		_refreshState();
-		//void		_setLogicType(LogicType);
 
 	private:
 	};

@@ -20,7 +20,6 @@ Button System::SetupButton(String btnTitle, uint8_t pin)
 	{
 	String title = _title + "." + btnTitle;
 	Button btn = Button(title, pin, LT_INVERSE);
-//	btn.SetLogicType(LT_INVERSE);
 	btn.Init();
 	return btn ; 
 	}
