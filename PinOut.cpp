@@ -4,9 +4,13 @@ PinOut::PinOut() : PinOut("Dummy PinOut", 0)
 	{
 	}
 
-PinOut::PinOut(String title, uint8_t pin) : Pin(title, pin, UT_PINOUT)
+PinOut::PinOut(String title, uint8_t pin) : PinOut(title, pin, LT_NORMAL)
 	{
-	SetLogicType(LT_NORMAL);
+	}
+
+PinOut::PinOut(String title, uint8_t pin, LogicType lt) : Pin(title, pin, UT_PINOUT)
+	{
+	Pin::SetLogicType(lt);
 	SetOff();
 	ShomPinMode(OUTPUT);
 	}
@@ -77,8 +81,3 @@ void PinOut::LogState()
 	LogLn();
 	}
 
-// ------------------------------------
-void PinOut::SetLogicType(LogicType logicType)
-	{
-	Pin::SetLogicType(logicType);
-	}

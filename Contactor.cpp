@@ -10,15 +10,14 @@ Contactor::Contactor(String title, uint8_t pinIn, uint8_t pinOut) : Unit(title, 
 	{
 	_logLevel = LL_NORMAL;
 	KeyIn = PinIn(title + "_KeyIn", pinIn, LogicTypeIn);
-	KeyOut = PinOut(title + "_KeyOut", pinOut);
-	KeyOut.SetLogicType(LogicTypeOut);
+	KeyOut = PinOut(title + "_KeyOut", pinOut, LogicTypeOut);
 	Init();
 	}
 
 void Contactor::Init()
 	{
  	Log("Init");
- 	KeyOut.SetOff();
+ 	//KeyOut.SetOff();
 	KeyIn.GetState();
 	ContactorState2 cs2;
 	cs2.Old = _state; 
