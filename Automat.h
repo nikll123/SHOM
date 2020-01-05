@@ -8,6 +8,7 @@
 	public:
 	    Automat();
 	    Automat(String title, uint8_t pin);
+	    Automat(String title, uint8_t pin, LogicType lt);
 
 	protected:
 

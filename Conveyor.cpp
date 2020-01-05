@@ -9,8 +9,8 @@ Conveyor::Conveyor() : Unit("dummy", UT_CONVEYOR)
 Conveyor::Conveyor(String title, uint8_t pinIn, uint8_t pinOut, uint8_t pinAuto, uint8_t pinLed) : Unit(title, UT_CONVEYOR)
 	{
 	ContactorConveyor = Contactor(title + "_cont", pinIn, pinOut);
-	AutomatConveyor = Automat(title + "_auto", pinAuto);
-	AutomatConveyor.SetLogicType(LogicTypeAutomat); 
+	AutomatConveyor = Automat(title + "_auto", pinAuto, LogicTypeAutomat);
+	//AutomatConveyor.SetLogicType(LogicTypeAutomat); 
 	LedConveyor = Led(title + "_led", pinLed);
 	_state = US_UNKNOWN;
 	_logLevel = LL_NORMAL;

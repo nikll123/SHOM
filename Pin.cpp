@@ -243,3 +243,24 @@ void Pin::SetLogicType(LogicType logicType)
 	{
 	_logicType = logicType; 
 	}
+
+//------------------------------
+String Pin::PinTypeTxt()
+	{
+	String res = "";
+	if(_pinType == PT_PIN)
+		res = "Pin";
+	else if (_pinType == PT_PININ)
+		res = "PinIn";
+	else if (_pinType == PT_PINOUT)
+		res = "PinOut";
+	else if (_pinType == PT_BUTTON)
+		res = "Button";
+	else if (_pinType == PT_AUTOMAT)
+		res = "Automat";
+	else
+		res = "PinTypeTxt: unknown-" + String(_pinType);
+	return res;
+	
+	}
+	

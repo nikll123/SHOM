@@ -59,7 +59,8 @@ PinState2 PinIn::GetState()
 // ------------------------------------
 String PinIn::GetStateTxt()
 	{
-	String str = "PinIn(";
+	String str = PinTypeTxt();
+	str += "(";
 	str += GetPin();
 	str += ") state=";
 	str += Pin::PinStateText(_state);

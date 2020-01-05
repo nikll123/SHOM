@@ -19,8 +19,8 @@ System::System(String title, uint8_t pinBtnOn, uint8_t pinBtnOff, uint8_t pinBtn
 Button System::SetupButton(String btnTitle, uint8_t pin)
 	{
 	String title = _title + "." + btnTitle;
-	Button btn = Button(title, pin);
-	btn.SetLogicType(LT_INVERSE);
+	Button btn = Button(title, pin, LT_INVERSE);
+//	btn.SetLogicType(LT_INVERSE);
 	btn.Init();
 	return btn ; 
 	}
@@ -186,12 +186,18 @@ SystemState2 System::GetState()
 void System::_checkButtons()
 	{
 	//Log("_checkButtons()");
+	Serial.print(BtnOn.GetStateTxt());
+	Serial.print(" ");
+	Serial.print(BtnOff.GetStateTxt());
+	Serial.print(" ");
+	Serial.println(BtnReset.GetStateTxt());
+	
 	if (BtnReset.GetState().Front())
 		{
 		Reset();
-		unsigned long sink = Time(TA_FIX); 
+	//	unsigned long sink = Time(TA_FIX); 
 		}
-	else if (BtnReset.GetState().Back())
+	/*else if (BtnReset.GetState().Back())
 		{
 		unsigned long sink = Time(TA_RESET); 
 		}
@@ -199,11 +205,12 @@ void System::_checkButtons()
 		{
 		Log("SelfTest");
 		_state = SS_SELFTEST;
-		}
+		}*/
 	else if(_state < SS_ERR && BtnOff.GetState().Front())
 		Stop();
 	else if (_state < SS_ERR && BtnOn.GetState().Front()) 
 		Start();
+	
 	}
 
 // ------------------------------------

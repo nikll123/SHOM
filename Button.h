@@ -8,6 +8,7 @@
 	public:
 	    Button();
 	    Button(String title, uint8_t pin);
+	    Button(String title, uint8_t pin, LogicType lt);
 
 	protected:
 

@@ -12,7 +12,9 @@
 					};	
 
    	//-------------------------------
-	enum PinType {	PT_BASIC, 
+	enum PinType {	PT_PIN,
+					PT_PININ, 
+					PT_PINOUT, 
 					PT_BUTTON, 
 					PT_AUTOMAT,
 					};	
@@ -70,6 +72,7 @@
 		static String 		PinStateText(PinState);
 		String 				StateText();
 		String 				PinModeText();
+		String 				PinTypeTxt();		
 		bool				IsHigh();
 		bool				IsLow();
 		bool				ShomPinRead();
@@ -82,7 +85,7 @@
 		PinState			_state = KS_NONE;
 		uint8_t 			_pinmode;
 		LogicType			_logicType = LT_NORMAL; 
-		PinType				_pinType = PT_BASIC; 
+		PinType				_pinType = PT_PIN; 
 
 	private:
 	};
