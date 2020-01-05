@@ -184,7 +184,7 @@ unsigned int ShomCanBus::SendCmd(unsigned int id, CanBusCmd cmd, byte pin, bool 
 		SetDataByte(DATA_PIN, pin);
 		SetDataByte(DATA_VALUE, value);
 		Send();
-		//LogData();
+		//LogData("SendCmd ");
 		return id;
 	}
 

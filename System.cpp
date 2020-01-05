@@ -1,12 +1,13 @@
 #include "System.h"
 
 // ------------------------------------
-System::System() //: System("DummySystem", 0, 0, 0)
+System::System()
 	{
 	}
 
 System::System(String title, uint8_t pinBtnOn, uint8_t pinBtnOff, uint8_t pinBtnReset) : Unit(title, UT_SYSTEM)
 	{
+	//Serial.println("--- System::System");
 	_logLevel = LL_NORMAL;
 	Init();
 	BtnOn = SetupButton("BtnOn", pinBtnOn);
@@ -134,6 +135,7 @@ String System::GetSystemStateText(SystemState state)
 // ------------------------------------
 void System::SetupConveyor(String title, uint8_t pinIn, uint8_t pinOut, uint8_t pinAuto, uint8_t pinLed)
 	{
+	//Serial.println("--- System::SetupConveyor");
 	if(UnitCount < MAX_UNIT_NUMBER)
 		{
 		title = _title + "." + title + "_" + String(UnitCount); 
@@ -183,7 +185,7 @@ SystemState2 System::GetState()
 // ------------------------------------
 void System::_checkButtons()
 	{
-	Log("_checkButtons()");
+	//Log("_checkButtons()");
 	if (BtnReset.GetState().Front())
 		{
 		Reset();

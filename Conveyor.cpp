@@ -18,7 +18,7 @@ Conveyor::Conveyor(String title, uint8_t pinIn, uint8_t pinOut, uint8_t pinAuto,
 
 void Conveyor::Init()
 	{
-	Log("Init");
+	//Log("Init");
 	_state = US_OFF;
 	LedConveyor.SetOff();
 	ContactorConveyor.Init();
@@ -45,6 +45,7 @@ ConveyorInfo Conveyor::GetInfo()
 // ------------------------------------
 static void Conveyor::SetupLogic(LogicType ltIn, LogicType ltOut, LogicType ltAuto)
 	{
+	//Serial.println("--- Conveyor::SetupLogic");
 	Contactor::SetupLogic(ltIn, ltOut);
 	LogicTypeAutomat = ltAuto;
 	}

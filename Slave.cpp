@@ -34,7 +34,7 @@ int Slave::DoCmd()
 				{
 				res = digitalRead(pin);
 				id = Slave::CanBus.SendCmd(id, CANBUS_RESPONSE, pin, res);
-				Slave::CanBus.LogData("after send");
+				//Slave::CanBus.LogData("after send");
 				}
 			else if (cmd == CANBUS_MODE)
 				{
