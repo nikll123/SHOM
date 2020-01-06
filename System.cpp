@@ -15,14 +15,6 @@ System::System(String title, uint8_t pinBtnOn, uint8_t pinBtnOff, uint8_t pinBtn
 	BtnReset = SetupButton("BtnReset", pinBtnReset);
 	}
 	
-// ------------------------------------
-Button System::SetupButton(String btnTitle, uint8_t pin)
-	{
-	String title = _title + "." + btnTitle;
-	Button btn = Button(title, pin, LT_INVERSE);
-	btn.Init();
-	return btn ; 
-	}
 	
 // ------------------------------------
 void System::Init()
@@ -35,6 +27,27 @@ void System::Init()
 		ConveyorStates[i] = {US_OFF, US_OFF};
 		}
 	_setState(SS_OFF);  
+	}
+
+// ------------------------------------
+Button System::SetupButton(String btnTitle, uint8_t pin)
+	{
+	String title = _title + "." + btnTitle;
+	Button btn = Button(title, pin, LT_INVERSE);
+	btn.Init();
+	return btn ; 
+	}
+
+// ------------------------------------
+void System::SetupConveyor(String title, uint8_t pinIn, uint8_t pinOut, uint8_t pinAuto, uint8_t pinLed)
+	{
+	//Serial.println("--- System::SetupConveyor");
+	if(UnitCount < MAX_UNIT_NUMBER)
+		{
+		title = _title + "." + title + "_" + String(UnitCount); 
+		Conveyors[UnitCount] = Conveyor(title, pinIn, pinOut, pinAuto, pinLed);
+		UnitCount++;
+		}
 	}
 
 // ------------------------------------
@@ -131,18 +144,6 @@ String System::GetSystemStateText(SystemState state)
 		}
 	}
 
-// ------------------------------------
-void System::SetupConveyor(String title, uint8_t pinIn, uint8_t pinOut, uint8_t pinAuto, uint8_t pinLed)
-	{
-	//Serial.println("--- System::SetupConveyor");
-	if(UnitCount < MAX_UNIT_NUMBER)
-		{
-		title = _title + "." + title + "_" + String(UnitCount); 
-		Conveyors[UnitCount] = Conveyor(title, pinIn, pinOut, pinAuto, pinLed);
-		UnitCount++;
-		}
-	}
-	
 // ------------------------------------
 SystemState2 System::GetState()
 	{
