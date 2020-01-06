@@ -82,8 +82,10 @@ switch (state)
 	case CS_NOTINIT		: return "NOTINIT";
 	case CS_ON			: return "ON";
 	case CS_OFF			: return "OFF";
-	case CS_STARTING	: return "STARTING";
-	case CS_STOPPING	: return "STOPPING";
+	case CS_STARTING1	: return "STARTING1";
+	case CS_STARTING2	: return "STARTING2";
+	case CS_STOPPING1	: return "STOPPING1";
+	case CS_STOPPING2	: return "STOPPING2";
 	case CS_UNKNOWN		: return "UNKNOWN";
 	default			    : return "ERROR";
 	}
@@ -102,75 +104,83 @@ ContactorState2 Contactor::GetState()
 	ContactorState2 cs2 = {_state, _state};
 	if (_state != CS_NOTINIT)
 		{
-
 		cs2.Old = _state;
-		_stateIn = (KeyIn.GetState()).New;
 		_stateOut = KeyOut.GetState();
-		bool notDummy = KeyIn.GetPin() != 0;   // not Dummy conveyor 
+		_stateIn = (KeyIn.GetState()).New;
+		bool notDummyContactor = KeyIn.GetPin() != 0;   // not Dummy conveyor 
 		if (_state == CS_OFF)
 			{
-			if (notDummy)
+			if (notDummyContactor)
 				{
 				if (_stateOut != KS_OFF) SetErrState(CS_ERR101);
 				if (_stateIn != KS_OFF) SetErrState(CS_ERR102);
 				}
 			}
-		else if (_state == CS_STARTING)
+		else if (_state == CS_STARTING1)
 			{
 			if(_millsCheck == 0)
 				{
 				KeyOut.SetOn();
-				//delay(CANBUS_DELAY);
 				unsigned long sink = Time(TA_FIX);
 				}
-			else if (Time(TA_PERIOD) > _timeOutOn)
+			else if (Time(TA_PERIOD) > _timeOutRelayOn)	
+				_state = CS_STARTING2;
+			}
+		else if (_state == CS_STARTING2)
+			{
+			if (Time(TA_PERIOD) > _timeOutOn)
 				_state = CS_ON;
-	
+				
 			_stateOut = KeyOut.GetState(); 
-			_stateIn = (KeyIn.GetState()).New;
+			_stateIn = KeyIn.GetState().New;
 	
-			if (notDummy)
+			if (notDummyContactor)
 				{
 				if (_stateOut != KS_ON) 		SetErrState(CS_ERR103);
 				else if (_stateIn != KS_ON) 	SetErrState(CS_ERR104);
 				}	
+				
 			}
-		else if(_state == CS_STOPPING)
+		else if(_state == CS_STOPPING1)
 			{
 			if(_millsCheck == 0)
 				{
 				unsigned long sink = Time(TA_FIX);
 				}
-			else if (Time(TA_PERIOD) > _timeOutOff)
+			else if (Time(TA_PERIOD) > _timeOutRelayOn)
 				{
+				_state = CS_STOPPING2;
 				KeyOut.SetOff();
-				//delay(CANBUS_DELAY);
-				_state = CS_OFF;
 				}
 				
 			_stateOut = KeyOut.GetState(); 
-			_stateIn = (KeyIn.GetState()).New;
+			_stateIn = KeyIn.GetState().New;
 	
-			if (_state == CS_OFF)
+			if (notDummyContactor && _state == CS_STOPPING1)
 				{
-				if (notDummy)
+				if (_stateOut != KS_ON) 		SetErrState(CS_ERR107);
+				else if (_stateIn != KS_ON) 	SetErrState(CS_ERR108);
+				}
+									
+			}
+		else if (_state == CS_STOPPING2)
+			{
+			if (Time(TA_PERIOD) >= _timeOutOff)
+				{
+				_state = CS_OFF;
+				_stateOut = KeyOut.GetState(); 
+				_stateIn = KeyIn.GetState().New;
+				if (notDummyContactor)
 					{
 					if (_stateOut != KS_OFF) 		SetErrState(CS_ERR105);
 					else if (_stateIn != KS_OFF) 	SetErrState(CS_ERR106);
 					}
-				}
-			else    // US_STOPPING
-				{
-				if (notDummy)
-					{
-					if (_stateOut != KS_ON) 		SetErrState(CS_ERR107);
-					else if (_stateIn != KS_ON) 	SetErrState(CS_ERR108);
-					}
-				}
+				} 
 			}
+
 		else if(_state == CS_ON)
 			{
-			if (notDummy)
+			if (notDummyContactor)
 				{
 				if (_stateOut != KS_ON) 		SetErrState(CS_ERR109);
 				else if (_stateIn != KS_ON) 	SetErrState(CS_ERR110);
@@ -189,7 +199,7 @@ void Contactor::TurnOn()
 	{
  	String str = "TurnOn";
 	if(_state == CS_OFF)
-	    _Turn(CS_STARTING);
+	    _Turn(CS_STARTING1);
     else
    	 	str = str + " - wrong status";
     Log(str);
@@ -199,8 +209,8 @@ void Contactor::TurnOn()
 void Contactor::TurnOff()
 	{
  	String str = "TurnOff";
-	if(_state == CS_ON || _state == CS_STARTING)
-	    _Turn(CS_STOPPING);
+	if(_state == CS_ON || _state == CS_STARTING1 || _state == CS_STARTING2)
+	    _Turn(CS_STOPPING1);
     else
    	 	str = str + " - wrong status";
     Log(str);
@@ -209,18 +219,17 @@ void Contactor::TurnOff()
 // ------------------------------------
 void Contactor::_Turn(ContactorState csNew)
 	{
-	if (csNew == CS_STARTING || csNew == CS_STOPPING) 
+	if (csNew == CS_STARTING1 || csNew == CS_STOPPING1) 
 		{
 		ContactorState csCurr = _state;
 		bool err = false; 
-		if (csNew == CS_STARTING && csCurr == CS_OFF ||   						// start!
-			csNew == CS_STOPPING && (csCurr == CS_ON || csCurr == CS_STARTING))  // stop !
-			{
+		//if (csNew == CS_STARTING1 && csCurr == CS_OFF ||   						// start!
+		//	csNew == CS_STOPPING1 && (csCurr == CS_ON || csCurr == CS_STARTING1 || csCurr == CS_STARTING2))  // stop !
+		//	{
 			Time(TA_RESET);
 			_state = csNew;
-			}
-		ContactorState2 cs2(csCurr, csNew); 
-		_logIfChanged(cs2);
+		//	}
+		_logIfChanged({csCurr, csNew});
 		}
 	else if (csNew == CS_HALT)
 		{

@@ -6,14 +6,16 @@
 	#include "PinOut.h"
 
 	enum ContactorState{ 
-						CS_NOTINIT	= 0,
-						CS_ON		= 1,
-						CS_OFF		= 2,
-						CS_STARTING	= 3,
-						CS_STOPPING	= 4,
-						CS_UNKNOWN	= 5,
-						CS_ERR		= 100,
-						CS_HALT		= 199,
+						CS_NOTINIT			= 0,
+						CS_ON				= 1,
+						CS_OFF				= 2,
+						CS_STARTING1		= 3,
+						CS_STARTING2		= 4,
+						CS_STOPPING1		= 5,
+						CS_STOPPING2		= 6,
+						CS_UNKNOWN			= 7,
+						CS_ERR				= 100,
+						CS_HALT				= 199,
 						};
 						
 	struct ContactorState2
@@ -73,6 +75,7 @@
 		PinState        _stateOut = KS_NONE;
 		void 			_logIfChanged(ContactorState2 cs2);
 		unsigned int 	_timeOutOn = 3000;
+		unsigned int 	_timeOutRelayOn = 50;
 		unsigned int 	_timeOutOff = 0;
 		void 			_Turn(ContactorState csNew);
 	};

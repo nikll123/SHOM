@@ -104,15 +104,15 @@ ConveyorState2 Conveyor::GetState()
 			{
 			if (cs2.New == CS_OFF) 				_state = US_OFF;
 			else if (cs2.New == CS_ON) 			_state = US_ON;
-			else if (cs2.New == CS_STARTING) 	_state = US_STARTING;
-			else if (cs2.New == CS_STOPPING) 	_state = US_STOPPING;
+			else if (cs2.New == CS_STARTING2) 	_state = US_STARTING;
+			else if (cs2.New == CS_STOPPING1) 	_state = US_STOPPING;
 			}
 		else if(as2.New == KS_OFF)
 			{
 			if (cs2.New == CS_ON) 				SetErrState(US_ERR202, cs2.New, as2.New);
 			else if (cs2.New == CS_OFF)			SetErrState(US_ERR203, cs2.New, as2.New); 
-			else if (cs2.New == CS_STARTING)	SetErrState(US_ERR205, cs2.New, as2.New); 
-			else if (cs2.New == CS_STOPPING)	SetErrState(US_ERR206, cs2.New, as2.New);
+			else if (cs2.New == CS_STARTING2)	SetErrState(US_ERR205, cs2.New, as2.New); 
+			else if (cs2.New == CS_STOPPING1)	SetErrState(US_ERR206, cs2.New, as2.New);
 			else 								SetErrState(US_ERR207, cs2.New, as2.New);
 			}
 		else
