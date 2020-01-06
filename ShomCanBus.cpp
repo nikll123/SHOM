@@ -16,7 +16,7 @@ void ShomCanBus::Init(byte id, byte pin_ss)
 	{
 	if(_state != CBS_ON)
 		{
-		Log("Init");
+		Serial.println("ShomCanBus Init");
 		_canbus_id = id;
 		_title = "ShomCanBus(id="+ String(_canbus_id) + ")";
 		_canbus_pin_ss = pin_ss; 
@@ -30,13 +30,13 @@ void ShomCanBus::Init(byte id, byte pin_ss)
 			else
 				SetErrState(CBS_ERR401);
 				
-			//delay(10);
+			delay(10);
 			}     
 		
 		if (canbus_ok)
 			{	
 			_state = CBS_ON;
-			Log("Init OK");
+			Serial.println("ShomCanBus OK");
 			}
 		else
 			{

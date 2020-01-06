@@ -10,7 +10,7 @@ Conveyor::Conveyor(String title, uint8_t pinIn, uint8_t pinOut, uint8_t pinAuto,
 	{
 	ContactorConveyor = Contactor(title + "_cont", pinIn, pinOut);
 	AutomatConveyor = Automat(title + "_auto", pinAuto, LogicTypeAutomat);
-	//AutomatConveyor.SetLogicType(LogicTypeAutomat); 
+	AutomatConveyor.SetLogicType(LogicTypeAutomat); 
 	LedConveyor = Led(title + "_led", pinLed);
 	_state = US_UNKNOWN;
 	_logLevel = LL_NORMAL;

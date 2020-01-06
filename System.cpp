@@ -19,7 +19,7 @@ System::System(String title, uint8_t pinBtnOn, uint8_t pinBtnOff, uint8_t pinBtn
 // ------------------------------------
 void System::Init()
 	{ 
-	Log("Init");
+	//Log("Init");
 	for(int i = 0; i < UnitCount; i++)
 		{
 		ConveyorStates[i] = {US_NOTINIT, US_NOTINIT};
@@ -32,8 +32,8 @@ void System::Init()
 // ------------------------------------
 Button System::SetupButton(String btnTitle, uint8_t pin)
 	{
-	String title = _title + "." + btnTitle;
-	Button btn = Button(title, pin, LT_INVERSE);
+	String _txtbuffer = _title + "." + btnTitle;
+	Button btn = Button(_txtbuffer, pin, LT_INVERSE);
 	btn.Init();
 	return btn ; 
 	}
@@ -44,8 +44,10 @@ void System::SetupConveyor(String title, uint8_t pinIn, uint8_t pinOut, uint8_t 
 	//Serial.println("--- System::SetupConveyor");
 	if(UnitCount < MAX_UNIT_NUMBER)
 		{
-		title = _title + "." + title + "_" + String(UnitCount); 
-		Conveyors[UnitCount] = Conveyor(title, pinIn, pinOut, pinAuto, pinLed);
+		//String _txtbuffer = _title + "." + title + "_" + String(UnitCount); 
+		//Conveyors[UnitCount] = Conveyor(title, pinIn, pinOut, pinAuto, pinLed);
+		//Conveyors[UnitCount] = Conveyor("", 0, 0, 0, 0);
+		//Conveyors[UnitCount] = Conveyor();
 		UnitCount++;
 		}
 	}
@@ -147,7 +149,10 @@ String System::GetSystemStateText(SystemState state)
 // ------------------------------------
 SystemState2 System::GetState()
 	{
+	//Serial.println('1');
+	
 	SystemState2 ss2 = {_state, _state};
+
 	if (_state < SS_ERR)       // no system error 
 		{
 		_updateConveyorStates();
@@ -165,7 +170,7 @@ SystemState2 System::GetState()
 		else
 			ss = SS_ERR;	
 		_state = ss;
-		//Serial.println(_state);
+//		Serial.println(_state);
 		}
 	else
 		{
@@ -177,8 +182,9 @@ SystemState2 System::GetState()
 	ss2.New = _state;
 	_logIfChanged(ss2);
 	
-	_checkButtons();
+//	Serial.println('2');
 	
+	_checkButtons();
 	return ss2; 
 	}
 
@@ -194,6 +200,7 @@ void System::_checkButtons()
 	
 	if (BtnReset.GetState().Front())
 		{
+//	Serial.print("Reset();");
 		Reset();
 	//	unsigned long sink = Time(TA_FIX); 
 		}
@@ -207,9 +214,15 @@ void System::_checkButtons()
 		_state = SS_SELFTEST;
 		}*/
 	else if(_state < SS_ERR && BtnOff.GetState().Front())
+		{
+//		Serial.print("Stop();");
 		Stop();
-	else if (_state < SS_ERR && BtnOn.GetState().Front()) 
+		}
+	else if (_state < SS_ERR && BtnOn.GetState().Front())
+		{ 
+//		Serial.print("Start();");
 		Start();
+		}
 	
 	}
 
@@ -246,7 +259,7 @@ SystemState System::_checkStateStarting()
 	cspc2.Prev = US_ON; 	
 	for(int i = UnitCount - 1; i >= 0 ; i--)
 		{
-		_checkButtons();
+//		_checkButtons();
 		if(_state == SS_STARTING)
 			{
 			if (doHalt)
@@ -323,7 +336,7 @@ SystemState System::_checkStateStopping()
 	cspc2.Prev = US_OFF; 	
 	for(int i = 0; i < UnitCount ; i++)
 		{
-		_checkButtons();
+	//	_checkButtons();
 		if(_state == SS_STOPPING)
 			{
 			if (doHalt)
@@ -396,7 +409,7 @@ SystemState System::_checkStateOff()
 	for(int i = 0; i < UnitCount ; i++)
 		{
 //Serial.println(_state);
-		_checkButtons();
+		//_checkButtons();
 		if(_state == SS_OFF)
 			{
 			bool err = false;
@@ -438,7 +451,7 @@ SystemState System::_checkStateOn()
 	bool doHalt = false;
 	for(int i = UnitCount - 1; i >= 0 ; i--)
 		{
-		_checkButtons();
+	//	_checkButtons();
 		if(_state == SS_ON)
 			{
 			if (doHalt)
