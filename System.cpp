@@ -77,7 +77,7 @@ void  System::Reset()
 // ------------------------------------
 void System::_setState(SystemState state)
 	{
-	_logStates({_state, state});
+	_logIfChanged({_state, state});
 	_state = state;
 	}	
 
@@ -230,6 +230,10 @@ void System::_logIfChanged(SystemState2 ss2)
 	if (ss2.Old != ss2.New)
 		{
 		_logStates(ss2);
+		if (ss2.New == SS_ON || ss2.New == SS_STARTING)
+			_startMillis = millis();
+		else if (ss2.New == SS_ERR || ss2.New == SS_OFF)
+			Log(GetWorkTimeText());
 		}
 	}
 
@@ -504,11 +508,28 @@ void System::SetErrState(UnitError err)
 	}
 
 // ------------------------------------
+String System::GetWorkTimeText()
+	{
+	unsigned long wt = millis() - _startMillis;
+	wt = wt / 1000;	
+	int h = wt / (60 * 60);
+	wt = wt % (60 * 60);
+	int m = wt / 60;
+	int s = wt % 60;
+	String msg = "work time = "; 
+	msg += h;
+	msg += ":";
+	msg += m;
+	msg += ":";
+	msg += s;
+	return msg; 
+	} 
+
+// ------------------------------------
 void System::SetErrState(UnitError err, String msg)
 	{
 	Log(msg);
-	LogErr(err);
-	_state = SS_ERR;
+	SetErrState(err);
 	}
 
 // ------------------------------------

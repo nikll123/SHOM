@@ -46,6 +46,7 @@ struct	SystemInfo
 		PinIn 			SetupButton(String suffix, uint8_t pin);
 		void			SetupLogic(LogicType ltIn, LogicType ltOut);
 		String 			GetSystemStateText(SystemState state);
+		String 			GetWorkTimeText();
 		uint8_t			UnitCount = 0;
 
 		Conveyor 		Conveyors[MAX_UNIT_NUMBER];
@@ -76,6 +77,7 @@ struct	SystemInfo
 		SystemState		_state = SS_UNKNOWN;
 		SystemState 	_calcState(int cntErr, int cntOn, int cntOff, int cntStoping, int cntStarting);
 		unsigned long 	_selfTestPause = 4000;
+		unsigned long 	_startMillis = 0;
 		void 			_checkButtons();
 	};
 #endif
