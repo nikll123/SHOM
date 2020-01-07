@@ -44,10 +44,8 @@ void System::SetupConveyor(String title, uint8_t pinIn, uint8_t pinOut, uint8_t 
 	//Serial.println("--- System::SetupConveyor");
 	if(UnitCount < MAX_UNIT_NUMBER)
 		{
-		//String _txtbuffer = _title + "." + title + "_" + String(UnitCount); 
-		//Conveyors[UnitCount] = Conveyor(title, pinIn, pinOut, pinAuto, pinLed);
-		//Conveyors[UnitCount] = Conveyor("", 0, 0, 0, 0);
-		//Conveyors[UnitCount] = Conveyor();
+		String _txtbuffer = _title + "." + title + "_" + String(UnitCount); 
+		Conveyors[UnitCount] = Conveyor(title, pinIn, pinOut, pinAuto, pinLed);
 		UnitCount++;
 		}
 	}

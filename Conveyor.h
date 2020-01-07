@@ -72,7 +72,7 @@
 		static void		SetupLogic(LogicType ltIn, LogicType ltOut, LogicType ltAuto);
 		Led				LedConveyor;
 		Contactor		ContactorConveyor;
-		Automat			AutomatConveyor;
+		PinIn			AutomatConveyor;
 		
 		void 			TurnOn();
 		void 			TurnOff();
