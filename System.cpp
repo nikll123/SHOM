@@ -30,10 +30,10 @@ void System::Init()
 	}
 
 // ------------------------------------
-Button System::SetupButton(String btnTitle, uint8_t pin)
+PinIn System::SetupButton(String btnTitle, uint8_t pin)
 	{
 	String _txtbuffer = _title + "." + btnTitle;
-	Button btn = Button(_txtbuffer, pin, LT_INVERSE);
+	PinIn btn = PinIn(_txtbuffer, pin, LT_INVERSE);
 	btn.Init();
 	return btn ; 
 	}

@@ -1,11 +1,7 @@
 #ifndef Conveyor_h
 	#define Conveyor_h
 	
-	#include "Unit.h"
 	#include "Led.h"
-	#include "PinIn.h"
-	//#include "PinOut.h"
-	#include "Automat.h"
 	#include "Contactor.h"
 
 	enum ConveyorState{ 

@@ -2,7 +2,6 @@
 	#define System_h
 
 	#include "Conveyor.h"
-	#include "Button.h"
 	
 	#define MAX_UNIT_NUMBER 15
 
@@ -44,16 +43,16 @@ struct	SystemInfo
 		void 			LogInfo();
 		void 			LogInfo(bool conv);
 		void 			SetupConveyor(String title, uint8_t pinIn, uint8_t pinOut, uint8_t pinAuto, uint8_t pinLed);
-		Button 			SetupButton(String suffix, uint8_t pin);
+		PinIn 			SetupButton(String suffix, uint8_t pin);
 		void			SetupLogic(LogicType ltIn, LogicType ltOut);
 		String 			GetSystemStateText(SystemState state);
 		uint8_t			UnitCount = 0;
 
 		Conveyor 		Conveyors[MAX_UNIT_NUMBER];
 		ConveyorState2	ConveyorStates[MAX_UNIT_NUMBER];
-		Button			BtnOn;
-		Button			BtnOff;
-		Button			BtnReset;
+		PinIn			BtnOn;
+		PinIn			BtnOff;
+		PinIn			BtnReset;
 
 		void 			Start();
 		void 			Stop();

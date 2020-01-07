@@ -254,10 +254,6 @@ String Pin::PinTypeTxt()
 		res = "PinIn";
 	else if (_pinType == PT_PINOUT)
 		res = "PinOut";
-	else if (_pinType == PT_BUTTON)
-		res = "Button";
-	else if (_pinType == PT_AUTOMAT)
-		res = "Automat";
 	else
 		res = "PinTypeTxt: unknown-" + String(_pinType);
 	return res;
