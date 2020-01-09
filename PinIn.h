@@ -24,7 +24,6 @@
 		PinState2	GetState();
 		String		GetStateTxt();
 		PinInInfo 	GetInfo();
-		void 		Init();
 		void 		LogState();
 
 		void		LogInfo();

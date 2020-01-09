@@ -20,15 +20,7 @@ PinIn::PinIn(String title, uint8_t pin, LogicType lt) : Pin(title, pin, UT_PININ
 	
 	//Serial.println("PinIn:: ShomPinMode(inpmode);");
 	ShomPinMode(inpmode);
-
-//	Init();
 	}
-
-// ------------------------------------
-void PinIn::Init()
-{
-//	_refreshState();
-}
 
 // ------------------------------------
 PinState2 PinIn::GetState()

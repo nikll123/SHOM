@@ -18,7 +18,6 @@ Conveyor::Conveyor(String title, uint8_t pinIn, uint8_t pinOut, uint8_t pinAuto,
 
 void Conveyor::Init()
 	{
-	//Log("Init");
 	_state = US_OFF;
 	LedConveyor.SetOff();
 	ContactorConveyor.Init();

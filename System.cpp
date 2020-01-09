@@ -34,7 +34,6 @@ PinIn System::SetupButton(String btnTitle, uint8_t pin)
 	{
 	String _txtbuffer = _title + "." + btnTitle;
 	PinIn btn = PinIn(_txtbuffer, pin, LT_INVERSE);
-	btn.Init();
 	return btn ; 
 	}
 
@@ -189,7 +188,6 @@ SystemState2 System::GetState()
 // ------------------------------------
 void System::_checkButtons()
 	{
-	//Log("_checkButtons()");
 	/*Serial.print(BtnOn.GetStateTxt());
 	Serial.print(" ");
 	Serial.print(BtnOff.GetStateTxt());

@@ -223,12 +223,8 @@ void Contactor::_Turn(ContactorState csNew)
 		{
 		ContactorState csCurr = _state;
 		bool err = false; 
-		//if (csNew == CS_STARTING1 && csCurr == CS_OFF ||   						// start!
-		//	csNew == CS_STOPPING1 && (csCurr == CS_ON || csCurr == CS_STARTING1 || csCurr == CS_STARTING2))  // stop !
-		//	{
-			Time(TA_RESET);
-			_state = csNew;
-		//	}
+		Time(TA_RESET);
+		_state = csNew;
 		_logIfChanged({csCurr, csNew});
 		}
 	else if (csNew == CS_HALT)
