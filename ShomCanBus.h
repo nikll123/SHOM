@@ -79,8 +79,6 @@
 		CanBusState		GetResponse(unsigned int id, byte pin);
 		unsigned char	Receive();
 
-	//	void 			RelayDelay();
-		
 		void 			SetDataByte(byte i, byte data);
 		byte 			GetDataByte(byte i);
 		unsigned int 	GetMsgId();

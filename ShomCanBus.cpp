@@ -264,12 +264,6 @@ unsigned int ShomCanBus::GetMsgId()
 		}
 	return res;
 	}
-	
-// ------------------------------------
-/*void ShomCanBus::RelayDelay()
-	{
-	delay(CANBUS_DELAY);
-	}*/
 
 // ------------------------------------
 String ShomCanBus::_errMsg(byte pin, String txt, byte data)
