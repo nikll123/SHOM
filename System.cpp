@@ -230,7 +230,7 @@ void System::_logIfChanged(SystemState2 ss2)
 	if (ss2.Old != ss2.New)
 		{
 		_logStates(ss2);
-		if (ss2.New == SS_ON || ss2.New == SS_STARTING)
+		if (ss2.New == SS_ON || ss2.New == SS_STARTING  || ss2.New == SS_ERR)
 			_startMillis = millis();
 		else if (ss2.New == SS_ERR || ss2.New == SS_OFF)
 			Log(GetWorkTimeText());
