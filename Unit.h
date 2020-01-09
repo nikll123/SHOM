@@ -23,11 +23,8 @@
 					UT_PININ,
 					UT_PINOUT,
 					UT_LED,
-					UT_BUTTONLED,
-					UT_AUTOMAT, 
 					UT_CONTACTOR,
 					UT_CONVEYOR,
-					UT_CONVEYORHANDLER,
 					UT_CANBUS,
 					UT_SYSTEM,
 					};	

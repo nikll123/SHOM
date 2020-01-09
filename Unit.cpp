@@ -91,11 +91,9 @@ String Unit::UnitTypeText()
 		case UT_PIN         	: return "PIN";
 		case UT_PININ			: return "PININ";
 		case UT_PINOUT			: return "PINOUT";
-		case UT_BUTTONLED		: return "BUTTONLED";
 		case UT_SYSTEM 			: return "SYSTEM";
 		case UT_CONTACTOR 		: return "CONTACTOR";
 		case UT_CONVEYOR 		: return "CONVEYOR";
-		case UT_CONVEYORHANDLER	: return "CONVEYORHANDLER";
 		case UT_CANBUS 			: return "CANBUS";
 		default			    	: return "UnitTypeText: unknown-" + String(_type);
 		}
