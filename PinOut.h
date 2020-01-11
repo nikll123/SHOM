@@ -9,6 +9,7 @@
 					String 		UnitType;
 					String 		State;
 					uint8_t		Pin;
+					String		Logic;
 					};	
 	
    	//-------------------------------
@@ -17,7 +18,7 @@
 	public:
 				    PinOut();
 				    PinOut(String title, uint8_t pin);
-		void		Init();
+				    PinOut(String title, uint8_t pin, LogicType lt);
 		void		SetOn();
 		void		SetOff();
 		void		SetOn(bool noLog);
@@ -26,7 +27,6 @@
 		PinOutInfo 	GetInfo();
 		void 		LogInfo();
 		void 		LogState();
-		void 		SetLogicType(LogicType logicType);
 
 	protected:
 
