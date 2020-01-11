@@ -26,7 +26,7 @@ PinIn System::SetupButton(String btnTitle, uint8_t pin)
 // ------------------------------------
 void System::Init()
 	{ 
-	Log("Init");
+	Log("Init", LL_HIGH);
 	for(int i = 0; i < UnitCount; i++)
 		{
 		ConveyorStates[i] = {US_NOTINIT, US_NOTINIT};
@@ -42,7 +42,7 @@ void System::Init()
 // ------------------------------------
 void  System::Start()
 	{
-	Log("Start()"); 
+	Log("Start()", LL_HIGH); 
 	if(_state == SS_OFF)
 		_setState(SS_STARTING);
 	}
@@ -50,7 +50,7 @@ void  System::Start()
 // ------------------------------------
 void  System::Stop()
 	{
-	Log("Stop()"); 
+	Log("Stop()", LL_HIGH); 
 	if(_state == SS_STARTING || _state == SS_ON)
 		_setState(SS_STOPPING);
 	}
@@ -58,7 +58,7 @@ void  System::Stop()
 // ------------------------------------
 void  System::Reset()
 	{
-	Log("Reset()");
+	Log("Reset()", LL_HIGH);
 	unsigned long sink = Time(TA_RESET); 
 	Init();
 	} 
@@ -98,7 +98,7 @@ void System::LogInfo(bool conv)
 	SystemInfo si = GetInfo();
 	String str = si.UnitType + "; " + si.State; 
 	str = str + "; BtnOn-" + String(si.PinOn) + "; BtnOff-" + String(si.PinOff) + "; BtnReset-" + String(si.PinReset);
-	Log(str);
+	Log(str, LL_HIGH);
 	if (conv)
 		{
 		for(int i = 0; i < UnitCount; i++)
@@ -107,7 +107,7 @@ void System::LogInfo(bool conv)
 				{
 				String str = String(i) + ") ";
 				str = str + Conveyors[i].GetInfoTxt();
-				Log(str);
+				Log(str, LL_HIGH);
 				}
 			}
 		} 		
@@ -182,7 +182,7 @@ SystemState2 System::GetState()
 		}
 	else if (BtnReset.GetState().High() && Time(TA_PERIOD) > _selfTestPause && _state != SS_SELFTEST)
 		{
-		Log("SelfTest");
+		Log("SelfTest", LL_HIGH);
 		_state = SS_SELFTEST;
 		}
 	else if(_state < SS_ERR && BtnOff.GetState().Front())
@@ -205,7 +205,7 @@ void System::_logIfChanged(SystemState2 ss2)
 // ------------------------------------
 void System::_logStates(SystemState2 ss2)
 	{
-	Log(GetSystemStateText(ss2.Old) + " -> " + GetSystemStateText(ss2.New));
+	Log(GetSystemStateText(ss2.Old) + " -> " + GetSystemStateText(ss2.New), LL_HIGH);
 	}
 
 // ------------------------------------
@@ -456,7 +456,7 @@ void System::SetErrState(UnitError err)
 // ------------------------------------
 void System::SetErrState(UnitError err, String msg)
 	{
-	Log(msg);
+	Log(msg, LL_HIGH);
 	LogErr(err);
 	_state = SS_ERR;
 	}

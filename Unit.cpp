@@ -36,7 +36,12 @@ static void Unit::LogLn()
 //------------------------------
 void Unit::Log(String str)
 	{
-	if (LOGLEVEL >= _logLevel)
+	Log(str, _logLevel);
+	}
+//------------------------------
+void Unit::Log(String str, byte ll)
+	{
+	if (LOGLEVEL >= ll)
 		{ 
 		str = _title + " : " + str;
 		LogTextLn(str);

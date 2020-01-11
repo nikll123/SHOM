@@ -12,7 +12,7 @@
 	#define LL_LOW		3
 
     #ifndef LOGLEVEL
-		#define LOGLEVEL LL_NORMAL
+		#define LOGLEVEL LL_HIGH
 	#endif
 
 	#define PortMonitorLog 1
@@ -121,7 +121,8 @@
 		static void		LogText(String);
 		static void		LogTextLn(String);
 		static void 	LogLn();
-		void 			Log(String);
+		void 			Log(String str);
+		void 			Log(String str, byte _logLevel);
 		void 			LogErr(UnitError err);
 		void 			LogInfo();
 		unsigned long	Time(TimeAct ta);
