@@ -19,12 +19,11 @@
 	public:
 	    PinIn();
 	    PinIn(String title, uint8_t pin);
+	    PinIn(String title, uint8_t pin, LogicType lt);
 	    
 		PinState2	GetState();
 		PinInInfo 	GetInfo();
-		void 		Init();
 		void 		LogState();
-		void		SetLogicType(LogicType);
 
 		void		LogInfo();
 

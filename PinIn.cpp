@@ -1,33 +1,25 @@
 #include "PinIn.h"
 // ------------------------------------
 PinIn::PinIn() : PinIn("Dummy PinIn", 0) 
-{
-}
+	{
+	}
 
-PinIn::PinIn(String title, uint8_t pin) : Pin(title, pin, UT_PININ)
-{
-	SetLogicType(LT_NORMAL);	
-	Init();
-}
+PinIn::PinIn(String title, uint8_t pin) : PinIn(title, pin, LT_NORMAL)
+	{
+	}
 
-// ------------------------------------
-void PinIn::Init()
-{
-	_refreshState();
-}
-
-// ------------------------------------
-void PinIn::SetLogicType(LogicType logicType) 
-{
+PinIn::PinIn(String title, uint8_t pin, LogicType lt) : Pin(title, pin, UT_PININ)
+	{
 	uint8_t inpmode;
-	Pin::SetLogicType(logicType);
-	//_logicType = logicType; 
+	Pin::SetLogicType(lt);
 	if (_logicType == LT_NORMAL)
 		inpmode = INPUT;
 	else
 		inpmode = INPUT_PULLUP;
+	
+	//Serial.println("PinIn:: ShomPinMode(inpmode);");
 	ShomPinMode(inpmode);
-}
+	}
 
 // ------------------------------------
 PinState2 PinIn::GetState()
@@ -85,7 +77,7 @@ void PinIn::LogInfo()
 // ------------------------------------
 void PinIn::LogState()
 	{
-	String str = StateText() + "; ";
+	String str = String(_pin) + " " + StateText() + "; ";
 	Log(str);
 	}
 
