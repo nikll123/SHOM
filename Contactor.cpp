@@ -10,8 +10,8 @@ Contactor::Contactor(String title, uint8_t pinIn, uint8_t pinOut) : Unit(title, 
 	{
 	KeyIn = PinIn(title + "_KeyIn", pinIn);
 	KeyIn.SetLogicType(LogicTypeIn);
-	KeyOut = PinOut(title + "_KeyOut", pinOut);
-	KeyOut.SetLogicType(LogicTypeOut);
+	KeyOut = PinOut(title + "_KeyOut", pinOut, LogicTypeOut);
+//	KeyOut.SetLogicType(LogicTypeOut);
 	Init();
 	}
 

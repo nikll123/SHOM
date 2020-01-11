@@ -21,8 +21,8 @@
 				    PinOut(String title, uint8_t pin, LogicType lt);
 		void		SetOn();
 		void		SetOff();
-		void		SetOn(bool noLog);
-		void		SetOff(bool noLog);
+//		void		SetOn(bool noLog);
+//		void		SetOff(bool noLog);
 		void		Inverse();
 		PinOutInfo 	GetInfo();
 		void 		LogInfo();

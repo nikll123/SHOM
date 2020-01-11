@@ -82,20 +82,16 @@ LedState2 Led::Refresh()
 void Led::_refreshState()
 	{
 	bool b = PinOutLed.IsHigh();
-	bool noLog = false;
 	switch (_state)
 		{
 		case LED_BLINK  :
 			b = _checkBlink(b, INTERVAL_BLINK);
-			noLog = true;
 			break;
 		case LED_BLINKFAST  :
 			b = _checkBlink(b, INTERVAL_BLINKFAST);
-			noLog = true;
 			break;
 		case LED_BLINKSLOW  :
 			b = _checkBlink(b, INTERVAL_BLINKSLOW);
-			noLog = true;
 			break;
 		case LED_ON  :
 			b = true;
@@ -105,9 +101,9 @@ void Led::_refreshState()
 		}
 	
 	if (b)
-		PinOutLed.SetOn(noLog);	
+		PinOutLed.SetOn();
 	else				
-		PinOutLed.SetOff(noLog);
+		PinOutLed.SetOff();
 	}
 
 //------------------------------------
