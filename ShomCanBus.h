@@ -4,7 +4,7 @@
 	#include "mcp_can.h"
 	#include "Unit.h"
 	
-	#define CANBUS_RATE			CAN_25KBPS  // CAN_50KBPS
+	#define CANBUS_RATE			CAN_50KBPS
 	#define RESPONSE_DELAY		10
 	#define RESPONSE_TRY_CNT	3
 
