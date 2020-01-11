@@ -13,7 +13,6 @@ Conveyor::Conveyor(String title, uint8_t pinIn, uint8_t pinOut, uint8_t pinAuto,
 	AtomatConveyor.SetLogicType(LogicTypeAutomat); 
 	LedConveyor = Led(title + "_led", pinLed);
 	_state = US_UNKNOWN;
-	_logLevel = LL_NORMAL;
 	}
 
 void Conveyor::Init()

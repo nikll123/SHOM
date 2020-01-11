@@ -12,7 +12,6 @@ Led::Led(String title, uint8_t pin) : Led(title, pin, LED_OFF)
 Led::Led(String title, uint8_t pin, LedState ledState) : Unit(title, UT_LED)
 {
     PinOutLed = PinOut(title + "_pin", pin);
-    _logLevel = LL_NORMAL;
     if(pin > 0)
     	_state = ledState;
     else

@@ -133,7 +133,7 @@
 	protected:
 		String			_title;
 		UnitType		_type;
-		byte			_logLevel;
+		byte			_logLevel = LL_NORMAL;
 		unsigned long 	_millsCheck = 0;
 
 	private: 
