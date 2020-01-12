@@ -8,16 +8,14 @@ Contactor::Contactor()
 
 Contactor::Contactor(String title, uint8_t pinIn, uint8_t pinOut) : Unit(title, UT_CONTACTOR)
 	{
-	KeyIn = PinIn(title + "_KeyIn", pinIn);
-	KeyIn.SetLogicType(LogicTypeIn);
+	KeyIn = PinIn(title + "_KeyIn", pinIn, LogicTypeIn);
 	KeyOut = PinOut(title + "_KeyOut", pinOut, LogicTypeOut);
-//	KeyOut.SetLogicType(LogicTypeOut);
 	Init();
 	}
 
 void Contactor::Init()
 	{
- 	Log("Init");
+ 	Serial.println(_title + " Init");
  	KeyOut.SetOff();
 	KeyIn.GetState();
 	ContactorState2 cs2;

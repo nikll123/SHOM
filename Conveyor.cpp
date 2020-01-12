@@ -9,21 +9,21 @@ Conveyor::Conveyor()
 Conveyor::Conveyor(String title, uint8_t pinIn, uint8_t pinOut, uint8_t pinAuto, uint8_t pinLed) : Unit(title, UT_CONVEYOR)
 	{
 	LedConveyor = Led(title + "_led", pinLed);
-	LedConveyor.SetOn();
 	ContactorConveyor = Contactor(title + "_cont", pinIn, pinOut);
 	AtomatConveyor = PinIn(title + "_auto", pinAuto);
 	AtomatConveyor.SetLogicType(LogicTypeAutomat); 
 	_state = US_UNKNOWN;
-	LedConveyor.SetOff();
 	}
 
 void Conveyor::Init()
 	{
+	LedConveyor.SetOn();
 	Log("Init");
 	_state = US_OFF;
-	LedConveyor.SetOff();
 	ContactorConveyor.Init();
 	GetState();
+	delay(50);
+	LedConveyor.SetOff();
 	}
 
 // ------------------------------------
