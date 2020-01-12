@@ -166,6 +166,15 @@ SystemState2 System::GetState()
 		Conveyors[i].LedConveyor.Refresh();
 		}
 	
+	_checkButtons();
+		
+	return ss2; 
+	}
+	
+// ------------------------------------
+void System::_checkButtons()
+	{
+	Serial.println("_checkButtons()");
 	///   BUTTONS
 	if (BtnReset.GetState().Front())
 		{
@@ -177,7 +186,6 @@ SystemState2 System::GetState()
 	else if (_state < SS_ERR && BtnOn.GetState().Front()) 
 		Start();
 	
-	return ss2; 
 	}
 
 // ------------------------------------
