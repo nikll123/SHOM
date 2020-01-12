@@ -22,7 +22,7 @@ void Conveyor::Init()
 	_state = US_OFF;
 	ContactorConveyor.Init();
 	GetState();
-	delay(50);
+	delay(50);			// to make LED light visible
 	LedConveyor.SetOff();
 	}
 

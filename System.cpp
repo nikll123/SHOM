@@ -377,7 +377,6 @@ SystemState System::_checkStateStopping()
 			doHalt = (cntErr > 0);
 			}
 		}
-		
 	return _calcState(cntErr, cntOn, cntOff, cntStoping, 0);
 	}
 
