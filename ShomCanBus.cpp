@@ -268,9 +268,9 @@ unsigned int ShomCanBus::GetMsgId()
 	}
 	
 // ------------------------------------
-void ShomCanBus::RelayDelay()
+void ShomCanBus::ResponseDelay()
 	{
-	delay(RELAY_DELAY);
+	delay(RESPONSE_DELAY);
 	}
 
 // ------------------------------------
