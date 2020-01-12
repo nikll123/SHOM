@@ -44,8 +44,7 @@ ContactorInfo Contactor::GetInfo()
 			GetContactorStateText(_state), 
 			kii.Pin, 
 			koi.Pin, 
-			_timeOutOn,
-			_timeOutOff 
+			_timeOutOn
 			}; 
 	}
 	
@@ -117,16 +116,9 @@ ContactorState2 Contactor::GetState()
 			}
 		else if(_state == CS_STOPPING)
 			{
-			if(_millsCheck == 0)
-				{
-				unsigned long sink = Time(TA_FIX);
-				}
-			else if (Time(TA_PERIOD) > _timeOutOff)
-				{
-				KeyOut.SetOff();
-				delay(RELAY_DELAY);
-				_state = CS_OFF;
-				}
+			KeyOut.SetOff();
+			delay(RELAY_DELAY);
+			_state = CS_OFF;
 				
 			_stateOut = KeyOut.GetState(); 
 			_stateIn = (KeyIn.GetState()).New;

@@ -45,7 +45,6 @@
 					uint8_t     	PinLed;
 					bool			Active;
 					unsigned int 	TimeOutOn;
-					unsigned int 	TimeOutOff;
 					}; 
 
 	static LogicType LogicTypeAutomat = LT_NORMAL;

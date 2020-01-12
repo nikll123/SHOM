@@ -72,7 +72,6 @@
 		PinState        _stateOut = KS_NONE;
 		void 			_logIfChanged(ContactorState2 cs2);
 		unsigned int 	_timeOutOn = 3000;
-		unsigned int 	_timeOutOff = 0;
 		void 			_Turn(ContactorState csNew);
 	};
 #endif
