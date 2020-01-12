@@ -57,7 +57,12 @@ void  System::Stop()
 void  System::Reset()
 	{
 	Log("Reset()", LL_HIGH);
-	unsigned long sink = Time(TA_RESET); 
+
+	for(int i = 0; i < UnitCount; i++)
+		{
+		Conveyors[i].Halt();
+		}
+
 	Init();
 	} 
 	

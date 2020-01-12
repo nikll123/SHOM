@@ -89,7 +89,6 @@ ContactorState2 Contactor::GetState()
 	ContactorState2 cs2 = {_state, _state};
 	if (_state != CS_NOTINIT)
 		{
-
 		cs2.Old = _state;
 		_stateIn = (KeyIn.GetState()).New;
 		_stateOut = KeyOut.GetState(); 
