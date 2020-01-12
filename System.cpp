@@ -161,10 +161,10 @@ SystemState2 System::GetState()
 	ss2.New = _state;
 	_logIfChanged(ss2);
 	
-	for(int i = 0; i < UnitCount ; i++)
+/*	for(int i = 0; i < UnitCount ; i++)
 		{
 		Conveyors[i].LedConveyor.Refresh();
-		}
+		}*/
 	
 	_checkButtons();
 		
@@ -174,7 +174,6 @@ SystemState2 System::GetState()
 // ------------------------------------
 void System::_checkButtons()
 	{
-//	Serial.println("_checkButtons()");
 	///   BUTTONS
 	if (BtnReset.GetState().Front())
 		{
@@ -209,6 +208,13 @@ void System::_updateConveyorStates()
 	
 	for(int i = UnitCount - 1; i >= 0 ; i--)
 		{
+        SystemState _oldstate = _state; 
+		_checkButtons();
+		if(_state != _oldstate)
+			{
+			return _state;
+			} 
+
 		if(Conveyors[i].IsActive())
 			{
 			ConveyorStates[i] = Conveyors[i].GetState();
@@ -225,6 +231,12 @@ SystemState System::_checkStateStarting()
 	cspc2.Prev = US_ON; 	
 	for(int i = UnitCount - 1; i >= 0 ; i--)
 		{
+		_checkButtons();
+		if(_state != SS_STARTING)
+			{
+			return _state;
+			} 
+
 		if (doHalt)
 			{
 			Conveyors[i].Halt();
@@ -298,6 +310,12 @@ SystemState System::_checkStateStopping()
 	cspc2.Prev = US_OFF; 	
 	for(int i = 0; i < UnitCount ; i++)
 		{
+		_checkButtons();
+		if(_state != SS_STOPPING)
+			{
+			return _state;
+			} 
+
 		if (doHalt)
 			{
 			Conveyors[i].Halt();
@@ -354,6 +372,7 @@ SystemState System::_checkStateStopping()
 			doHalt = (cntErr > 0);
 			}
 		}
+		
 	return _calcState(cntErr, cntOn, cntOff, cntStoping, 0);
 	}
 
@@ -364,6 +383,12 @@ SystemState System::_checkStateOff()
 	bool haltRest = false;
 	for(int i = 0; i < UnitCount ; i++)
 		{
+		_checkButtons();
+		if(_state != SS_OFF)
+			{
+			return _state;
+			} 
+
 		bool err = false;
 		if (haltRest)
 			{
@@ -387,6 +412,7 @@ SystemState System::_checkStateOff()
 			Conveyors[i].LedConveyor.SetBlinkFast();
 		else
 			Conveyors[i].LedConveyor.SetOff();
+			
 		}
 	return _calcState(cntErr, 0, cntOff, 0, 0);
 	}
@@ -398,6 +424,12 @@ SystemState System::_checkStateOn()
 	bool doHalt = false;
 	for(int i = UnitCount - 1; i >= 0 ; i--)
 		{
+		_checkButtons();
+		if(_state != SS_ON)
+			{
+			return _state;
+			} 
+			
 		if (doHalt)
 			{
 			Conveyors[i].Halt();
