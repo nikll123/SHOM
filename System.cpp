@@ -154,8 +154,6 @@ SystemState2 System::GetState()
 			ss = _checkStateOff();
 		else if (_state == SS_ON)
 			ss = _checkStateOn();
-		else if (_state == SS_SELFTEST)
-			ss = _checkSelfTest();
 		else
 			ss = SS_ERR;	
 		_state = ss;
@@ -173,15 +171,6 @@ SystemState2 System::GetState()
 		{
 		Reset();
 		unsigned long sink = Time(TA_FIX); 
-		}
-	else if (BtnReset.GetState().Back())
-		{
-		unsigned long sink = Time(TA_RESET); 
-		}
-	else if (BtnReset.GetState().High() && Time(TA_PERIOD) > _selfTestPause && _state != SS_SELFTEST)
-		{
-		Log("SelfTest", LL_HIGH);
-		_state = SS_SELFTEST;
 		}
 	else if(_state < SS_ERR && BtnOff.GetState().Front())
 		Stop();
@@ -457,18 +446,4 @@ void System::SetErrState(UnitError err, String msg)
 	Log(msg, LL_HIGH);
 	LogErr(err);
 	_state = SS_ERR;
-	}
-
-// ------------------------------------
-SystemState System::_checkSelfTest()
-	{
-	if(0 == Time(TA_GET) || 1000 <= Time(TA_PERIOD))
-		{
-		unsigned long sink = Time(TA_FIX); 
-		for(int i = 0; i < UnitCount; i++)
-			{
-			Conveyors[i].LedConveyor.Inverse();
-			}
-		}
-	return SS_SELFTEST;
 	}

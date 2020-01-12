@@ -14,7 +14,6 @@ enum SystemState
 				SS_OFF			= 4,
 				SS_STARTING		= 5,
 				SS_STOPPING		= 6,
-				SS_SELFTEST		= 7,
 				SS_ERR			= 300,
 				};
 				
@@ -69,14 +68,12 @@ struct	SystemInfo
 		void 			_logIfChanged(SystemState2 cs2);
 		void 			_logStates(SystemState2 cs2);
 		void 			_updateConveyorStates();
-		SystemState		_checkSelfTest();
 		SystemState		_checkStateOff();
 		SystemState		_checkStateOn();
 		SystemState		_checkStateStarting();
 		SystemState		_checkStateStopping();
 		SystemState		_state = SS_UNKNOWN;
 		SystemState 	_calcState(int cntErr, int cntOn, int cntOff, int cntStoping, int cntStarting);
-		unsigned long 	_selfTestPause = 4000;
 	};
 #endif
 
