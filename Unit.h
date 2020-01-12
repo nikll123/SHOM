@@ -12,7 +12,8 @@
 	#define LL_LOW		3
 
     #ifndef LOGLEVEL
-		#define LOGLEVEL LL_HIGH
+//		#define LOGLEVEL LL_HIGH
+		#define LOGLEVEL LL_NORMAL
 	#endif
 
 	#define PortMonitorLog 1

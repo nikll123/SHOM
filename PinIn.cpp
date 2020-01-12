@@ -1,6 +1,6 @@
 #include "PinIn.h"
 // ------------------------------------
-PinIn::PinIn() : PinIn("Dummy PinIn", 0) 
+PinIn::PinIn() 
 	{
 	}
 

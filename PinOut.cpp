@@ -1,6 +1,6 @@
 #include "PinOut.h"
 // ------------------------------------
-PinOut::PinOut() : PinOut("Dummy PinOut", 0) 
+PinOut::PinOut() 
 	{
 	}
 
@@ -11,7 +11,7 @@ PinOut::PinOut(String title, uint8_t pin) : PinOut(title, pin, LT_NORMAL)
 PinOut::PinOut(String title, uint8_t pin, LogicType lt) : Pin(title, pin, UT_PINOUT)
 	{
 	Pin::SetLogicType(lt);
-	//SetOff();
+	SetOff();
 	ShomPinMode(OUTPUT);
 	}
 	

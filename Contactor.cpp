@@ -1,7 +1,7 @@
 #include "Contactor.h"
 
 // =========   CONSTRUCTORS   =========
-Contactor::Contactor() : Unit("Dummy contactor", UT_NONE) 
+Contactor::Contactor() 
 {
 	_state = CS_NOTINIT;
 }

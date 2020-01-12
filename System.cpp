@@ -1,7 +1,7 @@
 #include "System.h"
 
 // ------------------------------------
-System::System() : System("DummySystem", 0, 0, 0)
+System::System()
 	{
 	}
 
@@ -174,7 +174,7 @@ SystemState2 System::GetState()
 // ------------------------------------
 void System::_checkButtons()
 	{
-	Serial.println("_checkButtons()");
+//	Serial.println("_checkButtons()");
 	///   BUTTONS
 	if (BtnReset.GetState().Front())
 		{

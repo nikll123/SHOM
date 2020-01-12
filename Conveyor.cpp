@@ -1,7 +1,7 @@
 #include "Conveyor.h"
 
 // =========   CONSTRUCTORS   =========
-Conveyor::Conveyor() : Unit("dummy", UT_CONVEYOR) 
+Conveyor::Conveyor() 
 {
 	_state = US_NOTINIT;
 }

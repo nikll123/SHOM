@@ -1,7 +1,7 @@
 #include "Pin.h"
 
 // ------------------------------------
-Pin::Pin() : Pin("DummyPin", 0, UT_PIN) 
+Pin::Pin() 
 {
 }
 

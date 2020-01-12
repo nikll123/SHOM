@@ -1,7 +1,7 @@
 #include "Led.h"
 
 //------------------------------------
-Led::Led() : Led("Dummy Led", 0, LED_NOTINIT)
+Led::Led()
 {
 }
 
