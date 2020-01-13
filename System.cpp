@@ -173,14 +173,20 @@ SystemState2 System::GetState()
 	ss2.New = _state;
 	_logIfChanged(ss2);
 	
-/*	for(int i = 0; i < UnitCount ; i++)
-		{
-		Conveyors[i].LedConveyor.Refresh();
-		}*/
-	
+	_ledRefresh();
 	_checkButtons();
 		
 	return ss2; 
+	}
+
+
+// ------------------------------------
+void System::_ledRefresh()
+	{
+	for(int i = 0; i < UnitCount ; i++)
+		{
+		Conveyors[i].LedConveyor.Refresh();
+		}
 	}
 	
 // ------------------------------------
