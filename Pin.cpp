@@ -45,6 +45,7 @@ void Pin::SetState(PinState state, bool noLog)
 	if (ps2.Changed() && !noLog) 
 		LogStates(ps2);
 	}
+
 // ------------------------------------
 void Pin::LogStates(PinState2 ps2)
 	{

@@ -18,28 +18,15 @@ PinOut::PinOut(String title, uint8_t pin, LogicType lt) : Pin(title, pin, UT_PIN
 // ------------------------------------
 void PinOut::SetOn()
 	{
-//	SetOn(0);
-SetState(KS_ON, 0);
+	SetState(KS_ON, 0);
 	}
 
-// ------------------------------------
-/*void PinOut::SetOn(bool noLog)
-	{
-	SetState(KS_ON, noLog);
-	}/*/
 
 // ------------------------------------
 void PinOut::SetOff()
 	{
-//	SetOff(0);
 	SetState(KS_OFF, 0);
 	}
-
-// ------------------------------------
-/*void PinOut::SetOff(bool noLog)
-	{
-	SetState(KS_OFF, noLog);
-	}*/
 
 // ------------------------------------
 void PinOut::Inverse()
