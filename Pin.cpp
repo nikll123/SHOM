@@ -42,8 +42,11 @@ void Pin::SetState(PinState state, bool noLog)
 	ShomPinWrite(val);
 	_state = state; 
 	ps2.New = _state;
-	if (ps2.Changed() && !noLog) 
-		LogStates(ps2);
+	if(DoLogChanges)
+		{
+		if (ps2.Changed() && !noLog) 
+			LogStates(ps2);
+		}
 	}
 
 // ------------------------------------
