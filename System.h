@@ -73,7 +73,7 @@ struct	SystemInfo
 		SystemState		_checkStateOn();
 		SystemState		_checkStateStarting();
 		SystemState		_checkStateStopping();
-		void 			_checkButtons();
+		bool			_checkButtons();
 		void 			_ledRefresh();
 		SystemState		_state = SS_UNKNOWN;
 		SystemState 	_calcState(int cntErr, int cntOn, int cntOff, int cntStoping, int cntStarting);

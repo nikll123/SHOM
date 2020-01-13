@@ -174,7 +174,7 @@ SystemState2 System::GetState()
 	_logIfChanged(ss2);
 	
 	_ledRefresh();
-	_checkButtons();
+	bool x = _checkButtons();
 		
 	return ss2; 
 	}
@@ -190,9 +190,9 @@ void System::_ledRefresh()
 	}
 	
 // ------------------------------------
-void System::_checkButtons()
+bool System::_checkButtons()
 	{
-	///   BUTTONS
+    SystemState _oldstate = _state; 
 	if (BtnReset.GetState().Front())
 		{
 		Reset();
@@ -202,7 +202,8 @@ void System::_checkButtons()
 		Stop();
 	else if (_state < SS_ERR && BtnOn.GetState().Front()) 
 		Start();
-	
+
+	return _state != _oldstate;
 	}
 
 // ------------------------------------
@@ -226,12 +227,8 @@ void System::_updateConveyorStates()
 	
 	for(int i = UnitCount - 1; i >= 0 ; i--)
 		{
-        SystemState _oldstate = _state; 
-		_checkButtons();
-		if(_state != _oldstate)
-			{
-			return _state;
-			} 
+		if( _checkButtons())
+			break;
 
 		if(Conveyors[i].IsActive())
 			{
@@ -249,11 +246,8 @@ SystemState System::_checkStateStarting()
 	cspc2.Prev = US_ON; 	
 	for(int i = UnitCount - 1; i >= 0 ; i--)
 		{
-		_checkButtons();
-		if(_state != SS_STARTING)
-			{
+		if( _checkButtons())
 			return _state;
-			} 
 
 		if (doHalt)
 			{
@@ -328,11 +322,8 @@ SystemState System::_checkStateStopping()
 	cspc2.Prev = US_OFF; 	
 	for(int i = 0; i < UnitCount ; i++)
 		{
-		_checkButtons();
-		if(_state != SS_STOPPING)
-			{
+		if( _checkButtons())
 			return _state;
-			} 
 
 		if (doHalt)
 			{
@@ -400,11 +391,8 @@ SystemState System::_checkStateOff()
 	bool haltRest = false;
 	for(int i = 0; i < UnitCount ; i++)
 		{
-		_checkButtons();
-		if(_state != SS_OFF)
-			{
+		if( _checkButtons())
 			return _state;
-			} 
 
 		bool err = false;
 		if (haltRest)
@@ -441,11 +429,8 @@ SystemState System::_checkStateOn()
 	bool doHalt = false;
 	for(int i = UnitCount - 1; i >= 0 ; i--)
 		{
-		_checkButtons();
-		if(_state != SS_ON)
-			{
+		if( _checkButtons())
 			return _state;
-			} 
 			
 		if (doHalt)
 			{
