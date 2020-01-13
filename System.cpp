@@ -34,7 +34,14 @@ void System::Init()
 			ConveyorStates[i] = {US_OFF, US_OFF};
 			}
 		}
-	_setState(SS_OFF);  
+	_setState(SS_OFF);
+	for (int i = 0; i < 3; i++)
+		{
+		TurnLeds(1);
+		delay(100);
+		TurnLeds(0);
+		delay(70);
+		}  
 	}
 
 // ------------------------------------
@@ -491,3 +498,16 @@ void System::SetErrState(UnitError err, String msg)
 	LogErr(err);
 	_state = SS_ERR;
 	}
+
+// ------------------------------------
+void System::TurnLeds(bool on)
+	{
+	for(int i = 0; i < UnitCount; i++)
+		{
+		if (on)
+			Conveyors[i].LedConveyor.SetOn();
+		else
+			Conveyors[i].LedConveyor.SetOff();
+		}
+	}
+

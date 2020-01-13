@@ -47,6 +47,7 @@ struct	SystemInfo
 		void			SetupLogic(LogicType ltIn, LogicType ltOut);
 		String 			GetSystemStateText(SystemState state);
 		uint8_t			UnitCount = 0;
+		void 			TurnLeds(bool on);
 
 		Conveyor 		Conveyors[MAX_UNIT_NUMBER];
 		ConveyorState2	ConveyorStates[MAX_UNIT_NUMBER];
