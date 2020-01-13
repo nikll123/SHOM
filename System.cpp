@@ -389,7 +389,7 @@ SystemState System::_checkStateOff()
 	{
 	int cntErr=0, cntOff=0;
 	bool haltRest = false;
-	for(int i = 0; i < UnitCount ; i++)
+	for(int i = UnitCount - 1; i >= 0 ; i--)
 		{
 		if( _checkButtons())
 			return _state;
