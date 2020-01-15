@@ -1,13 +1,12 @@
 #include "System.h"
 
 // ------------------------------------
-System::System() : System("DummySystem", 0, 0, 0)
+System::System()
 	{
 	}
 
 System::System(String title, uint8_t pinBtnOn, uint8_t pinBtnOff, uint8_t pinBtnReset) : Unit(title, UT_SYSTEM)
 	{
-	_logLevel = LL_NORMAL;
 	Init();
 	BtnOn = SetupButton("BtnOn", pinBtnOn);
 	BtnOff = SetupButton("BtnOff", pinBtnOff);
@@ -18,16 +17,14 @@ System::System(String title, uint8_t pinBtnOn, uint8_t pinBtnOff, uint8_t pinBtn
 PinIn System::SetupButton(String btnTitle, uint8_t pin)
 	{
 	String title = _title + "." + btnTitle;
-	PinIn btn = PinIn(title, pin);  
-	btn.LogicInInverse();
-	btn.Init();
+	PinIn btn = PinIn(title, pin, LT_INVERSE);  
 	return btn ; 
 	}
 	
 // ------------------------------------
 void System::Init()
 	{ 
-	Log("Init");
+	Log("Init", LL_HIGH);
 	for(int i = 0; i < UnitCount; i++)
 		{
 		ConveyorStates[i] = {US_NOTINIT, US_NOTINIT};
@@ -37,13 +34,20 @@ void System::Init()
 			ConveyorStates[i] = {US_OFF, US_OFF};
 			}
 		}
-	_setState(SS_OFF);  
+	_setState(SS_OFF);
+	for (int i = 0; i < 3; i++)
+		{
+		TurnLeds(1);
+		delay(100);
+		TurnLeds(0);
+		delay(70);
+		}  
 	}
 
 // ------------------------------------
 void  System::Start()
 	{
-	Log("Start()"); 
+	Log("Start()", LL_HIGH); 
 	if(_state == SS_OFF)
 		_setState(SS_STARTING);
 	}
@@ -51,7 +55,7 @@ void  System::Start()
 // ------------------------------------
 void  System::Stop()
 	{
-	Log("Stop()"); 
+	Log("Stop()", LL_HIGH); 
 	if(_state == SS_STARTING || _state == SS_ON)
 		_setState(SS_STOPPING);
 	}
@@ -59,7 +63,13 @@ void  System::Stop()
 // ------------------------------------
 void  System::Reset()
 	{
-	Log("Reset()");
+	Log("Reset()", LL_HIGH);
+
+	for(int i = 0; i < UnitCount; i++)
+		{
+		Conveyors[i].Halt();
+		}
+
 	Init();
 	} 
 	
@@ -98,7 +108,7 @@ void System::LogInfo(bool conv)
 	SystemInfo si = GetInfo();
 	String str = si.UnitType + "; " + si.State; 
 	str = str + "; BtnOn-" + String(si.PinOn) + "; BtnOff-" + String(si.PinOff) + "; BtnReset-" + String(si.PinReset);
-	Log(str);
+	Log(str, LL_HIGH);
 	if (conv)
 		{
 		for(int i = 0; i < UnitCount; i++)
@@ -107,7 +117,7 @@ void System::LogInfo(bool conv)
 				{
 				String str = String(i) + ") ";
 				str = str + Conveyors[i].GetInfoTxt();
-				Log(str);
+				Log(str, LL_HIGH);
 				}
 			}
 		} 		
@@ -144,7 +154,7 @@ void System::SetupConveyor(String title, uint8_t pinIn, uint8_t pinOut, uint8_t 
 SystemState2 System::GetState()
 	{
 	SystemState2 ss2 = {_state, _state};
-	if (_state < SS_ERR)
+	if (_state < SS_ERR)       // no system error 
 		{
 		_updateConveyorStates();
 		SystemState ss;
@@ -161,45 +171,54 @@ SystemState2 System::GetState()
 		_state = ss;
 		}  
 	ss2.New = _state;
-	_ifChanged(ss2);
+	_logIfChanged(ss2);
 	
+	_ledRefresh();
+	bool x = _checkButtons();
+		
+	return ss2; 
+	}
+
+
+// ------------------------------------
+void System::_ledRefresh()
+	{
 	for(int i = 0; i < UnitCount ; i++)
 		{
 		Conveyors[i].LedConveyor.Refresh();
 		}
+	}
 	
-	///   BUTTONS
-	if(_state < SS_ERR && BtnOff.GetState().Front())
+// ------------------------------------
+bool System::_checkButtons()
+	{
+    SystemState _oldstate = _state; 
+	if (BtnReset.GetState().Front())
+		{
+		Reset();
+		unsigned long sink = Time(TA_FIX); 
+		}
+	else if(_state < SS_ERR && BtnOff.GetState().Front())
 		Stop();
 	else if (_state < SS_ERR && BtnOn.GetState().Front()) 
 		Start();
-	else if (BtnReset.GetState().Front()) 
-		Reset();
-	
-	return ss2; 
+
+	return _state != _oldstate;
 	}
 
 // ------------------------------------
-void System::_ifChanged(SystemState2 ss2)
+void System::_logIfChanged(SystemState2 ss2)
 	{
 	if (ss2.Old != ss2.New)
 		{
 		_logStates(ss2);
-		/*if (cs2.New == US_ON)
-			LedConveyor.SetOn();
-		else if (cs2.New == US_STARTING || cs2.New == US_STOPPING)
-			LedConveyor.SetBlink();
-		else if (cs2.New >= US_ERR200)
-			LedConveyor.SetBlinkFast();
-		else 
-			LedConveyor.SetOff();*/
 		}
 	}
 
 // ------------------------------------
 void System::_logStates(SystemState2 ss2)
 	{
-	Log(GetSystemStateText(ss2.Old) + " -> " + GetSystemStateText(ss2.New));
+	Log(GetSystemStateText(ss2.Old) + " -> " + GetSystemStateText(ss2.New), LL_HIGH);
 	}
 
 // ------------------------------------
@@ -208,6 +227,9 @@ void System::_updateConveyorStates()
 	
 	for(int i = UnitCount - 1; i >= 0 ; i--)
 		{
+		if( _checkButtons())
+			break;
+
 		if(Conveyors[i].IsActive())
 			{
 			ConveyorStates[i] = Conveyors[i].GetState();
@@ -224,6 +246,9 @@ SystemState System::_checkStateStarting()
 	cspc2.Prev = US_ON; 	
 	for(int i = UnitCount - 1; i >= 0 ; i--)
 		{
+		if( _checkButtons())
+			return _state;
+
 		if (doHalt)
 			{
 			Conveyors[i].Halt();
@@ -282,7 +307,6 @@ SystemState System::_checkStateStarting()
 				}
 				
 			cspc2.Prev = cspc2.Curr; 
-
 			doHalt = (cntErr > 0);
 			}
 		}
@@ -298,6 +322,9 @@ SystemState System::_checkStateStopping()
 	cspc2.Prev = US_OFF; 	
 	for(int i = 0; i < UnitCount ; i++)
 		{
+		if( _checkButtons())
+			return _state;
+
 		if (doHalt)
 			{
 			Conveyors[i].Halt();
@@ -334,7 +361,7 @@ SystemState System::_checkStateStopping()
 					SetErrState(SS_ERR308);
 					}
 				}
-			else if (cspc2.Prev == US_ON)
+			else if (cspc2.Prev == US_ON || cspc2.Prev == US_STARTING)
 				{ 
 				if (cspc2.Curr == US_ON)
 					cntOn++;
@@ -347,9 +374,10 @@ SystemState System::_checkStateStopping()
 			else
 				{
 				cntErr++;
-				SetErrState(SS_ERR310);
+				SetErrState(SS_ERR310, "Wrong ConveyorStatePrev = " + Conveyor::GetConveyorStateText(cspc2.Prev));
 				}
 				
+			cspc2.Prev = cspc2.Curr; 
 			doHalt = (cntErr > 0);
 			}
 		}
@@ -361,8 +389,11 @@ SystemState System::_checkStateOff()
 	{
 	int cntErr=0, cntOff=0;
 	bool haltRest = false;
-	for(int i = 0; i < UnitCount ; i++)
+	for(int i = UnitCount - 1; i >= 0 ; i--)
 		{
+		if( _checkButtons())
+			return _state;
+
 		bool err = false;
 		if (haltRest)
 			{
@@ -386,6 +417,7 @@ SystemState System::_checkStateOff()
 			Conveyors[i].LedConveyor.SetBlinkFast();
 		else
 			Conveyors[i].LedConveyor.SetOff();
+			
 		}
 	return _calcState(cntErr, 0, cntOff, 0, 0);
 	}
@@ -397,6 +429,9 @@ SystemState System::_checkStateOn()
 	bool doHalt = false;
 	for(int i = UnitCount - 1; i >= 0 ; i--)
 		{
+		if( _checkButtons())
+			return _state;
+			
 		if (doHalt)
 			{
 			Conveyors[i].Halt();
@@ -445,5 +480,25 @@ void System::SetErrState(UnitError err)
 	{
 	LogErr(err);
 	_state = SS_ERR;
+	}
+
+// ------------------------------------
+void System::SetErrState(UnitError err, String msg)
+	{
+	Log(msg, LL_HIGH);
+	LogErr(err);
+	_state = SS_ERR;
+	}
+
+// ------------------------------------
+void System::TurnLeds(bool on)
+	{
+	for(int i = 0; i < UnitCount; i++)
+		{
+		if (on)
+			Conveyors[i].LedConveyor.SetOn();
+		else
+			Conveyors[i].LedConveyor.SetOff();
+		}
 	}
 

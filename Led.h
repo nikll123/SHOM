@@ -44,6 +44,7 @@
 		void 		LogInfo();
 		void 		SetOn();
 		void 		SetOff();
+		void 		Inverse();
 		void 		SetBlink();
 		void 		SetBlinkFast();
 		void 		SetBlinkSlow();

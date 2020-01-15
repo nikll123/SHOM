@@ -1,13 +1,12 @@
 #include "Pin.h"
 
 // ------------------------------------
-Pin::Pin() : Pin("DummyPin", 0, UT_PIN) 
+Pin::Pin() 
 {
 }
 
 Pin::Pin(String title, uint8_t pin, UnitType ut) : Unit(title, ut)
 {
-	_logLevel = LL_NORMAL;
 	_pin = pin;
 	_state = KS_NONE;
 }
@@ -43,30 +42,45 @@ void Pin::SetState(PinState state, bool noLog)
 	ShomPinWrite(val);
 	_state = state; 
 	ps2.New = _state;
-	if (ps2.Changed() && !noLog) 
-		LogStates(ps2);
+	if(DoLogChanges)
+		{
+		if (ps2.Changed() && !noLog) 
+			LogStates(ps2);
+		}
 	}
+
 // ------------------------------------
 void Pin::LogStates(PinState2 ps2)
 	{
 	String str  = String(_pin) + "; ";
-	str = str + GetPinStateText(ps2.Old) + " -> " + GetPinStateText(ps2.New); 
+	str = str + PinStateText(ps2.Old) + " -> " + PinStateText(ps2.New); 
 	Log(str);
 	}
 
 // ------------------------------------
 PinInfo Pin::GetInfo()
 	{
-	UnitInfo ui = Unit::GetInfo();
-    return {ui.Title,
-			ui.UnitType,
-			GetPinModeText(), 
-			GetPinStateText(_state), 
+	return {Unit::_title,
+			Unit::UnitTypeText(),
+			PinModeText(), 
+			StateText(), 
 			_pin}; 
 	}
 
+// ------------------------------------
+String Pin::Title1()
+	{
+    return Unit::_title + "_" + String(_pin); 
+	}
+
 //------------------------------
-String Pin::GetPinStateText(PinState instate)
+String Pin::StateText()
+	{
+	return Pin::PinStateText(_state);
+	}
+
+//------------------------------
+static String Pin::PinStateText(PinState instate)
 {
 switch (instate)
 	{
@@ -96,7 +110,8 @@ bool Pin::ShomPinRead()
 		{
 		pin = _pin - 100; 
 		unsigned int id = Pin::CanBus.SendCmd(CANBUS_READ, pin);
-		canbusres = Pin::CanBus.GetResponse(id);
+		Pin::CanBus.ResponseDelay();
+		canbusres = Pin::CanBus.GetResponse(id, pin);
 		if(canbusres == CBS_LOW)
 			_state = KS_OFF;
 		else if (canbusres == CBS_HIGH)
@@ -123,24 +138,14 @@ void Pin::ShomPinWrite(bool val)
 		}
 	else
 		{
-		unsigned int id = Pin::CanBus.GetMsgId();
-		byte idh = highByte(id);
-		byte idl = lowByte(id);
-		Pin::CanBus.ResetData();
-		Pin::CanBus.SetDataByte(DATA_ID_HIGH, idh);
-		Pin::CanBus.SetDataByte(DATA_ID_LOW, idl);
-		Pin::CanBus.SetDataByte(DATA_CMD, CANBUS_WRITE);
-		Pin::CanBus.SetDataByte(DATA_PIN, _pin - 100);
-		Pin::CanBus.SetDataByte(DATA_VALUE, val);
-		//Pin::CanBus.LogData();
-		Pin::CanBus.Send();
+		unsigned int id = Pin::CanBus.SendCmd(CANBUS_WRITE, _pin - 100, val);
 		}
 	}
 
 //------------------------------
 void Pin::ShomPinMode(byte pinmode)
 	{
-	Log("ShomPinMode " + GetPinModeText());
+	Log("ShomPinMode " + PinModeText());
 	_pinmode = pinmode;
 	if (_pin < 100)
 		{
@@ -148,16 +153,7 @@ void Pin::ShomPinMode(byte pinmode)
 		}
 	else
 		{
-		unsigned int id = Pin::CanBus.GetMsgId();
-		byte idh = highByte(id);
-		byte idl = lowByte(id);
-		Pin::CanBus.ResetData();
-		Pin::CanBus.SetDataByte(DATA_ID_HIGH, idh);
-		Pin::CanBus.SetDataByte(DATA_ID_LOW, idl);
-		Pin::CanBus.SetDataByte(DATA_CMD, CANBUS_MODE);
-		Pin::CanBus.SetDataByte(DATA_PIN, _pin - 100);
-		Pin::CanBus.SetDataByte(DATA_VALUE, _pinmode);
-		Pin::CanBus.Send();
+		unsigned int id = Pin::CanBus.SendCmd(CANBUS_MODE, _pin - 100, _pinmode);
 		}
 	}
 
@@ -165,14 +161,14 @@ void Pin::ShomPinMode(byte pinmode)
 void Pin::LogInfo()
 	{
 	PinInfo	pi = GetInfo();
-	String str = pi.UnitType + ", " + pi.PinMode + ", " + pi.State + ", " + String(pi.Pin);
+	String str = pi.UnitType + ", " + pi.PinModeText + ", " + pi.State + ", " + String(pi.Pin);
 	Log(str);   
   	}
 
 //------------------------------
-String Pin::GetPinModeText()
+String Pin::PinModeText()
 	{
-	if(_pinmode == INPUT_PULLUP)
+	if(_pinmode == INPUT_PULLUP)  // INPUT_PULLUP, INPUT, OUTPUT are Arduino's constants  
 		return "INPUT_PULLUP";
 	else if(_pinmode == INPUT)
 		return "INPUT";
@@ -183,14 +179,19 @@ String Pin::GetPinModeText()
 	}
 
 //------------------------------
-String Pin::GetLogicTypeText()
-{
-switch (_logicType)
+String Pin::LogicTypeText()
 	{
-	case LT_NONE 		: return "NONE";
-	case LT_NORMAL	 	: return "NORMAL";
-	case LT_INVERSE 	: return "INVERSE";
-	default			    : return "GetLogicTypeText: unknown-" + String(_logicType);
+	switch (_logicType)
+		{
+		case LT_NONE 		: return "NONE";
+		case LT_NORMAL	 	: return "NORMAL";
+		case LT_INVERSE 	: return "INVERSE";
+		default			    : return "LogicTypeText: unknown-" + String(_logicType);
+		}
 	}
-}
 
+//------------------------------
+void Pin::SetLogicType(LogicType logicType)
+	{
+	_logicType = logicType; 
+	}

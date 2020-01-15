@@ -15,6 +15,8 @@
 	struct PinState2 {
 					PinState 	Old;
 					PinState 	New;
+					bool High()	{return Old == KS_ON && New == KS_ON;};
+					bool Low()	{return Old == KS_OFF && New == KS_OFF;};
 					bool Front()	{return Old == KS_OFF && New == KS_ON;};
 					bool Back()		{return Old == KS_ON && New == KS_OFF;};
 					bool Changed()	{return Old != New;};
@@ -24,7 +26,7 @@
 	struct PinInfo {
 					String 		Title;
 					String 		UnitType;
-					String 		PinMode;
+					String 		PinModeText;
 					String 		State;
 					uint8_t		Pin;
 					};	
@@ -54,17 +56,22 @@
 		void				SetState(PinState state, bool noLog);	
 		void				LogInfo();	
 		void 				LogStates(PinState2 ps2);
+		void				SetLogicType(LogicType logicType);
 
-		String 				GetLogicTypeText();
-		
-		String 				GetPinStateText(PinState);
-		String 				GetPinModeText();
+		String 				LogicTypeText();
+		String 				Title1();
+
+		static String 		PinStateText(PinState);
+		String 				StateText();
+		String 				PinModeText();
 		bool				IsHigh();
 		bool				IsLow();
 		bool				ShomPinRead();
 		void 				ShomPinWrite(bool val);
 		void 				ShomPinMode(uint8_t pinmode);
 		static ShomCanBus 	CanBus;
+		bool				DoLogChanges = 1; 
+
 
 	protected:
 		uint8_t 			_pin;

@@ -4,8 +4,8 @@
 	#include "mcp_can.h"
 	#include "Unit.h"
 	
-	#define CANBUS_RATE			CAN_25KBPS  // CAN_50KBPS
-	#define RESPONSE_DELAY		10
+	#define CANBUS_RATE			CAN_50KBPS
+	#define RESPONSE_DELAY		20
 	#define RESPONSE_TRY_CNT	3
 
 	#define CREATE_TRY_MAX 10
@@ -55,8 +55,11 @@
 		unsigned int	SendCmd(CanBusCmd cmd, byte pin, bool value);
 		unsigned int 	SendCmd(unsigned int id, CanBusCmd cmd, byte pin, bool value);
 
-		CanBusState		GetResponse(unsigned int id);
+		CanBusState		GetResponse(unsigned int id, byte pin);
 		unsigned char	Receive();
+
+		void 			ResponseDelay();
+		
 		void 			SetDataByte(byte i, byte data);
 		byte 			GetDataByte(byte i);
 		unsigned int 	GetMsgId();
@@ -74,6 +77,7 @@
 		byte 			_canbus_pin_ss;
 		unsigned int 	_msgId;
 		String			_title;
+		String			_errMsg(byte pin, String txt, byte data);
 		CanBusState 	_state = CBS_UNKNOWN;
 		byte 			_data_buffer[DATA_LENGHT];
 	};

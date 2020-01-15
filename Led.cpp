@@ -1,7 +1,7 @@
 #include "Led.h"
 
 //------------------------------------
-Led::Led() : Led("Dummy Led", 0, LED_NOTINIT)
+Led::Led()
 {
 }
 
@@ -12,11 +12,12 @@ Led::Led(String title, uint8_t pin) : Led(title, pin, LED_OFF)
 Led::Led(String title, uint8_t pin, LedState ledState) : Unit(title, UT_LED)
 {
     PinOutLed = PinOut(title + "_pin", pin);
-    _logLevel = LL_NORMAL;
+    PinOutLed.DoLogChanges = 0; 
     if(pin > 0)
     	_state = ledState;
     else
 	    _state = LED_NOTINIT;
+	    
 }
 
 //------------------------------------
@@ -83,20 +84,16 @@ LedState2 Led::Refresh()
 void Led::_refreshState()
 	{
 	bool b = PinOutLed.IsHigh();
-	bool noLog = false;
 	switch (_state)
 		{
 		case LED_BLINK  :
 			b = _checkBlink(b, INTERVAL_BLINK);
-			noLog = true;
 			break;
 		case LED_BLINKFAST  :
 			b = _checkBlink(b, INTERVAL_BLINKFAST);
-			noLog = true;
 			break;
 		case LED_BLINKSLOW  :
 			b = _checkBlink(b, INTERVAL_BLINKSLOW);
-			noLog = true;
 			break;
 		case LED_ON  :
 			b = true;
@@ -106,9 +103,9 @@ void Led::_refreshState()
 		}
 	
 	if (b)
-		PinOutLed.SetOn(noLog);	
+		PinOutLed.SetOn();
 	else				
-		PinOutLed.SetOff(noLog);
+		PinOutLed.SetOff();
 	}
 
 //------------------------------------
@@ -141,26 +138,40 @@ void Led::_logState(LedState2 ls2)
 	Log(GetLedStateText(ls2.Old) + " -> " + GetLedStateText(ls2.New));
 	}
 	
+//------------------------------------
 void Led::SetOn()
 	{
 	_setState(LED_ON);
 	}
 
+//------------------------------------
 void Led::SetOff()
 	{
 	_setState(LED_OFF);
 	}
 
+//------------------------------------
+void Led::Inverse()
+	{
+	if (_state == LED_ON)
+		SetOff();
+	else
+		SetOn();
+	}
+
+//------------------------------------
 void Led::SetBlink()
 	{
 	_setState(LED_BLINK);
 	}
 
+//------------------------------------
 void Led::SetBlinkSlow()
 	{
 	_setState(LED_BLINKSLOW);
 	}
 
+//------------------------------------
 void Led::SetBlinkFast()
 	{
 	_setState(LED_BLINKFAST);

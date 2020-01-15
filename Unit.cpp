@@ -6,7 +6,6 @@ Unit::Unit()
 	{
 	_title = "DummyUnit";
 	_type = UT_NONE;
-	_logLevel = LL_NONE;
 	}
 
 Unit::Unit(String title, UnitType type)
@@ -37,7 +36,12 @@ static void Unit::LogLn()
 //------------------------------
 void Unit::Log(String str)
 	{
-	if (LOGLEVEL >= _logLevel)
+	Log(str, _logLevel);
+	}
+//------------------------------
+void Unit::Log(String str, byte ll)
+	{
+	if (LOGLEVEL >= ll)
 		{ 
 		str = _title + " : " + str;
 		LogTextLn(str);
@@ -69,7 +73,7 @@ UnitInfo Unit::GetInfo()
 	{
 	return	{
 			_title,
-			GetUnitTypeText()
+			UnitTypeText()
 			};
 	}
 
@@ -82,7 +86,7 @@ void Unit::LogInfo()
 	}
 
 //------------------------------
-String Unit::GetUnitTypeText()
+String Unit::UnitTypeText()
 	{
 	switch (_type)
 		{
@@ -97,7 +101,23 @@ String Unit::GetUnitTypeText()
 		case UT_CONVEYOR 		: return "CONVEYOR";
 		case UT_CONVEYORHANDLER	: return "CONVEYORHANDLER";
 		case UT_CANBUS 			: return "CANBUS";
-		default			    	: return "GetUnitTypeText: unknown-" + String(_type);
+		default			    	: return "UnitTypeText: unknown-" + String(_type);
 		}
 	}
 
+// ------------------------------------
+unsigned long Unit::Time(TimeAct ta)
+	{
+	unsigned long res = 0; 
+	if (ta == TA_FIX)
+		_millsCheck = millis();
+	else if (ta == TA_GET)
+		res = _millsCheck;
+	else if (ta == TA_RESET)
+		_millsCheck = 0;
+	else if (ta == TA_PERIOD)
+	    res = millis() - _millsCheck;
+	    
+	return res;
+	}
+ 

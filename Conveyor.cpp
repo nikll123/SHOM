@@ -1,31 +1,29 @@
 #include "Conveyor.h"
 
 // =========   CONSTRUCTORS   =========
-Conveyor::Conveyor() : Unit("dummy", UT_CONVEYOR) 
+Conveyor::Conveyor() 
 {
 	_state = US_NOTINIT;
 }
 
-Conveyor::Conveyor(String title, uint8_t pinIn, uint8_t pinOut, uint8_t pinAuto, uint8_t pinLed) : Conveyor(title, pinIn, pinOut, pinAuto, pinLed,  TURN_ON_TIMEOUT, TURN_OFF_TIMEOUT) 
-{
-}
-
-Conveyor::Conveyor(String title, uint8_t pinIn, uint8_t pinOut, uint8_t pinAuto, uint8_t pinLed, unsigned long timeOutOn, unsigned long timeOutOff) : Unit(title, UT_CONVEYOR)
+Conveyor::Conveyor(String title, uint8_t pinIn, uint8_t pinOut, uint8_t pinAuto, uint8_t pinLed) : Unit(title, UT_CONVEYOR)
 	{
-	ContactorConveyor = Contactor(title + "_cont", pinIn, pinOut, timeOutOn, timeOutOff);
-	AtomatConveyor = PinIn(title + "_auto", pinAuto); 
 	LedConveyor = Led(title + "_led", pinLed);
+	ContactorConveyor = Contactor(title + "_cont", pinIn, pinOut);
+	AtomatConveyor = PinIn(title + "_auto", pinAuto);
+	AtomatConveyor.SetLogicType(LogicTypeAutomat); 
 	_state = US_UNKNOWN;
-	_logLevel = LL_NORMAL;
 	}
 
 void Conveyor::Init()
 	{
+	LedConveyor.SetOn();
 	Log("Init");
 	_state = US_OFF;
-	LedConveyor.SetOff();
 	ContactorConveyor.Init();
 	GetState();
+	delay(50);			// to make LED light visible
+	LedConveyor.SetOff();
 	}
 
 // ------------------------------------
@@ -47,11 +45,12 @@ ConveyorInfo Conveyor::GetInfo()
 	}
 	
 // ------------------------------------
-/*void Conveyor::LogInfo(String str)
+static void Conveyor::SetupLogic(LogicType ltIn, LogicType ltOut, LogicType ltAuto)
 	{
-	Log(str);
-	LogInfo();
-	}*/
+	Contactor::SetupLogic(ltIn, ltOut);
+	LogicTypeAutomat = ltAuto;
+	}
+
 // ------------------------------------
 String Conveyor::GetInfoTxt()
 	{

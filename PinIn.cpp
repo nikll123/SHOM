@@ -1,44 +1,24 @@
 #include "PinIn.h"
 // ------------------------------------
-PinIn::PinIn() : PinIn("Dummy PinIn", 0) 
-{
-}
+PinIn::PinIn() 
+	{
+	}
 
-PinIn::PinIn(String title, uint8_t pin) : Pin(title, pin, UT_PININ)
-{
-	LogicInNormal();	
-	Init();
-}
+PinIn::PinIn(String title, uint8_t pin) : PinIn(title, pin, LT_NORMAL)
+	{
+	}
 
-// ------------------------------------
-void PinIn::Init()
-{
-	_refreshState();
-}
-
-// ------------------------------------
-void PinIn::LogicInInverse()
-{
-	_setLogicType(LT_INVERSE);
-}
-
-// ------------------------------------
-void PinIn::LogicInNormal()
-{
-	_setLogicType(LT_NORMAL);
-}
-
-// ------------------------------------
-void PinIn::_setLogicType(LogicType logicType)
-{
+PinIn::PinIn(String title, uint8_t pin, LogicType lt) : Pin(title, pin, UT_PININ)
+	{
 	uint8_t inpmode;
-	_logicType = logicType; 
+	Pin::SetLogicType(lt);
 	if (_logicType == LT_NORMAL)
 		inpmode = INPUT;
 	else
 		inpmode = INPUT_PULLUP;
+	
 	ShomPinMode(inpmode);
-}
+	}
 
 // ------------------------------------
 PinState2 PinIn::GetState()
@@ -74,9 +54,9 @@ PinInInfo PinIn::GetInfo()
 	PinInfo pi = Pin::GetInfo();
     return {pi.Title,
 			pi.UnitType, 
-			GetPinStateText(_state), 
+			StateText(), 
 			_pin, 
-			GetLogicTypeText()
+			LogicTypeText()
 			}; 
 	}
 
@@ -96,7 +76,7 @@ void PinIn::LogInfo()
 // ------------------------------------
 void PinIn::LogState()
 	{
-	String str = GetPinStateText(_state) + "; ";
+	String str = String(_pin) + " " + StateText() + "; ";
 	Log(str);
 	}
 
