@@ -2,20 +2,25 @@
 	#define Slave_h
 
 	#include "ShomCanBus.h"
+    #define CANBUS_TIMEOUT 1000
+    #define DEFAULTSTATE   1
 
 	//-------------------------------
 	class Slave
-	{
-	public:
-								Slave();
-		static ShomCanBus		CanBus;
-
-		static int				DoCmd();
-
-	protected:
-
-	private: 
-	};
+    	{
+    	public:
+    								Slave();
+            static void             CheckConnection();
+    		static ShomCanBus		CanBus;
+            static Unit             Timer;
+    
+    		static int				DoCmd();
+    
+    	protected:
+    		
+    	private:
+         
+    	};
 
 
 #endif

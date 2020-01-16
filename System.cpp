@@ -11,6 +11,7 @@ System::System(String title, uint8_t pinBtnOn, uint8_t pinBtnOff, uint8_t pinBtn
 	BtnOn = SetupButton("BtnOn", pinBtnOn);
 	BtnOff = SetupButton("BtnOff", pinBtnOff);
 	BtnReset = SetupButton("BtnReset", pinBtnReset);
+    Unit Timer = Unit("Timer", UT_TIMER); 
 	}
 	
 // ------------------------------------
@@ -183,9 +184,19 @@ SystemState2 System::GetState()
 // ------------------------------------
 void System::_ledRefresh()
 	{
-	for(int i = 0; i < UnitCount ; i++)
+	if (_state == SS_ERR_CONN)
 		{
-		Conveyors[i].LedConveyor.Refresh();
+		TurnLeds(1);
+		delay(50);
+		TurnLeds(0);
+		delay(50);
+		}
+	else
+		{
+		for(int i = 0; i < UnitCount ; i++)
+			{
+			Conveyors[i].LedConveyor.Refresh();
+			}
 		}
 	}
 	
@@ -479,7 +490,8 @@ SystemState System::_calcState(int cntErr, int cntOn, int cntOff, int cntStoping
 void System::SetErrState(UnitError err)
 	{
 	LogErr(err);
-	_state = SS_ERR;
+	if (err < SS_ERR_CONN)
+		_state = SS_ERR;
 	}
 
 // ------------------------------------
@@ -502,3 +514,15 @@ void System::TurnLeds(bool on)
 		}
 	}
 
+// ------------------------------------
+void System::CheckConnection()
+	{
+	if (Timer.Time(TA_PERIOD) < CANBUS_TIMEOUT)
+		Timer.Time(TA_FIX);
+	else
+		{
+		Reset();
+		_state = SS_ERR_CONN;			// Connection error 
+		}
+	}
+	

@@ -1,11 +1,9 @@
 #ifndef System_h
 	#define System_h
 
-	
-	#define MAX_UNIT_NUMBER 15
-
 	#include "Conveyor.h"
-
+    #define CANBUS_TIMEOUT 1000
+    
 enum SystemState 
 				{
 				SS_NOTINIT		= 1,
@@ -15,6 +13,7 @@ enum SystemState
 				SS_STARTING		= 5,
 				SS_STOPPING		= 6,
 				SS_ERR			= 300,
+				SS_ERR_CONN		= 350,
 				};
 				
 struct	SystemState2 
@@ -54,6 +53,7 @@ struct	SystemInfo
 		PinIn			BtnOn;
 		PinIn			BtnOff;
 		PinIn			BtnReset;
+        Unit            Timer;
 
 		void 			Start();
 		void 			Stop();
@@ -63,6 +63,7 @@ struct	SystemInfo
 		void 			SetErrState(UnitError err);
 		void 			SetErrState(UnitError err, String msg);
 		SystemState2	GetState();
+		void 			CheckConnection();
 
 	private:
 		void 			_setState(SystemState state);

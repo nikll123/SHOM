@@ -1,17 +1,17 @@
 #include "Slave.h"
 
-
 // ------------------------------------
 Slave::Slave()
 	{
-	//Slave::CanBus.Begin();
 	}
 
-ShomCanBus Slave::CanBus = ShomCanBus(); 
-
+ShomCanBus Slave::CanBus = ShomCanBus();
+Unit    Slave::Timer = Unit("Timer", UT_TIMER); 
+byte    _pinOutCount = 0;
+byte    _pinOutArray[MAX_UNIT_NUMBER];
 	
 // ------------------------------------
-int Slave::DoCmd()
+static int Slave::DoCmd()
 	{
 	int res = -1;    // error by default
 	unsigned int id = Slave::CanBus.GetMsgId();
@@ -39,7 +39,15 @@ int Slave::DoCmd()
 			else if (cmd == CANBUS_MODE)
 				{
 				if(data == INPUT || data == INPUT_PULLUP || data == OUTPUT)
+                    {
+                    if (data == OUTPUT)
+                        {
+                        _pinOutArray[_pinOutCount] = pin;
+                       _pinOutCount++;
+                        }
+                        
 					pinMode(pin, data);
+                    }
 				else
 					Slave::CanBus.SetErrState(SL_ERR602, "wrong pin mode = " + String(data)); 
 				}
@@ -60,3 +68,21 @@ int Slave::DoCmd()
 	
 	return res;	
 	}
+
+// ------------------------------------
+static void Slave::CheckConnection()
+  {
+  //Slave::CanBus.Log("Slave::CheckConnection()");
+  if (Timer.Time(TA_PERIOD) < CANBUS_TIMEOUT)
+      Timer.Time(TA_FIX);
+  else
+    {
+    //Slave::CanBus.Log("Connection fault!");
+    for(int i = 0; i < _pinOutCount; i++)
+    	{
+		digitalWrite(_pinOutArray[i], DEFAULTSTATE);
+	    //Slave::CanBus.Log("reset pin=" + String(i));
+    	}
+    }
+  }
+

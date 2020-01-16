@@ -3,7 +3,9 @@
 
 	#include "Arduino.h"
 	//#include <Wire.h>
-	
+
+    #define MAX_UNIT_NUMBER 15
+
 	#define RELAY_DELAY	50 // --10
 
 	#define LL_NONE		0
@@ -31,6 +33,7 @@
 					UT_CONVEYORHANDLER,
 					UT_CANBUS,
 					UT_SYSTEM,
+					UT_TIMER,
 					};	
 
 	//-------------------------------
@@ -81,6 +84,7 @@
 					SS_ERR313		= 313,
 					SS_ERR314		= 314,
 					SS_ERR315		= 315,
+					SS_ERR316		= 316,
 
 					//  ShomCanBus
 					CBS_ERR401		= 401,
