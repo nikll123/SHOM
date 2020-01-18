@@ -27,6 +27,7 @@ void System::Init()
 	{ 
 	Log("Init", LL_HIGH);
 	Pin::CanBus.Init();
+	ConnectChecker = PinIn("ConnectCheck", 100);
 	for(int i = 0; i < UnitCount; i++)
 		{
 		ConveyorStates[i] = {US_NOTINIT, US_NOTINIT};
@@ -514,3 +515,19 @@ void System::TurnLeds(bool on)
 		}
 	}
 
+// ------------------------------------
+void System::CheckConnection()
+	{
+	ConnectChecker.ShomPinRead();
+	}
+	
+// ------------------------------------
+void System::Run()
+	{
+	CheckConnection();
+	SystemState2 ss2 = GetState();
+	delay(1);
+	}
+	
+	
+	

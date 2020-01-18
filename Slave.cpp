@@ -20,7 +20,7 @@ static int Slave::DoCmd()
 	byte data = Slave::CanBus.GetDataByte(DATA_VALUE);
 	if (cmd == CANBUS_READ || cmd == CANBUS_WRITE || cmd == CANBUS_MODE || cmd == CANBUS_RESET || cmd == CANBUS_NOPE)
 	    {
-		if( pin > 0 && pin < 54)
+		if( pin >= 0 && pin < 54)
 			{
 			res = 0;
 			if(cmd == CANBUS_WRITE)
@@ -32,7 +32,10 @@ static int Slave::DoCmd()
 				}
 			else if(cmd == CANBUS_READ)
 				{
-				res = digitalRead(pin);
+				if(pin == 0) 		// for the check connection purpose 
+					res = 1;
+				else
+					res = digitalRead(pin);
 				id = Slave::CanBus.SendCmd(id, CANBUS_RESPONSE, pin, res);
 				Slave::CanBus.LogData("after send");
 				}

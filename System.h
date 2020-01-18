@@ -53,6 +53,7 @@ struct	SystemInfo
 		PinIn			BtnOff;
 		PinIn			BtnReset;
         Unit            Timer;
+        PinIn			ConnectChecker; 
 
 		void 			Start();
 		void 			Stop();
@@ -62,7 +63,9 @@ struct	SystemInfo
 		void 			SetErrState(UnitError err);
 		void 			SetErrState(UnitError err, String msg);
 		SystemState2	GetState();
-
+		void 			CheckConnection();
+		void 			Run();
+		
 	private:
 		void 			_setState(SystemState state);
 		void 			_logIfChanged(SystemState2 cs2);
