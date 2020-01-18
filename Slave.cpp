@@ -65,23 +65,23 @@ static int Slave::DoCmd()
 		}
 	else 
 		Slave::CanBus.SetErrState(SL_ERR604, "wrong cmd = " + String(data)); 
-	
+
+    Timer.Time(TA_FIX);
 	return res;	
 	}
 
 // ------------------------------------
 static void Slave::CheckConnection()
   {
-  //Slave::CanBus.Log("Slave::CheckConnection()");
-  if (Timer.Time(TA_PERIOD) < CANBUS_TIMEOUT)
-      Timer.Time(TA_FIX);
-  else
+//  Slave::CanBus.Log("Slave::CheckConnection()");
+//  Slave::CanBus.Log(String(Timer.Time(TA_PERIOD)));
+  if (Timer.Time(TA_PERIOD) > CANBUS_TIMEOUT)
     {
-    //Slave::CanBus.Log("Connection fault!");
+    Slave::CanBus.Log("Connection fault!");
     for(int i = 0; i < _pinOutCount; i++)
     	{
 		digitalWrite(_pinOutArray[i], DEFAULTSTATE);
-	    //Slave::CanBus.Log("reset pin=" + String(i));
+	    Slave::CanBus.Log("reset pin=" + String(i));
     	}
     }
   }
