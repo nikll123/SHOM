@@ -73,8 +73,6 @@ static int Slave::DoCmd()
 // ------------------------------------
 static void Slave::CheckConnection()
   {
-//  Slave::CanBus.Log("Slave::CheckConnection()");
-//  Slave::CanBus.Log(String(Timer.Time(TA_PERIOD)));
   if (Timer.Time(TA_PERIOD) > CANBUS_TIMEOUT)
     {
     Slave::CanBus.Log("Connection fault!");
@@ -86,3 +84,16 @@ static void Slave::CheckConnection()
     }
   }
 
+
+// ------------------------------------
+static void Slave::Run()
+	{
+	byte len = Slave::CanBus.Receive();
+	if (len > 0)
+	{
+		Slave::CanBus.LogData("from scetch");
+		int res = Slave::DoCmd();
+		Slave::CanBus.Log("res=" + String(res));
+	}
+	Slave::CheckConnection();
+	}

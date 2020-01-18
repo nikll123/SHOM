@@ -15,7 +15,8 @@
             static Unit             Timer;
     
     		static int				DoCmd();
-    
+		    static void 			Run();
+
     	protected:
     		
     	private:
