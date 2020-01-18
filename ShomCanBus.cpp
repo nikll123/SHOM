@@ -14,12 +14,18 @@ ShomCanBus::ShomCanBus() : Unit("ShomCanBus", UT_CANBUS)
 // ------------------------------------
 void ShomCanBus::Init(byte id, byte pin_ss)
 	{
+	_canbus_id = id;
+	_canbus_pin_ss = pin_ss;
+	Init(); 
+	}
+		
+// ------------------------------------
+void ShomCanBus::Init()
+	{
 	if(_state != CBS_ON)
 		{
 		Log("Init");
-		_canbus_id = id;
 		_title = "ShomCanBus(id="+ String(_canbus_id) + ")";
-		_canbus_pin_ss = pin_ss; 
 		canbus=MCP_CAN(_canbus_pin_ss);
 		bool canbus_ok = false;
 		canbus_ok = (CAN_OK == canbus.begin(CANBUS_RATE));
@@ -33,7 +39,8 @@ void ShomCanBus::Init(byte id, byte pin_ss)
 				
 			delay(100);
 			}     
-		
+
+		_ConnectionOK = canbus_ok;
 		if (canbus_ok)
 			{	
 			_state = CBS_ON;
@@ -45,7 +52,6 @@ void ShomCanBus::Init(byte id, byte pin_ss)
 			}
 		}
 	}
-		
 
 // ------------------------------------
 void ShomCanBus::Log(String str)
@@ -242,6 +248,7 @@ CanBusState	ShomCanBus::GetResponse(unsigned int id, byte pin)
 	if(!received)
 		{
 		SetErrState(KS_ERR505, _errMsg(pin, "No data received", 0));
+		_ConnectionOK = false;
 		}
 	else if (tryId > 0) 
 		{
@@ -280,3 +287,10 @@ String ShomCanBus::_errMsg(byte pin, String txt, byte data)
 	msg = msg + txt + " : " + String(data);
 	return msg;
 	}
+
+// ------------------------------------
+bool ShomCanBus::ConnectionOK()
+	{
+	return _state != CBS_ERR;;
+	}
+	

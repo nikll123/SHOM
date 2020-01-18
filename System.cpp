@@ -26,6 +26,7 @@ PinIn System::SetupButton(String btnTitle, uint8_t pin)
 void System::Init()
 	{ 
 	Log("Init", LL_HIGH);
+	Pin::CanBus.Init();
 	for(int i = 0; i < UnitCount; i++)
 		{
 		ConveyorStates[i] = {US_NOTINIT, US_NOTINIT};
@@ -184,19 +185,19 @@ SystemState2 System::GetState()
 // ------------------------------------
 void System::_ledRefresh()
 	{
-	if (_state == SS_ERR_CONN)
-		{
-		TurnLeds(1);
-		delay(50);
-		TurnLeds(0);
-		delay(50);
-		}
-	else
+	if (Pin::CanBus.ConnectionOK())
 		{
 		for(int i = 0; i < UnitCount ; i++)
 			{
 			Conveyors[i].LedConveyor.Refresh();
 			}
+		}
+	else
+		{
+		TurnLeds(1);
+		delay(50);
+		TurnLeds(0);
+		delay(50);
 		}
 	}
 	
@@ -490,8 +491,7 @@ SystemState System::_calcState(int cntErr, int cntOn, int cntOff, int cntStoping
 void System::SetErrState(UnitError err)
 	{
 	LogErr(err);
-	if (err < SS_ERR_CONN)
-		_state = SS_ERR;
+	_state = SS_ERR;
 	}
 
 // ------------------------------------
@@ -514,15 +514,3 @@ void System::TurnLeds(bool on)
 		}
 	}
 
-// ------------------------------------
-void System::CheckConnection()
-	{
-	if (Timer.Time(TA_PERIOD) < CANBUS_TIMEOUT)
-		Timer.Time(TA_FIX);
-	else
-		{
-		Reset();
-		_state = SS_ERR_CONN;			// Connection error 
-		}
-	}
-	

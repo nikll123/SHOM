@@ -47,6 +47,7 @@
 						//ShomCanBus(String title, uint8_t pin_ss, unsigned long canbus_id);
 		MCP_CAN     	canbus;
 		void 			Log(String str);
+		void 			Init();
 		void 			Init(byte id, byte pin_ss);
 		void			SetErrState(UnitError err);
 		void 			SetErrState(UnitError err, String str);
@@ -62,6 +63,7 @@
 		
 		void 			SetDataByte(byte i, byte data);
 		byte 			GetDataByte(byte i);
+		bool 			ConnectionOK();
 		unsigned int 	GetMsgId();
 		unsigned int 	NewMsgId();
 		void 			ResetData();
@@ -80,6 +82,7 @@
 		String			_errMsg(byte pin, String txt, byte data);
 		CanBusState 	_state = CBS_UNKNOWN;
 		byte 			_data_buffer[DATA_LENGHT];
+		bool			_ConnectionOK;
 	};
 	    
 #endif
