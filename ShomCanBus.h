@@ -53,8 +53,8 @@
 		void 			SetErrState(UnitError err, String str);
 		void			Send();
 		unsigned int	SendCmd(CanBusCmd cmd, byte pin);
-		unsigned int	SendCmd(CanBusCmd cmd, byte pin, bool value);
-		unsigned int 	SendCmd(unsigned int id, CanBusCmd cmd, byte pin, bool value);
+		unsigned int	SendCmd(CanBusCmd cmd, byte pin, byte value);
+		unsigned int 	SendCmd(unsigned int id, CanBusCmd cmd, byte pin, byte value);
 
 		CanBusState		GetResponse(unsigned int id, byte pin);
 		unsigned char	Receive();

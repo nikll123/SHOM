@@ -172,13 +172,13 @@ unsigned int ShomCanBus::SendCmd(CanBusCmd cmd, byte pin)
 	}
 
 // ------------------------------------
-unsigned int ShomCanBus::SendCmd(CanBusCmd cmd, byte pin, bool value)
+unsigned int ShomCanBus::SendCmd(CanBusCmd cmd, byte pin, byte value)
 	{
 	return SendCmd(0, cmd, pin, value);
 	}
 
 // ------------------------------------
-unsigned int ShomCanBus::SendCmd(unsigned int id, CanBusCmd cmd, byte pin, bool value)
+unsigned int ShomCanBus::SendCmd(unsigned int id, CanBusCmd cmd, byte pin, byte value)
 	{
 		ResetData();
 		if (id == 0)
