@@ -44,7 +44,7 @@ ConveyorInfo Conveyor::GetInfo()
 	}
 	
 // ------------------------------------
-static void Conveyor::SetupLogic(LogicType ltIn, LogicType ltOut, LogicType ltAuto)
+void Conveyor::SetupLogic(LogicType ltIn, LogicType ltOut, LogicType ltAuto)
 	{
 	Contactor::SetupLogic(ltIn, ltOut);
 	LogicTypeAutomat = ltAuto;
@@ -71,7 +71,7 @@ String Conveyor::GetInfoTxt()
 	}
 
 //------------------------------
-static String Conveyor::GetConveyorStateText(ConveyorState state)
+String Conveyor::GetConveyorStateText(ConveyorState state)
 {
 switch (state)
 	{
@@ -100,7 +100,7 @@ ConveyorState2 Conveyor::GetState()
 		{
         ContactorState2 cs2 = ContactorConveyor.GetState();
         PinState2 as2 = AtomatConveyor.GetState();
-		bool err = false;
+		//bool err = false;
         if (cs2.New >= CS_ERR)
         	{
 			SetErrState(US_ERR201);        	
@@ -176,7 +176,7 @@ void Conveyor::_Turn(ConveyorState csNew)
 		{
 		ConveyorState2 cs2;
 		cs2.Old = _state;
-		bool err = false; 
+		//bool err = false; 
 		if ((csNew == US_STARTING && cs2.Old == US_OFF)									// start!
 			|| (csNew == US_STOPPING && (cs2.Old == US_ON || cs2.Old == US_STARTING)))	// stop!
 			{

@@ -10,12 +10,12 @@
     	{
     	public:
     								Slave();
-            static void             CheckConnection();
     		static ShomCanBus		CanBus;
             static Unit             Timer;
     
     		static int				DoCmd();
 		    static void 			Run();
+            static void             CheckConnection();
 
     	protected:
     		

@@ -11,11 +11,11 @@ byte    _pinOutCount = 0;
 byte    _pinOutArray[MAX_UNIT_NUMBER];
 	
 // ------------------------------------
-static int Slave::DoCmd()
+int Slave::DoCmd()
 	{
 	int res = -1;    // error by default
 	unsigned int id = Slave::CanBus.GetMsgId();
-	CanBusCmd cmd = Slave::CanBus.GetDataByte(DATA_CMD);
+	CanBusCmd cmd = (CanBusCmd)Slave::CanBus.GetDataByte(DATA_CMD);
 	byte pin = Slave::CanBus.GetDataByte(DATA_PIN);
 	byte data = Slave::CanBus.GetDataByte(DATA_VALUE);
 	if (cmd == CANBUS_READ || cmd == CANBUS_WRITE || cmd == CANBUS_MODE || cmd == CANBUS_RESET || cmd == CANBUS_NOPE)
@@ -74,7 +74,7 @@ static int Slave::DoCmd()
 	}
 
 // ------------------------------------
-static void Slave::CheckConnection()
+void Slave::CheckConnection()
   {
   if (Timer.Time(TA_PERIOD) > CANBUS_TIMEOUT)
     {
@@ -89,7 +89,7 @@ static void Slave::CheckConnection()
 
 
 // ------------------------------------
-static void Slave::Run()
+void Slave::Run()
 	{
 	byte len = Slave::CanBus.Receive();
 	if (len > 0)
