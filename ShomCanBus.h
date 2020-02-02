@@ -1,3 +1,7 @@
+/*
+CAN-BUS module driver.
+*/
+
 #ifndef ShomCanBus_h
 	#define ShomCanBus_h
 

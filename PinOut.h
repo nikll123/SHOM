@@ -1,3 +1,7 @@
+/*
+Class PinOut - for pins which are used in OUTPUT mode  
+*/
+
 #ifndef PinOut_h
 	#define PinOut_h
 	

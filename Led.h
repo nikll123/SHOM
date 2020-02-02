@@ -1,3 +1,7 @@
+/*
+Class Led for LED control  
+*/
+
 #ifndef Led_h
 	#define Led_h
 

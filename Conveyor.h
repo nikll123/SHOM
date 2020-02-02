@@ -1,3 +1,7 @@
+/*
+Conveyor class - represents a conveyor with contactor, automat and LED.
+*/
+
 #ifndef Conveyor_h
 	#define Conveyor_h
 	

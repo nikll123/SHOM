@@ -1,3 +1,6 @@
+/*
+Class PinIn - for pins which are used in INPUT of INPUT_PULLUP modes  
+*/
 #ifndef PinIn_h
 	#define PinIn_h
 	

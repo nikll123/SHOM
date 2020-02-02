@@ -1,3 +1,7 @@
+/*
+SLAVE unit is controlled by the System (MASTER) unit.  
+*/
+
 #ifndef Slave_h
 	#define Slave_h
 

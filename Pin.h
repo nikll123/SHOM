@@ -1,3 +1,8 @@
+/*
+Calss Pin - parent class for pins, Basic class for PinIn and PinOut classes
+Should not be used for object creation directly  
+*/
+
 #ifndef Pin_h
 	#define Pin_h
 	

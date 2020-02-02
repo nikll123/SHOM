@@ -1,3 +1,8 @@
+/*
+System is a chain of conveyors.
+This is a MASTER unit in the syste (in contrast to SALVE unit)
+*/
+
 #ifndef System_h
 	#define System_h
 

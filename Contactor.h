@@ -1,3 +1,10 @@
+/*
+Class Contactor - intended for dealing with contactor.
+Contactor has a control pin - KeyOut and a feedback pin KeyIn
+Contactor correct states are when KeyOut and KeyIn have equal states    
+States when KeyOut != KeyIn are erroneous.     
+*/
+
 #ifndef Contactor_h
 	#define Contactor_h
 	

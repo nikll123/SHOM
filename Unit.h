@@ -1,3 +1,7 @@
+/*
+Calss Unit - basic class for all the rest classes of the library SOHM
+The most common andgeneral functionality is implemented here  
+*/
 #ifndef Unit_h
 	#define Unit_h
 
