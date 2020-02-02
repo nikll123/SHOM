@@ -4,10 +4,12 @@ PinIn::PinIn()
 	{
 	}
 
+// ------------------------------------
 PinIn::PinIn(String title, uint8_t pin) : PinIn(title, pin, LT_NORMAL)
 	{
 	}
 
+// ------------------------------------
 PinIn::PinIn(String title, uint8_t pin, LogicType lt) : Pin(title, pin, UT_PININ)
 	{
 	uint8_t inpmode;

@@ -5,10 +5,12 @@ Led::Led()
 {
 }
 
+// ------------------------------------
 Led::Led(String title, uint8_t pin) : Led(title, pin, LED_OFF)
 {
 }
 
+// ------------------------------------
 Led::Led(String title, uint8_t pin, LedState ledState) : Unit(title, UT_LED)
 {
     PinOutLed = PinOut(title + "_pin", pin);

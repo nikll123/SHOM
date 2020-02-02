@@ -6,6 +6,7 @@ Conveyor::Conveyor()
 	_state = US_NOTINIT;
 }
 
+// ------------------------------------
 Conveyor::Conveyor(String title, uint8_t pinIn, uint8_t pinOut, uint8_t pinAuto, uint8_t pinLed) : Unit(title, UT_CONVEYOR)
 	{
 	LedConveyor = Led(title + "_led", pinLed);
@@ -14,6 +15,7 @@ Conveyor::Conveyor(String title, uint8_t pinIn, uint8_t pinOut, uint8_t pinAuto,
 	_state = US_UNKNOWN;
 	}
 
+// ------------------------------------
 void Conveyor::Init()
 	{
 	LedConveyor.SetOn();
@@ -132,6 +134,7 @@ ConveyorState2 Conveyor::GetState()
 	return us2;
 	}
 
+// ------------------------------------
 void Conveyor::IfChanged(ConveyorState2 cs2)
 	{
 	if (cs2.Old != cs2.New)

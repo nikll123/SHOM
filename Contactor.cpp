@@ -6,6 +6,7 @@ Contactor::Contactor()
 	_state = CS_NOTINIT;
 }
 
+// ------------------------------------
 Contactor::Contactor(String title, uint8_t pinIn, uint8_t pinOut) : Unit(title, UT_CONTACTOR)
 	{
 	KeyIn = PinIn(title + "_KeyIn", pinIn, LogicTypeIn);
@@ -13,6 +14,7 @@ Contactor::Contactor(String title, uint8_t pinIn, uint8_t pinOut) : Unit(title, 
 	Init();
 	}
 
+// ------------------------------------
 void Contactor::Init()
 	{
  	Serial.println(_title + " Init");
