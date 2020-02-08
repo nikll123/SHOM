@@ -155,7 +155,7 @@ void Pin::ShomPinMode(byte pinmode)
 		{
 		unsigned int id = Pin::CanBus.SendCmd(CANBUS_MODE, _pin - 100, _pinmode);
 		}
-	Log("ShomPinMode " + PinModeText());
+	Log(PinModeText());
 	}
 
 //------------------------------
