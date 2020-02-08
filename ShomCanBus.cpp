@@ -199,16 +199,13 @@ unsigned int ShomCanBus::SendCmd(unsigned int id, CanBusCmd cmd, byte pin, byte 
 CanBusState	ShomCanBus::GetResponse(unsigned int id, byte pin)
 	{
 	CanBusState res = CBS_ERR; 
-	bool received = false;
-	byte len = 0;
 	int i;
 	for (i=0; i < RESPONSE_TRY_CNT; i++)
 		{
-		len = Receive();
+		byte len = Receive();
 		//Log("i=" + String(i) + " len=" + String(len));
 		//LogData();
-		received = (len > 0);
-		if(received)
+		if(len > 0)
 			{
 			if (len == DATA_LENGHT)
 				{
@@ -230,10 +227,8 @@ CanBusState	ShomCanBus::GetResponse(unsigned int id, byte pin)
 						}
 					else
 						SetErrState(KS_ERR503, _errMsg(pin, "Wrong cmd", cmd));
-	
-	                received = (res == CBS_HIGH || res == CBS_LOW);
 	                
-					if(received)
+					if(res == CBS_HIGH || res == CBS_LOW)
 						break;
 					}
 				else
@@ -244,7 +239,7 @@ CanBusState	ShomCanBus::GetResponse(unsigned int id, byte pin)
             }
 		delay(RESPONSE_DELAY);
 		}
-	if(!received)
+	if(_state == CBS_ERR)
 		{
 		SetErrState(KS_ERR505, _errMsg(pin, "No data received", 0));
 		_ConnectionOK = false;
