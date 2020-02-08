@@ -146,7 +146,6 @@ void Pin::ShomPinWrite(bool val)
 //------------------------------
 void Pin::ShomPinMode(byte pinmode)
 	{
-	Log("ShomPinMode " + PinModeText());
 	_pinmode = pinmode;
 	if (_pin < 100)
 		{
@@ -156,6 +155,7 @@ void Pin::ShomPinMode(byte pinmode)
 		{
 		unsigned int id = Pin::CanBus.SendCmd(CANBUS_MODE, _pin - 100, _pinmode);
 		}
+	Log("ShomPinMode " + PinModeText());
 	}
 
 //------------------------------

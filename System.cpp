@@ -519,7 +519,7 @@ void System::TurnLeds(bool on)
 // ------------------------------------
 void System::CheckConnection()
 	{
-	ConnectChecker.ShomPinRead();
+	bool newState = ConnectChecker.ShomPinRead();
 	}
 	
 // ------------------------------------
