@@ -23,12 +23,6 @@ Led::Led(String title, uint8_t pin, LedState ledState) : Unit(title, UT_LED)
 }
 
 //------------------------------------
-bool Led::IsActive()
-	{
-	return _state != LED_NOTINIT;;
-	}
-
-//------------------------------------
 LedState Led::GetState()
 	{
 	return _state;

@@ -201,8 +201,8 @@ CanBusState	ShomCanBus::GetResponse(unsigned int id, byte pin)
 	CanBusState res = CBS_ERR; 
 	bool received = false;
 	byte len = 0;
-	byte tryId = 0;
-	for (int i=0; i < RESPONSE_TRY_CNT; i++)
+	int i;
+	for (i=0; i < RESPONSE_TRY_CNT; i++)
 		{
 		len = Receive();
 		//Log("i=" + String(i) + " len=" + String(len));
@@ -243,16 +243,15 @@ CanBusState	ShomCanBus::GetResponse(unsigned int id, byte pin)
 				SetErrState(KS_ERR504, _errMsg(pin, "Wrong data lenght", len));
             }
 		delay(RESPONSE_DELAY);
-		tryId++;
 		}
 	if(!received)
 		{
 		SetErrState(KS_ERR505, _errMsg(pin, "No data received", 0));
 		_ConnectionOK = false;
 		}
-	else if (tryId > 0) 
+	else if (i > 0) 
 		{
-		Log("tryId = " + String(tryId));
+		Log("not received. i=" + String(RESPONSE_TRY_CNT));
 		}
 	return res;
 	}
