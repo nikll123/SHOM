@@ -27,6 +27,7 @@ static void Unit::LogText(String txt)
 	Serial.print(txt);
 	}
 
+
 //------------------------------
 static void Unit::LogLn()
 	{
@@ -121,3 +122,32 @@ unsigned long Unit::Time(TimeAct ta)
 	return res;
 	}
  
+//------------------------------
+static void Unit::LogTextC(char *str)
+	{
+	Serial.print(str);
+	}
+
+//------------------------------
+static void Unit::LogTextLnC(char *str)
+	{
+	LogTextC(str);
+	LogLn();
+	}
+
+//------------------------------
+void Unit::LogC(char *str)
+	{
+	Log(str, _logLevel);
+	}
+//------------------------------
+void Unit::LogC(char *str, byte ll)
+	{
+	if (LOGLEVEL >= ll)
+		{ 
+		LogTextC(_title);
+		LogTextC(" : ");
+		LogTextLnC(str);
+		}
+	}
+

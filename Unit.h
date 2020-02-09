@@ -127,11 +127,18 @@ The most common andgeneral functionality is implemented here
 	public:
 						Unit();
 						Unit(String title, UnitType type);
+		static void 	LogLn();
+		
 		static void		LogText(String);
 		static void		LogTextLn(String);
-		static void 	LogLn();
 		void 			Log(String str);
 		void 			Log(String str, byte _logLevel);
+
+		static void 	LogTextC(char *str);
+		static void 	LogTextLnC(char *str);
+		void 			LogC(char *str);
+		void 			LogC(char *str, byte _logLevel);
+
 		void 			LogErr(UnitError err);
 		void 			LogInfo();
 		unsigned long	Time(TimeAct ta);
