@@ -42,8 +42,8 @@ The most common andgeneral functionality is implemented here
 
 	//-------------------------------
 	struct UnitInfo {
-					String 		Title;
-					String 		UnitType;
+					char 		*Title;
+					char 		*UnitType;
 					};	
 
 	//-------------------------------
@@ -126,29 +126,23 @@ The most common andgeneral functionality is implemented here
 	{
 	public:
 						Unit();
-						Unit(String title, UnitType type);
-		static void 	LogLn();
-		
-		static void		LogText(String);
-		static void		LogTextLn(String);
-		void 			Log(String str);
-		void 			Log(String str, byte _logLevel);
+						Unit(char *title, UnitType type);
 
-		static void 	LogTextC(char *str);
-		static void 	LogTextLnC(char *str);
-		void 			LogC(char *str);
-		void 			LogC(char *str, byte _logLevel);
+		static void 	LogText(char *str);
+		static void 	LogTextLn(char *str);
+		void 			Log(char *str);
+		void 			Log(char *str, byte _logLevel);
 
 		void 			LogErr(UnitError err);
 		void 			LogInfo();
 		unsigned long	Time(TimeAct ta);
 		
 		UnitInfo 		GetInfo();
-		String			UnitTypeText();
-		String 			LogicTypeText();
+		char			*UnitTypeText();
+		//char 			*LogicTypeText();
 
 	protected:
-		String			_title;
+		char *			_title;
 		UnitType		_type;
 		byte			_logLevel = LL_NORMAL;
 		unsigned long 	_millsCheck = 0;
