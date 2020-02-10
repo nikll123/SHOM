@@ -128,10 +128,13 @@ The most common andgeneral functionality is implemented here
 						Unit();
 						Unit(char *title, UnitType type);
 
-		static void 	LogText(char *str);
-		static void 	LogTextLn(char *str);
-		void 			Log(char *str);
-		void 			Log(char *str, byte _logLevel);
+		static void 	Log(char *str);
+		static void 	LogLn(char *str);
+		static void 	Log(byte x);
+		static void 	LogLn(byte x);
+		static void 	Log(int x);
+		static void 	LogLn(int x);
+		//void 			Log(char *str);
 
 		void 			LogErr(UnitError err);
 		void 			LogInfo();
@@ -139,10 +142,9 @@ The most common andgeneral functionality is implemented here
 		
 		UnitInfo 		GetInfo();
 		char			*UnitTypeText();
-		//char 			*LogicTypeText();
 
 	protected:
-		char *			_title;
+		char*			_title;
 		UnitType		_type;
 		byte			_logLevel = LL_NORMAL;
 		unsigned long 	_millsCheck = 0;

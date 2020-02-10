@@ -16,32 +16,46 @@ Unit::Unit(char *title, UnitType type)
 
 //Log >>
 //------------------------------
-static void Unit::LogText(char *str)
+static void Unit::Log(char *str)
 	{
 	Serial.print(str);
 	}
 
 //------------------------------
-static void Unit::LogTextLn(char *str)
+static void Unit::LogLn(char *str)
 	{
-	LogText(str);
+	Log(str);
 	Serial.println("");
 	}
 
 //------------------------------
-void Unit::Log(char *str)
+static void Unit::Log(byte x)
 	{
-	Log(str, _logLevel);
+  	char buf[3];
+	itoa(x, buf, 10);
+  	Serial.print(buf);
 	}
+
 //------------------------------
-void Unit::Log(char *str, byte ll)
+static void Unit::LogLn(byte x)
 	{
-	if (LOGLEVEL >= ll)
-		{ 
-		LogText(_title);
-		LogText(" : ");
-		LogTextLn(str);
-		}
+	Log(x);
+	Serial.println("");
+	}
+
+//------------------------------
+static void Unit::Log(int x)
+	{
+  	char buf[5];
+	itoa(x, buf, 10);
+  	Serial.print(buf);
+	}
+
+//------------------------------
+static void Unit::LogLn(int x)
+	{
+	Log(x);
+	Serial.println("");
 	}
 
 
@@ -62,13 +76,13 @@ void Unit::LogErr(UnitError err)
 	else
 		pref = "Unknown";
 		
-	LogText("   Error! ");
-	LogText(_title);
-	LogText(" ");
-	LogText(pref);
-	LogText("_ERR");
-	LogText(char(err));
-	LogTextLn("");
+	Log("   Error! ");
+	Log(_title);
+	Log(" ");
+	Log(pref);
+	Log("_ERR");
+	Log(err);
+	LogLn("");
 	}	
 //Log <<
 
@@ -85,8 +99,8 @@ UnitInfo Unit::GetInfo()
 void Unit::LogInfo()
 	{
 	UnitInfo ui = GetInfo();
-	LogTextLn(ui.Title);
-	LogTextLn(ui.UnitType);
+	LogLn(ui.Title);
+	LogLn(ui.UnitType);
 	}
 
 //------------------------------
