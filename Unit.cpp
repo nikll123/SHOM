@@ -58,6 +58,44 @@ static void Unit::LogLn(int x)
 	Serial.println("");
 	}
 
+//------------------------------
+static void Unit::Log(unsigned int x)
+	{
+  	char buf[5];
+	itoa(x, buf, 10);
+  	Serial.print(buf);
+	}
+
+//------------------------------
+static void Unit::LogLn(unsigned int x)
+	{
+	Log(x);
+	Serial.println("");
+	}
+
+//------------------------------
+static char *Unit::NumToChar(unsigned int x)
+	{
+  	char buf[5];
+	itoa(x, buf, 10);
+	return buf;
+	}
+
+//------------------------------
+static char *Unit::NumToChar(int x)
+	{
+  	char buf[5];
+	itoa(x, buf, 10);
+	return buf;
+	}
+
+//------------------------------
+static char *Unit::NumToChar(byte x)
+	{
+  	char buf[3];
+	itoa(x, buf, 10);
+	return buf;
+	}
 
 //------------------------------
 void Unit::LogErr(UnitError err)

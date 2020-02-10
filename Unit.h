@@ -134,6 +134,11 @@ The most common andgeneral functionality is implemented here
 		static void 	LogLn(byte x);
 		static void 	Log(int x);
 		static void 	LogLn(int x);
+		static void 	Log(unsigned int x);
+		static void 	LogLn(unsigned int x);
+		static char* 	NumToChar(byte x);
+		static char* 	NumToChar(int x);
+		static char* 	NumToChar(unsigned int x);
 		//void 			Log(char *str);
 
 		void 			LogErr(UnitError err);
