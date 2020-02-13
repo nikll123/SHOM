@@ -8,6 +8,7 @@ ShomCanBus::ShomCanBus()
 
 ShomCanBus::ShomCanBus(char* title) : Unit(title, UT_CANBUS)
 	{
+	_title = title;         // RRR
 	}
 
 // ------------------------------------
