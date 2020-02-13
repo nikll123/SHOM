@@ -49,9 +49,10 @@ CAN-BUS module driver.
 	{
 	public:
 						ShomCanBus();
-						ShomCanBus(char* title, byte canbus_id, byte pin_ss);
+						ShomCanBus(char* title);
 		MCP_CAN     	canbus;
 		void 			Init();
+		void 			Init(byte canbus_id, byte pin_ss);
 		void			SetErrState(UnitError err);
 		void			Send();
 		unsigned int	SendCmd(CanBusCmd cmd, byte pin);

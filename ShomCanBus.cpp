@@ -6,23 +6,16 @@ ShomCanBus::ShomCanBus()
 	{
 	}
 
-ShomCanBus::ShomCanBus(char* title, byte canbus_id, byte pin_ss) : Unit("ShomCanBus", UT_CANBUS)
+ShomCanBus::ShomCanBus(char* title) : Unit(title, UT_CANBUS)
 	{
-  	_canbus_pin_ss = pin_ss;
-   	_canbus_id = canbus_id;
-  	_title = title;
 	}
 
 // ------------------------------------
-void ShomCanBus::LogInfo()
+void ShomCanBus::Init(byte id, byte pin_ss)
 	{
-	Log::BufClear();
-	Log::BufCat(_title);
-	Log::BufCat(" id=");
-	Log::BufCat(_canbus_id);
-	Log::BufCat("; pin SS=");
-	Log::BufCat(_canbus_pin_ss);
-	Log::BufPrint();
+	_canbus_id = id;
+	_canbus_pin_ss = pin_ss;
+	Init(); 
 	}
 		
 // ------------------------------------
@@ -307,6 +300,18 @@ void ShomCanBus::Log(byte pin, char* txt, byte data)
 	Log::BufCat(txt);
 	Log::BufCat(" : ");
 	Log::BufCat(data);
+	Log::BufPrint();
+	}
+
+// ------------------------------------
+void ShomCanBus::LogInfo()
+	{
+	Log::BufClear();
+	Log::BufCat(_title);
+	Log::BufCat(" id=");
+	Log::BufCat(_canbus_id);
+	Log::BufCat("; pin SS=");
+	Log::BufCat(_canbus_pin_ss);
 	Log::BufPrint();
 	}
 
