@@ -46,6 +46,7 @@ The most common andgeneral functionality is implemented here
 	public:
 						Unit();
 						Unit(char *title, UnitType type);
+		void 			Log(char * str);
 		void 			LogErr(UnitError err);
 		void 			LogInfo();
 		unsigned long	Time(TimeAct ta);

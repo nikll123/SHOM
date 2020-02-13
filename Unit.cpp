@@ -14,6 +14,17 @@ Unit::Unit(char *title, UnitType type)
 	}
 
 //------------------------------
+void Unit::Log(char * str)
+	{
+	Log::BufClear();
+	Log::BufCat(_title);
+	Log::BufCat(" ");
+	Log::BufCat(str);
+	Log::BufPrint();
+	}
+
+
+//------------------------------
 void Unit::LogErr(UnitError err)
 	{
 	Log::BufClear();
