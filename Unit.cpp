@@ -1,4 +1,3 @@
-#include "Arduino.h"
 #include "Unit.h"
 
 // =========   CONSTRUCTORS   =========
@@ -14,137 +13,41 @@ Unit::Unit(char *title, UnitType type)
 	_type = type;
 	}
 
-//Log >>
-//------------------------------
-static void Unit::Log(char *str)
-	{
-	Serial.print(str);
-	}
-
-//------------------------------
-static void Unit::LogLn(char *str)
-	{
-	Log(str);
-	Serial.println("");
-	}
-
-//------------------------------
-static void Unit::Log(byte x)
-	{
-  	char buf[3];
-	itoa(x, buf, 10);
-  	Serial.print(buf);
-	}
-
-//------------------------------
-static void Unit::LogLn(byte x)
-	{
-	Log(x);
-	Serial.println("");
-	}
-
-//------------------------------
-static void Unit::Log(int x)
-	{
-  	char buf[5];
-	itoa(x, buf, 10);
-  	Serial.print(buf);
-	}
-
-//------------------------------
-static void Unit::LogLn(int x)
-	{
-	Log(x);
-	Serial.println("");
-	}
-
-//------------------------------
-static void Unit::Log(unsigned int x)
-	{
-  	char buf[5];
-	itoa(x, buf, 10);
-  	Serial.print(buf);
-	}
-
-//------------------------------
-static void Unit::LogLn(unsigned int x)
-	{
-	Log(x);
-	Serial.println("");
-	}
-
-//------------------------------
-static char *Unit::NumToChar(unsigned int x)
-	{
-  	char buf[5];
-	itoa(x, buf, 10);
-	return buf;
-	}
-
-//------------------------------
-static char *Unit::NumToChar(int x)
-	{
-  	char buf[5];
-	itoa(x, buf, 10);
-	return buf;
-	}
-
-//------------------------------
-static char *Unit::NumToChar(byte x)
-	{
-  	char buf[3];
-	itoa(x, buf, 10);
-	return buf;
-	}
-
 //------------------------------
 void Unit::LogErr(UnitError err)
 	{
-	char *pref; 
-	if (100 < err && err < 200)
-		pref = "CS";
-	else if (200 < err && err < 300)
-		pref = "US";
-	else if (300 < err && err < 400)
-		pref = "SS";
-	else if (400 < err && err < 500)
-		pref = "CBS";
-	else if (500 < err && err < 600)
-		pref = "KS";
-	else
-		pref = "Unknown";
-		
-	Log("   Error! ");
-	Log(_title);
-	Log(" ");
-	Log(pref);
-	Log("_ERR");
-	Log(err);
-	LogLn("");
+	Log::BufClear();
+	Log::BufCat("   Error! ");
+	Log::BufCat(_title);
+	Log::BufCat(" ");
+	if (100 < err && err < 200)			Log::BufCat("CS");
+	else if (200 < err && err < 300)	Log::BufCat("US");
+	else if (300 < err && err < 400)	Log::BufCat("SS");
+	else if (400 < err && err < 500)	Log::BufCat("CBS");
+	else if (500 < err && err < 600)	Log::BufCat("KS");
+	else if (600 < err && err < 700)	Log::BufCat("SL");
+	else								Log::BufCat("Unknown");
+	
+	Log::BufCat("_ERR");
+	Log::BufCat(err);
+	Log::BufPrint();
 	}	
-//Log <<
 
-//------------------------------
-UnitInfo Unit::GetInfo()
-	{
-	return	{
-			_title,
-			UnitTypeText()
-			};
-	}
 
 //------------------------------
 void Unit::LogInfo()
 	{
-	UnitInfo ui = GetInfo();
-	LogLn(ui.Title);
-	LogLn(ui.UnitType);
+	Log::BufClear();
+	Log::BufCat(_title);
+	Log::BufCat(" ");
+	Log::BufCat(Unit::UnitTypeText(_type));
+	Log::BufPrint();
 	}
 
 //------------------------------
-char *Unit::UnitTypeText()
+static char *Unit::UnitTypeText(UnitType ut)
 	{
-	switch (_type)
+	switch (ut)
 		{
 		case UT_NONE 			: return "NONE";
 		case UT_LED         	: return "LED";
@@ -157,7 +60,7 @@ char *Unit::UnitTypeText()
 		case UT_CONVEYOR 		: return "CONVEYOR";
 		case UT_CONVEYORHANDLER	: return "CONVEYORHANDLER";
 		case UT_CANBUS 			: return "CANBUS";
-		default			    	: return "UnitTypeText: unknown-" + char(_type);
+		default			    	: return "UnitTypeText: unknown-" + char(ut);
 		}
 	}
 
