@@ -16,13 +16,13 @@ ShomCanBus::ShomCanBus(char* title, byte canbus_id, byte pin_ss) : Unit("ShomCan
 // ------------------------------------
 void ShomCanBus::LogInfo()
 	{
-	String str = "Pin SS=" + String(_canbus_pin_ss);
-	Log(_title);
-	Log(" id=");
-	Log(_canbus_id);
-	Log("; pin SS=");
-	Log(_canbus_pin_ss);
-	LogLn("");
+	Log::BufClear();
+	Log::BufCat(_title);
+	Log::BufCat(" id=");
+	Log::BufCat(_canbus_id);
+	Log::BufCat("; pin SS=");
+	Log::BufCat(_canbus_pin_ss);
+	Log::BufPrint();
 	}
 		
 // ------------------------------------
@@ -30,8 +30,10 @@ void ShomCanBus::Init()
 	{
 	if(_state != CBS_ON)
 		{
-		Log(_title);
-		LogLn(" Init");
+		Log::BufClear();
+		Log::BufCat(_title);
+		Log::BufCat(" Init");
+		Log::BufPrint();
 		canbus=MCP_CAN(_canbus_pin_ss);
 		bool canbus_ok = false;
 		canbus_ok = (CAN_OK == canbus.begin(CANBUS_RATE));
@@ -41,7 +43,7 @@ void ShomCanBus::Init()
 			if(canbus_ok)
 				break;
 			else
-				SetErrState(CBS_ERR401, "");
+				SetErrState(CBS_ERR401);
 				
 			delay(100);
 			}     
@@ -50,31 +52,23 @@ void ShomCanBus::Init()
 		if (canbus_ok)
 			{	
 			_state = CBS_ON;
-			LogLn("Init OK");
+			Log::BufClear();
+			Log::BufCat("Init OK");
+			Log::BufPrint();
 			}
 		else
 			{
-			SetErrState(CBS_ERR402, "Init fail");
+			Log("Init fail");
+			SetErrState(CBS_ERR402);
 			}
 		}
 	}
 
-
 // ------------------------------------
-void ShomCanBus::SetErrState(UnitError err, char* msg)
+void ShomCanBus::SetErrState(UnitError err)
 	{
-	//LogData();
-	Log(msg);
 	LogErr(err);
 	_state = CBS_ERR;
-	}
-	
-/*
-// ------------------------------------
-void ShomCanBus::SetErrState(UnitError err, String str)
-	{
-	Log(str);
-	SetErrState(err);
 	}
 	
 // ------------------------------------
@@ -115,21 +109,24 @@ void ShomCanBus::ResetData()
 	}
 
 // ------------------------------------
-void ShomCanBus::LogData()
+void ShomCanBus::LogData(char* comment)
 	{
-	LogData("");
+	Log::BufClear();
+	Log::BufCat(_title);
+	Log::BufCat(" ");
+	Log::BufCat(comment);
+	Log::BufCat(" Data: ");
+	Log::BufCat(" id=");
+	Log::BufCat(GetMsgId());
+	Log::BufCat("; ");
+	Log::BufCat(GetCmdTitle(_data_buffer[DATA_CMD]));
+	Log::BufCat("; ");
+	Log::BufCat(_data_buffer[DATA_PIN]);
+	Log::BufCat("; ");
+	Log::BufCat(_data_buffer[DATA_VALUE]);
+	Log::BufPrint();
 	}
-
-// ------------------------------------
-void ShomCanBus::LogData(String comment)
-	{
-	unsigned int _id = GetMsgId();
-	String str = comment + " id=" + String(_id) + "; ";
-	str = str + GetCmdTitle(_data_buffer[DATA_CMD]) + "; ";
-	str = str + String(_data_buffer[DATA_PIN]) + "; ";
-	str = str + String(_data_buffer[DATA_VALUE]);
-	Log(str);
-	}
+	
 // ------------------------------------
 char* ShomCanBus::GetCmdTitle(CanBusCmd cmd)
 	{
@@ -177,7 +174,7 @@ unsigned int ShomCanBus::SendCmd(unsigned int id, CanBusCmd cmd, byte pin, byte 
 		SetDataByte(DATA_PIN, pin);
 		SetDataByte(DATA_VALUE, value);
 		Send();
-		//LogData();
+		//LogData("SendCmd");
 		return id;
 	}
 
@@ -189,8 +186,14 @@ CanBusState	ShomCanBus::GetResponse(unsigned int id, byte pin)
 	for (i=0; i < RESPONSE_TRY_CNT; i++)
 		{
 		byte len = Receive();
-		//Log("i=" + String(i) + " len=" + String(len));
-		//LogData();
+		/*
+		Log::BufClear();
+		Log::BufCat("i=");
+		Log::BufCat(i);
+		Log::BufCat(" len=");
+		Log::BufCat(len);
+		Log::BufPrint();
+		*/
 		if(len > 0)
 			{
 			if (len == DATA_LENGHT)
@@ -208,31 +211,53 @@ CanBusState	ShomCanBus::GetResponse(unsigned int id, byte pin)
 							res = CBS_HIGH;
 						else 
 							{
-							SetErrState(KS_ERR501, _errMsg(pin, "Wrong data", data));
+							Log(pin, "Wrong data", data);
+							SetErrState(KS_ERR501);
 							}
 						}
 					else
-						SetErrState(KS_ERR503, _errMsg(pin, "Wrong cmd", cmd));
+						{
+						Log(pin, "Wrong cmd", cmd);
+						SetErrState(KS_ERR503);
+						}
 	                
 					if(res == CBS_HIGH || res == CBS_LOW)
 						break;
 					}
 				else
-					SetErrState(KS_ERR506, _errMsg(pin, ("id expected " + String(id)), _id));
+					{
+					Log::BufClear();
+					Log::BufCat("id expected=");
+					Log::BufCat(id);
+					Log::BufCat(", recieved=");
+					Log::BufCat(_id);
+					Log::BufPrint();
+					SetErrState(KS_ERR504);
+					}
 				}
 			else
-				SetErrState(KS_ERR504, _errMsg(pin, "Wrong data lenght", len));
+				{
+				Log(pin, "Wrong data lenght", len);
+				SetErrState(KS_ERR504);
+				}
             }
 		delay(RESPONSE_DELAY);
 		}
+
+	//LogData("GetResponse");
+
 	if(_state == CBS_ERR)
 		{
-		SetErrState(KS_ERR505, _errMsg(pin, "No data received", 0));
+		Log(pin, "No data received", 0);
+		SetErrState(KS_ERR505);
 		_ConnectionOK = false;
 		}
 	else if (i > 0) 
 		{
-		Log("not received. i=" + String(RESPONSE_TRY_CNT));
+		Log::BufClear();
+		Log::BufCat("not received. i=");
+		Log::BufCat(i);
+		Log::BufPrint();
 		}
 	return res;
 	}
@@ -261,11 +286,28 @@ void ShomCanBus::ResponseDelay()
 	}
 
 // ------------------------------------
-String ShomCanBus::_errMsg(byte pin, String txt, byte data)
+void ShomCanBus::Log(char* str)
 	{
-	String msg = "Error: Pin=" + String(pin) +"; ";
-	msg = msg + txt + " : " + String(data);
-	return msg;
+	Log::BufClear();
+	Log::BufCat(_title);
+	Log::BufCat(" ");
+	Log::BufCat(str);
+	Log::BufPrint();
+	}
+
+// ------------------------------------
+void ShomCanBus::Log(byte pin, char* txt, byte data)
+	{
+	Log::BufClear();
+	Log::BufCat(_title);
+	Log::BufCat(" ");
+	Log::BufCat("Pin=");
+	Log::BufCat(pin);
+	Log::BufCat(" ");
+	Log::BufCat(txt);
+	Log::BufCat(" : ");
+	Log::BufCat(data);
+	Log::BufPrint();
 	}
 
 // ------------------------------------
@@ -273,4 +315,4 @@ bool ShomCanBus::ConnectionOK()
 	{
 	return _state != CBS_ERR;;
 	}
-	*/
+	

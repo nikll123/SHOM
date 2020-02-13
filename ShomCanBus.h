@@ -51,10 +51,8 @@ CAN-BUS module driver.
 						ShomCanBus();
 						ShomCanBus(char* title, byte canbus_id, byte pin_ss);
 		MCP_CAN     	canbus;
-		//void 			Log(String str);
 		void 			Init();
-		//void			SetErrState(UnitError err);
-		void 			SetErrState(UnitError err, char* msg);
+		void			SetErrState(UnitError err);
 		void			Send();
 		unsigned int	SendCmd(CanBusCmd cmd, byte pin);
 		unsigned int	SendCmd(CanBusCmd cmd, byte pin, byte value);
@@ -71,8 +69,9 @@ CAN-BUS module driver.
 		unsigned int 	GetMsgId();
 		unsigned int 	NewMsgId();
 		void 			ResetData();
-		void			LogData();
-		void			LogData(String comment);
+		void			Log(char* str);
+		void			Log(byte pin, char* txt, byte data);
+		void			LogData(char* comment);
 		void			LogInfo();
 		char*			GetCmdTitle(CanBusCmd cmd);
 								
@@ -83,7 +82,6 @@ CAN-BUS module driver.
 		byte 			_canbus_pin_ss;
 		unsigned int 	_msgId;
 		char*			_title;
-		char*			_errMsg(byte pin, String txt, byte data);
 		CanBusState 	_state = CBS_UNKNOWN;
 		byte 			_data_buffer[DATA_LENGHT];
 		bool			_ConnectionOK;
