@@ -20,7 +20,6 @@ static void Log::BufCat(char *str)
 		s[i]= '\0';
 		}
 	strcat(_logBuffer, s);
-	delete [] s;
 	}
 	
 //------------------------------
@@ -28,8 +27,7 @@ static void Log::BufCat(int x)
 	{
 	char s[5];
 	itoa(x, s, 10);
-	strcat(_logBuffer, s);
-	delete [] s;
+	BufCat(s);
 	}
 
 //------------------------------
@@ -38,7 +36,6 @@ static void Log::BufCat(byte x)
 	char s[3];
 	itoa(x, s, 10);
 	strcat(_logBuffer, s);
-	delete [] s;
 	}
 
 //------------------------------
@@ -47,7 +44,14 @@ static void Log::BufCat(unsigned int x)
 	char s[5];
 	itoa(x, s, 10);
 	strcat(_logBuffer, s);
-	delete [] s;
+	}
+
+//------------------------------
+static void Log::BufCat(UnitError x)
+	{
+	char s[5];
+	itoa(x, s, 10);
+	strcat(_logBuffer, s);
 	}
 
 //------------------------------
