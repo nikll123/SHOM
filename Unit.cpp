@@ -8,13 +8,13 @@ Unit::Unit()
 	_type = UT_NONE;
 	}
 
-Unit::Unit(String title, UnitType type)
+Unit::Unit(const char *title, UnitType type)
 	{
 	_title = title;
 	_type = type;
 	}
 
-//------------------------------
+/*//------------------------------
 static void Unit::LogTextLn(String txt)
 	{
 	LogText(txt);
@@ -47,11 +47,11 @@ void Unit::Log(String str, byte ll)
 		LogTextLn(str);
 		}
 	}
-	
+*/	
 //------------------------------
 void Unit::LogErr(UnitError err)
 	{
-	String pref; 
+	char *pref; 
 	if (100 < err && err < 200)
 		pref = "CS";
 	else if (200 < err && err < 300)
@@ -65,9 +65,10 @@ void Unit::LogErr(UnitError err)
 	else
 		pref = "Unknown";
 		
-	LogTextLn("   Error! " + _title + " " + pref + "_ERR" + String(err));
+	Log_("   Error! ",  _title, " ", pref, "_ERR ");
+	LogInt(err);
 	}	
-
+/*
 //------------------------------
 UnitInfo Unit::GetInfo()
 	{
@@ -81,8 +82,8 @@ UnitInfo Unit::GetInfo()
 void Unit::LogInfo()
 	{
 	UnitInfo ui = GetInfo();
-	LogTextLn(ui.Title);
-	LogTextLn(ui.UnitType);
+//	LogTextLn(ui.Title);
+//	LogTextLn(ui.UnitType);
 	}
 
 //------------------------------
@@ -121,3 +122,4 @@ unsigned long Unit::Time(TimeAct ta)
 	return res;
 	}
  
+*/

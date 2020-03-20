@@ -191,7 +191,7 @@ void _log(const char *s1, const char *s2, const char *s3, const char *s4, const 
 	_log(s6, s7, s8, s9, s10, ln);
 }
 
-/*
+
 //------------------------------
 const char *errPrefix(UnitError err)
 {
@@ -210,7 +210,7 @@ const char *errPrefix(UnitError err)
 		return "SL";
 	else
 		return "Unknown";
-}*/
+}
 
 //------------------------------
 void _logInt(int x, bool ln)
@@ -235,9 +235,9 @@ void LogInt_(int x)
 	_logInt(x, false);
 }
 
-
 //------------------------------
 void LogIndent()
 {
 	_log("    ", false);
 }
+

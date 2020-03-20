@@ -7,7 +7,6 @@ Log stuff
     #define _logBUFFER_LENGHT 100
 
 	//-------------------------------
-    /*
 	enum UnitError {
 					// Contactor
 					CS_ERR101		= 101,
@@ -73,7 +72,7 @@ Log stuff
 					SL_ERR603		= 603,
 					SL_ERR604		= 604,
 					SL_ERR605		= 605,
-					};	*/
+					};
 
 void Log(const char *s1);
 void Log(const char *s1, const char *s2);
@@ -111,7 +110,7 @@ void _log(const char *s1, const char *s2, const char *s3, const char *s4, const 
 void _log(const char *s1, const char *s2, const char *s3, const char *s4, const char *s5, const char *s6, const char *s7, const char *s8, const char *s9, const char *s10, bool ln);
 
 
-//const char *errPrefix(UnitError err); 
+const char *errPrefix(UnitError err); 
 void _logInt(int x, bool ln);
 void LogInt(int x);
 void LogInt_(int x);
