@@ -3,113 +3,67 @@
 
 // =========   CONSTRUCTORS   =========
 Unit::Unit()
-	{
+{
 	_title = "DummyUnit";
 	_type = UT_NONE;
-	}
+}
 
 Unit::Unit(const char *title, UnitType type)
-	{
+{
 	_title = title;
 	_type = type;
-	}
+}
 
-/*//------------------------------
-static void Unit::LogTextLn(String txt)
-	{
-	LogText(txt);
-	LogLn();
-	}
-	
-//------------------------------
-static void Unit::LogText(String txt)
-	{
-	Serial.print(txt);
-	}
-
-//------------------------------
-static void Unit::LogLn()
-	{
-	Serial.println("");
-	}
-
-//------------------------------
-void Unit::Log(String str)
-	{
-	Log(str, _logLevel);
-	}
-//------------------------------
-void Unit::Log(String str, byte ll)
-	{
-	if (LOGLEVEL >= ll)
-		{ 
-		str = _title + " : " + str;
-		LogTextLn(str);
-		}
-	}
-*/	
 //------------------------------
 void Unit::LogErr(UnitError err)
-	{
-	char *pref; 
-	if (100 < err && err < 200)
-		pref = "CS";
-	else if (200 < err && err < 300)
-		pref = "US";
-	else if (300 < err && err < 400)
-		pref = "SS";
-	else if (400 < err && err < 500)
-		pref = "CBS";
-	else if (500 < err && err < 600)
-		pref = "KS";
-	else
-		pref = "Unknown";
-		
-	Log_("   Error! ",  _title, " ", pref, "_ERR ");
+{
+	const char *pref = errPrefix(err);
+	Log_("   Error! ", _title, " ", pref, "_ERR");
 	LogInt(err);
-	}	
-/*
-//------------------------------
-UnitInfo Unit::GetInfo()
-	{
-	return	{
-			_title,
-			UnitTypeText()
-			};
-	}
+}
 
 //------------------------------
 void Unit::LogInfo()
-	{
-	UnitInfo ui = GetInfo();
-//	LogTextLn(ui.Title);
-//	LogTextLn(ui.UnitType);
-	}
+{
+	Log(_title, " ", UnitTypeText());
+}
 
 //------------------------------
-String Unit::UnitTypeText()
-	{
+char *Unit::UnitTypeText()
+{
 	switch (_type)
-		{
-		case UT_NONE 			: return "NONE";
-		case UT_LED         	: return "LED";
-		case UT_PIN         	: return "PIN";
-		case UT_PININ			: return "PININ";
-		case UT_PINOUT			: return "PINOUT";
-		case UT_BUTTONLED		: return "BUTTONLED";
-		case UT_SYSTEM 			: return "SYSTEM";
-		case UT_CONTACTOR 		: return "CONTACTOR";
-		case UT_CONVEYOR 		: return "CONVEYOR";
-		case UT_CONVEYORHANDLER	: return "CONVEYORHANDLER";
-		case UT_CANBUS 			: return "CANBUS";
-		default			    	: return "UnitTypeText: unknown-" + String(_type);
-		}
+	{
+	case UT_NONE:
+		return "NONE";
+	case UT_LED:
+		return "LED";
+	case UT_PIN:
+		return "PIN";
+	case UT_PININ:
+		return "PININ";
+	case UT_PINOUT:
+		return "PINOUT";
+	case UT_BUTTONLED:
+		return "BUTTONLED";
+	case UT_SYSTEM:
+		return "SYSTEM";
+	case UT_CONTACTOR:
+		return "CONTACTOR";
+	case UT_CONVEYOR:
+		return "CONVEYOR";
+	case UT_CONVEYORHANDLER:
+		return "CONVEYORHANDLER";
+	case UT_CANBUS:
+		return "CANBUS";
+	default:
+		return "UnitTypeText: unknown";
 	}
+}
 
 // ------------------------------------
 unsigned long Unit::Time(TimeAct ta)
-	{
-	unsigned long res = 0; 
+{
+	unsigned long res = 0;
 	if (ta == TA_FIX)
 		_millsCheck = millis();
 	else if (ta == TA_GET)
@@ -117,9 +71,7 @@ unsigned long Unit::Time(TimeAct ta)
 	else if (ta == TA_RESET)
 		_millsCheck = 0;
 	else if (ta == TA_PERIOD)
-	    res = millis() - _millsCheck;
-	    
+		res = millis() - _millsCheck;
+
 	return res;
-	}
- 
-*/
+}
