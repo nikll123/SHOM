@@ -12,6 +12,7 @@ The most common andgeneral functionality is implemented here
 
 	#define RELAY_DELAY	50 // --10
 
+	/*
 	#define LL_NONE		0
 	#define LL_HIGH		1
 	#define LL_NORMAL	2
@@ -23,6 +24,7 @@ The most common andgeneral functionality is implemented here
 	#endif
 
 	#define PortMonitorLog 1
+	*/
 
 	//-------------------------------
 	enum UnitType  {UT_NONE,
@@ -69,7 +71,7 @@ The most common andgeneral functionality is implemented here
 	protected:
 		const char 		*_title;
 		UnitType		_type;
-		byte			_logLevel = LL_NORMAL;
+		//byte			_logLevel = LL_NORMAL;
 		unsigned long 	_millsCheck = 0;
 
 	private: 
