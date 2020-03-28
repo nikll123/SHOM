@@ -42,8 +42,7 @@ void ShomCanBus::Init()
 				break;
 			else
 			{
-				char msg[100] = "hello\n";
-				//-------------------SetErrState(CBS_ERR401, &msg[0]);
+				SetErrState(CBS_ERR401);
 			}
 
 			delay(100);
@@ -57,13 +56,13 @@ void ShomCanBus::Init()
 		}
 		else
 		{
-			//SetErrState(CBS_ERR402, "Init fail");
+			SetErrState(CBS_ERR402, "Init fail");
 		}
 	}
 }
 
 // ------------------------------------
-void ShomCanBus::SetErrState(UnitError err, byte pin, const char * txt, byte data)
+void ShomCanBus::SetErrState(UnitError err, byte pin, const char *txt, byte data)
 {
 	char msg[STRMAXLEN] = "";
 	strncpy(msg, "Error: Pin=", STRMAXLEN);
@@ -83,17 +82,17 @@ void ShomCanBus::SetErrState(UnitError err, byte pin, const char * txt, byte dat
 }
 
 // ------------------------------------
-void ShomCanBus::SetErrState(UnitError err, const char * txt)
-	{
+void ShomCanBus::SetErrState(UnitError err, const char *txt)
+{
 	Log(txt);
 	SetErrState(err);
-	}
+}
 
 // ------------------------------------
 void ShomCanBus::SetErrState(UnitError err)
-	{
+{
 	LogErr(err);
-	}
+}
 
 // ------------------------------------
 void ShomCanBus::Send()
@@ -243,26 +242,29 @@ CanBusState ShomCanBus::GetResponse(unsigned int id, byte pin)
 					}
 					else
 					{
-						//SetErrState(KS_ERR503, _errMsg(pin, "Wrong cmd", cmd));
+						SetErrState(KS_ERR503, pin, "Wrong command", cmd);
 					}
 					if (res == CBS_HIGH || res == CBS_LOW)
 						break;
 				}
 				else
 				{
-					//SetErrState(KS_ERR506, _errMsg(pin, ("id expected " + String(id)), _id));
+					char txt[STRMAXLEN] = "id expected ";
+					char cx[6] = "";
+					strcpy(txt, itoa(id, cx, 10));
+					SetErrState(KS_ERR506, pin, txt, _id);
 				}
 			}
 			else
 			{
-				//SetErrState(KS_ERR504, _errMsg(pin, "Wrong data lenght", len));
+				SetErrState(KS_ERR504, pin, "Wrong data lenght", len);
 			}
 		}
 		delay(RESPONSE_DELAY);
 	}
 	if (_state == CBS_ERR)
 	{
-		//SetErrState(KS_ERR505, _errMsg(pin, "No data received", 0));
+		SetErrState(KS_ERR505, pin, "No data received", 0);
 		_ConnectionOK = false;
 	}
 	else if (i > 0)
