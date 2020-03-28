@@ -75,44 +75,50 @@ enum UnitError
 	SL_ERR605 = 605,
 };
 
+void Log(char *s1);
 void Log(const char *s1);
-void Log(const char *s1, const char *s2);
-void Log(const char *s1, const char *s2, const char *s3);
-void Log(const char *s1, const char *s2, const char *s3, const char *s4);
-void Log(const char *s1, const char *s2, const char *s3, const char *s4, const char *s5);
-void Log(const char *s1, const char *s2, const char *s3, const char *s4, const char *s5, const char *s6);
-void Log(const char *s1, const char *s2, const char *s3, const char *s4, const char *s5, const char *s6, const char *s7);
-void Log(const char *s1, const char *s2, const char *s3, const char *s4, const char *s5, const char *s6, const char *s7, const char *s8);
-void Log(const char *s1, const char *s2, const char *s3, const char *s4, const char *s5, const char *s6, const char *s7, const char *s8, const char *s9);
-void Log(const char *s1, const char *s2, const char *s3, const char *s4, const char *s5, const char *s6, const char *s7, const char *s8, const char *s9, const char *s10);
 
+/*void Log(char *s1, char *s2);
+void Log(char *s1, char *s2, char *s3);
+void Log(char *s1, char *s2, char *s3, char *s4);
+void Log(char *s1, char *s2, char *s3, char *s4, char *s5);
+void Log(char *s1, char *s2, char *s3, char *s4, char *s5, char *s6);
+void Log(char *s1, char *s2, char *s3, char *s4, char *s5, char *s6, char *s7);
+void Log(char *s1, char *s2, char *s3, char *s4, char *s5, char *s6, char *s7, char *s8);
+void Log(char *s1, char *s2, char *s3, char *s4, char *s5, char *s6, char *s7, char *s8, char *s9);
+void Log(char *s1, char *s2, char *s3, char *s4, char *s5, char *s6, char *s7, char *s8, char *s9, char *s10);
+*/
+void Log_(char *s1);
 void Log_(const char *s1);
-void Log_(const char *s1, const char *s2);
-void Log_(const char *s1, const char *s2, const char *s3);
-void Log_(const char *s1, const char *s2, const char *s3, const char *s4);
-void Log_(const char *s1, const char *s2, const char *s3, const char *s4, const char *s5);
-void Log_(const char *s1, const char *s2, const char *s3, const char *s4, const char *s5, const char *s6);
-void Log_(const char *s1, const char *s2, const char *s3, const char *s4, const char *s5, const char *s6, const char *s7);
-void Log_(const char *s1, const char *s2, const char *s3, const char *s4, const char *s5, const char *s6, const char *s7, const char *s8);
-void Log_(const char *s1, const char *s2, const char *s3, const char *s4, const char *s5, const char *s6, const char *s7, const char *s8, const char *s9);
-void Log_(const char *s1, const char *s2, const char *s3, const char *s4, const char *s5, const char *s6, const char *s7, const char *s8, const char *s9, const char *s10);
+/*void Log_(char *s1, char *s2);
+void Log_(char *s1, char *s2, char *s3);
+void Log_(char *s1, char *s2, char *s3, char *s4);
+void Log_(char *s1, char *s2, char *s3, char *s4, char *s5);
+void Log_(char *s1, char *s2, char *s3, char *s4, char *s5, char *s6);
+void Log_(char *s1, char *s2, char *s3, char *s4, char *s5, char *s6, char *s7);
+void Log_(char *s1, char *s2, char *s3, char *s4, char *s5, char *s6, char *s7, char *s8);
+void Log_(char *s1, char *s2, char *s3, char *s4, char *s5, char *s6, char *s7, char *s8, char *s9);
+void Log_(char *s1, char *s2, char *s3, char *s4, char *s5, char *s6, char *s7, char *s8, char *s9, char *s10);
+*/
+void _log(char *s1, bool ln);
+/*void _log(char *s1, char *s2, bool ln);
+void _log(char *s1, char *s2, char *s3, bool ln);
+void _log(char *s1, char *s2, char *s3, char *s4, bool ln);
+void _log(char *s1, char *s2, char *s3, char *s4, char *s5, bool ln);
+void _log(char *s1, char *s2, char *s3, char *s4, char *s5, char *s6, bool ln);
+void _log(char *s1, char *s2, char *s3, char *s4, char *s5, char *s6, char *s7, bool ln);
+void _log(char *s1, char *s2, char *s3, char *s4, char *s5, char *s6, char *s7, char *s8, bool ln);
+void _log(char *s1, char *s2, char *s3, char *s4, char *s5, char *s6, char *s7, char *s8, char *s9, bool ln);
+void _log(char *s1, char *s2, char *s3, char *s4, char *s5, char *s6, char *s7, char *s8, char *s9, char *s10, bool ln);
+*/
+const char *errPrefix(UnitError err, char *buf);
 
-void _log(const char *s1, bool ln);
-void _log(const char *s1, const char *s2, bool ln);
-void _log(const char *s1, const char *s2, const char *s3, bool ln);
-void _log(const char *s1, const char *s2, const char *s3, const char *s4, bool ln);
-void _log(const char *s1, const char *s2, const char *s3, const char *s4, const char *s5, bool ln);
-void _log(const char *s1, const char *s2, const char *s3, const char *s4, const char *s5, const char *s6, bool ln);
-void _log(const char *s1, const char *s2, const char *s3, const char *s4, const char *s5, const char *s6, const char *s7, bool ln);
-void _log(const char *s1, const char *s2, const char *s3, const char *s4, const char *s5, const char *s6, const char *s7, const char *s8, bool ln);
-void _log(const char *s1, const char *s2, const char *s3, const char *s4, const char *s5, const char *s6, const char *s7, const char *s8, const char *s9, bool ln);
-void _log(const char *s1, const char *s2, const char *s3, const char *s4, const char *s5, const char *s6, const char *s7, const char *s8, const char *s9, const char *s10, bool ln);
-
-const char *errPrefix(UnitError err);
 void _logInt(unsigned int x, bool ln);
 void LogInt(unsigned int x);
 void LogInt_(unsigned int x);
 void LogIndent_();
+
 char* strcatShom(char *dest, char *src);
+char *strcatShom(char *dest, const char *txt);
 
 #endif

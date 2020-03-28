@@ -17,8 +17,13 @@ Unit::Unit(const char *title, UnitType type)
 //------------------------------
 void Unit::LogErr(UnitError err)
 {
-	const char *pref = errPrefix(err);
-	Log_("   Error! ", _title, " ", pref, "_ERR");
+	char pref[STRMAXLEN] ="";
+	errPrefix(err, pref);
+	Log_("   Error! ");
+	Log_(_title);
+	Log_(" ");
+	Log_(pref);
+	Log_("_ERR");
 	LogInt(err);
 }
 
@@ -26,7 +31,9 @@ void Unit::LogErr(UnitError err)
 void Unit::LogInfo()
 {
 	char buf[STRMAXLEN];
-	Log(_title, " ", UnitTypeText(buf));
+	Log_(_title);
+	Log_(" ");
+	Log(UnitTypeText(buf));
 }
 
 //------------------------------
