@@ -78,39 +78,11 @@ enum UnitError
 void Log(char *s1);
 void Log(const char *s1);
 
-/*void Log(char *s1, char *s2);
-void Log(char *s1, char *s2, char *s3);
-void Log(char *s1, char *s2, char *s3, char *s4);
-void Log(char *s1, char *s2, char *s3, char *s4, char *s5);
-void Log(char *s1, char *s2, char *s3, char *s4, char *s5, char *s6);
-void Log(char *s1, char *s2, char *s3, char *s4, char *s5, char *s6, char *s7);
-void Log(char *s1, char *s2, char *s3, char *s4, char *s5, char *s6, char *s7, char *s8);
-void Log(char *s1, char *s2, char *s3, char *s4, char *s5, char *s6, char *s7, char *s8, char *s9);
-void Log(char *s1, char *s2, char *s3, char *s4, char *s5, char *s6, char *s7, char *s8, char *s9, char *s10);
-*/
 void Log_(char *s1);
 void Log_(const char *s1);
-/*void Log_(char *s1, char *s2);
-void Log_(char *s1, char *s2, char *s3);
-void Log_(char *s1, char *s2, char *s3, char *s4);
-void Log_(char *s1, char *s2, char *s3, char *s4, char *s5);
-void Log_(char *s1, char *s2, char *s3, char *s4, char *s5, char *s6);
-void Log_(char *s1, char *s2, char *s3, char *s4, char *s5, char *s6, char *s7);
-void Log_(char *s1, char *s2, char *s3, char *s4, char *s5, char *s6, char *s7, char *s8);
-void Log_(char *s1, char *s2, char *s3, char *s4, char *s5, char *s6, char *s7, char *s8, char *s9);
-void Log_(char *s1, char *s2, char *s3, char *s4, char *s5, char *s6, char *s7, char *s8, char *s9, char *s10);
-*/
+
 void _log(char *s1, bool ln);
-/*void _log(char *s1, char *s2, bool ln);
-void _log(char *s1, char *s2, char *s3, bool ln);
-void _log(char *s1, char *s2, char *s3, char *s4, bool ln);
-void _log(char *s1, char *s2, char *s3, char *s4, char *s5, bool ln);
-void _log(char *s1, char *s2, char *s3, char *s4, char *s5, char *s6, bool ln);
-void _log(char *s1, char *s2, char *s3, char *s4, char *s5, char *s6, char *s7, bool ln);
-void _log(char *s1, char *s2, char *s3, char *s4, char *s5, char *s6, char *s7, char *s8, bool ln);
-void _log(char *s1, char *s2, char *s3, char *s4, char *s5, char *s6, char *s7, char *s8, char *s9, bool ln);
-void _log(char *s1, char *s2, char *s3, char *s4, char *s5, char *s6, char *s7, char *s8, char *s9, char *s10, bool ln);
-*/
+
 const char *errPrefix(UnitError err, char *buf);
 
 void _logInt(unsigned int x, bool ln);
