@@ -113,7 +113,6 @@ void _logInt(int x, bool ln);
 void LogInt(int x);
 void LogInt_(int x);
 void LogIndent_();
-char *strcat(char *dest, char *src);
-void concat(char MyArray1[STRMAXLEN], char add[STRMAXLEN]);
+char* strcatShom(char *dest, char *src);
 
 #endif

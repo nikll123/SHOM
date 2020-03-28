@@ -12,22 +12,8 @@ The most common andgeneral functionality is implemented here
 
 	#define RELAY_DELAY	50 // --10
 
-	/*
-	#define LL_NONE		0
-	#define LL_HIGH		1
-	#define LL_NORMAL	2
-	#define LL_LOW		3
-
-    #ifndef LOGLEVEL
-//		#define LOGLEVEL LL_HIGH
-		#define LOGLEVEL LL_NORMAL
-	#endif
-
-	#define PortMonitorLog 1
-	*/
-
 	//-------------------------------
-	enum UnitType  {UT_NONE,
+	enum UnitType  {UT_NONE = 1,
 					UT_PIN,
 					UT_PININ,
 					UT_PINOUT,
@@ -66,12 +52,11 @@ The most common andgeneral functionality is implemented here
 		unsigned long	Time(TimeAct ta);
 		
 		UnitInfo 		GetInfo();
-		char[STRMAXLEN] UnitTypeText();
+		UnitType		_type;
+		const char *	UnitTypeText(const char *);
 
 	protected:
 		const char 		*_title;
-		UnitType		_type;
-		//byte			_logLevel = LL_NORMAL;
 		unsigned long 	_millsCheck = 0;
 
 	private: 

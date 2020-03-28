@@ -242,15 +242,16 @@ void LogIndent_()
 }
 
 //------------------------------
-void concat(char s1[STRMAXLEN], char s2[STRMAXLEN])
+char* strcatShom(char *dest, char *txt)
 {
-  int len = STRMAXLEN - 1 - strlen(s1);
-  strncat(s1, s2, len);
-  if (strlen(s2) > len)
+  int len = STRMAXLEN - 1 - strlen(dest);
+  strncat(dest, txt, len);
+  if (strlen(txt) > len)
   {
-    s1[STRMAXLEN] = '\0';
-    s1[STRMAXLEN-1] = '.';
-    s1[STRMAXLEN-2] = '.';
-    s1[STRMAXLEN-3] = '.';
+    dest[STRMAXLEN] = '\0';
+    dest[STRMAXLEN-1] = '.';
+    dest[STRMAXLEN-2] = '.';
+    dest[STRMAXLEN-3] = '.';
   }
+  return dest;
 }
