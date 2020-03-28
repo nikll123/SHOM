@@ -52,6 +52,8 @@ CAN-BUS module driver.
 						ShomCanBus(const char* title, byte canbus_id, byte pin_ss);
 		MCP_CAN     	canbus;
 		void 			Init();
+		void 			Setup(const char *title, byte canbus_id, byte pin_ss);
+
 		void			SetErrState(UnitError err);
 		void 			SetErrState(UnitError err, const char * txt);
 		void 			SetErrState(UnitError err, byte pin, const char * txt, byte data);

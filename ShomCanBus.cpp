@@ -8,9 +8,7 @@ ShomCanBus::ShomCanBus()
 
 ShomCanBus::ShomCanBus(const char *title, byte canbus_id, byte pin_ss) : Unit(title, UT_CANBUS)
 {
-	_canbus_pin_ss = pin_ss;
-	_canbus_id = canbus_id;
-	_title = title;
+	Setup(title, canbus_id, pin_ss);
 }
 
 // ------------------------------------
@@ -23,6 +21,13 @@ void ShomCanBus::LogInfo()
 	LogInt_(_canbus_id);
 	Log_("; pin SS=");
 	LogInt(_canbus_pin_ss);
+}
+
+void ShomCanBus::Setup(const char *title, byte canbus_id, byte pin_ss)
+{
+	_canbus_pin_ss = pin_ss;
+	_canbus_id = canbus_id;
+	_title = title;
 }
 
 // ------------------------------------
