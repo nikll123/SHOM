@@ -76,8 +76,6 @@ CAN-BUS module driver.
 		void			LogData(const char * comment);
 		void			LogInfo();
 		const char*		GetCmdTitle(CanBusCmd cmd);
-		//void 			_errMsg(byte pin, const char* txt, byte data, char retstr[100]);
-		//char * 			_errMsg(byte pin, char * txt, byte data, char * retstr);
 								
 	protected:
 

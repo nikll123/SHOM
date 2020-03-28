@@ -291,52 +291,16 @@ unsigned int ShomCanBus::GetMsgId()
 	}
 	return res;
 }
-/*	
+	
 // ------------------------------------
 void ShomCanBus::ResponseDelay()
 	{
 	delay(RESPONSE_DELAY);
 	}
-*/
 
-/*char *ShomCanBus::_errMsg(byte pin, char *txt, byte data, char *retstr)
-{
-	strncpy(retstr, "Error: Pin=", STRMAXLEN);
-	char p[4];
-	itoa((int)pin, p, 10);
-	strcatShom(retstr, p);
-	strcatShom(retstr, "; ");
-	strcatShom(retstr, txt);
-	strcatShom(retstr, " : ");
-	itoa((int)data, p, 10);
-	strcatShom(retstr, p);
-	return retstr;
-}
-
-// ------------------------------------
-void ShomCanBus::_errMsg(byte pin, const char *txt, byte data, char *retstr)
-{
-	strcpy(retstr, "Error: Pin=");
-	char * p;
-	itoa((int)pin, p, 10);
-	const char *p1 = 'p';
-  
-  Serial.print(">>> ");
-  Serial.println(p);
-  Serial.println(p1);
-
-	strcat(retstr, p1);
-	strcat(retstr, "; ");
-	strcat(retstr, txt);
-	strcat(retstr, " : ");
-	itoa((int)data, p, 10);
-	p1 = p;
-	strcat(retstr, p1);
-}*/
-/*
 // ------------------------------------
 bool ShomCanBus::ConnectionOK()
 	{
 	return _state != CBS_ERR;;
 	}
-	*/
+	
