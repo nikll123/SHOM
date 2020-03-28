@@ -53,7 +53,7 @@ The most common andgeneral functionality is implemented here
 		
 		UnitInfo 		GetInfo();
 		UnitType		_type;
-		const char *	UnitTypeText(const char *);
+		const char *	UnitTypeText();
 
 	protected:
 		const char 		*_title;

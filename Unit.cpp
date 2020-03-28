@@ -30,54 +30,42 @@ void Unit::LogErr(UnitError err)
 //------------------------------
 void Unit::LogInfo()
 {
-	char buf[STRMAXLEN];
 	Log_(_title);
 	Log_(" ");
-	Log(UnitTypeText(buf));
+	Log(UnitTypeText());
 }
 
 //------------------------------
-const char *Unit::UnitTypeText(const char *buf)
+const char *Unit::UnitTypeText()
 {
 	switch (_type)
 	{
 	case UT_NONE:
-		buf = "NONE";
-		break;
+		return "NONE";
 	case UT_LED:
-		buf = "LED";
-		break;
+		return "LED";
 	case UT_PIN:
-		buf = "PIN";
-		break;
+		return "PIN";
 	case UT_PININ:
-		buf = "PININ";
-		break;
+		return "PININ";
 	case UT_PINOUT:
-		buf = "PINOUT";
-		break;
+		return "PINOUT";
 	case UT_BUTTONLED:
-		buf = "BUTTONLED";
-		break;
+		return "BUTTONLED";
 	case UT_SYSTEM:
-		buf = "SYSTEM";
-		break;
+		return "SYSTEM";
 	case UT_CONTACTOR:
-		buf = "CONTACTOR";
-		break;
+		return "CONTACTOR";
 	case UT_CONVEYOR:
-		buf = "CONVEYOR";
-		break;
+		return "CONVEYOR";
 	case UT_CONVEYORHANDLER:
-		buf = "CONVEYORHANDLER";
-		break;
+		return "CONVEYORHANDLER";
 	case UT_CANBUS:
-		buf = "CANBUS";
-		break;
+		return "CANBUS";
 	default:
-		buf = "UnitTypeText: unknown";
+		return "UnitTypeText: unknown";
 	}
-	return buf;
+	
 }
 
 // ------------------------------------
