@@ -67,7 +67,7 @@ void Pin::LogStates(PinState2 ps2)
 	}*/
 
 //------------------------------
-const char * Pin::StateText()
+const char *Pin::StateText()
 {
 	return Pin::PinStateText(_state);
 }
@@ -157,15 +157,21 @@ void Pin::ShomPinMode(byte pinmode)
 //------------------------------
 void Pin::LogInfo()
 {
+	_logInfo();
+	Log("");
+}
+//------------------------------
+void Pin::_logInfo()
+{
 	Log_(_title);
 	Log_(": ");
-	Log(UnitTypeText());
+	Log_(UnitTypeText());
 	Log_(", ");
-	Log(PinModeText());
+	Log_(PinModeText());
 	Log_(", ");
-	Log(StateText());
+	Log_(StateText());
 	Log_(", ");
-	LogInt(_pin);
+	LogInt_(_pin);
 }
 
 //------------------------------
@@ -182,7 +188,7 @@ const char *Pin::PinModeText()
 }
 
 //------------------------------
-String Pin::LogicTypeText()
+ const char *Pin::LogicTypeText()
 {
 	switch (_logicType)
 	{
@@ -193,7 +199,7 @@ String Pin::LogicTypeText()
 	case LT_INVERSE:
 		return "INVERSE";
 	default:
-		return "LogicTypeText: unknown-" + String(_logicType);
+		return "LogicTypeText: unknown";
 	}
 }
 
@@ -201,4 +207,16 @@ String Pin::LogicTypeText()
 void Pin::SetLogicType(LogicType logicType)
 {
 	_logicType = logicType;
+}
+
+//------------------------------
+void Pin::SetON()
+{
+	ShomPinWrite(true);
+}
+
+//------------------------------
+void Pin::SetOFF()
+{
+	ShomPinWrite(false);
 }
