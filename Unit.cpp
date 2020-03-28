@@ -29,7 +29,7 @@ void Unit::LogInfo()
 }
 
 //------------------------------
-char *Unit::UnitTypeText()
+char[STRMAXLEN]Unit::UnitTypeText()
 {
 	switch (_type)
 	{

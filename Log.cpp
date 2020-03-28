@@ -236,8 +236,21 @@ void LogInt_(int x)
 }
 
 //------------------------------
-void LogIndent()
+void LogIndent_()
 {
 	_log("    ", false);
 }
 
+//------------------------------
+void concat(char s1[STRMAXLEN], char s2[STRMAXLEN])
+{
+  int len = STRMAXLEN - 1 - strlen(s1);
+  strncat(s1, s2, len);
+  if (strlen(s2) > len)
+  {
+    s1[STRMAXLEN] = '\0';
+    s1[STRMAXLEN-1] = '.';
+    s1[STRMAXLEN-2] = '.';
+    s1[STRMAXLEN-3] = '.';
+  }
+}

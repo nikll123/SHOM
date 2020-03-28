@@ -66,7 +66,7 @@ The most common andgeneral functionality is implemented here
 		unsigned long	Time(TimeAct ta);
 		
 		UnitInfo 		GetInfo();
-		char *			UnitTypeText();
+		char[STRMAXLEN] UnitTypeText();
 
 	protected:
 		const char 		*_title;
