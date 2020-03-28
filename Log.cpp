@@ -191,7 +191,6 @@ void _log(const char *s1, const char *s2, const char *s3, const char *s4, const 
 	_log(s6, s7, s8, s9, s10, ln);
 }
 
-
 //------------------------------
 const char *errPrefix(UnitError err)
 {
@@ -213,24 +212,21 @@ const char *errPrefix(UnitError err)
 }
 
 //------------------------------
-void _logInt(int x, bool ln)
+void _logInt(unsigned int x, bool ln)
 {
-	char p[4] = "err";
-
-	if (0 <= x || x < 256)
-		itoa(x, p, 10);
-
+	char p[6] = "";
+	itoa(x, p, 10);
 	_log(p, ln);
 }
 
 //------------------------------
-void LogInt(int x)
+void LogInt(unsigned int x)
 {
 	_logInt(x, true);
 }
 
 //------------------------------
-void LogInt_(int x)
+void LogInt_(unsigned int x)
 {
 	_logInt(x, false);
 }
@@ -242,16 +238,16 @@ void LogIndent_()
 }
 
 //------------------------------
-char* strcatShom(char *dest, char *txt)
+char *strcatShom(char *dest, char *txt)
 {
-  int len = STRMAXLEN - 1 - strlen(dest);
-  strncat(dest, txt, len);
-  if (strlen(txt) > len)
-  {
-    dest[STRMAXLEN] = '\0';
-    dest[STRMAXLEN-1] = '.';
-    dest[STRMAXLEN-2] = '.';
-    dest[STRMAXLEN-3] = '.';
-  }
-  return dest;
+	int len = STRMAXLEN - 1 - strlen(dest);
+	strncat(dest, txt, len);
+	if (strlen(txt) > len)
+	{
+		dest[STRMAXLEN] = '\0';
+		dest[STRMAXLEN - 1] = '.';
+		dest[STRMAXLEN - 2] = '.';
+		dest[STRMAXLEN - 3] = '.';
+	}
+	return dest;
 }

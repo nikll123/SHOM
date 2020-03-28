@@ -109,9 +109,9 @@ void _log(const char *s1, const char *s2, const char *s3, const char *s4, const 
 void _log(const char *s1, const char *s2, const char *s3, const char *s4, const char *s5, const char *s6, const char *s7, const char *s8, const char *s9, const char *s10, bool ln);
 
 const char *errPrefix(UnitError err);
-void _logInt(int x, bool ln);
-void LogInt(int x);
-void LogInt_(int x);
+void _logInt(unsigned int x, bool ln);
+void LogInt(unsigned int x);
+void LogInt_(unsigned int x);
 void LogIndent_();
 char* strcatShom(char *dest, char *src);
 
