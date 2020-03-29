@@ -61,7 +61,6 @@ class Pin : public Unit
 public:
 	Pin();
 	Pin(const char *title, uint8_t pin, UnitType ut);
-	Pin(const char *title, const char *title2, uint8_t pin, UnitType ut);
 
 	PinInfo GetInfo();
 	PinState GetState();
@@ -91,7 +90,6 @@ public:
 
 protected:
 	uint8_t _pin;
-	const char *_title2;
 	PinState _state = KS_NONE;
 	uint8_t _pinmode;
 	LogicType _logicType;

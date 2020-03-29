@@ -6,16 +6,10 @@ Pin::Pin()
 }
 
 // ------------------------------------
-Pin::Pin(const char *title, uint8_t pin, UnitType ut) : Pin(title, "", pin, ut)
-{
-}
-
-// ------------------------------------
-Pin::Pin(const char *title, const char *title2, uint8_t pin, UnitType ut) : Unit(title, ut)
+Pin::Pin(const char *title, uint8_t pin, UnitType ut) : Unit(title, ut)
 {
 	_pin = pin;
 	_state = KS_NONE;
-	_title2 = title2;
 }
 
 ShomCanBus Pin::CanBus = ShomCanBus();
@@ -64,9 +58,10 @@ void Pin::SetState(PinState state, bool noLog)
 void Pin::LogStates(PinState2 ps2)
 {
 	Log_((char *)_title);
-	Log_(" ");
+	Log_((char *)_title2);
+	Log_(": ");
 	LogInt_(_pin);
-	Log_(", changed; ");
+	Log_("; ");
 	Log_(PinStateText(ps2.Old));
 	Log_(" -> ");
 	Log(PinStateText(ps2.New));
@@ -181,9 +176,8 @@ void Pin::LogInfo()
 void Pin::LogState()
 {
 	Log_(_title);
-	Log_(_title2);
+	Log_(": ");
 	LogInt_(_pin);
-	Log_(" ");
 	Log_(StateText());
 	Log("; ");
 }

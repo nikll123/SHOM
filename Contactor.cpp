@@ -15,13 +15,15 @@ Contactor::Contactor(const char *title, uint8_t pinIn, uint8_t pinOut) : Unit(ti
 	//char pinName[STRMAXLEN] = "";
 	//strcpy(pinName, title);
 	//strcatShom(pinName, "_KeyIn");
-	KeyIn = PinIn("_KeyIn", pinIn, LogicTypeIn);
+	KeyIn = PinIn(title, pinIn, LogicTypeIn);
+	KeyIn._title2 = "_KeyIn";
 	//KeyIn = PinIn(_title, "_KeyIn", pinIn, LogicTypeIn);
 
 	//char pinName1[STRMAXLEN] = "";
 	//strcpy(pinName1, title);
 	//strcatShom(pinName1, "_KeyOut");
-	KeyOut = PinOut("_KeyOut", pinOut, LogicTypeOut);
+	KeyOut = PinOut(title, pinOut, LogicTypeOut);
+	KeyOut._title2 = "_KeyOut";
 	//KeyOut = PinOut(_title, "_KeyOut", pinOut, LogicTypeOut);
 	Init();
 }

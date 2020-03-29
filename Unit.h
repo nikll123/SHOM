@@ -47,6 +47,7 @@ The most common andgeneral functionality is implemented here
 	public:
 						Unit();
 						Unit(const char * title, UnitType type);
+						Unit(const char * title, const char * title2, UnitType type);
 		void 			LogErr(UnitError err);
 		void 			LogInfo();
 		unsigned long	Time(TimeAct ta);
@@ -54,6 +55,7 @@ The most common andgeneral functionality is implemented here
 		UnitInfo 		GetInfo();
 		UnitType		_type;
 		const char *	UnitTypeText();
+		const char 		*_title2;
 
 	protected:
 		const char 		*_title;

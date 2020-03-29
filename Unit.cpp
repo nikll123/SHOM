@@ -8,9 +8,14 @@ Unit::Unit()
 	_type = UT_NONE;
 }
 
-Unit::Unit(const char *title, UnitType type)
+Unit::Unit(const char *title, UnitType type) :Unit::Unit(title, "", type) 
+{
+}
+
+Unit::Unit(const char *title, const char *title2, UnitType type)
 {
 	_title = title;
+	_title2 = title2;
 	_type = type;
 }
 
