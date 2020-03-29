@@ -51,34 +51,11 @@ void PinIn::_refreshState()
 }
 
 // ------------------------------------
-PinInInfo PinIn::GetInfo()
-{
-	PinInfo pi = Pin::GetInfo();
-	return {pi.Title,
-			pi.UnitType,
-			StateText(),
-			_pin,
-			LogicTypeText()};
-}
-
-// ------------------------------------
-/*void PinIn::LogInfo()
-{
-	PinInInfo pi = GetInfo();
-	String str = (pi.Title + "; ");
-	str = str + (pi.UnitType + "; ");
-	str = str + (pi.State + "; ");
-	str = str + (String(_pin) + "; ");
-	str = str + (pi.Logic + "; ");
-	//Log(str);
-	_logInfo();
-	Log_("; ");
-	Log(LogicTypeText());
-}*/
-
-// ------------------------------------
 void PinIn::LogState()
 {
-	String str = String(_pin) + " " + StateText() + "; ";
-	//Log(str);
+	Log_(_title);
+	Log_(": ");
+	LogInt_(_pin);
+	Log_(StateText());
+	Log("; ");
 }

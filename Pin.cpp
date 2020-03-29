@@ -60,12 +60,6 @@ void Pin::LogStates(PinState2 ps2)
 	Log_(PinStateText(ps2.New));
 }
 
-// ------------------------------------
-/*String Pin::Title1()
-	{
-    return Unit::_title + "_" + String(_pin); 
-	}*/
-
 //------------------------------
 const char *Pin::StateText()
 {

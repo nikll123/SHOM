@@ -70,7 +70,6 @@ public:
 	void SetLogicType(LogicType logicType);
 
 	const char *LogicTypeText();
-	//String 				Title1();
 
 	const char *PinStateText(PinState);
 	const char *StateText();
