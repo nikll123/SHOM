@@ -157,12 +157,6 @@ void Pin::ShomPinMode(byte pinmode)
 //------------------------------
 void Pin::LogInfo()
 {
-	_logInfo();
-	Log("");
-}
-//------------------------------
-void Pin::_logInfo()
-{
 	Log_(_title);
 	Log_(": ");
 	Log_(UnitTypeText());
@@ -172,6 +166,8 @@ void Pin::_logInfo()
 	Log_(StateText());
 	Log_(", ");
 	LogInt_(_pin);
+	Log_(", ");
+	Log(LogicTypeText());
 }
 
 //------------------------------

@@ -92,7 +92,6 @@ protected:
 	PinState _state = KS_NONE;
 	uint8_t _pinmode;
 	LogicType _logicType;
-	void _logInfo();
 
 private:
 };

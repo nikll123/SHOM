@@ -62,19 +62,19 @@ PinInInfo PinIn::GetInfo()
 }
 
 // ------------------------------------
-void PinIn::LogInfo()
+/*void PinIn::LogInfo()
 {
-	/*PinInInfo pi = GetInfo();
+	PinInInfo pi = GetInfo();
 	String str = (pi.Title + "; ");
 	str = str + (pi.UnitType + "; ");
 	str = str + (pi.State + "; ");
 	str = str + (String(_pin) + "; ");
-	str = str + (pi.Logic + "; ");*/
+	str = str + (pi.Logic + "; ");
 	//Log(str);
 	_logInfo();
 	Log_("; ");
 	Log(LogicTypeText());
-}
+}*/
 
 // ------------------------------------
 void PinIn::LogState()

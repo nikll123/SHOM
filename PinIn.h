@@ -28,7 +28,7 @@ Class PinIn - for pins which are used in INPUT of INPUT_PULLUP modes
 		PinInInfo 	GetInfo();
 		void 		LogState();
 
-		void		LogInfo();
+//		void		LogInfo();
 
 	protected:
 		void 		_refreshState();
