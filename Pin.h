@@ -64,6 +64,7 @@ public:
 
 	PinInfo GetInfo();
 	PinState GetState();
+	uint8_t GetPin();
 	void SetState(PinState state, bool noLog);
 	void LogInfo();
 	void LogState();

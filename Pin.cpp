@@ -32,6 +32,10 @@ PinState Pin::GetState()
 	return _state;
 }
 
+uint8_t Pin::GetPin()
+{
+	return _pin;
+}
 // ------------------------------------
 void Pin::SetState(PinState state, bool noLog)
 {
@@ -53,11 +57,13 @@ void Pin::SetState(PinState state, bool noLog)
 // ------------------------------------
 void Pin::LogStates(PinState2 ps2)
 {
+	Log_((char *)_title);
+	Log_(": ");
 	LogInt_(_pin);
 	Log_("; ");
 	Log_(PinStateText(ps2.Old));
 	Log_(" -> ");
-	Log_(PinStateText(ps2.New));
+	Log(PinStateText(ps2.New));
 }
 
 //------------------------------
@@ -212,11 +218,11 @@ void Pin::SetLogicType(LogicType logicType)
 //------------------------------
 void Pin::SetON()
 {
-	ShomPinWrite(true);
+	SetState(KS_ON, 0);
 }
 
 //------------------------------
 void Pin::SetOFF()
 {
-	ShomPinWrite(false);
+	SetState(KS_OFF, 0);
 }
