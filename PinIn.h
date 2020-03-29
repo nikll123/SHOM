@@ -2,34 +2,34 @@
 Class PinIn - for pins which are used in INPUT of INPUT_PULLUP modes  
 */
 #ifndef PinIn_h
-	#define PinIn_h
-	
-	#include "Pin.h"
+#define PinIn_h
 
-   	//-------------------------------
-	struct PinInInfo {
-					String 		Title;
-					String 		UnitType;
-					String 		State;
-					uint8_t		Pin;
-					String		Logic;
-					};	
+#include "Pin.h"
 
+//-------------------------------
+struct PinInInfo
+{
+	String Title;
+	String UnitType;
+	String State;
+	uint8_t Pin;
+	String Logic;
+};
 
-   	//-------------------------------
-	class PinIn : public Pin
-	{
-	public:
-	    PinIn();
-	    PinIn(const char * title, uint8_t pin);
-	    PinIn(const char * title, uint8_t pin, LogicType lt);
-	    
-		PinState2	GetState();
+//-------------------------------
+class PinIn : public Pin
+{
+public:
+	PinIn();
+	PinIn(const char *title, uint8_t pin);
+	PinIn(const char *title, uint8_t pin, LogicType lt);
+	PinIn(const char *title, const char *title2, uint8_t pin, LogicType lt);
 
-	protected:
-		void 		_refreshState();
+	PinState2 GetState();
 
-	private:
-	};
+protected:
+	void _refreshState();
+
+private:
+};
 #endif
-

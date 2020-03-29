@@ -5,12 +5,17 @@ PinIn::PinIn()
 }
 
 // ------------------------------------
-PinIn::PinIn(const char *title, uint8_t pin) : PinIn(title, pin, LT_NORMAL)
+PinIn::PinIn(const char *title, uint8_t pin) : PinIn(title, "", pin, LT_NORMAL)
 {
 }
 
 // ------------------------------------
-PinIn::PinIn(const char *title, uint8_t pin, LogicType lt) : Pin(title, pin, UT_PININ)
+PinIn::PinIn(const char *title, uint8_t pin, LogicType lt) : Pin(title, "", pin, UT_PININ)
+{
+}
+
+// ------------------------------------
+PinIn::PinIn(const char *title, const char *title2, uint8_t pin, LogicType lt) : Pin(title, title2, pin, UT_PININ)
 {
 	uint8_t inpmode;
 	Pin::SetLogicType(lt);
