@@ -50,12 +50,3 @@ void PinIn::_refreshState()
 		_state = KS_OFF;
 }
 
-// ------------------------------------
-void PinIn::LogState()
-{
-	Log_(_title);
-	Log_(": ");
-	LogInt_(_pin);
-	Log_(StateText());
-	Log("; ");
-}

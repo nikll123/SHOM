@@ -164,6 +164,16 @@ void Pin::LogInfo()
 	Log(LogicTypeText());
 }
 
+// ------------------------------------
+void Pin::LogState()
+{
+	Log_(_title);
+	Log_(": ");
+	LogInt_(_pin);
+	Log_(StateText());
+	Log("; ");
+}
+
 //------------------------------
 const char *Pin::PinModeText()
 {
