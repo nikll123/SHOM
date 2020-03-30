@@ -55,10 +55,10 @@ The most common andgeneral functionality is implemented here
 		UnitInfo 		GetInfo();
 		UnitType		_type;
 		const char *	UnitTypeText();
-		const char 		*_title2;
 
 	protected:
 		const char 		*_title;
+		const char 		*_title2;
 		unsigned long 	_millsCheck = 0;
 
 	private: 

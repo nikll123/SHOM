@@ -12,10 +12,8 @@ Contactor::Contactor(const char *title, uint8_t pinIn, uint8_t pinOut) : Unit(ti
 	Log_(_title);
 	Log(": Creating");
 
-	KeyIn = PinIn(title, pinIn, LogicTypeIn);
-	KeyIn._title2 = "_KeyIn";
-	KeyOut = PinOut(title, pinOut, LogicTypeOut);
-	KeyOut._title2 = "_KeyOut";
+	KeyIn = PinIn(title, "_KeyIn", pinIn, LogicTypeIn);
+	KeyOut = PinOut(title, "_KeyOut", pinOut, LogicTypeOut);
 	Init();
 }
 
