@@ -35,13 +35,12 @@ Class Led for LED control
 					};
 
 	//-------------------------------
-	class Led : public Unit
+	class Led : public PinOut
 	{
 	public:
 					Led();
 					Led(const char * title, uint8_t pin);
 					Led(const char * title, uint8_t pin, LedState ledState);
-		//LedInfo 	GetInfo();
 		LedState	GetState();
 		LedState2	Refresh();
 
@@ -53,7 +52,6 @@ Class Led for LED control
 		void 		SetBlinkFast();
 		void 		SetBlinkSlow();
 		const char *GetLedStateText(LedState ls);
-	    PinOut		PinOutLed;
 
 	protected:
 

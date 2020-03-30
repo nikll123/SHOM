@@ -11,13 +11,12 @@ Led::Led(const char *title, uint8_t pin) : Led(title, pin, LED_OFF)
 }
 
 // ------------------------------------
-Led::Led(const char *title, uint8_t pin, LedState ledState) : Unit(title, UT_LED)
+Led::Led(const char *title, uint8_t pin, LedState ledState) : PinOut(title, pin, LT_NORMAL, UT_LED)
 {
 	char pinName[STRMAXLEN] = "";
 	strcpy(pinName, title);
 	strcatShom(pinName, "_pin");
-	PinOutLed = PinOut(pinName, pin);
-	PinOutLed.DoLogChanges = 0; 
+	DoLogChanges = 0; 
     if(pin > 0)
     	_state = ledState;
     else
@@ -31,26 +30,13 @@ LedState Led::GetState()
 	return _state;
 }
 
-//------------------------------------
-/*LedInfo Led::GetInfo()
-	{
-	UnitInfo ui = Unit::GetInfo();
-	PinOutInfo pi = PinOutLed.GetInfo();
-    return { 
-			ui.Title,
-			ui.UnitType,
-			pi.Pin,
-			GetLedStateText(_state)
-			}; 
-	}*/
-
 void Led::LogInfo()
 {
 	Log_(_title);
 	Log_(": ");
 	Log_(UnitTypeText());
 	Log_(", ");
-	LogInt_(PinOutLed.GetPin());
+	LogInt_(GetPin());
 	Log_(", ");
 	Log(GetLedStateText(_state));
 }
@@ -96,7 +82,7 @@ LedState2 Led::Refresh()
 //------------------------------------
 void Led::_refreshState()
 {
-	bool b = PinOutLed.IsHigh();
+	bool b = IsHigh();
 	switch (_state)
 	{
 	case LED_BLINK:
@@ -116,9 +102,9 @@ void Led::_refreshState()
 	}
 
 	if (b)
-		PinOutLed.SetON();
+		SetON();
 	else
-		PinOutLed.SetOFF();
+		SetOFF();
 }
 
 //------------------------------------
@@ -148,7 +134,9 @@ void Led::_setState(LedState ls)
 //------------------------------------
 void Led::_logState(LedState2 ls2)
 {
-	//Log(GetLedStateText(ls2.Old) + " -> " + GetLedStateText(ls2.New));
+	Log_(GetLedStateText(ls2.Old));
+	Log_(" -> ");
+	Log(GetLedStateText(ls2.New));
 }
 
 //------------------------------------
