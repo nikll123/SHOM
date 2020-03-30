@@ -7,7 +7,12 @@ Contactor::Contactor()
 }
 
 // ------------------------------------
-Contactor::Contactor(const char *title, uint8_t pinIn, uint8_t pinOut) : Unit(title, UT_CONTACTOR)
+Contactor::Contactor(const char *title, uint8_t pinIn, uint8_t pinOut) : Contactor(title, "", pinIn, pinOut)
+{
+}
+
+// ------------------------------------
+Contactor::Contactor(const char *title, const char *title2, uint8_t pinIn, uint8_t pinOut) : Unit(title, title2, UT_CONTACTOR)
 {
 	Log_(_title);
 	Log(": Creating");
