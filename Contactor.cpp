@@ -12,19 +12,10 @@ Contactor::Contactor(const char *title, uint8_t pinIn, uint8_t pinOut) : Unit(ti
 	Log_(_title);
 	Log(": Creating");
 
-	//char pinName[STRMAXLEN] = "";
-	//strcpy(pinName, title);
-	//strcatShom(pinName, "_KeyIn");
 	KeyIn = PinIn(title, pinIn, LogicTypeIn);
 	KeyIn._title2 = "_KeyIn";
-	//KeyIn = PinIn(_title, "_KeyIn", pinIn, LogicTypeIn);
-
-	//char pinName1[STRMAXLEN] = "";
-	//strcpy(pinName1, title);
-	//strcatShom(pinName1, "_KeyOut");
 	KeyOut = PinOut(title, pinOut, LogicTypeOut);
 	KeyOut._title2 = "_KeyOut";
-	//KeyOut = PinOut(_title, "_KeyOut", pinOut, LogicTypeOut);
 	Init();
 }
 
@@ -163,32 +154,32 @@ ContactorState2 Contactor::GetState()
 		_logIfChanged(cs2);
 	}
 
-	//Log("_millsCheck __3 " + String (_millsCheck));
-
 	return cs2;
 }
 
 // ------------------------------------
 void Contactor::TurnOn()
 {
-	char str[STRMAXLEN] = "";
-	strcpy(str, "TurnOn");
 	if (_state == CS_OFF)
+	{
+		Log("Contactor TurnOn");
 		_Turn(CS_STARTING);
+	}
 	else
-		strcatShom(str, " - wrong status");
-	Log(str);
+		Log("Contactor TurnOn - wrong status");
 }
 
 // ------------------------------------
 void Contactor::TurnOff()
 {
-	char str[STRMAXLEN] = "TurnOff";
 	if (_state == CS_ON || _state == CS_STARTING)
+	{
+		Log("Contactor TurnOff");
 		_Turn(CS_STOPPING);
+	}
 	else
-		strcatShom(str, " - wrong status");
-	Log(str);
+		Log("Contactor TurnOff - wrong status");
+
 }
 
 // ------------------------------------
