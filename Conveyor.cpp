@@ -7,7 +7,12 @@ Conveyor::Conveyor()
 }
 
 // ------------------------------------
-Conveyor::Conveyor(const char *title, uint8_t pinIn, uint8_t pinOut, uint8_t pinAuto, uint8_t pinLed) : Unit(title, UT_CONVEYOR)
+Conveyor::Conveyor(const char *title, uint8_t pinIn, uint8_t pinOut, uint8_t pinAuto, uint8_t pinLed) : Conveyor(title, "", pinIn, pinOut, pinAuto, pinLed)  
+{
+}
+
+// ------------------------------------
+Conveyor::Conveyor(const char *title, const char *title2, uint8_t pinIn, uint8_t pinOut, uint8_t pinAuto, uint8_t pinLed) : Unit(title, title2, UT_CONVEYOR)
 {
 	LedConveyor = Led(title, "_led", pinLed);
 	ContactorConveyor = Contactor(title, "_cont", pinIn, pinOut);
