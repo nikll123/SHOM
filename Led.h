@@ -43,6 +43,7 @@ class Led : public PinOut
 public:
 	Led();
 	Led(const char *title, uint8_t pin);
+	Led(const char *title, const char *title2, uint8_t pin);
 	Led(const char *title, uint8_t pin, LedState ledState);
 	Led(const char *title, const char *title2, uint8_t pin, LedState ledState);
 

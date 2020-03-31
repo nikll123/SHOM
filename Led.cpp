@@ -11,6 +11,12 @@ Led::Led(const char *title, uint8_t pin) : Led(title, "", pin, LED_OFF)
 }
 
 // ------------------------------------
+Led::Led(const char *title, const char *title2, uint8_t pin) : Led(title, title2, pin, LED_OFF)
+{
+}
+
+
+// ------------------------------------
 Led::Led(const char *title, uint8_t pin, LedState ledState) : Led(title, "", pin, LED_OFF)
 {
 }
