@@ -57,8 +57,7 @@ void Pin::SetState(PinState state, bool noLog)
 // ------------------------------------
 void Pin::LogStates(PinState2 ps2)
 {
-	Log_((char *)_title);
-	Log_((char *)_title2);
+	Log_(_title);
 	Log_(": ");
 	LogInt_(_pin);
 	Log_("; ");
@@ -159,7 +158,6 @@ void Pin::ShomPinMode(byte pinmode)
 void Pin::LogInfo()
 {
 	Log_(_title);
-	Log_(_title2);
 	Log_(": ");
 	Log_(UnitTypeText());
 	Log_(", ");

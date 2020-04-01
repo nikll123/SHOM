@@ -114,7 +114,6 @@ void System::LogInfo()
 void System::LogInfo(bool conv)
 {
 	Log_(_title);
-	//Log_(_title2);
 	Log_(": ");
 	Log_(UnitTypeText());
 	Log_(", ");
