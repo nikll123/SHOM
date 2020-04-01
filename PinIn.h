@@ -23,7 +23,6 @@ Class PinIn - for pins which are used in INPUT of INPUT_PULLUP modes
 	    PinIn();
 	    PinIn(const char * title, uint8_t pin);
 	    PinIn(const char * title, uint8_t pin, LogicType lt);
-	    PinIn(const char * title, const char * title2, uint8_t pin, LogicType lt);
 	    
 		PinState2	GetState();
 

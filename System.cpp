@@ -16,10 +16,11 @@ System::System(const char *title, uint8_t pinBtnOn, uint8_t pinBtnOff, uint8_t p
 }
 
 // ------------------------------------
-PinIn System::SetupButton(const char *btnTitle, uint8_t pin)
+PinIn System::SetupButton(const char *title, uint8_t pin)
 {
-	//String title = _title + "." + btnTitle;
-	PinIn btn = PinIn(_title, btnTitle, pin, LT_INVERSE);
+	String s = _title;
+	s = s + "." + title;
+	PinIn btn = PinIn(s.c_str(), pin, LT_INVERSE);
 	return btn;
 }
 

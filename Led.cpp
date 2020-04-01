@@ -6,23 +6,12 @@ Led::Led()
 }
 
 // ------------------------------------
-Led::Led(const char *title, uint8_t pin) : Led(title, "", pin, LED_OFF)
+Led::Led(const char *title, uint8_t pin) : Led(title, pin, LED_OFF)
 {
 }
 
 // ------------------------------------
-Led::Led(const char *title, const char *title2, uint8_t pin) : Led(title, title2, pin, LED_OFF)
-{
-}
-
-
-// ------------------------------------
-Led::Led(const char *title, uint8_t pin, LedState ledState) : Led(title, "", pin, LED_OFF)
-{
-}
-
-// ------------------------------------
-Led::Led(const char *title, const char *title2, uint8_t pin, LedState ledState) : PinOut(title, title2, pin, LT_NORMAL, UT_LED)
+Led::Led(const char *title, uint8_t pin, LedState ledState) : PinOut(title, pin, LT_NORMAL, UT_LED)
 {
 	DoLogChanges = 0; 
     if(pin > 0)

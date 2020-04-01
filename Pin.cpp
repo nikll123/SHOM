@@ -6,12 +6,7 @@ Pin::Pin()
 }
 
 // ------------------------------------
-Pin::Pin(const char *title, uint8_t pin, UnitType ut) : Pin(title, "", pin, ut)
-{
-
-}
-// ------------------------------------
-Pin::Pin(const char *title, const char *title2, uint8_t pin, UnitType ut) : Unit(title, title2, ut)
+Pin::Pin(const char *title, uint8_t pin, UnitType ut) : Unit(title, ut)
 {
 	_pin = pin;
 	_state = KS_NONE;
