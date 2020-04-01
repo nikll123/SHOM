@@ -124,7 +124,7 @@ void System::LogInfo(bool conv)
 	LogInt_(BtnOff.GetPin());
 	Log_(", BtnReset-");
 	LogInt_(BtnReset.GetPin());
-	if (conv)
+/*	if (conv)
 	{
 		for (int i = 0; i < UnitCount; i++)
 		{
@@ -136,12 +136,12 @@ void System::LogInfo(bool conv)
 				//Log(str, );
 			}
 		}
-	}
+	}*/
 	Log(") ");
 }
 
 // ------------------------------------
-const char * System::GetSystemStateText(SystemState state)
+const char *System::GetSystemStateText(SystemState state)
 {
 	switch (state)
 	{
@@ -163,7 +163,7 @@ const char * System::GetSystemStateText(SystemState state)
 }
 
 // ------------------------------------
-void System::SetupConveyor(const char * title, uint8_t pinIn, uint8_t pinOut, uint8_t pinAuto, uint8_t pinLed)
+void System::SetupConveyor(const char *title, uint8_t pinIn, uint8_t pinOut, uint8_t pinAuto, uint8_t pinLed)
 {
 	if (UnitCount < MAX_UNIT_NUMBER)
 	{
@@ -409,8 +409,7 @@ SystemState System::_checkStateStopping()
 			else
 			{
 				cntErr++;
-				SetErrState(SS_ERR310, "Wrong ConveyorStatePrev = ");
-				//SetErrState(SS_ERR310, "Wrong ConveyorStatePrev = " + Conveyor::GetConveyorStateText(cspc2.Prev));
+				SetErrState(SS_ERR310, "Wrong ConveyorStatePrev = ", Conveyor::GetConveyorStateText(cspc2.Prev));
 			}
 
 			cspc2.Prev = cspc2.Curr;
@@ -518,9 +517,17 @@ void System::SetErrState(UnitError err)
 }
 
 // ------------------------------------
-void System::SetErrState(UnitError err, const char * msg)
+void System::SetErrState(UnitError err, const char *msg)
 {
-	Log(msg);
+	SetErrState(err, msg, "");
+}
+
+// ------------------------------------
+void System::SetErrState(UnitError err, const char *msg1, const char *msg2)
+{
+	Log_(msg1);
+	Log_(msg2);
+	Log_(" ");
 	LogErr(err);
 	_state = SS_ERR;
 }
