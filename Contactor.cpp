@@ -7,18 +7,16 @@ Contactor::Contactor()
 }
 
 // ------------------------------------
-Contactor::Contactor(const char *title, uint8_t pinIn, uint8_t pinOut) : Contactor(title, "", pinIn, pinOut)
-{
-}
-
-// ------------------------------------
-Contactor::Contactor(const char *title, const char *title2, uint8_t pinIn, uint8_t pinOut) : Unit(title, title2, UT_CONTACTOR)
+Contactor::Contactor(const char *title, uint8_t pinIn, uint8_t pinOut) : Unit(title, UT_CONTACTOR)
 {
 	Log_(_title);
 	Log(": Creating");
-
-	KeyIn = PinIn(title, "_KeyIn", pinIn, LogicTypeIn);
-	KeyOut = PinOut(title, "_KeyOut", pinOut, LogicTypeOut);
+	String s = title;
+	s = s + "_KeyIn";
+	KeyIn = PinIn(s.c_str(), pinIn, LogicTypeIn);
+	s = title;
+	s = s + "_KeyOut";
+	KeyOut = PinOut(s.c_str(), pinOut, LogicTypeOut);
 	Init();
 }
 

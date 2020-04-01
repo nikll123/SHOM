@@ -51,7 +51,6 @@ States when KeyOut != KeyIn are erroneous.
 	public:
 					    Contactor();
 					    Contactor(const char * title, uint8_t pinIn, uint8_t pinOut);
-					    Contactor(const char * title, const char * title2, uint8_t pinIn, uint8_t pinOut);
 
 		ContactorState2	GetState();
 		//ContactorState2	GetState(String logTexts);

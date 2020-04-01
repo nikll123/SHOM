@@ -113,7 +113,7 @@ void System::LogInfo()
 void System::LogInfo(bool conv)
 {
 	Log_(_title);
-	Log_(_title2);
+	//Log_(_title2);
 	Log_(": ");
 	Log_(UnitTypeText());
 	Log_(", ");
@@ -167,8 +167,9 @@ void System::SetupConveyor(const char *title, uint8_t pinIn, uint8_t pinOut, uin
 {
 	if (UnitCount < MAX_UNIT_NUMBER)
 	{
-		//title = _title + "." + title + "_" + String(UnitCount);
-		Conveyors[UnitCount] = Conveyor(_title, title, pinIn, pinOut, pinAuto, pinLed);
+		String s = _title;
+		s = s + title + "_" + String(UnitCount);
+		Conveyors[UnitCount] = Conveyor(s.c_str(), pinIn, pinOut, pinAuto, pinLed);
 		Conveyors[UnitCount].Init();
 		UnitCount++;
 	}

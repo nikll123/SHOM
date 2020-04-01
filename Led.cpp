@@ -24,9 +24,6 @@ Led::Led(const char *title, uint8_t pin, LedState ledState) : Led(title, "", pin
 // ------------------------------------
 Led::Led(const char *title, const char *title2, uint8_t pin, LedState ledState) : PinOut(title, title2, pin, LT_NORMAL, UT_LED)
 {
-	char pinName[STRMAXLEN] = "";
-	strcpy(pinName, title);
-	strcatShom(pinName, "_pin");
 	DoLogChanges = 0; 
     if(pin > 0)
     	_state = ledState;
