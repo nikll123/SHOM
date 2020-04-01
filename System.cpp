@@ -168,7 +168,7 @@ void System::SetupConveyor(const char *title, uint8_t pinIn, uint8_t pinOut, uin
 	if (UnitCount < MAX_UNIT_NUMBER)
 	{
 		String s = _title;
-		s = s + title + "_" + String(UnitCount);
+		s = s + "_" + title + "_" + String(UnitCount);
 		Conveyors[UnitCount] = Conveyor(s.c_str(), pinIn, pinOut, pinAuto, pinLed);
 		Conveyors[UnitCount].Init();
 		UnitCount++;
