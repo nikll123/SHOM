@@ -15,11 +15,11 @@ Contactor::Contactor(const char *title, uint8_t pinIn, uint8_t pinOut) : Unit(ti
 	//int l = strlen(title);
 	//char s_in[l + 10] = "";
 	strcpy(s, title);
-	strcat(s, "_KeyIn");
+	strcat(s, "_In");
 	KeyIn = PinIn(s, pinIn, LogicTypeIn);
 	//char s_out[l + 10] = "";
 	strcpy(s, title);
-	strcat(s, "_KeyOut");
+	strcat(s, "_Out");
 	KeyOut = PinOut(s, pinOut, LogicTypeOut);
 	Init();
 }
