@@ -54,9 +54,11 @@ void System::Init()
 void System::Start()
 {
 	Log_(_title);
-	Log(": Start");
+	Log_(": Start ");
 	if (_state == SS_OFF)
 		_setState(SS_STARTING);
+	else
+		Log("Worong state");
 }
 
 // ------------------------------------
@@ -167,8 +169,8 @@ void System::SetupConveyor(const char *title, uint8_t pinIn, uint8_t pinOut, uin
 {
 	if (UnitCount < MAX_UNIT_NUMBER)
 	{
-		String s = _title;
-		s = s + "_" + title + "_" + String(UnitCount);
+		String s = "";
+		s = s + title + "_" + String(UnitCount);
 		Conveyors[UnitCount] = Conveyor(s.c_str(), pinIn, pinOut, pinAuto, pinLed);
 		Conveyors[UnitCount].Init();
 		UnitCount++;
@@ -252,6 +254,8 @@ void System::_logIfChanged(SystemState2 ss2)
 // ------------------------------------
 void System::_logStates(SystemState2 ss2)
 {
+	Log_(_title);
+	Log_(": ");
 	Log_(GetSystemStateText(ss2.Old));
 	Log_(" -> ");
 	Log(GetSystemStateText(ss2.New));

@@ -10,7 +10,7 @@ Unit::Unit()
 
 Unit::Unit(const char *title, UnitType type)
 {
-	_title = title;
+	_title = strdup(title);
 	_type = type;
 }
 
@@ -33,6 +33,11 @@ void Unit::LogInfo()
 	Log_(_title);
 	Log_(" ");
 	Log(UnitTypeText());
+}
+
+const char * Unit::GetTitle()
+{
+	return _title;
 }
 
 //------------------------------

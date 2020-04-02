@@ -131,6 +131,8 @@ void Led::_setState(LedState ls)
 //------------------------------------
 void Led::_logState(LedState2 ls2)
 {
+	Log_(_title);
+	Log_(": ");
 	Log_(GetLedStateText(ls2.Old));
 	Log_(" -> ");
 	Log(GetLedStateText(ls2.New));

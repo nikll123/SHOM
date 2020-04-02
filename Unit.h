@@ -8,6 +8,7 @@ The most common andgeneral functionality is implemented here
 	#include "Arduino.h"
 	#include <Log.h>
 
+    #define MAXSTRLEN 100
     #define MAX_UNIT_NUMBER 15
 
 	#define RELAY_DELAY	50 // --10
@@ -51,12 +52,12 @@ The most common andgeneral functionality is implemented here
 		void 			LogInfo();
 		unsigned long	Time(TimeAct ta);
 		
-		UnitInfo 		GetInfo();
+		const char *	GetTitle();
 		UnitType		_type;
 		const char *	UnitTypeText();
 
 	protected:
-		const char 		*_title;
+		const char		*_title;
 		unsigned long 	_millsCheck = 0;
 
 	private: 

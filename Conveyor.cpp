@@ -11,7 +11,7 @@ Conveyor::Conveyor(const char *title, uint8_t pinIn, uint8_t pinOut, uint8_t pin
 {
 	String s = title;
 	s = s + "_led";
-	LedConveyor = Led(s.c_str() , pinLed);
+	LedConveyor = Led(s.c_str(), pinLed);
 	s = title;
 	s = s + "_cont";
 	ContactorConveyor = Contactor(s.c_str(), pinIn, pinOut);
@@ -25,6 +25,8 @@ Conveyor::Conveyor(const char *title, uint8_t pinIn, uint8_t pinOut, uint8_t pin
 void Conveyor::Init()
 {
 	LedConveyor.SetOn();
+	Log_(_title);
+	Log_(": ");
 	Log("Init");
 	_state = US_OFF;
 	ContactorConveyor.Init();
@@ -179,7 +181,8 @@ void Conveyor::TurnOn()
 {
 	if (_state == US_OFF)
 	{
-		Log("TurnOn");
+		//Log_(ContactorConveyor.GetTitle());
+		//Log(": TurnOn");
 		_Turn(US_STARTING);
 	}
 }
@@ -221,6 +224,8 @@ void Conveyor::_Turn(ConveyorState csNew)
 	}
 	else
 	{
+		Log_(_title);
+		Log_(": ");
 		Log_("_Turn: wrong arg ");
 		Log(GetConveyorStateText(csNew));
 	}
@@ -245,6 +250,8 @@ void Conveyor::SetErrState(UnitError err)
 // ------------------------------------
 void Conveyor::LogStates(ConveyorState2 cs2)
 {
+	Log_(_title);
+	Log_(": ");
 	Log_(GetConveyorStateText(cs2.Old));
 	Log_(" -> ");
 	Log(GetConveyorStateText(cs2.New));
@@ -253,6 +260,8 @@ void Conveyor::LogStates(ConveyorState2 cs2)
 // ------------------------------------
 void Conveyor::LogStatesPrevCurr(ConveyorStatePrevCurr cs2)
 {
+	Log_(_title);
+	Log_(": ");
 	Log_("Conveyor states: previous ");
 	Log_(GetConveyorStateText(cs2.Prev));
 	Log(", current ");

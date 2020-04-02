@@ -11,12 +11,16 @@ Contactor::Contactor(const char *title, uint8_t pinIn, uint8_t pinOut) : Unit(ti
 {
 	Log_(_title);
 	Log(": Creating");
-	String s = title;
-	s = s + "_KeyIn";
-	KeyIn = PinIn(s.c_str(), pinIn, LogicTypeIn);
-	s = title;
-	s = s + "_KeyOut";
-	KeyOut = PinOut(s.c_str(), pinOut, LogicTypeOut);
+	char s[MAXSTRLEN] = "";
+	//int l = strlen(title);
+	//char s_in[l + 10] = "";
+	strcpy(s, title);
+	strcat(s, "_KeyIn");
+	KeyIn = PinIn(s, pinIn, LogicTypeIn);
+	//char s_out[l + 10] = "";
+	strcpy(s, title);
+	strcat(s, "_KeyOut");
+	KeyOut = PinOut(s, pinOut, LogicTypeOut);
 	Init();
 }
 
@@ -161,13 +165,14 @@ ContactorState2 Contactor::GetState()
 // ------------------------------------
 void Contactor::TurnOn()
 {
+	Log_(_title);
 	if (_state == CS_OFF)
 	{
-		Log("Contactor TurnOn");
+		Log(": TurnOn");
 		_Turn(CS_STARTING);
 	}
 	else
-		Log("Contactor TurnOn - wrong status");
+		Log(" - wrong status");
 }
 
 // ------------------------------------
@@ -180,7 +185,6 @@ void Contactor::TurnOff()
 	}
 	else
 		Log("Contactor TurnOff - wrong status");
-
 }
 
 // ------------------------------------
