@@ -10,6 +10,8 @@ Class Led for LED control
 #define INTERVAL_BLINK 300
 #define INTERVAL_BLINKFAST 100
 #define INTERVAL_BLINKSLOW 800
+#define DONOTLOG false
+
 
 struct LedInfo
 {

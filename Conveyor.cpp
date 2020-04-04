@@ -36,50 +36,11 @@ void Conveyor::Init()
 }
 
 // ------------------------------------
-/*ConveyorInfo Conveyor::GetInfo()
-{
-	UnitInfo ui = Unit::GetInfo();
-	ContactorInfo ci = ContactorConveyor.GetInfo();
-	LedInfo li = LedConveyor.GetInfo();
-	PinInInfo ai = AtomatConveyor.GetInfo();
-	return {
-		ui.Title,
-		ui.UnitType,
-		GetConveyorStateText(_state),
-		ci.PinIn,
-		ci.PinOut,
-		ai.Pin,
-		li.Pin,
-		IsActive(),
-	};
-}*/
-
-// ------------------------------------
 void Conveyor::SetupLogic(LogicType ltIn, LogicType ltOut, LogicType ltAuto)
 {
 	Contactor::SetupLogic(ltIn, ltOut);
 	LogicTypeAutomat = ltAuto;
 }
-
-// ------------------------------------
-/*String Conveyor::GetInfoTxt()
-{
-	String str = "";
-	ConveyorInfo ci = GetInfo();
-	str = str + ci.Title + "; ";
-	str = str + ci.UnitType + "; ";
-	str = str + "in-" + String(ci.PinIn) + "; ";
-	str = str + "out-" + String(ci.PinOut) + "; ";
-	str = str + "auto-" + String(ci.PinAuto) + "; ";
-	str = str + "led-" + String(ci.PinLed) + "; ";
-	if (ci.Active)
-		str = str + "Active; ";
-	else
-		str = str + "Not active; ";
-
-	str = str + ci.State + ".";
-	return str;
-}*/
 
 //------------------------------
 const char *Conveyor::GetConveyorStateText(ConveyorState state)
@@ -102,13 +63,6 @@ const char *Conveyor::GetConveyorStateText(ConveyorState state)
 		return "ERROR";
 	}
 }
-
-// ------------------------------------
-/*ConveyorState2 Conveyor::GetState(String logText)
-{
-	//Log(logText);
-	return GetState();
-}*/
 
 // ------------------------------------
 ConveyorState2 Conveyor::GetState()

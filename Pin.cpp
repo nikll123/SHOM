@@ -37,7 +37,7 @@ uint8_t Pin::GetPin()
 	return _pin;
 }
 // ------------------------------------
-void Pin::SetState(PinState state, bool noLog)
+void Pin::SetState(PinState state, bool doLog)
 {
 	PinState2 ps2;
 	ps2.Old = _state;
@@ -47,10 +47,10 @@ void Pin::SetState(PinState state, bool noLog)
 	ShomPinWrite(val);
 	_state = state;
 	ps2.New = _state;
-	if (DoLogChanges)
+	if (DoLogChanges || doLog)
 	{
-		if (ps2.Changed() && !noLog)
-			LogStates(ps2);
+		//if (ps2.Changed())
+			//LogStates(ps2);
 	}
 }
 
@@ -218,11 +218,23 @@ void Pin::SetLogicType(LogicType logicType)
 //------------------------------
 void Pin::SetON()
 {
-	SetState(KS_ON, 0);
+	SetState(KS_ON, false);
 }
 
 //------------------------------
 void Pin::SetOFF()
 {
-	SetState(KS_OFF, 0);
+	SetState(KS_OFF, false);
+}
+
+//------------------------------
+void Pin::SetON(bool doLog)
+{
+	SetState(KS_ON, doLog);
+}
+
+//------------------------------
+void Pin::SetOFF(bool doLog)
+{
+	SetState(KS_OFF, doLog);
 }

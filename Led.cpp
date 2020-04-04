@@ -13,12 +13,11 @@ Led::Led(const char *title, uint8_t pin) : Led(title, pin, LED_OFF)
 // ------------------------------------
 Led::Led(const char *title, uint8_t pin, LedState ledState) : PinOut(title, pin, LT_NORMAL, UT_LED)
 {
-	DoLogChanges = 0; 
-    if(pin > 0)
-    	_state = ledState;
-    else
-	    _state = LED_NOTINIT;
-
+	DoLogChanges = 0;
+	if (pin > 0)
+		_state = ledState;
+	else
+		_state = LED_NOTINIT;
 }
 
 //------------------------------------
@@ -39,7 +38,7 @@ void Led::LogInfo()
 }
 
 //------------------------------
-const char * Led::GetLedStateText(LedState ls)
+const char *Led::GetLedStateText(LedState ls)
 {
 	switch (ls)
 	{
@@ -71,8 +70,6 @@ LedState2 Led::Refresh()
 	ls2.Old = _state;
 	_refreshState();
 	ls2.New = _state;
-	if (ls2.Old != ls2.New)
-		_logState(ls2);
 	return ls2;
 }
 
@@ -99,9 +96,9 @@ void Led::_refreshState()
 	}
 
 	if (b)
-		SetON();
+		SetON(DONOTLOG);
 	else
-		SetOFF();
+		SetOFF(DONOTLOG);
 }
 
 //------------------------------------
@@ -121,7 +118,7 @@ void Led::_setState(LedState ls)
 {
 	if (_state != ls)
 	{
-		_logState({_state, ls});
+		//_logState({_state, ls});
 		_state = ls;
 		_millis = millis();
 		_refreshState();

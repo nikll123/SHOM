@@ -69,20 +69,13 @@ void ShomCanBus::Init()
 // ------------------------------------
 void ShomCanBus::SetErrState(UnitError err, byte pin, const char *txt, byte data)
 {
-	char msg[STRMAXLEN] = "";
-	strncpy(msg, "Error: Pin=", STRMAXLEN);
-	char p[4];
-	itoa((int)pin, p, 10);
-	strcatShom(msg, p);
-	strcatShom(msg, "; ");
-	strcatShom(msg, txt);
-	strcatShom(msg, " : ");
-	itoa((int)data, p, 10);
-	strcatShom(msg, p);
-
-	//LogData();
-	Log(msg);
-	//LogErr(err);
+	Log_(_title);
+	Log_(" Error: Pin=");
+	LogInt_(pin);
+	Log_("; ");
+	Log_(txt);
+	Log_(" : ");
+	LogInt(data);
 	_state = CBS_ERR;
 }
 
@@ -274,7 +267,8 @@ CanBusState ShomCanBus::GetResponse(unsigned int id, byte pin)
 	}
 	else if (i > 0)
 	{
-		Log_("not received. i=");
+		Log_(_title);
+		Log_(".GetResponse failed. i=");
 		LogInt(RESPONSE_TRY_CNT);
 	}
 	return res;

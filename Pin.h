@@ -65,7 +65,6 @@ public:
 	PinInfo GetInfo();
 	PinState GetState();
 	uint8_t GetPin();
-	void SetState(PinState state, bool noLog);
 	void LogInfo();
 	void LogState();
 	void LogStates(PinState2 ps2);
@@ -79,6 +78,9 @@ public:
 
 	void SetON();
 	void SetOFF();
+	void SetON(bool doLog);
+	void SetOFF(bool doLog);
+	void SetState(PinState state, bool doLog);
 
 	bool IsHigh();
 	bool IsLow();
