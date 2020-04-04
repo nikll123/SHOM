@@ -220,7 +220,8 @@ void Contactor::_Turn(ContactorState csNew)
 void Contactor::Halt()
 {
 	_Turn(CS_HALT);
-	Log("Halt()");
+	Log_(_title);
+	Log(": Halt");
 }
 
 // ------------------------------------
