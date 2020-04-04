@@ -76,7 +76,7 @@ void ShomCanBus::SetErrState(UnitError err, byte pin, const char *txt, byte data
 	Log_(txt);
 	Log_(" : ");
 	LogInt(data);
-	_state = CBS_ERR;
+	SetErrState(err);
 }
 
 // ------------------------------------
@@ -89,6 +89,7 @@ void ShomCanBus::SetErrState(UnitError err, const char *txt)
 // ------------------------------------
 void ShomCanBus::SetErrState(UnitError err)
 {
+	_state = CBS_ERR;
 	LogErr(err);
 }
 

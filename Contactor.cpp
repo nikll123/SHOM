@@ -230,7 +230,7 @@ void Contactor::_logIfChanged(ContactorState2 cs2)
 	if (cs2.Old != cs2.New)
 	{
 		Log_(_title);
-		Log_(", changed: ");
+		Log_(": ");
 		Log_(GetContactorStateText(cs2.Old));
 		Log_(" -> ");
 		Log(GetContactorStateText(cs2.New));
@@ -240,6 +240,8 @@ void Contactor::_logIfChanged(ContactorState2 cs2)
 // ------------------------------------
 void Contactor::SetErrState(UnitError err)
 {
+	Log_(_title);
+	Log_(": ");
 	Log_("Error states Out=");
 	Log_(KeyOut.StateText());
 	Log_("(");
