@@ -143,11 +143,11 @@ void ShomCanBus::LogData(const char *comment)
 	Log_(comment);
 	Log_(" id=");
 	LogInt_(_id);
-	Log_("; ");
+	Log_("; cmd=");
 	Log_(GetCmdTitle((CanBusCmd)_data_buffer[DATA_CMD]));
-	Log_("; ");
-	LogInt_(_data_buffer[DATA_PIN]);
-	Log_("; ");
+	Log_("; pin=");
+	LogInt_(100+_data_buffer[DATA_PIN]);
+	Log_("; value=");
 	LogInt(_data_buffer[DATA_VALUE]);
 }
 
@@ -214,11 +214,16 @@ CanBusState ShomCanBus::GetResponse(unsigned int id, byte pin)
 {
 	CanBusState res = CBS_ERR;
 	int i;
+	pin = pin + 100;
 	for (i = 0; i < RESPONSE_TRY_CNT; i++)
 	{
 		byte len = Receive();
-		//Log("i=" + String(i) + " len=" + String(len));
-		//LogData();
+		Log_("i=");
+		LogInt_(i);
+		Log_(" len=");
+		LogInt_(len);
+		Log_(" :");
+		LogData();
 		if (len > 0)
 		{
 			if (len == DATA_LENGHT)
