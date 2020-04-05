@@ -64,10 +64,10 @@ int Slave::DoCmd()
 				}
 			}
 		else 
-			Slave::CanBus.SetErrState(SL_ERR603, pin, "wrong pin = ", data); 
+			Slave::CanBus.SetErrState(SL_ERR603, pin, "wrong pin = ", pin); 
 		}
 	else 
-		Slave::CanBus.SetErrState(SL_ERR604, pin, "wrong cmd = ", data); 
+		Slave::CanBus.SetErrState(SL_ERR604, pin, "wrong cmd = ", cmd); 
 
     Timer.Time(TA_FIX);
 	return res;	
