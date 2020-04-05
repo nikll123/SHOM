@@ -74,7 +74,7 @@ void ShomCanBus::SetErrState(UnitError err, byte pin, const char *txt, byte data
 	LogInt_(pin);
 	Log_("; ");
 	Log_(txt);
-	Log_(" : ");
+	Log_(": ");
 	LogInt(data);
 	SetErrState(err);
 }
@@ -274,8 +274,8 @@ CanBusState ShomCanBus::GetResponse(unsigned int id, byte pin)
 	else if (i > 0)
 	{
 		Log_(_title);
-		Log_(".GetResponse failed. i=");
-		LogInt(RESPONSE_TRY_CNT);
+		Log_(".GetResponse count i=");
+		LogInt(i);
 	}
 	return res;
 }
