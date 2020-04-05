@@ -40,15 +40,15 @@ struct	SystemInfo
 	{
 	public:
 	    				System();
-			    		System(String title, uint8_t pin_button_on, uint8_t _pin_button_off, uint8_t pin_button_reset);
+			    		System(const char * title, uint8_t pin_button_on, uint8_t _pin_button_off, uint8_t pin_button_reset);
 		void 			Init();
-		SystemInfo 		GetInfo();
+		//SystemInfo 		GetInfo();
 		void 			LogInfo();
 		void 			LogInfo(bool conv);
-		void 			SetupConveyor(String title, uint8_t pinIn, uint8_t pinOut, uint8_t pinAuto, uint8_t pinLed);
-		PinIn 			SetupButton(String suffix, uint8_t pin);
+		void 			SetupConveyor(const char *  title, uint8_t pinIn, uint8_t pinOut, uint8_t pinAuto, uint8_t pinLed);
+		PinIn 			SetupButton(const char * suffix, uint8_t pin);
 		void			SetupLogic(LogicType ltIn, LogicType ltOut);
-		String 			GetSystemStateText(SystemState state);
+		static const char * GetSystemStateText(SystemState state);
 		uint8_t			UnitCount = 0;
 		void 			TurnLeds(bool on);
 
@@ -66,7 +66,8 @@ struct	SystemInfo
 		void 			TurnOff();
 		void 			TurnOffAlarm();
 		void 			SetErrState(UnitError err);
-		void 			SetErrState(UnitError err, String msg);
+		void 			SetErrState(UnitError err, const char * msg);
+		void 			SetErrState(UnitError err, const char * msg1, const char * msg2);
 		SystemState2	GetState();
 		void 			CheckConnection();
 		void 			Run();

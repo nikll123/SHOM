@@ -42,7 +42,7 @@ States when KeyOut != KeyIn are erroneous.
 					unsigned int 	TimeOutOn;
 					unsigned int 	TimeOutOff;
 					};
-					 
+
 	static LogicType LogicTypeIn = LT_NORMAL;
 	static LogicType LogicTypeOut = LT_NORMAL;
 	
@@ -50,12 +50,11 @@ States when KeyOut != KeyIn are erroneous.
 	{
 	public:
 					    Contactor();
-					    Contactor(String title, uint8_t pinIn, uint8_t pinOut);
+					    Contactor(const char * title, uint8_t pinIn, uint8_t pinOut);
 
 		ContactorState2	GetState();
-		ContactorState2	GetState(String logTexts);
-		ContactorInfo 	GetInfo();
-		String			GetContactorStateText(ContactorState state);
+		//ContactorState2	GetState(String logTexts);
+		const char * 	GetContactorStateText(ContactorState state);
 		void			Init();
 		void			LogInfo();
 		void			SetErrState(UnitError err);

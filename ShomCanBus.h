@@ -11,6 +11,7 @@ CAN-BUS module driver.
 	#define CANBUS_RATE			CAN_50KBPS
 	#define RESPONSE_DELAY		20
 	#define RESPONSE_TRY_CNT	3
+	#define DEFNANE				ShomCanBus
 
 	#define CREATE_TRY_MAX 10
 	
@@ -48,13 +49,15 @@ CAN-BUS module driver.
 	{
 	public:
 						ShomCanBus();
-						//ShomCanBus(String title, uint8_t pin_ss, unsigned long canbus_id);
+						ShomCanBus(const char* title, byte canbus_id, byte pin_ss);
 		MCP_CAN     	canbus;
-		void 			Log(String str);
 		void 			Init();
-		void 			Init(byte id, byte pin_ss);
+		void 			Setup(const char *title, byte canbus_id, byte pin_ss);
+
 		void			SetErrState(UnitError err);
-		void 			SetErrState(UnitError err, String str);
+		void 			SetErrState(UnitError err, const char * txt);
+		void 			SetErrState(UnitError err, byte pin, const char * txt, byte data);
+
 		void			Send();
 		unsigned int	SendCmd(CanBusCmd cmd, byte pin);
 		unsigned int	SendCmd(CanBusCmd cmd, byte pin, byte value);
@@ -72,9 +75,9 @@ CAN-BUS module driver.
 		unsigned int 	NewMsgId();
 		void 			ResetData();
 		void			LogData();
-		void			LogData(String comment);
+		void			LogData(const char * comment);
 		void			LogInfo();
-		String			GetCmdTitle(CanBusCmd cmd);
+		const char*		GetCmdTitle(CanBusCmd cmd);
 								
 	protected:
 
@@ -82,8 +85,7 @@ CAN-BUS module driver.
 		byte		 	_canbus_id;
 		byte 			_canbus_pin_ss;
 		unsigned int 	_msgId;
-		String			_title;
-		String			_errMsg(byte pin, String txt, byte data);
+		const char		*_title;
 		CanBusState 	_state = CBS_UNKNOWN;
 		byte 			_data_buffer[DATA_LENGHT];
 		bool			_ConnectionOK;

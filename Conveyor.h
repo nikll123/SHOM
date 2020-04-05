@@ -57,15 +57,12 @@ Conveyor class - represents a conveyor with contactor, automat and LED.
 	{
 	public:
 					    Conveyor();
-					    Conveyor(String title, uint8_t pinIn, uint8_t pinOut, uint8_t pinAuto, uint8_t pinLed);
-					    Conveyor(String title, uint8_t pinIn, uint8_t pinOut, uint8_t pinAuto, uint8_t pinLed, unsigned long timeOutOn, unsigned long  timeOutOff);
+					    Conveyor(const char * title, uint8_t pinIn, uint8_t pinOut, uint8_t pinAuto, uint8_t pinLed);
+					    //Conveyor(const char * title, uint8_t pinIn, uint8_t pinOut, uint8_t pinAuto, uint8_t pinLed, unsigned long timeOutOn, unsigned long  timeOutOff);
 
 		ConveyorState2	GetState();
-		ConveyorState2	GetState(String logText);
-		ConveyorInfo 	GetInfo();
-		static String	GetConveyorStateText(ConveyorState state);
+		static const char *	GetConveyorStateText(ConveyorState state);
 		void			Init();
-		String			GetInfoTxt();
 		void 			SetErrState(UnitError err);
 		void 			LogStates(ConveyorState2 cs2);
 		void 			LogStatesPrevCurr(ConveyorStatePrevCurr cs2);
@@ -88,6 +85,7 @@ Conveyor class - represents a conveyor with contactor, automat and LED.
 		ConveyorState2	_getStateAutomat();
 		ConveyorState2	_getStateContactor();
 		ConveyorState	_state;
+		ConveyorState	_stateprev;
 		void 			_Turn(ConveyorState csNew);
 	};
 #endif

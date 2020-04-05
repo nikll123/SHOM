@@ -21,14 +21,10 @@ Class PinIn - for pins which are used in INPUT of INPUT_PULLUP modes
 	{
 	public:
 	    PinIn();
-	    PinIn(String title, uint8_t pin);
-	    PinIn(String title, uint8_t pin, LogicType lt);
+	    PinIn(const char * title, uint8_t pin);
+	    PinIn(const char * title, uint8_t pin, LogicType lt);
 	    
 		PinState2	GetState();
-		PinInInfo 	GetInfo();
-		void 		LogState();
-
-		void		LogInfo();
 
 	protected:
 		void 		_refreshState();

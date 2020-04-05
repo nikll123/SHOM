@@ -28,7 +28,7 @@ int Slave::DoCmd()
 				if(data == 0 || data == 1)
 					digitalWrite(pin, data);
 				else
-					Slave::CanBus.SetErrState(SL_ERR601, "wrong data = " + String(data)); 
+					Slave::CanBus.SetErrState(SL_ERR601, pin, "wrong data = ", data); 
 				}
 			else if(cmd == CANBUS_READ)
 				{
@@ -52,7 +52,7 @@ int Slave::DoCmd()
 					pinMode(pin, data);
                     }
 				else
-					Slave::CanBus.SetErrState(SL_ERR602, "wrong pin mode = " + String(data)); 
+					Slave::CanBus.SetErrState(SL_ERR602, pin, "wrong pin mode = ", data); 
 				}
 			else if (cmd == CANBUS_RESET)
 				{
@@ -64,10 +64,10 @@ int Slave::DoCmd()
 				}
 			}
 		else 
-			Slave::CanBus.SetErrState(SL_ERR603, "wrong pin = " + String(data)); 
+			Slave::CanBus.SetErrState(SL_ERR603, pin, "wrong pin = ", data); 
 		}
 	else 
-		Slave::CanBus.SetErrState(SL_ERR604, "wrong cmd = " + String(data)); 
+		Slave::CanBus.SetErrState(SL_ERR604, pin, "wrong cmd = ", data); 
 
     Timer.Time(TA_FIX);
 	return res;	
@@ -78,11 +78,12 @@ void Slave::CheckConnection()
   {
   if (Timer.Time(TA_PERIOD) > CANBUS_TIMEOUT)
     {
-    Slave::CanBus.Log("Connection fault!");
+    Log("Connection fault!");
     for(int i = 0; i < _pinOutCount; i++)
     	{
 		digitalWrite(_pinOutArray[i], DEFAULTSTATE);
-	    Slave::CanBus.Log("reset pin=" + String(i));
+	    Log_("reset pin=");
+		LogInt(i);
     	}
     }
   }
@@ -94,9 +95,10 @@ void Slave::Run()
 	byte len = Slave::CanBus.Receive();
 	if (len > 0)
 	{
-		Slave::CanBus.LogData("from scetch");
+		Slave::CanBus.LogData("Slave::Run()");
 		int res = Slave::DoCmd();
-		Slave::CanBus.Log("res=" + String(res));
+		Log_("res=");
+		LogInt(res);
 	}
 	Slave::CheckConnection();
 	}
