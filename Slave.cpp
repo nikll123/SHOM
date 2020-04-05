@@ -95,7 +95,7 @@ void Slave::Run()
 	byte len = Slave::CanBus.Receive();
 	if (len > 0)
 	{
-		Slave::CanBus.LogData("from scetch");
+		Slave::CanBus.LogData("Slave::Run()");
 		int res = Slave::DoCmd();
 		Log_("res=");
 		LogInt(res);

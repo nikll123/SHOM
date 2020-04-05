@@ -223,7 +223,7 @@ CanBusState ShomCanBus::GetResponse(unsigned int id, byte pin)
 		Log_(" len=");
 		LogInt_(len);
 		Log_(" :");
-		LogData();
+		LogData("GetResponse");
 		if (len > 0)
 		{
 			if (len == DATA_LENGHT)
@@ -266,7 +266,7 @@ CanBusState ShomCanBus::GetResponse(unsigned int id, byte pin)
 		}
 		delay(RESPONSE_DELAY);
 	}
-	if (_state == CBS_ERR)
+	if (res == CBS_ERR)
 	{
 		SetErrState(KS_ERR505, pin, "No data received", 0);
 		_ConnectionOK = false;
