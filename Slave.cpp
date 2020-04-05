@@ -28,7 +28,7 @@ int Slave::DoCmd()
 				if(data == 0 || data == 1)
 					digitalWrite(pin, data);
 				else
-					Slave::CanBus.SetErrState(SL_ERR601, pin, "wrong data = ", data); 
+					Slave::CanBus.SetErrState(-1, SL_ERR601, pin, "wrong data = ", data); 
 				}
 			else if(cmd == CANBUS_READ)
 				{
@@ -52,7 +52,7 @@ int Slave::DoCmd()
 					pinMode(pin, data);
                     }
 				else
-					Slave::CanBus.SetErrState(SL_ERR602, pin, "wrong pin mode = ", data); 
+					Slave::CanBus.SetErrState(-1, SL_ERR602, pin, "wrong pin mode = ", data); 
 				}
 			else if (cmd == CANBUS_RESET)
 				{
@@ -64,10 +64,10 @@ int Slave::DoCmd()
 				}
 			}
 		else 
-			Slave::CanBus.SetErrState(SL_ERR603, pin, "wrong pin = ", pin); 
+			Slave::CanBus.SetErrState(-1, SL_ERR603, pin, "wrong pin = ", pin); 
 		}
 	else 
-		Slave::CanBus.SetErrState(SL_ERR604, pin, "wrong cmd = ", cmd); 
+		Slave::CanBus.SetErrState(-1, SL_ERR604, pin, "wrong cmd = ", cmd); 
 
     Timer.Time(TA_FIX);
 	return res;	

@@ -53,7 +53,6 @@ void ShomCanBus::Init()
 			delay(100);
 		}
 
-		//_ConnectionOK = canbus_ok;
 		if (canbus_ok)
 		{
 			_state = CBS_ON;
@@ -67,10 +66,17 @@ void ShomCanBus::Init()
 }
 
 // ------------------------------------
-void ShomCanBus::SetErrState(UnitError err, byte pin, const char *txt, byte data)
+void ShomCanBus::SetErrState(int i, UnitError err, byte pin, const char *txt, byte data)
 {
 	Log_(_title);
-	Log_(" Error: Pin=");
+	Log_(" Error: ");
+	if (i > -1)
+	{
+		Log_("i=");
+		LogInt_(i);
+		Log_("; ");
+	}
+	Log_("Pin=");
 	LogInt_(pin);
 	Log_("; ");
 	Log_(txt);
@@ -224,50 +230,47 @@ CanBusState ShomCanBus::GetResponse(unsigned int id, byte pin)
 		LogInt_(len);
 		Log_(" :");
 		LogData("GetResponse");*/
-		if (len > 0)
+		if (len == DATA_LENGHT)
 		{
-			if (len == DATA_LENGHT)
+			unsigned int _id = GetMsgId();
+			if (_id == id)
 			{
-				unsigned int _id = GetMsgId();
-				if (_id == id)
+				CanBusCmd cmd = (CanBusCmd)GetDataByte(DATA_CMD);
+				if (CANBUS_RESPONSE == cmd)
 				{
-					CanBusCmd cmd = (CanBusCmd)GetDataByte(DATA_CMD);
-					if (CANBUS_RESPONSE == cmd)
-					{
-						byte data = GetDataByte(DATA_VALUE);
-						if (data == 0)
-							res = CBS_LOW;
-						else if (data == 1)
-							res = CBS_HIGH;
-						else
-						{
-							SetErrState(KS_ERR501, pin, "Wrong data", data);
-						}
-					}
+					byte data = GetDataByte(DATA_VALUE);
+					if (data == 0)
+						res = CBS_LOW;
+					else if (data == 1)
+						res = CBS_HIGH;
 					else
 					{
-						SetErrState(KS_ERR503, pin, "Wrong command", cmd);
+						SetErrState(i, KS_ERR501, pin, "Wrong data", data);
 					}
-					if (res == CBS_HIGH || res == CBS_LOW)
-						break;
 				}
 				else
 				{
-					String s = "ids: expected=" + String(id) + " received=" + String(_id);
-					SetErrState(KS_ERR506, pin, s.c_str(), 0);
+					SetErrState(i, KS_ERR503, pin, "Wrong command", cmd);
 				}
+				if (res == CBS_HIGH || res == CBS_LOW)
+					break;
 			}
 			else
 			{
-				SetErrState(KS_ERR504, pin, "Wrong data lenght", len);
+				String s = "ids: expected=" + String(id) + " received=" + String(_id);
+				SetErrState(i, KS_ERR506, pin, s.c_str(), 0);
 			}
+		}
+		else
+		{
+			SetErrState(i, KS_ERR504, pin, "Wrong data lenght", len);
 		}
 		delay(RESPONSE_DELAY);
 	}
+
 	if (res == CBS_UNKNOWN)
 	{
-		SetErrState(KS_ERR505, pin, "No data received", 0);
-		//_ConnectionOK = false;
+		SetErrState(i, KS_ERR505, pin, "No data received", 0);
 	}
 	else if ((res != CBS_ERR) && (i > 0)) // if response is gotten not with one try
 	{

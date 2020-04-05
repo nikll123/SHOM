@@ -58,7 +58,7 @@ public:
 
 	void SetErrState(UnitError err);
 	void SetErrState(UnitError err, const char *txt);
-	void SetErrState(UnitError err, byte pin, const char *txt, byte data);
+	void SetErrState(int i, UnitError err, byte pin, const char *txt, byte data);
 
 	void Send();
 	unsigned int SendCmd(CanBusCmd cmd, byte pin);
