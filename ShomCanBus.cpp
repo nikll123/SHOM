@@ -218,12 +218,12 @@ CanBusState ShomCanBus::GetResponse(unsigned int id, byte pin)
 	for (i = 0; i < RESPONSE_TRY_CNT; i++)
 	{
 		byte len = Receive();
-		Log_("i=");
+		/*Log_("i=");
 		LogInt_(i);
 		Log_(" len=");
 		LogInt_(len);
 		Log_(" :");
-		LogData("GetResponse");
+		LogData("GetResponse");*/
 		if (len > 0)
 		{
 			if (len == DATA_LENGHT)
