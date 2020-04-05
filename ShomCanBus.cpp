@@ -212,7 +212,7 @@ unsigned int ShomCanBus::SendCmd(unsigned int id, CanBusCmd cmd, byte pin, byte 
 // ------------------------------------
 CanBusState ShomCanBus::GetResponse(unsigned int id, byte pin)
 {
-	CanBusState res = CBS_ERR;
+	CanBusState res = CBS_UNKNOWN;
 	int i;
 	pin = pin + 100;
 	for (i = 0; i < RESPONSE_TRY_CNT; i++)
@@ -264,12 +264,12 @@ CanBusState ShomCanBus::GetResponse(unsigned int id, byte pin)
 		}
 		delay(RESPONSE_DELAY);
 	}
-	if (res == CBS_ERR)
+	if (res == CBS_UNKNOWN)
 	{
 		SetErrState(KS_ERR505, pin, "No data received", 0);
 		//_ConnectionOK = false;
 	}
-	else if (i > 0)
+	else if ((res != CBS_ERR) && (i > 0)) // if response is gotten not with one try
 	{
 		Log_(_title);
 		Log_(".GetResponse count i=");

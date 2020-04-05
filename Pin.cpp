@@ -47,11 +47,11 @@ void Pin::SetState(PinState state, bool doLog)
 	ShomPinWrite(val);
 	_state = state;
 	ps2.New = _state;
-	if (DoLogChanges || doLog)
-	{
+	//if (DoLogChanges || doLog)
+	//{
 		//if (ps2.Changed())
 			//LogStates(ps2);
-	}
+	//}
 }
 
 // ------------------------------------
@@ -130,13 +130,9 @@ void Pin::ShomPinWrite(bool val)
 		_state = KS_OFF;
 
 	if (_pin < 100)
-	{
 		digitalWrite(_pin, val);
-	}
 	else
-	{
 		unsigned int id = Pin::CanBus.SendCmd(CANBUS_WRITE, _pin - 100, val);
-	}
 }
 
 //------------------------------
@@ -144,13 +140,9 @@ void Pin::ShomPinMode(byte pinmode)
 {
 	_pinmode = pinmode;
 	if (_pin < 100)
-	{
 		pinMode(_pin, _pinmode);
-	}
 	else
-	{
 		unsigned int id = Pin::CanBus.SendCmd(CANBUS_MODE, _pin - 100, _pinmode);
-	}
 	//Log(PinModeText());
 }
 
