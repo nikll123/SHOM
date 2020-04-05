@@ -32,7 +32,6 @@ public:
 	System();
 	System(const char *title, uint8_t pin_button_on, uint8_t _pin_button_off, uint8_t pin_button_reset);
 	void Init();
-	//SystemInfo 		GetInfo();
 	void LogInfo();
 	void LogInfo(bool conv);
 	void SetupConveyor(const char *title, uint8_t pinIn, uint8_t pinOut, uint8_t pinAuto, uint8_t pinLed);

@@ -53,12 +53,11 @@ void System::Init()
 // ------------------------------------
 void System::Start()
 {
-	Log_(_title);
-	Log_(": Start ");
+	Log_("System Start ");
 	if (_state == SS_OFF)
 		_setState(SS_STARTING);
 	else
-		Log("Worong state");
+		Log("Wrong state");
 }
 
 // ------------------------------------
@@ -87,24 +86,9 @@ void System::Reset()
 // ------------------------------------
 void System::_setState(SystemState state)
 {
-	_logStates({_state, state});
+	//_logStates({_state, state});
 	_state = state;
 }
-
-// ------------------------------------
-/*SystemInfo System::GetInfo()
-{
-	UnitInfo ui = Unit::GetInfo();
-	PinInInfo bOni = BtnOn.GetInfo();
-	PinInInfo bOffi = BtnOff.GetInfo();
-	PinInInfo bReseti = BtnReset.GetInfo();
-	return {ui.Title,
-			ui.UnitType,
-			GetSystemStateText(_state),
-			bOni.Pin,
-			bOffi.Pin,
-			bReseti.Pin};
-}*/
 
 // ------------------------------------
 void System::LogInfo()

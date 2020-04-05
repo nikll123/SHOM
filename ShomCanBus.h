@@ -89,7 +89,7 @@ private:
 	//const char		*_title;
 	CanBusState _state = CBS_UNKNOWN;
 	byte _data_buffer[DATA_LENGHT];
-	bool _ConnectionOK;
+	//bool _ConnectionOK;
 };
 
 #endif

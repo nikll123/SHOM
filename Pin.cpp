@@ -115,7 +115,7 @@ bool Pin::ShomPinRead()
 			_state = KS_ON;
 		else
 			_state = KS_ERR;
-		res = (canbusres == CBS_HIGH);
+		res = (_state == KS_ON);
 	}
 
 	return res;

@@ -53,7 +53,7 @@ void ShomCanBus::Init()
 			delay(100);
 		}
 
-		_ConnectionOK = canbus_ok;
+		//_ConnectionOK = canbus_ok;
 		if (canbus_ok)
 		{
 			_state = CBS_ON;
@@ -254,7 +254,7 @@ CanBusState ShomCanBus::GetResponse(unsigned int id, byte pin)
 				else
 				{
 					String s = "ids: expected=" + String(id) + " received=" + String(_id);
-					SetErrState(KS_ERR506, pin, s.c_str(), _id);
+					SetErrState(KS_ERR506, pin, s.c_str(), 0);
 				}
 			}
 			else
@@ -267,7 +267,7 @@ CanBusState ShomCanBus::GetResponse(unsigned int id, byte pin)
 	if (res == CBS_ERR)
 	{
 		SetErrState(KS_ERR505, pin, "No data received", 0);
-		_ConnectionOK = false;
+		//_ConnectionOK = false;
 	}
 	else if (i > 0)
 	{
