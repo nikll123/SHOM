@@ -146,7 +146,7 @@ void ShomCanBus::LogData(const char *comment)
 	Log_("; cmd=");
 	Log_(GetCmdTitle((CanBusCmd)_data_buffer[DATA_CMD]));
 	Log_("; pin=");
-	LogInt_(100+_data_buffer[DATA_PIN]);
+	LogInt_(100 + _data_buffer[DATA_PIN]);
 	Log_("; value=");
 	LogInt(_data_buffer[DATA_VALUE]);
 }
@@ -253,10 +253,8 @@ CanBusState ShomCanBus::GetResponse(unsigned int id, byte pin)
 				}
 				else
 				{
-					char txt[STRMAXLEN] = "id expected ";
-					char cx[6] = "";
-					strcpy(txt, itoa(id, cx, 10));
-					SetErrState(KS_ERR506, pin, txt, _id);
+					String s = "ids: expected=" + String(id) + " received=" + String(_id);
+					SetErrState(KS_ERR506, pin, s.c_str(), _id);
 				}
 			}
 			else
@@ -296,16 +294,16 @@ unsigned int ShomCanBus::GetMsgId()
 	}
 	return res;
 }
-	
+
 // ------------------------------------
 void ShomCanBus::ResponseDelay()
-	{
+{
 	delay(RESPONSE_DELAY);
-	}
+}
 
 // ------------------------------------
 bool ShomCanBus::ConnectionOK()
-	{
-	return _state != CBS_ERR;;
-	}
-	
+{
+	return _state != CBS_ERR;
+	;
+}

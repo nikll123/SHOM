@@ -3,34 +3,22 @@ Class PinOut - for pins which are used in OUTPUT mode
 */
 
 #ifndef PinOut_h
-	#define PinOut_h
-	
-	#include "Pin.h"
+#define PinOut_h
 
-   	//-------------------------------
-	struct PinOutInfo {
-					String 		Title;
-					String 		UnitType;
-					String 		State;
-					uint8_t		Pin;
-					String		Logic;
-					};	
-	
-   	//-------------------------------
-	class PinOut : public Pin
-	{
-	public:
-				    PinOut();
-				    PinOut(const char * title, uint8_t pin);
-				    PinOut(const char * title, uint8_t pin, LogicType lt);
-				    PinOut(const char * title, uint8_t pin, LogicType lt, UnitType ut);
+#include "Pin.h"
 
-		void		Inverse();
-		PinOutInfo 	GetInfo();
+//-------------------------------
+class PinOut : public Pin
+{
+public:
+	PinOut();
+	PinOut(const char *title, uint8_t pin);
+	PinOut(const char *title, uint8_t pin, LogicType lt);
+	PinOut(const char *title, uint8_t pin, LogicType lt, UnitType ut);
 
-	protected:
+	void Inverse();
 
-	private:
-	};
+protected:
+private:
+};
 #endif
-

@@ -31,16 +31,6 @@ struct PinState2
 };
 
 //-------------------------------
-struct PinInfo
-{
-	String Title;
-	String UnitType;
-	String PinModeText;
-	String State;
-	uint8_t Pin;
-};
-
-//-------------------------------
 struct PinRespCode
 {
 	int RespCode = 0;
@@ -62,7 +52,6 @@ public:
 	Pin();
 	Pin(const char *title, uint8_t pin, UnitType ut);
 
-	PinInfo GetInfo();
 	PinState GetState();
 	uint8_t GetPin();
 	void LogInfo();

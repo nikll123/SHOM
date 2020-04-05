@@ -12,15 +12,6 @@ Class Led for LED control
 #define INTERVAL_BLINKSLOW 800
 #define DONOTLOG false
 
-
-struct LedInfo
-{
-	String Title;
-	String UnitType;
-	uint8_t Pin;
-	String State;
-};
-
 enum LedState
 {
 	LED_NOTINIT,

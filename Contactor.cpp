@@ -82,13 +82,6 @@ const char *Contactor::GetContactorStateText(ContactorState state)
 }
 
 // ------------------------------------
-/*ContactorState2 Contactor::GetState(String logText)
-{
-	//Log(logText);
-	return GetState();
-}*/
-
-// ------------------------------------
 ContactorState2 Contactor::GetState()
 {
 	ContactorState2 cs2 = {_state, _state};

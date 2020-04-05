@@ -126,7 +126,7 @@ void System::LogInfo(bool conv)
 	LogInt_(BtnOff.GetPin());
 	Log_(", BtnReset-");
 	LogInt_(BtnReset.GetPin());
-/*	if (conv)
+	/*	if (conv)
 	{
 		for (int i = 0; i < UnitCount; i++)
 		{
