@@ -244,14 +244,10 @@ CanBusState ShomCanBus::GetResponse(unsigned int id, byte pin)
 					else if (data == 1)
 						res = CBS_HIGH;
 					else
-					{
 						SetErrState(i, KS_ERR501, pin, "Wrong data", data);
-					}
 				}
 				else
-				{
 					SetErrState(i, KS_ERR503, pin, "Wrong command", cmd);
-				}
 				if (res == CBS_HIGH || res == CBS_LOW)
 					break;
 			}
@@ -262,16 +258,13 @@ CanBusState ShomCanBus::GetResponse(unsigned int id, byte pin)
 			}
 		}
 		else
-		{
 			SetErrState(i, KS_ERR504, pin, "Wrong data lenght", len);
-		}
+
 		delay(RESPONSE_DELAY);
 	}
 
 	if (res == CBS_UNKNOWN)
-	{
 		SetErrState(i, KS_ERR505, pin, "No data received", 0);
-	}
 	else if ((res != CBS_ERR) && (i > 0)) // if response is gotten not with one try
 	{
 		Log_(_title);
