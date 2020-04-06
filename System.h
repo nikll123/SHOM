@@ -18,6 +18,7 @@ enum SystemState
 	SS_STARTING = 5,
 	SS_STOPPING = 6,
 	SS_ERR = 300,
+	SS_ERR_CONNECT = 600,
 };
 
 struct SystemState2
@@ -52,6 +53,7 @@ public:
 	void Start();
 	void Stop();
 	void Reset();
+	void HaltAll(const char * msg);
 	void TurnOff();
 	void TurnOffAlarm();
 	void SetErrState(UnitError err);

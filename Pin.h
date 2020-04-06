@@ -16,6 +16,7 @@ enum PinState
 	KS_ON = 2,
 	KS_OFF = 3,
 	KS_ERR = 500,
+	KS_ERR_CONNECT = 600,
 };
 
 //-------------------------------
@@ -73,7 +74,7 @@ public:
 
 	bool IsHigh();
 	bool IsLow();
-	bool ShomPinRead();
+	PinState ShomPinRead();
 	void ShomPinWrite(bool val);
 	void ShomPinMode(uint8_t pinmode);
 	static ShomCanBus CanBus;

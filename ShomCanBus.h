@@ -44,6 +44,7 @@ enum CanBusState
 	CBS_HIGH = 3,
 	CBS_LOW = 4,
 	CBS_ERR = 400,
+	CBS_ERR_CONNECT = 500,
 };
 
 //-------------------------------

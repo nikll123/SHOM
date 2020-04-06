@@ -72,15 +72,20 @@ void System::Stop()
 // ------------------------------------
 void System::Reset()
 {
-	Log_(_title);
-	Log(": Reset");
+	String s = _title;
+	s = s + ": Reset";
+	HaltAll(s.c_str());
+	Init();
+}
 
+// ------------------------------------
+void System::HaltAll(const char *msg)
+{
+	Log(msg);
 	for (int i = 0; i < UnitCount; i++)
 	{
 		Conveyors[i].Halt();
 	}
-
-	Init();
 }
 
 // ------------------------------------
@@ -180,6 +185,9 @@ SystemState2 System::GetState()
 		else
 			ss = SS_ERR;
 		_state = ss;
+	}
+	if (_state == SS_ERR_CONNECT)
+	{
 	}
 	ss2.New = _state;
 	_logIfChanged(ss2);
@@ -425,7 +433,7 @@ SystemState System::_checkStateOff()
 			cntErr++;
 			SetErrState(SS_ERR311);
 		}
-		//else
+		else
 		{
 			if (ConveyorStates[i].New == US_OFF)
 				cntOff++;
@@ -536,7 +544,14 @@ void System::TurnLeds(bool on)
 // ------------------------------------
 void System::CheckConnection()
 {
-	bool newState = ConnectChecker.ShomPinRead();
+	PinState newState = ConnectChecker.ShomPinRead();
+	if (newState == KS_ERR_CONNECT)
+	{
+		String s = _title;
+		s = s + ": Lost Connection";
+		HaltAll(s.c_str());
+		_state = SS_ERR_CONNECT;
+	}
 }
 
 // ------------------------------------

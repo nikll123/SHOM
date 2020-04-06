@@ -17,7 +17,7 @@ ShomCanBus Pin::CanBus = ShomCanBus();
 // ------------------------------------
 bool Pin::IsHigh()
 {
-	return ShomPinRead();
+	return KS_ON == ShomPinRead();
 }
 
 // ------------------------------------
@@ -89,7 +89,7 @@ const char *Pin::PinStateText(PinState instate)
 }
 
 //------------------------------
-bool Pin::ShomPinRead()
+PinState Pin::ShomPinRead()
 {
 	bool res = false;
 	CanBusState canbusres;
@@ -113,12 +113,13 @@ bool Pin::ShomPinRead()
 			_state = KS_OFF;
 		else if (canbusres == CBS_HIGH)
 			_state = KS_ON;
+		else if (canbusres == CBS_ERR_CONNECT)
+			_state = KS_ERR_CONNECT;
 		else
 			_state = KS_ERR;
-		res = (_state == KS_ON);
 	}
 
-	return res;
+	return _state;
 }
 
 //------------------------------

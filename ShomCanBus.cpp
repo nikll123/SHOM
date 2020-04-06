@@ -95,7 +95,11 @@ void ShomCanBus::SetErrState(UnitError err, const char *txt)
 // ------------------------------------
 void ShomCanBus::SetErrState(UnitError err)
 {
-	_state = CBS_ERR;
+	if (err == KS_ERR505)
+		_state = CBS_ERR_CONNECT;
+	else
+		_state = CBS_ERR;
+
 	LogErr(err);
 }
 
@@ -264,7 +268,10 @@ CanBusState ShomCanBus::GetResponse(unsigned int id, byte pin)
 	}
 
 	if (res == CBS_UNKNOWN)
+	{
 		SetErrState(i, KS_ERR505, pin, "No data received", 0);
+		res = _state; // CBS_ERR_CONNECT
+	}
 	else if ((res != CBS_ERR) && (i > 0)) // if response is gotten not with one try
 	{
 		Log_(_title);
