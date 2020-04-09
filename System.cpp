@@ -29,6 +29,7 @@ void System::Init()
 {
 	Log_(_title);
 	Log(": Init");
+	SetState(SS_NOTINIT);
 	Pin::CanBus.Init();
 	ConnectChecker = PinIn("ConnectCheck", 100); // 100 - dummy pin for the slave just for check connection purposes
 	for (int i = 0; i < UnitCount; i++)
@@ -40,7 +41,7 @@ void System::Init()
 			ConveyorStates[i] = {US_OFF, US_OFF};
 		}
 	}
-	_setState(SS_OFF);
+	SetState(SS_OFF);
 	for (int i = 0; i < 3; i++)
 	{
 		TurnLeds(1);
@@ -53,20 +54,24 @@ void System::Init()
 // ------------------------------------
 void System::Start()
 {
-	Log_("System Start ");
+	Log_(": System Start ");
 	if (_state == SS_OFF)
 		_setState(SS_STARTING);
 	else
-		Log("Wrong state");
+		Log_("Wrong state");
+	Log("");
 }
 
 // ------------------------------------
 void System::Stop()
 {
 	Log_(_title);
-	Log(": Stop");
+	Log(": System Stop");
 	if (_state == SS_STARTING || _state == SS_ON)
 		_setState(SS_STOPPING);
+	else
+		Log_("Wrong state");
+	Log("");
 }
 
 // ------------------------------------
@@ -89,9 +94,15 @@ void System::HaltAll(const char *msg)
 }
 
 // ------------------------------------
+void System::SetState(SystemState state)
+{
+	_logStates({_state, state});
+	_state = state;
+}
+
+// ------------------------------------
 void System::_setState(SystemState state)
 {
-	//_logStates({_state, state});
 	_state = state;
 }
 

@@ -50,9 +50,10 @@ public:
 	Unit Timer;
 	PinIn ConnectChecker;
 
-	void Start();
+ 	void Start();
 	void Stop();
 	void Reset();
+ 	void SetState(SystemState state);
 	void HaltAll(const char * msg);
 	void TurnOff();
 	void TurnOffAlarm();
