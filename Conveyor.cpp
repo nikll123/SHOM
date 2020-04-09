@@ -188,6 +188,8 @@ void Conveyor::_Turn(ConveyorState csNew)
 // ------------------------------------
 void Conveyor::Halt()
 {
+	Log_(_title);
+	Log_(": Halt; ");
 	ContactorConveyor.Halt();
 	LedConveyor.SetOff();
 	_state = US_HALT;

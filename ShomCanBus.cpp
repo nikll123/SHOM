@@ -66,7 +66,19 @@ void ShomCanBus::Init()
 }
 
 // ------------------------------------
+void ShomCanBus::SetErrState(UnitError err, byte pin, const char *txt, byte data)
+{
+	_setErrState(-1, err, pin, txt, data);
+}
+
+// ------------------------------------
 void ShomCanBus::SetErrState(int i, UnitError err, byte pin, const char *txt, byte data)
+{
+	_setErrState(i, err, pin, txt, data);
+}
+
+// ------------------------------------
+void ShomCanBus::_setErrState(int i, UnitError err, byte pin, const char *txt, byte data)
 {
 	Log_(_title);
 	Log_(" Error: ");

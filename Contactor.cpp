@@ -198,7 +198,7 @@ void Contactor::_Turn(ContactorState csNew)
 	}
 	else if (csNew == CS_HALT)
 	{
-		KeyOut.SetOFF();
+		KeyOut.SetState(KS_OFF, true);
 		_state = CS_HALT;
 	}
 	else
