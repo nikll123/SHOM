@@ -20,7 +20,8 @@ enum ConveyorState
 	US_STARTING = 4,
 	US_STOPPING = 5,
 	US_ERR = 200,
-	US_HALT = 299,
+	US_LOST_CONNECT = 300,
+	US_HALT = 400,
 };
 
 struct ConveyorState2

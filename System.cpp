@@ -31,7 +31,7 @@ void System::Init()
 	Log(": Init");
 	SetState(SS_NOTINIT);
 	Pin::CanBus.Init();
-	ConnectChecker = PinIn("ConnectCheck", 100); // 100 - dummy pin for the slave just for check connection purposes
+	//ConnectChecker = PinIn("ConnectCheck", 100); // 100 - dummy pin for the slave just for check connection purposes
 	for (int i = 0; i < UnitCount; i++)
 	{
 		ConveyorStates[i] = {US_NOTINIT, US_NOTINIT};
@@ -77,16 +77,36 @@ void System::Stop()
 // ------------------------------------
 void System::Reset()
 {
-	String s = _title;
-	s = s + ": Reset";
-	HaltAll(s.c_str());
+	HaltAllReset();
 	Init();
 }
 
 // ------------------------------------
-void System::HaltAll(const char *msg)
+void System::HaltAll()
 {
-	Log(msg);
+	_haltAll();
+}
+
+// ------------------------------------
+void System::HaltAllReset()
+{
+	Log_(_title);
+	Log(": Reset");
+	_haltAll();
+}
+
+// ------------------------------------
+SystemState System::HaltAllLostConnection()
+{
+	Log_(_title);
+	Log(": Lost Connection");
+	_haltAll();
+	return	SS_LOST_CONNECT;
+}
+
+// ------------------------------------
+void System::_haltAll()
+{
 	for (int i = 0; i < UnitCount; i++)
 	{
 		Conveyors[i].Halt();
@@ -193,12 +213,11 @@ SystemState2 System::GetState()
 			ss = _checkStateOff();
 		else if (_state == SS_ON)
 			ss = _checkStateOn();
+		else if (_state == SS_LOST_CONNECT)
+			ss =HaltAllLostConnection();
 		else
 			ss = SS_ERR;
 		_state = ss;
-	}
-	if (_state == SS_ERR_CONNECT)
-	{
 	}
 	ss2.New = _state;
 	_logIfChanged(ss2);
@@ -276,6 +295,11 @@ void System::_updateConveyorStates()
 		if (Conveyors[i].IsActive())
 		{
 			ConveyorStates[i] = Conveyors[i].GetState();
+			if (US_LOST_CONNECT == ConveyorStates[i].New)
+			{
+				_state = SS_LOST_CONNECT;
+				break;
+			}
 		}
 	}
 }
@@ -553,22 +577,19 @@ void System::TurnLeds(bool on)
 }
 
 // ------------------------------------
-void System::CheckConnection()
+/*void System::CheckConnection()
 {
 	PinState newState = ConnectChecker.ShomPinRead();
 	if (newState == KS_ERR_CONNECT)
 	{
-		String s = _title;
-		s = s + ": Lost Connection";
-		HaltAll(s.c_str());
-		_state = SS_ERR_CONNECT;
+		_state = HaltAllLostConnection();
 	}
-}
+}*/
 
 // ------------------------------------
 void System::Run()
 {
-	CheckConnection();
+	//CheckConnection();
 	SystemState2 ss2 = GetState();
 	delay(1);
 }

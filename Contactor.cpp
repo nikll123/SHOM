@@ -73,6 +73,10 @@ const char *Contactor::GetContactorStateText(ContactorState state)
 		return "STOPPING";
 	case CS_UNKNOWN:
 		return "UNKNOWN";
+	case CS_LOST_CONNECT:
+		return "ERR_CONNECT";
+	case CS_HALT:
+		return "HALT";
 	default:
 		return "ERROR";
 	}
@@ -87,7 +91,11 @@ ContactorState2 Contactor::GetState()
 		cs2.Old = _state;
 		_stateIn = (KeyIn.GetState()).New;
 		_stateOut = KeyOut.GetState();
-		if (_state == CS_OFF)
+		if (_stateIn == KS_ERR_CONNECT || _stateOut == KS_ERR_CONNECT)
+		{
+			_state = CS_LOST_CONNECT;
+		}
+		else if (_state == CS_OFF)
 		{
 			if (_stateOut != KS_OFF)
 				SetErrState(CS_ERR101);

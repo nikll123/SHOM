@@ -22,6 +22,7 @@ enum ContactorState
 	CS_UNKNOWN = 5,
 	CS_ERR = 100,
 	CS_HALT = 199,
+	CS_LOST_CONNECT = 300,
 };
 
 struct ContactorState2

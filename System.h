@@ -18,7 +18,7 @@ enum SystemState
 	SS_STARTING = 5,
 	SS_STOPPING = 6,
 	SS_ERR = 300,
-	SS_ERR_CONNECT = 600,
+	SS_LOST_CONNECT = 600,
 };
 
 struct SystemState2
@@ -48,20 +48,22 @@ public:
 	PinIn BtnOff;
 	PinIn BtnReset;
 	Unit Timer;
-	PinIn ConnectChecker;
+	//PinIn ConnectChecker;
 
  	void Start();
 	void Stop();
 	void Reset();
  	void SetState(SystemState state);
-	void HaltAll(const char * msg);
+	void HaltAll();
+	SystemState HaltAllLostConnection();
+	void HaltAllReset();
 	void TurnOff();
 	void TurnOffAlarm();
 	void SetErrState(UnitError err);
 	void SetErrState(UnitError err, const char *msg);
 	void SetErrState(UnitError err, const char *msg1, const char *msg2);
 	SystemState2 GetState();
-	void CheckConnection();
+	//void CheckConnection();
 	void Run();
 
 private:
@@ -77,5 +79,6 @@ private:
 	void _ledRefresh();
 	SystemState _state = SS_UNKNOWN;
 	SystemState _calcState(int cntErr, int cntOn, int cntOff, int cntStoping, int cntStarting);
+	void _haltAll();
 };
 #endif

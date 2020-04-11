@@ -59,6 +59,10 @@ const char *Conveyor::GetConveyorStateText(ConveyorState state)
 		return "STARTING";
 	case US_STOPPING:
 		return "STOPPING";
+	case US_LOST_CONNECT:
+		return "ERR_CONNECT";
+	case US_HALT:
+		return "ERR_HALT";
 	default:
 		return "ERROR";
 	}
@@ -72,8 +76,12 @@ ConveyorState2 Conveyor::GetState()
 	{
 		ContactorState2 cs2 = ContactorConveyor.GetState();
 		PinState2 as2 = AtomatConveyor.GetState();
-		//bool err = false;
-		if (cs2.New >= CS_ERR)
+
+		if (cs2.New == CS_LOST_CONNECT)
+		{
+			_state = US_LOST_CONNECT;
+		}
+		else if (cs2.New >= CS_ERR)
 		{
 			SetErrState(US_ERR201);
 		}
