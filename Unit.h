@@ -30,12 +30,6 @@ The most common andgeneral functionality is implemented here
 					};	
 
 	//-------------------------------
-	struct UnitInfo {
-					String 		Title;
-					String 		UnitType;
-					};	
-
-	//-------------------------------
 	enum TimeAct  {	TA_NONE,
 					TA_FIX,
 					TA_RESET,
