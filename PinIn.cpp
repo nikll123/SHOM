@@ -39,14 +39,19 @@ PinState2 PinIn::GetState()
 // ------------------------------------
 void PinIn::_refreshState()
 {
-	bool newState = KS_ON == ShomPinRead();
+	PinState ps = ShomPinRead();
+	if (ps == KS_ERR_CONNECT)
+		_state = KS_ERR_CONNECT;
+	else
+	{
+		bool newState = ps == KS_ON;
 
-	if (_logicType == LT_INVERSE)
-		newState = !newState;
+		if (_logicType == LT_INVERSE)
+			newState = !newState;
 
-	if (newState == 1)
-		_state = KS_ON;
-	else //  if (newState == 0)
-		_state = KS_OFF;
+		if (newState == 1)
+			_state = KS_ON;
+		else //  if (newState == 0)
+			_state = KS_OFF;
+	}
 }
-
