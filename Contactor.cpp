@@ -12,12 +12,9 @@ Contactor::Contactor(const char *title, uint8_t pinIn, uint8_t pinOut) : Unit(ti
 	Log_(_title);
 	Log(": Creating");
 	char s[MAXSTRLEN] = "";
-	//int l = strlen(title);
-	//char s_in[l + 10] = "";
 	strcpy(s, title);
 	strcat(s, "_In");
 	KeyIn = PinIn(s, pinIn, LogicTypeIn);
-	//char s_out[l + 10] = "";
 	strcpy(s, title);
 	strcat(s, "_Out");
 	KeyOut = PinOut(s, pinOut, LogicTypeOut);
@@ -29,7 +26,7 @@ void Contactor::Init()
 {
 	Log_(_title);
 	Log(": Init");
-	KeyIn.GetState();
+	KeyIn.GetState(); // for initialisation only, real state does not matter
 	ContactorState2 cs2;
 	cs2.Old = _state;
 	_state = CS_OFF;
@@ -97,6 +94,13 @@ ContactorState2 Contactor::GetState()
 			if (_stateIn != KS_OFF)
 				SetErrState(CS_ERR102);
 		}
+		else if (_state == CS_ON)
+		{
+			if (_stateOut != KS_ON)
+				SetErrState(CS_ERR109);
+			else if (_stateIn != KS_ON)
+				SetErrState(CS_ERR110);
+		}
 		else if (_state == CS_STARTING)
 		{
 			if (_millsCheck == 0)
@@ -139,13 +143,6 @@ ContactorState2 Contactor::GetState()
 				else if (_stateIn != KS_ON)
 					SetErrState(CS_ERR108);
 			}
-		}
-		else if (_state == CS_ON)
-		{
-			if (_stateOut != KS_ON)
-				SetErrState(CS_ERR109);
-			else if (_stateIn != KS_ON)
-				SetErrState(CS_ERR110);
 		}
 
 		cs2.New = _state;
