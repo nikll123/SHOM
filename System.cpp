@@ -83,7 +83,7 @@ void System::Reset()
 // ------------------------------------
 void System::HaltAll()
 {
-	_haltAll();
+	_haltAll(LED_OFF);
 }
 
 // ------------------------------------
@@ -91,7 +91,7 @@ void System::HaltAllReset()
 {
 	Log_(_title);
 	Log(": Reset");
-	_haltAll();
+	_haltAll(LED_OFF);
 }
 
 // ------------------------------------
@@ -99,16 +99,16 @@ SystemState System::HaltAllLostConnection()
 {
 	Log_(_title);
 	Log(": Lost Connection");
-	_haltAll();
+	_haltAll(LED_BLINKFAST);
 	return	SS_LOST_CONNECT;
 }
 
 // ------------------------------------
-void System::_haltAll()
+void System::_haltAll(LedState ls)
 {
 	for (int i = 0; i < UnitCount; i++)
 	{
-		Conveyors[i].Halt();
+		Conveyors[i].Halt(ls);
 	}
 }
 
@@ -317,7 +317,7 @@ SystemState System::_checkStateStarting()
 
 		if (doHalt)
 		{
-			Conveyors[i].Halt();
+			Conveyors[i].Halt(LED_OFF);
 			cntErr++;
 			SetErrState(SS_ERR305);
 		}
@@ -393,7 +393,7 @@ SystemState System::_checkStateStopping()
 
 		if (doHalt)
 		{
-			Conveyors[i].Halt();
+			Conveyors[i].Halt(LED_OFF);
 			cntErr++;
 			SetErrState(SS_ERR306);
 		}
@@ -463,7 +463,7 @@ SystemState System::_checkStateOff()
 		bool err = false;
 		if (haltRest)
 		{
-			Conveyors[i].Halt();
+			Conveyors[i].Halt(LED_OFF);
 			cntErr++;
 			SetErrState(SS_ERR311);
 		}
@@ -499,7 +499,7 @@ SystemState System::_checkStateOn()
 
 		if (doHalt)
 		{
-			Conveyors[i].Halt();
+			Conveyors[i].Halt(LED_OFF);
 			cntErr++;
 			SetErrState(SS_ERR313);
 		}

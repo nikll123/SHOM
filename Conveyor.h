@@ -63,7 +63,7 @@ public:
 
 	void TurnOn();
 	void TurnOff();
-	void Halt();
+	void Halt(LedState ls);
 	bool IsActive();
 
 protected:

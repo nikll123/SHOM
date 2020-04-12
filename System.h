@@ -77,6 +77,6 @@ private:
 	void _ledRefresh();
 	SystemState _state = SS_UNKNOWN;
 	SystemState _calcState(int cntErr, int cntOn, int cntOff, int cntStoping, int cntStarting);
-	void _haltAll();
+	void _haltAll(LedState ls);
 };
 #endif

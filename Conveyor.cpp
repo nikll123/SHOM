@@ -77,7 +77,7 @@ ConveyorState2 Conveyor::GetState()
 		ContactorState2 cs2 = ContactorConveyor.GetState();
 		PinState2 as2 = AtomatConveyor.GetState();
 
-		if (cs2.New == CS_LOST_CONNECT)
+		if (cs2.New == CS_LOST_CONNECT || as2.New == KS_ERR_CONNECT)
 		{
 			_state = US_LOST_CONNECT;
 		}
@@ -194,12 +194,12 @@ void Conveyor::_Turn(ConveyorState csNew)
 }
 
 // ------------------------------------
-void Conveyor::Halt()
+void Conveyor::Halt(LedState ls)
 {
 	Log_(_title);
 	Log_(": Halt; ");
 	ContactorConveyor.Halt();
-	LedConveyor.SetOff();
+	LedConveyor.SetState(ls);
 	_state = US_HALT;
 }
 
