@@ -48,7 +48,6 @@ public:
 	PinIn BtnOff;
 	PinIn BtnReset;
 	Unit Timer;
-	//PinIn ConnectChecker;
 
  	void Start();
 	void Stop();
@@ -63,7 +62,6 @@ public:
 	void SetErrState(UnitError err, const char *msg);
 	void SetErrState(UnitError err, const char *msg1, const char *msg2);
 	SystemState2 GetState();
-	//void CheckConnection();
 	void Run();
 
 private:

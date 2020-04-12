@@ -27,7 +27,8 @@ void Contactor::Init()
 	Log_(_title);
 	Log(": Init");
 	KeyIn.GetState(); // for initialisation only, real state does not matter
-	KeyOut.ShomPinMode(OUTPUT); // for re-initialisation on slave the side
+	if (KeyOut.GetPin() > PIN_REMOTE_BASE)
+		KeyOut.ShomPinMode(OUTPUT); // re-initialisation on slave the side
 	ContactorState2 cs2;
 	cs2.Old = _state;
 	_state = CS_OFF;

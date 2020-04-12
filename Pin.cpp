@@ -95,7 +95,7 @@ PinState Pin::ShomPinRead()
 	CanBusState canbusres;
 	_state = KS_NONE;
 	byte pin = _pin;
-	if (pin < 100)
+	if (pin < PIN_REMOTE_BASE)
 	{
 		res = digitalRead(pin);
 		if (res)
@@ -105,7 +105,7 @@ PinState Pin::ShomPinRead()
 	}
 	else
 	{
-		pin = _pin - 100;
+		pin = _pin - PIN_REMOTE_BASE;
 		unsigned int msgId = Pin::CanBus.SendCmd(CANBUS_READ, pin);
 		Pin::CanBus.ResponseDelay();
 		canbusres = Pin::CanBus.GetResponse(msgId, pin);
@@ -130,20 +130,20 @@ void Pin::ShomPinWrite(bool val)
 	else
 		_state = KS_OFF;
 
-	if (_pin < 100)
+	if (_pin < PIN_REMOTE_BASE)
 		digitalWrite(_pin, val);
 	else
-		unsigned int id = Pin::CanBus.SendCmd(CANBUS_WRITE, _pin - 100, val);
+		unsigned int id = Pin::CanBus.SendCmd(CANBUS_WRITE, _pin - PIN_REMOTE_BASE, val);
 }
 
 //------------------------------
 void Pin::ShomPinMode(byte pinmode)
 {
 	_pinmode = pinmode;
-	if (_pin < 100)
+	if (_pin < PIN_REMOTE_BASE)
 		pinMode(_pin, _pinmode);
 	else
-		unsigned int id = Pin::CanBus.SendCmd(CANBUS_MODE, _pin - 100, _pinmode);
+		unsigned int id = Pin::CanBus.SendCmd(CANBUS_MODE, _pin - PIN_REMOTE_BASE, _pinmode);
 	//Log(PinModeText());
 }
 

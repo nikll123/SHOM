@@ -168,7 +168,7 @@ void ShomCanBus::LogData(const char *comment)
 	Log_("; cmd=");
 	Log_(GetCmdTitle((CanBusCmd)_data_buffer[DATA_CMD]));
 	Log_("; pin=");
-	LogInt_(100 + _data_buffer[DATA_PIN]);
+	LogInt_(PIN_REMOTE_BASE + _data_buffer[DATA_PIN]);
 	Log_("; value=");
 	LogInt(_data_buffer[DATA_VALUE]);
 }

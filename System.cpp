@@ -31,7 +31,6 @@ void System::Init()
 	Log(": Init");
 	SetState(SS_NOTINIT);
 	Pin::CanBus.Init();
-	//ConnectChecker = PinIn("ConnectCheck", 100); // 100 - dummy pin for the slave just for check connection purposes
 	for (int i = 0; i < UnitCount; i++)
 	{
 		ConveyorStates[i] = {US_NOTINIT, US_NOTINIT};
@@ -577,19 +576,8 @@ void System::TurnLeds(bool on)
 }
 
 // ------------------------------------
-/*void System::CheckConnection()
-{
-	PinState newState = ConnectChecker.ShomPinRead();
-	if (newState == KS_ERR_CONNECT)
-	{
-		_state = HaltAllLostConnection();
-	}
-}*/
-
-// ------------------------------------
 void System::Run()
 {
-	//CheckConnection();
 	SystemState2 ss2 = GetState();
 	delay(1);
 }

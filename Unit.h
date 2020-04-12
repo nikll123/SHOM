@@ -9,6 +9,7 @@ The most common andgeneral functionality is implemented here
 	#include <Log.h>
 
     #define MAXSTRLEN 100
+    #define PIN_REMOTE_BASE 100
     #define MAX_UNIT_NUMBER 15
 
 	#define RELAY_DELAY	50 // --10
