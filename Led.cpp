@@ -114,7 +114,7 @@ bool Led::_checkBlink(bool b, int interval)
 }
 
 //------------------------------------
-void Led::_setState(LedState ls)
+void Led::SetState(LedState ls)
 {
 	if (_state != ls)
 	{
@@ -138,13 +138,13 @@ void Led::_logState(LedState2 ls2)
 //------------------------------------
 void Led::SetOn()
 {
-	_setState(LED_ON);
+	SetState(LED_ON);
 }
 
 //------------------------------------
 void Led::SetOff()
 {
-	_setState(LED_OFF);
+	SetState(LED_OFF);
 }
 
 //------------------------------------
@@ -159,17 +159,17 @@ void Led::Inverse()
 //------------------------------------
 void Led::SetBlink()
 {
-	_setState(LED_BLINK);
+	SetState(LED_BLINK);
 }
 
 //------------------------------------
 void Led::SetBlinkSlow()
 {
-	_setState(LED_BLINKSLOW);
+	SetState(LED_BLINKSLOW);
 }
 
 //------------------------------------
 void Led::SetBlinkFast()
 {
-	_setState(LED_BLINKFAST);
+	SetState(LED_BLINKFAST);
 }

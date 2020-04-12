@@ -48,6 +48,7 @@ public:
 	void SetBlink();
 	void SetBlinkFast();
 	void SetBlinkSlow();
+	void SetState(LedState ls);
 	const char *GetLedStateText(LedState ls);
 
 protected:
@@ -55,7 +56,6 @@ private:
 	void _logState(LedState2);
 	LedState _state;
 	unsigned long _millis;
-	void _setState(LedState ls);
 	void _refreshState();
 	bool _checkBlink(bool b, int interval);
 };
