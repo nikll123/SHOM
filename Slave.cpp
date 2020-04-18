@@ -9,6 +9,7 @@ ShomCanBus Slave::CanBus = ShomCanBus();
 Unit Slave::Timer = Unit("Timer", UT_TIMER);
 byte _pinOutCount = 0;
 byte _pinOutArray[MAX_UNIT_NUMBER];
+bool Slave::LogAll = true;
 
 // ------------------------------------
 int Slave::DoCmd()
@@ -78,7 +79,8 @@ void Slave::CheckConnection()
 {
 	if (Timer.Time(TA_PERIOD) > CANBUS_TIMEOUT)
 	{
-		Log("Connection fault!");
+		if (LogAll)
+			Log("Connection fault!");
 		if (_pinOutCount > 0)
 			for (int i = 0; i < _pinOutCount; i++)
 			{
@@ -88,7 +90,8 @@ void Slave::CheckConnection()
 			}
 		else
 		{
-			Log("   _pinOutCount=0");
+			if (LogAll)
+				Log("   _pinOutCount=0");
 		}
 	}
 }

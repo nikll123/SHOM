@@ -20,6 +20,7 @@ SLAVE unit is controlled by the System (MASTER) unit.
     		static int				DoCmd();
 		    static void 			Run();
             static void             CheckConnection();
+            static bool             LogAll;
 
     	protected:
     		
