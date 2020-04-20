@@ -17,7 +17,7 @@ Unit::Unit(const char *title, UnitType type)
 //------------------------------
 void Unit::LogErr(UnitError err)
 {
-	char pref[STRMAXLEN] ="";
+	char pref[STRMAXLEN] = "";
 	errPrefix(err, pref);
 	Log_("   Error! ");
 	Log_(_title);
@@ -35,7 +35,7 @@ void Unit::LogInfo()
 	Log(UnitTypeText());
 }
 
-const char * Unit::GetTitle()
+const char *Unit::GetTitle()
 {
 	return _title;
 }
@@ -67,10 +67,13 @@ const char *Unit::UnitTypeText()
 		return "CONVEYORHANDLER";
 	case UT_CANBUS:
 		return "CANBUS";
+	case UT_TIMER:
+		return "UT_TIMER";
+	case UT_LCD:
+		return "UT_LCD";
 	default:
 		return "UnitTypeText: unknown";
 	}
-	
 }
 
 // ------------------------------------

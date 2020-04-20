@@ -28,6 +28,7 @@ The most common andgeneral functionality is implemented here
 					UT_CANBUS,
 					UT_SYSTEM,
 					UT_TIMER,
+					UT_LCD,
 					};	
 
 	//-------------------------------
