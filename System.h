@@ -7,7 +7,11 @@ This is a MASTER unit in the syste (in contrast to SALVE unit)
 #define System_h
 
 #include "Conveyor.h"
+#include "ShomLCD.h"
+
 #define CANBUS_TIMEOUT 1000
+#define pinSDA 20
+#define pinSCL 21
 
 enum SystemState
 {
@@ -48,6 +52,7 @@ public:
 	PinIn BtnOff;
 	PinIn BtnReset;
 	Unit Timer;
+	ShomLCD sLCD;
 
  	void Start();
 	void Stop();

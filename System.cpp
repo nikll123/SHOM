@@ -8,11 +8,16 @@ System::System()
 // ------------------------------------
 System::System(const char *title, uint8_t pinBtnOn, uint8_t pinBtnOff, uint8_t pinBtnReset) : Unit(title, UT_SYSTEM)
 {
+	sLCD = ShomLCD("LCD", pinSDA, pinSCL);
+	sLCD.LogInfo();
+	sLCD.Clear();
+	sLCD.Print(0, 0, "SHOM");
 	Init();
 	BtnOn = SetupButton("BtnOn", pinBtnOn);
 	BtnOff = SetupButton("BtnOff", pinBtnOff);
 	BtnReset = SetupButton("BtnReset", pinBtnReset);
 	Unit Timer = Unit("Timer", UT_TIMER);
+	sLCD.Print(1, 0, "Ready");
 }
 
 // ------------------------------------
@@ -100,7 +105,7 @@ SystemState System::HaltAllLostConnection()
 	Log_(_title);
 	Log(": Lost Connection");
 	_haltAll(LED_BLINKFAST);
-	return	SS_LOST_CONNECT;
+	return SS_LOST_CONNECT;
 }
 
 // ------------------------------------
@@ -213,7 +218,7 @@ SystemState2 System::GetState()
 		else if (_state == SS_ON)
 			ss = _checkStateOn();
 		else if (_state == SS_LOST_CONNECT)
-			ss =HaltAllLostConnection();
+			ss = HaltAllLostConnection();
 		else
 			ss = SS_ERR;
 		_state = ss;
