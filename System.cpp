@@ -17,7 +17,6 @@ System::System(const char *title, uint8_t pinBtnOn, uint8_t pinBtnOff, uint8_t p
 	BtnOff = SetupButton("BtnOff", pinBtnOff);
 	BtnReset = SetupButton("BtnReset", pinBtnReset);
 	Unit Timer = Unit("Timer", UT_TIMER);
-	sLCD.Print(1, 0, "Ready");
 }
 
 // ------------------------------------
@@ -32,6 +31,7 @@ PinIn System::SetupButton(const char *title, uint8_t pin)
 // ------------------------------------
 void System::Init()
 {
+	sLCD.Print(1, 0, "Init ");
 	Log_(_title);
 	Log(": Init");
 	SetState(SS_NOTINIT);
@@ -53,6 +53,7 @@ void System::Init()
 		TurnLeds(0);
 		delay(70);
 	}
+	sLCD.Print(1, 0, "Ready");
 }
 
 // ------------------------------------
@@ -81,8 +82,11 @@ void System::Stop()
 // ------------------------------------
 void System::Reset()
 {
+	sLCD.Print(1, 0, "Reset");
+	Log(": System Reset");
 	HaltAllReset();
 	Init();
+	sLCD.Print(1, 0, "Ready");
 }
 
 // ------------------------------------
@@ -227,6 +231,7 @@ SystemState2 System::GetState()
 	_logIfChanged(ss2);
 
 	_ledRefresh();
+	_lcdRefresh();
 	bool x = _checkButtons();
 
 	return ss2;
@@ -238,9 +243,7 @@ void System::_ledRefresh()
 	if (Pin::CanBus.ConnectionOK())
 	{
 		for (int i = 0; i < UnitCount; i++)
-		{
 			Conveyors[i].LedConveyor.Refresh();
-		}
 	}
 	else
 	{
@@ -248,6 +251,22 @@ void System::_ledRefresh()
 		delay(50);
 		TurnLeds(0);
 		delay(50);
+	}
+}
+
+void System::_lcdRefresh()
+{
+	//Log("_lcdRefresh()");
+
+	if (500 < sLCD.Time(TA_PERIOD)) // 500 ms
+	{
+		//Log("(500 < sLCD.Time(TA_GET)) // 500 ms");
+		if (_lcdState != _state)
+		{
+			_lcdState = _state;
+			sLCD.Print(1, 0, GetSystemStateText(_state));
+		}
+		sLCD.Time(TA_FIX);
 	}
 }
 
