@@ -80,7 +80,7 @@ private:
 	SystemState _checkStateStopping();
 	bool _checkButtons();
 	void _ledRefresh();
-	void _lcdRefresh();
+	void _lcdStateRefresh();
 
 	SystemState _state = SS_UNKNOWN;
 	SystemState _lcdState = SS_UNKNOWN;

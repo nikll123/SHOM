@@ -184,9 +184,9 @@ const char *System::GetSystemStateText(SystemState state)
 	case SS_OFF:
 		return "OFF";
 	case SS_STARTING:
-		return "STARTING";
+		return "START";
 	case SS_STOPPING:
-		return "STOPPING";
+		return "STOP";
 	default:
 		return "ERROR";
 	}
@@ -231,7 +231,7 @@ SystemState2 System::GetState()
 	_logIfChanged(ss2);
 
 	_ledRefresh();
-	_lcdRefresh();
+	_lcdStateRefresh();
 	bool x = _checkButtons();
 
 	return ss2;
@@ -254,17 +254,17 @@ void System::_ledRefresh()
 	}
 }
 
-void System::_lcdRefresh()
+void System::_lcdStateRefresh()
 {
-	//Log("_lcdRefresh()");
-
 	if (500 < sLCD.Time(TA_PERIOD)) // 500 ms
 	{
-		//Log("(500 < sLCD.Time(TA_GET)) // 500 ms");
 		if (_lcdState != _state)
 		{
 			_lcdState = _state;
-			sLCD.Print(1, 0, GetSystemStateText(_state));
+			char txt[6] = "";
+			strncpy( txt, GetSystemStateText(_state), sizeof(txt));
+			strncat( txt, "      ", 6-strlen(txt));
+			sLCD.Print(1, 0, txt);
 		}
 		sLCD.Time(TA_FIX);
 	}
