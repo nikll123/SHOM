@@ -54,10 +54,10 @@ public:
 	Unit Timer;
 	ShomLCD sLCD;
 
- 	void Start();
+	void Start();
 	void Stop();
 	void Reset();
- 	void SetState(SystemState state);
+	void SetState(SystemState state);
 	void HaltAll();
 	SystemState HaltAllLostConnection();
 	void HaltAllReset();
@@ -81,6 +81,9 @@ private:
 	bool _checkButtons();
 	void _ledRefresh();
 	void _lcdStateRefresh();
+	void _lcdRunRefresh();
+	bool _lcdRanFlag;
+	Unit _lcdRunTimer;
 
 	SystemState _state = SS_UNKNOWN;
 	SystemState _lcdState = SS_UNKNOWN;

@@ -16,7 +16,8 @@ System::System(const char *title, uint8_t pinBtnOn, uint8_t pinBtnOff, uint8_t p
 	BtnOn = SetupButton("BtnOn", pinBtnOn);
 	BtnOff = SetupButton("BtnOff", pinBtnOff);
 	BtnReset = SetupButton("BtnReset", pinBtnReset);
-	Unit Timer = Unit("Timer", UT_TIMER);
+	_lcdRunTimer = Unit("LcdConnectionTimer", UT_TIMER);
+	_lcdRanFlag=true;
 }
 
 // ------------------------------------
@@ -232,6 +233,7 @@ SystemState2 System::GetState()
 
 	_ledRefresh();
 	_lcdStateRefresh();
+	_lcdRunRefresh();
 	bool x = _checkButtons();
 
 	return ss2;
@@ -262,11 +264,27 @@ void System::_lcdStateRefresh()
 		{
 			_lcdState = _state;
 			char txt[6] = "";
-			strncpy( txt, GetSystemStateText(_state), sizeof(txt));
-			strncat( txt, "      ", 6-strlen(txt));
+			strncpy(txt, GetSystemStateText(_state), sizeof(txt));
+			strncat(txt, "      ", 6 - strlen(txt));
 			sLCD.Print(1, 0, txt);
 		}
 		sLCD.Time(TA_FIX);
+	}
+}
+
+void System::_lcdRunRefresh()
+{
+	if (1000 < _lcdRunTimer.Time(TA_PERIOD)) // 1000 ms
+	{
+		char s[2] = "";
+		if (_lcdRanFlag)
+			strcpy(s, " ");
+		else
+			strcpy(s, "#");
+
+		_lcdRanFlag = !_lcdRanFlag;
+		sLCD.Print(0, 15, s);
+		_lcdRunTimer.Time(TA_FIX);
 	}
 }
 
